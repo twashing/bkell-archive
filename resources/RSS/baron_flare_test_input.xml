@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<records>
+	
+	<!-- 	Baron ==> RSS
+	
+	RSS topic & feed topic - will have to dually be addressed 
+	Baron  @GUID, SourceID, SourceAltID - not written in stone
+	
+	//records/record[ @GUID ]		==>  	< generated? >
+	//records/record[ @RecordType ]		==> 	//feed/items/article[ @type ]
+	//records/record[ @CreatedBy ]		==> 	//feed/items/article[ @author ]
+	//records/record[ @LastModifiedBy ]		==> 
+	//records/record[ @CreatedAt ]		==> 	//feed/items/article[ @date ]
+	//records/record[ @LastModifiedAt ]		==> 
+	//records/record[ @ReleaseAt ]		==> 
+	//records/record[ @ExpireAt ]		==> 
+	//records/record[ @State ]		==>
+	
+	//records/record/SourceID		==> 	//feed/items/article[ @id ]
+	//records/record/SourceAltID		==> //feed/items/article[ @url ]
+	//records/record/Source		==> 	//feed/items/article[ @source ]
+	//records/record/SubjectTag		==> 	//feed/items/article[ @topic ] 
+	//records/record/Title		==> 	//feed/items/article[ @title ]
+	//records/record/Abstract		==> 	//feed/items/article/desc
+	//records/record/Contributor		==> 
+	//records/record/PublishDate		==> 
+	//records/record/AirDate		==> 
+	//records/record/AltTitle		==> 
+	//records/record/Body		==> 		//feed/items/article/body
+	
+	
+	RSS bits Not Addressed 
+	//feed/items/article/partnerLinks
+	//feed/items/article[ @author_type ]
+	//feed/items/article[ @brand_homepage ]
+	//feed/items/article[ @brand_logo ]
+	//feed/items/article[ @feed_topic ]
+	
+	-->
+	<record 
+		GUID="" 
+		RecordType="Article" 
+		CreatedBy="Megan Kirkwood" 
+		LastModifiedBy="" 
+		CreatedAt="Mon, 18 Jan 2010 00:00:00 EST" 
+		LastModifiedAt="" 
+		ReleaseAt="" ExpireAt="" State="" >
+		
+		<SourceID>DCR_20100118_FLR_20428.xml</SourceID>
+		<SourceAltID>http://www.flare.com/blog/post/20428--mad-about-ms-jones</SourceAltID>
+		<Source>Flare</Source>
+		<SubjectTag></SubjectTag>
+		<Title>Mad About Ms. Jones</Title>
+		<Abstract>Our Golden Globes beauty pick</Abstract>
+		<Contributor></Contributor>
+		<PublishDate></PublishDate>
+		<AirDate></AirDate>
+		<AltTitle></AltTitle>
+		<Body>&lt;!DOCTYPE HTML PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"&gt;
+&lt;html&gt;&lt;head /&gt;&lt;body&gt;  Of all the leading ladies that survived the rained-out red-carpet at this year&amp;apos;s Golden Globes, our pick of the night was small screen head-turner, January Jones.  Yes, she just so happens to star on one of our fave television shows, &lt;em&gt;Mad Men&lt;/em&gt;, but January brings her A-game to the carpet and, in our humble opinion, steals the spotlight from playing-it-safe A-listers (remember last year&amp;apos;s sky coloured Versace and tangerine pout?). Sunday night, we were loving her fresh, no-fuss skin, scarlet lips and nails, and--above all--her unconventional hair band (which probably helped her locks stay put during the washed-out arrivals). All paired with her chic, jet-hued Lanvin? We&amp;apos;re smitten, Mrs. Draper.&lt;br /&gt; &lt;br /&gt; &lt;rmi-images id="rmi-images"&gt; &lt;img id="rdm-image-content-0" src="http://media.flare.topscms.com/images/d8/61/ed7c3d5d492fa2bafccee6b8690c.jpeg" alt="Mad About Ms. Jones" /&gt; &lt;p id="rdm-image-caption-0"&gt;January Jones&lt;/p&gt;
+&lt;/rmi-images&gt;  &lt;/body&gt;&lt;/html&gt;</Body>
+	</record>
+
+	<record 
+		GUID="" 
+		RecordType="Article" 
+		CreatedBy="Mosha Lundstrom Halbert" 
+		LastModifiedBy="" 
+		CreatedAt="Tue, 16 Feb 2010 00:00:00 EST" 
+		LastModifiedAt="" 
+		ReleaseAt="" ExpireAt="" State="" >
+		
+		<SourceID>DCR_20100216_FLR_21296.xml</SourceID>
+		<SourceAltID>http://www.flare.com/blog/post/21296--high-notes</SourceAltID>
+		<Source>Flare</Source>
+		<SubjectTag>Fashion</SubjectTag>
+		<Title>High Notes</Title>
+		<Abstract>Measha Brueggergosman goes for fashion gold</Abstract>
+		<Contributor></Contributor>
+		<PublishDate></PublishDate>
+		<AirDate></AirDate>
+		<AltTitle></AltTitle>
+		<Body>&lt;!DOCTYPE HTML PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"&gt;
+&lt;html&gt;&lt;head /&gt;&lt;body&gt;  Opera singer Measha Brueggergosman radiated Olympic spirit at the Opening Ceremonies on Friday, February 13th in Vancouver. The trick to her sparkle? Major Canadian rocks--think over $66 000 worth of jewels by Toronto-based designer Myles Mindham&amp;apos;s Measha Collection. The medley of precious metals and gemstones set off her golden gown by DSquared2. This Canadian diva&amp;apos;s stellar style was worthy of the world stage. For more on the Measha Collection, visit www.mindham.com
+&lt;rmi-images id="rmi-images"&gt; &lt;img id="rdm-image-content-0" src="http://media.flare.topscms.com/images/fd/eb/6c47b69e49be9d4cc73147f52c6b.jpeg" alt="High Notes" /&gt; &lt;p id="rdm-image-caption-0"&gt;Measha with Dean and Dan Caten of DSquared2&lt;/p&gt;
+&lt;img id="rdm-image-content-1" src="http://media.flare.topscms.com/images/8d/be/8fce5cee4d7c9ec35e2d4fa717c4.jpeg" alt="High Notes" /&gt; &lt;p id="rdm-image-caption-1"&gt;The Measha Collection by Myles Mindham&lt;/p&gt;
+&lt;/rmi-images&gt;  &lt;/body&gt;&lt;/html&gt;</Body>
+	</record>
+
+</records>
+
+
