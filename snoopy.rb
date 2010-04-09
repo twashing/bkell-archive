@@ -1,3 +1,4 @@
+# support both jruby and MRI
 if RUBY_PLATFORM =~ /java/
   require 'java'
 end
