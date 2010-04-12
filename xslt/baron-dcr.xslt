@@ -10,19 +10,28 @@
 		<xsl:comment> a DCR document will only produce 1 Baron record </xsl:comment>
 		
 		<records>
-			
-			<record >
+			<record>
+				
+				<xsl:attribute name="GUID"/>
+				<xsl:attribute name="RecordType"/>
+				<xsl:attribute name="CreatedBy"/>
+				<xsl:attribute name="LastModifiedBy"/>
+				<xsl:attribute name="CreatedAt"/>
+				<xsl:attribute name="LastModifiedAt"><!-- //**/item[@name="date"]/value/<content> -->
+					<xsl:value-of select="*/item[@name='date']/value" />
+				</xsl:attribute>
+				<xsl:attribute name="ReleaseAt"/>
+				<xsl:attribute name="ExpireAt"/>
+				<xsl:attribute name="State"/>
 				
 				<xsl:apply-templates />
 				
 			</record>
 		</records>
-		
 	</xsl:template>
 	
 	
 	<xsl:template match="*|text()" >
-		
 		<xsl:apply-templates />
 	</xsl:template>
 	
@@ -60,5 +69,4 @@
 		</Body>
 	</xsl:template>
 	
-
 </xsl:stylesheet>
