@@ -1,7 +1,6 @@
 <?xml version="1.0"?>
 
-<xsl:stylesheet version="1.0"
-	xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
+<xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 	
 	
 	<xsl:template match="/">
@@ -10,20 +9,21 @@
 		<xsl:comment> Generated from 'baron-dcr.xslt' </xsl:comment>
 		<xsl:comment> a DCR document will only produce 1 Baron record </xsl:comment>
 		
-		&lt;?xml version="1.0" encoding="utf-8"?&gt;
 		<records>
 			
 			<record >
 				
 				<xsl:apply-templates />
-				<!-- <xsl:apply-templates 
-					select="item[@name='associated_section']/value, item[@name='story_title']/value, item[@name='dek']/value , item[@name='body_paragraph']" 
-					/>
-				-->
 				
 			</record>
 		</records>
 		
+	</xsl:template>
+	
+	
+	<xsl:template match="*|text()" >
+		
+		<xsl:apply-templates />
 	</xsl:template>
 	
 	
