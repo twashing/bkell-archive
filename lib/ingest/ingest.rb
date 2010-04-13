@@ -1,6 +1,4 @@
-
-Module Ingest 
-	
+module Ingest 
 	
 	##
 	# Infer the type of the incoming documents 
@@ -16,4 +14,4 @@ Module Ingest
 		
 	end
 	
-end 
+end
