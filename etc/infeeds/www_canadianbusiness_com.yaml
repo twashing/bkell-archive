@@ -1,0 +1,15 @@
+sourceName: canadianbusiness_teamsite
+sourceDesc: >
+  Primary article content from the www.canadianbusiness.com
+  website, including Canadian Business, MoneySense, and Profit
+  magazines.
+sourceAdapter: TeamsiteDcrFileSource
+TeamsiteDcrFileSource: {
+  basedir: /Users/joe.hohertz/baron-bits/sim-teamsite/680news_com,
+  rules: {
+    stripHtmlTags: [object, embed, script],
+    extractAbstractFromBody: true
+  }
+}
+
+
