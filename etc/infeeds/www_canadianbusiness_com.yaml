@@ -5,7 +5,7 @@ sourceDesc: >
   magazines.
 sourceAdapter: teamsiteDcrFiles
 teamsiteDcrFiles: {
-  basedir: /www/dcr/www_canadianbusiness_com,
+  basedir: /Users/joe.hohertz/baron-bits/sim-teamsite/680news_com,
   rules: {
     stripHtmlTags: [object, embed, script],
     extractAbstractFromBody: true
