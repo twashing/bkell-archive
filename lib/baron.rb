@@ -34,10 +34,10 @@ module Baron
 		# a factory for instantiating a feed by method/config
 		def self.factory(sourceClassName, sourceConfigTree)
 			case sourceClassName
-				# There is probably a much slicker way to do this in Ruby's metaprogramming
-				# can't find it right now. TODO: make this all Rubified...
+			# There is probably a much slicker way to do this in Ruby's metaprogramming
+			# can't find it right now. TODO: make this all Rubified...
 			when "TeamsiteDcrFileSource"
-				TeamsiteDcrFileSource.new(sourceConfigTree['basedir'])
+				TeamsiteDcrFileSource.new(sourceConfigTree)
 			else
 				raise "Unknown source class #{sourceClassName}"
 			end
@@ -51,12 +51,18 @@ module Baron
 		#   - a common mechanism/determination of success and resulting
 		#     committment to new state
 		#   - factory for dynamic instantiation from parameter data
-		class AbstractSource
+		class AbstractInputSource
+			def initialize(sourceConfig)
+				@config = sourceConfig
+				@state = Hash.new
+			end
+
 		end
 
-		class TeamsiteDcrFileSource < AbstractSource
-			def initialize(path)
-				@basepath = path
+		class TeamsiteDcrFileSource < AbstractInputSource
+			def initialize(sourceConfig)
+				super
+				@basepath = @config['basedir']
 				@returnitems = Array.new
 				@thistime = Time.now			# we may record current time vs high mark for runs
 				@lasttime = Time.at(@thistime.to_i() - 84600)	# XXX: fudged for the moment
