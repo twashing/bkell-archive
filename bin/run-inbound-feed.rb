@@ -29,9 +29,4 @@ pp myiter.filelist
 
 __END__
 
-thisdir = cfg['teamsiteDcrFiles']['basedir']
-pp thisdir
-
-myiter = Baron::InboundFeed::NewFileSource.new(thisdir)
-pp myiter.filelist
 
