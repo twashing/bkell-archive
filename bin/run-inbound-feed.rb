@@ -19,11 +19,19 @@ raise "Unknown configuration #{configName}" if ! File.exists? configFileName
 cfg = YAML.load_file(configFileName)
 pp cfg
 
-thisdir = cfg['teamsiteDcrFiles']['basedir']
-pp thisdir
+inboundSourceType = cfg['sourceAdapter']
+sourceConfig = cfg[inboundSourceType]
+pp inboundSourceType
+pp sourceConfig
 
-myiter = Baron::Feed::NewFileSource.new(thisdir)
+myiter = Baron::InboundFeed::factory(inboundSourceType, sourceConfig)
 pp myiter.filelist
 
 __END__
+
+thisdir = cfg['teamsiteDcrFiles']['basedir']
+pp thisdir
+
+myiter = Baron::InboundFeed::NewFileSource.new(thisdir)
+pp myiter.filelist
 
