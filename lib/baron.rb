@@ -1,7 +1,10 @@
 
 require 'enumerator'
+require 'yaml'
 
 module Baron
+	BARON_BASE = File.dirname(File.dirname(File.expand_path($PROGRAM_NAME)))
+
 	# Not sure if we'll use this, but it's not uncommon to need a singleton-like
 	# class to implement the sort of "global" details, and self-instrumentation
 	# for an application. It manages, and ultimately contains the entire runtime
@@ -32,6 +35,17 @@ module Baron
 	end
 
 	module InboundFeed
+		# module level method to load a feed by configuration file name
+		def self.load_feed(configName)
+			configFileName = Baron::BARON_BASE + "/etc/infeeds/#{configName}.yaml"
+			raise "Unknown configuration #{configName}" if ! File.exists? configFileName
+			cfg = YAML.load_file(configFileName)
+			inboundSourceType = cfg['sourceAdapter']
+			sourceConfig = cfg[inboundSourceType]
+			# return the configuration via the lower-level factory
+			Baron::InboundFeed::factory(inboundSourceType, sourceConfig)
+		end
+
 		# a factory for instantiating a feed by method/config
 		def self.factory(sourceClassName, sourceConfigTree)
 			case sourceClassName
