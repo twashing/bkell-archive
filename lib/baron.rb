@@ -54,7 +54,12 @@ module Baron
 		class AbstractInputSource
 			def initialize(sourceConfig)
 				@config = sourceConfig
+				self.load_state
+			end
+			def load_state
 				@state = Hash.new
+			end
+			def save_state
 			end
 
 		end
@@ -62,11 +67,30 @@ module Baron
 		class TeamsiteDcrFileSource < AbstractInputSource
 			def initialize(sourceConfig)
 				super
-				@basepath = @config['basedir']
+				@state['startTime'] = Time.now
+				if ! @state['highestTime'] 
+					@state['highestTime'] = Time.at(0)
+				end
+				if ! @state['cursorTime'] 
+					@state['cursorTime'] = Time.at(Time.now.to_i() - 84600)
+					# XXX: above fudged for the moment should be zero time
+					## done this way until state saving works to prevent the whole set coming in
+				end
+				@filelist = Baron::Util::NewFileFinder.new(@config['basedir'], @state['cursorTime']).filelist
+			end
+			def filelist
+				@filelist
+			end
+		end
+	end
+
+	module Util
+		class NewFileFinder
+			def initialize(basepath, fromtime)
+				@basepath = basepath 
+				@fromtime = fromtime
 				@returnitems = Array.new
-				@thistime = Time.now			# we may record current time vs high mark for runs
-				@lasttime = Time.at(@thistime.to_i() - 84600)	# XXX: fudged for the moment
-				@highseentime = Time.at(0)
+				@highesttime = Time.at(0)
 				self.crawlForNew(@basepath)
 			end
 			def crawlForNew(adir)
@@ -76,10 +100,10 @@ module Baron
 					if File.directory?(thisfname)
 						self.crawlForNew(thisfname)
 					else
-						if File.mtime(thisfname) > @highseentime
-							@highseentime = File.mtime(thisfname)
+						if File.mtime(thisfname) > @highesttime
+							@highesttime = File.mtime(thisfname)
 						end
-						if File.mtime(thisfname) > @lasttime
+						if File.mtime(thisfname) > @fromtime
 							@returnitems << thisfname
 						end
 					end

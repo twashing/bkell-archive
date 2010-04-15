@@ -13,18 +13,16 @@ configName = ARGV[0]
 raise "Must specify configuration to run" if configName == nil || configName == ""
 
 configFileName = $BARON_BASE + "/etc/infeeds/#{configName}.yaml"
-pp configFileName
 raise "Unknown configuration #{configName}" if ! File.exists? configFileName
 
 cfg = YAML.load_file(configFileName)
-pp cfg
 
 inboundSourceType = cfg['sourceAdapter']
 sourceConfig = cfg[inboundSourceType]
-pp inboundSourceType
 pp sourceConfig
 
 myiter = Baron::InboundFeed::factory(inboundSourceType, sourceConfig)
+#myiter = Baron::Util::NewFileFinder.new(sourceConfig['basedir'], Time.at(Time.now.to_i - 84600))
 pp myiter.filelist
 
 __END__
