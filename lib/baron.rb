@@ -1,6 +1,7 @@
 
 require 'enumerator'
 require 'yaml'
+require 'rexml/document'
 
 module Baron
 	BARON_BASE = File.dirname(File.dirname(File.expand_path($PROGRAM_NAME)))
@@ -32,6 +33,20 @@ module Baron
 	# to an implementation of AbstractSource, are accessible to common paths
 	# later in the pipeline
 	class RawContentItem
+		def initialize()
+			@props = Hash.new
+		end
+		def get(prop)
+			@props[prop]
+		end
+		alias [] get
+		def set(prop, value)
+			@props[prop] = value
+		end
+		alias []= set
+		def hash
+			@props
+		end
 	end
 
 	module InboundFeed
@@ -112,7 +127,31 @@ module Baron
 				end
 			end
 			def each
-				@filelist.each { |x| yield x }
+				#@filelist.each { |x| yield x }
+				@filelist.each { |x| yield self.load_raw_item(x) }
+			end
+			# TODO: this method should be a Baron::Util module thing...
+			# it's only purpose, to catch the nil node before trying .text()
+			def do_xpath_lookup_to_text(doc, xpathString)
+				ele = doc.root.elements[xpathString]
+				if ele
+					ele.text
+				else
+					ele
+				end
+			end
+			def load_raw_item(filename)
+				item = Baron::RawContentItem.new
+				doc = REXML::Document.new(File.new(filename))
+				# use XPATH selectors to pull in content from source (DCR in this case)
+				item['title'] = do_xpath_lookup_to_text(doc, "/record//item[@name='title']/value")
+				item['subtitle'] = do_xpath_lookup_to_text(doc, "/record//item[@name='subtitle']/value")
+				item['abstract'] = do_xpath_lookup_to_text(doc, "/record//item[@name='copytext']/value")
+				item['abstract2'] = do_xpath_lookup_to_text(doc, "/record//item[@name='copy2text']/value")
+				item['author'] = do_xpath_lookup_to_text(doc, "/record//item[@name='author']/value")
+				item['keywords'] = do_xpath_lookup_to_text(doc, "/record//item[@name='keywords']/value")
+				item['publishing_datetime'] = do_xpath_lookup_to_text(doc, "/record//item[@name='publishing_datetime']/value")
+				item
 			end
 			def commit_state
 				@state['cursorTime'] = @state['highestTime'] 
