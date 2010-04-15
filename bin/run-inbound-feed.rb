@@ -18,6 +18,8 @@ myiter = Baron::InboundFeed.load_feed(configName)
 myiter.collect { |x| "PREFIX: " + x } \
       .each_with_index { |x,n| puts "#{n}: #{x}" }
 
+myiter.commit_state
+
 __END__
 
 

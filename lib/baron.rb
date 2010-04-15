@@ -39,9 +39,9 @@ module Baron
 		def self.load_feed(configName)
 			configFileName = Baron::BARON_BASE + "/etc/infeeds/#{configName}.yaml"
 			raise "Unknown configuration #{configName}" if ! File.exists? configFileName
-			cfg = YAML.load_file(configFileName)
-			inboundSourceType = cfg['sourceAdapter']
-			sourceConfig = cfg[inboundSourceType]
+			sourceConfig = YAML.load_file(configFileName)
+			inboundSourceType = sourceConfig['sourceAdapter']
+			#sourceConfig = cfg[inboundSourceType]
 			# return the configuration via the lower-level factory
 			Baron::InboundFeed::factory(inboundSourceType, sourceConfig)
 		end
@@ -69,12 +69,24 @@ module Baron
 		class AbstractInputSource
 			def initialize(sourceConfig)
 				@config = sourceConfig
+				@type = sourceConfig['sourceAdapter']
+				@name = sourceConfig['sourceName']
+				@localconfig = sourceConfig[@type]
+				@stateFile = Baron::BARON_BASE + "/var/state/infeed/#{@name}.state"
 				self.load_state
+				@state['startTime'] = Time.now
 			end
 			def load_state
-				@state = Hash.new
+				if File.exists?(@stateFile)
+					@state = YAML.load_file(@stateFile)
+				else
+					@state = Hash.new
+				end
 			end
 			def save_state
+				File.open( @stateFile, 'w' ) do |out|
+					YAML.dump( @state, out )
+				end
 			end
 
 		end
@@ -83,19 +95,28 @@ module Baron
 			include Enumerable
 			def initialize(sourceConfig)
 				super
-				@state['startTime'] = Time.now
+				filefinder = Baron::Util::NewFileFinder.new(@localconfig['basedir'], @state['cursorTime'])
+				@filelist = filefinder.filelist
+				@state['highestTime'] = filefinder.highest_time
+			end
+			def load_state
+				super
 				if ! @state['highestTime'] 
 					@state['highestTime'] = Time.at(0)
 				end
 				if ! @state['cursorTime'] 
-					@state['cursorTime'] = Time.at(Time.now.to_i() - 84600)
+					@state['cursorTime'] = Time.at(0)
+					#@state['cursorTime'] = Time.at(Time.now.to_i() - 84600)
 					# XXX: above fudged for the moment should be zero time
 					## done this way until state saving works to prevent the whole set coming in
 				end
-				@filelist = Baron::Util::NewFileFinder.new(@config['basedir'], @state['cursorTime']).filelist
 			end
 			def each
 				@filelist.each { |x| yield x }
+			end
+			def commit_state
+				@state['cursorTime'] = @state['highestTime'] 
+				self.save_state
 			end
 			
 			def filelist
@@ -131,6 +152,9 @@ module Baron
 			end
 			def filelist
 				@returnitems
+			end
+			def highest_time
+				@highesttime
 			end
 		end
 	end
