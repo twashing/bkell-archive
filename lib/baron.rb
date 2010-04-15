@@ -1,4 +1,5 @@
 
+require 'enumerator'
 
 module Baron
 	# Not sure if we'll use this, but it's not uncommon to need a singleton-like
@@ -65,6 +66,7 @@ module Baron
 		end
 
 		class TeamsiteDcrFileSource < AbstractInputSource
+			include Enumerable
 			def initialize(sourceConfig)
 				super
 				@state['startTime'] = Time.now
@@ -78,6 +80,10 @@ module Baron
 				end
 				@filelist = Baron::Util::NewFileFinder.new(@config['basedir'], @state['cursorTime']).filelist
 			end
+			def each
+				@filelist.each { |x| yield x }
+			end
+			
 			def filelist
 				@filelist
 			end

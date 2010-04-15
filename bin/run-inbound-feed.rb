@@ -22,8 +22,12 @@ sourceConfig = cfg[inboundSourceType]
 pp sourceConfig
 
 myiter = Baron::InboundFeed::factory(inboundSourceType, sourceConfig)
-#myiter = Baron::Util::NewFileFinder.new(sourceConfig['basedir'], Time.at(Time.now.to_i - 84600))
-pp myiter.filelist
+
+#myiter.each_with_index { |x,n| puts "#{n}: #{x}" }
+
+myiter.collect { |x| "PREFIX: " + x } \
+      .each_with_index { |x,n| puts "#{n}: #{x}" }
+
 
 __END__
 
