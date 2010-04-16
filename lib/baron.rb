@@ -2,6 +2,8 @@
 require 'enumerator'
 require 'yaml'
 require 'rexml/document'
+require 'open-uri'
+require 'rss'
 
 module Baron
 	BARON_BASE = File.dirname(File.dirname(File.expand_path($PROGRAM_NAME)))
@@ -11,15 +13,6 @@ module Baron
 	# for an application. It manages, and ultimately contains the entire runtime
 	# TODO: going to let the needs emerge, and not force anything in here.
 	class AppFrame
-	end
-
-	# This class represents the runtime configuration of an inbound pipeline
-	class InboundConfig
-	end
-
-	# This is a class representing the runtime configuation of an output pipeline
-	# TODO: This is not an immediate concern at present
-	class OutboundConfig
 	end
 
 	# This is to be a representation of the native Baron content record, matching
@@ -68,6 +61,8 @@ module Baron
 			# can't find it right now. TODO: make this all Rubified...
 			when "TeamsiteDcrFileSource"
 				TeamsiteDcrFileSource.new(sourceConfigTree)
+			when "SimpleRssUrlSource"
+				SimpleRssUrlSource.new(sourceConfigTree)
 			else
 				raise "Unknown source class #{sourceClassName}"
 			end
@@ -82,14 +77,18 @@ module Baron
 		#     committment to new state
 		#   - factory for dynamic instantiation from parameter data
 		class AbstractInputSource
+			include Enumerable
 			def initialize(sourceConfig)
 				@config = sourceConfig
 				@type = sourceConfig['sourceAdapter']
 				@name = sourceConfig['sourceName']
 				@localconfig = sourceConfig[@type]
 				@stateFile = Baron::BARON_BASE + "/var/state/infeed/#{@name}.state"
-				self.load_state
-				@state['startTime'] = Time.now
+				@contentItems = Array.new
+				self.execute
+			end
+			def each
+				@contentItems.each { |x| yield x }
 			end
 			def load_state
 				if File.exists?(@stateFile)
@@ -103,17 +102,27 @@ module Baron
 					YAML.dump( @state, out )
 				end
 			end
+			def commit_state
+				self.save_state
+			end
+			def execute
+				self.load_state
+				@state['startTime'] = Time.now
+				#self.setup
+				self.discover
+				self.load_raw_items
+				#self.transform
+			end
+			def discover
+				raise "implementation must define discover"
+			end
+			def load_raw_items
+				raise "implementation must define load_raw_items"
+			end
 
 		end
 
-		class TeamsiteDcrFileSource < AbstractInputSource
-			include Enumerable
-			def initialize(sourceConfig)
-				super
-				filefinder = Baron::Util::NewFileFinder.new(@localconfig['basedir'], @state['cursorTime'])
-				@filelist = filefinder.filelist
-				@state['highestTime'] = filefinder.highest_time
-			end
+		class AbstractFileInputSource < AbstractInputSource
 			def load_state
 				super
 				if ! @state['highestTime'] 
@@ -121,36 +130,67 @@ module Baron
 				end
 				if ! @state['cursorTime'] 
 					@state['cursorTime'] = Time.at(0)
-					#@state['cursorTime'] = Time.at(Time.now.to_i() - 84600)
-					# XXX: above fudged for the moment should be zero time
-					## done this way until state saving works to prevent the whole set coming in
 				end
 			end
-			def each
-				#@filelist.each { |x| yield x }
-				@filelist.each { |x| yield self.load_raw_item(x) }
+			def commit_state
+				@state['cursorTime'] = @state['highestTime'] 
+				super
 			end
-			def load_raw_item(filename)
+			def discover
+				filefinder = Baron::Util::NewFileFinder.new(@localconfig['basedir'], @state['cursorTime'])
+				@filelist = filefinder.filelist
+				@state['highestTime'] = filefinder.highest_time
+			end
+			def load_raw_items
+				@filelist.each { |x| @contentItems << self.load_raw_item(File.new(x)) }
+			end
+			def load_raw_item
+				raise "concrete implementation must define load_raw_item"
+			end
+		end
+
+		class TeamsiteDcrFileSource < AbstractFileInputSource
+			def load_raw_item(resource)
 				item = Baron::RawContentItem.new
-				doc = REXML::Document.new(File.new(filename))
+				doc = REXML::Document.new(resource)
 				@localconfig['xpathMappings'].each { |key,xpath| 
 					ele = doc.root.elements[xpath]
 					if ele != nil
 						item[key] = ele.text
-					#else
-					#	item[key] = ele
 					end
-					#item[key] = do_xpath_lookup_to_text(doc, xpath)
 				}
 				item
 			end
-			def commit_state
-				@state['cursorTime'] = @state['highestTime'] 
-				self.save_state
+		end
+
+		class SimpleRssUrlSource < AbstractInputSource
+			def discover
+				@rssfeeds = Hash.new
+				@localconfig['rssUrls'].each { |x| 
+					rss_content = ""
+					open(x) do |f|
+						rss_content = f.read
+					end
+					rss = RSS::Parser.parse(rss_content, false)
+					@rssfeeds[x] = rss
+				}
 			end
-			
-			def filelist
-				@filelist
+			def load_raw_items
+				@rssfeeds.each do |url, rss| 
+					rssTitle = rss.channel.title
+					rssUrl = rss.channel.link
+					rss.items.each do |rssItem|
+						item = Baron::RawContentItem.new
+						item['__rssTitle'] = rssTitle
+						item['__rssUrl'] = rssUrl
+						item['link'] = rssItem.link
+						item['title'] = rssItem.title
+						item['date'] = rssItem.date
+						item['description'] = rssItem.description
+						#item['subject'] = rssItem.subject
+						@contentItems << item
+					end
+				end
 			end
 		end
 	end
