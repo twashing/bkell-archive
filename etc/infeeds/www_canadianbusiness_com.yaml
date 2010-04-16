@@ -6,6 +6,15 @@ sourceDesc: >
 sourceAdapter: TeamsiteDcrFileSource
 TeamsiteDcrFileSource: {
   basedir: /Users/joe.hohertz/baron-bits/sim-teamsite/680news_com,
+  xpathMappings: {
+    title: "/record//item[@name='title']/value",
+    subtitle: "/record//item[@name='subtitle']/value",
+    abstract: "/record//item[@name='copytext']/value",
+    abstract2: "/record//item[@name='copy2text']/value",
+    author: "/record//item[@name='author']/value",
+    keywords: "/record//item[@name='keywords']/value",
+    publishing_datetime: "/record//item[@name='publishing_datetime']/value"
+  },
   rules: {
     stripHtmlTags: [object, embed, script],
     extractAbstractFromBody: true

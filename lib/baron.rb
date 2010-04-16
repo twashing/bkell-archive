@@ -130,27 +130,18 @@ module Baron
 				#@filelist.each { |x| yield x }
 				@filelist.each { |x| yield self.load_raw_item(x) }
 			end
-			# TODO: this method should be a Baron::Util module thing...
-			# it's only purpose, to catch the nil node before trying .text()
-			def do_xpath_lookup_to_text(doc, xpathString)
-				ele = doc.root.elements[xpathString]
-				if ele
-					ele.text
-				else
-					ele
-				end
-			end
 			def load_raw_item(filename)
 				item = Baron::RawContentItem.new
 				doc = REXML::Document.new(File.new(filename))
-				# use XPATH selectors to pull in content from source (DCR in this case)
-				item['title'] = do_xpath_lookup_to_text(doc, "/record//item[@name='title']/value")
-				item['subtitle'] = do_xpath_lookup_to_text(doc, "/record//item[@name='subtitle']/value")
-				item['abstract'] = do_xpath_lookup_to_text(doc, "/record//item[@name='copytext']/value")
-				item['abstract2'] = do_xpath_lookup_to_text(doc, "/record//item[@name='copy2text']/value")
-				item['author'] = do_xpath_lookup_to_text(doc, "/record//item[@name='author']/value")
-				item['keywords'] = do_xpath_lookup_to_text(doc, "/record//item[@name='keywords']/value")
-				item['publishing_datetime'] = do_xpath_lookup_to_text(doc, "/record//item[@name='publishing_datetime']/value")
+				@localconfig['xpathMappings'].each { |key,xpath| 
+					ele = doc.root.elements[xpath]
+					if ele != nil
+						item[key] = ele.text
+					#else
+					#	item[key] = ele
+					end
+					#item[key] = do_xpath_lookup_to_text(doc, xpath)
+				}
 				item
 			end
 			def commit_state
