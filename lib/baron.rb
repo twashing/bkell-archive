@@ -113,6 +113,12 @@ module Baron
 				self.load_raw_items
 				#self.transform
 			end
+			def new_raw_item
+				item = Baron::RawContentItem.new
+				item['__adapterName'] = @name
+				item['__adapterType'] = @type
+				item
+			end
 			def discover
 				raise "implementation must define discover"
 			end
@@ -142,7 +148,11 @@ module Baron
 				@state['highestTime'] = filefinder.highest_time
 			end
 			def load_raw_items
-				@filelist.each { |x| @contentItems << self.load_raw_item(File.new(x)) }
+				@filelist.each do |x| 
+					rawitem = self.load_raw_item(File.new(x))
+					rawitem['__sourceFilename'] = x
+					@contentItems << rawitem
+				end
 			end
 			def load_raw_item
 				raise "concrete implementation must define load_raw_item"
@@ -151,7 +161,7 @@ module Baron
 
 		class TeamsiteDcrFileSource < AbstractFileInputSource
 			def load_raw_item(resource)
-				item = Baron::RawContentItem.new
+				item = self.new_raw_item
 				doc = REXML::Document.new(resource)
 				@localconfig['xpathMappings'].each { |key,xpath| 
 					ele = doc.root.elements[xpath]
@@ -180,7 +190,7 @@ module Baron
 					rssTitle = rss.channel.title
 					rssUrl = rss.channel.link
 					rss.items.each do |rssItem|
-						item = Baron::RawContentItem.new
+						item = self.new_raw_item
 						item['__rssTitle'] = rssTitle
 						item['__rssUrl'] = rssUrl
 						item['link'] = rssItem.link
