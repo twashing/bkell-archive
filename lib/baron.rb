@@ -212,7 +212,7 @@ module Baron
 				end
 			end
 			def copy_action(dstname, srcname)
-				if item.respond_to? dstname
+				if item.respond_to? "#{dstname}="
 					if @rawItem[srcname]
 						item.send("#{dstname}=", @rawItem[srcname])
 					else
@@ -260,11 +260,13 @@ module Baron
 						item = self.new_raw_item
 						item['__rssTitle'] = rssTitle
 						item['__rssUrl'] = rssUrl
-						item['link'] = rssItem.link
-						item['title'] = rssItem.title
-						item['date'] = rssItem.date
-						item['description'] = rssItem.description
-						#item['subject'] = rssItem.subject
+						@localconfig['rssItemMappings'].each do |key,rssProp| 
+							if rssItem.respond_to? "#{rssProp}"
+								item[key] = rssItem.send("#{rssProp}")
+							else
+								raise "unknown rss property method #{rssProp}"
+							end
+						end
 						@items << item
 					end
 				end

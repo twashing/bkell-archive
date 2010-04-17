@@ -5,7 +5,13 @@ sourceDesc: >
   magazines.
 sourceAdapter: SimpleRssUrlSource
 SimpleRssUrlSource: {
-  rssUrls: ["http://rss.slashdot.org/Slashdot/slashdot"]
+  rssUrls: ["http://rss.slashdot.org/Slashdot/slashdot"],
+  rssItemMappings: {
+    link: link,
+    title: title,
+    date: date,
+    description: description
+  }
 }
 transformRules: {
   global: {
@@ -14,7 +20,8 @@ transformRules: {
   },
   ruleList: [
     ["copy", "title", "title"], 
-    ["copy", "publishedDate", "date"]
+    ["copy", "publishedDate", "date"],
+    ["copy", "body", "description"]
   ]
 }
 
