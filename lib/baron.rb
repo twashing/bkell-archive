@@ -262,7 +262,7 @@ module Baron
 						item['__rssUrl'] = rssUrl
 						@localconfig['rssItemMappings'].each do |key,rssProp| 
 							if rssItem.respond_to? "#{rssProp}"
-								item[key] = rssItem.send("#{rssProp}")
+								item[key] = rssItem.send("#{rssProp}").to_s
 							else
 								raise "unknown rss property method #{rssProp}"
 							end
