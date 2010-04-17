@@ -18,6 +18,10 @@ module Baron
 	# This is to be a representation of the native Baron content record, matching
 	# the representation details to be stuffed into CouchDB
 	class ContentItem
+		attr_accessor :id, :title, :date
+		#def initialize
+			# ???
+		#end
 	end
 
 	# This class represents a "raw" representation of the native content object
@@ -78,17 +82,18 @@ module Baron
 		#   - factory for dynamic instantiation from parameter data
 		class AbstractInputSource
 			include Enumerable
+			attr_accessor :config, :localconfig, :items
 			def initialize(sourceConfig)
 				@config = sourceConfig
 				@type = sourceConfig['sourceAdapter']
 				@name = sourceConfig['sourceName']
 				@localconfig = sourceConfig[@type]
 				@stateFile = Baron::BARON_BASE + "/var/state/infeed/#{@name}.state"
-				@contentItems = Array.new
+				@items = Array.new
 				self.execute
 			end
 			def each
-				@contentItems.each { |x| yield x }
+				@items.each { |x| yield x }
 			end
 			def load_state
 				if File.exists?(@stateFile)
@@ -151,11 +156,67 @@ module Baron
 				@filelist.each do |x| 
 					rawitem = self.load_raw_item(File.new(x))
 					rawitem['__sourceFilename'] = x
-					@contentItems << rawitem
+					@items << rawitem
 				end
 			end
 			def load_raw_item
 				raise "concrete implementation must define load_raw_item"
+			end
+		end
+
+		# This class is used by the transform phase. It's job is to:
+		#  - provide the implementation to execute a transform
+		#    - input 1: The RawContentItem to transform
+		#    - input 2: The transformRules from the feed configuration
+		#    - output: a ContentItem proper
+		# But perhaps more importantly, it provides the rule actions themselves
+		# as methods of the form:
+		#   def <action name>_action(*params)
+		#
+		# The rule processor main loop will go through an ordered list of
+		# rules in the form of an array of arrays. each inner array is of
+		# the form:
+		#   ["command", "param1", "param2", ...]
+		# We'll shift off the command, see if the method exists, and if so,
+		# send() our parameters in.
+		class Transformer
+			attr_reader :item
+			def initialize(ruleSet)
+				@ruleSet = ruleSet
+				@item = nil
+			end
+			def run_rules_on(rawItem)
+				self.load_raw(rawItem)
+				self.run_rules
+			end
+			def load_raw(rawItem)
+				@rawItem = rawItem
+				@item = Baron::ContentItem.new
+			end
+			def run_rules
+				@ruleSet['ruleList'].each do |rule|
+					command = rule[0]
+					params = rule[1,rule.size]
+					command += "_action"
+					if self.respond_to? command
+						self.send(command, *params)
+					else
+						raise "unknown action #{command}"
+					end
+				end
+			end
+			def copy_action(dstname, srcname)
+				if item.respond_to? dstname
+					if @rawItem[srcname]
+						item.send("#{dstname}=", @rawItem[srcname])
+					else
+						# XXX: seems harsh until we have better exceptions...
+						# will need it as not all docs will express all attribs
+						#raise "unknown source item ${srcname}"
+					end
+				else
+					raise "unknown destination attribute ${dstname}"
+				end
 			end
 		end
 
@@ -198,7 +259,7 @@ module Baron
 						item['date'] = rssItem.date
 						item['description'] = rssItem.description
 						#item['subject'] = rssItem.subject
-						@contentItems << item
+						@items << item
 					end
 				end
 			end

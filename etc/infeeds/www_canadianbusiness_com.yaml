@@ -14,11 +14,17 @@ TeamsiteDcrFileSource: {
     author: "/record//item[@name='author']/value",
     keywords: "/record//item[@name='keywords']/value",
     publishing_datetime: "/record//item[@name='publishing_datetime']/value"
-  },
-  rules: {
+  }
+}
+transformRules: {
+  global: {
     stripHtmlTags: [object, embed, script],
     extractAbstractFromBody: true
-  }
+  },
+  ruleList: [
+    ["copy", "title", "title"],
+    ["copy", "date", "publishing_datetime"]
+  ]
 }
 
 

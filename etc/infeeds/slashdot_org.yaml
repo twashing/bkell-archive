@@ -5,11 +5,17 @@ sourceDesc: >
   magazines.
 sourceAdapter: SimpleRssUrlSource
 SimpleRssUrlSource: {
-  rssUrls: ["http://rss.slashdot.org/Slashdot/slashdot"],
-  rules: {
+  rssUrls: ["http://rss.slashdot.org/Slashdot/slashdot"]
+}
+transformRules: {
+  global: {
     stripHtmlTags: [object, embed, script],
     extractAbstractFromBody: true
-  }
+  },
+  ruleList: [
+    ["copy", "title", "title"], 
+    ["copy", "date", "date"]
+  ]
 }
 
 
