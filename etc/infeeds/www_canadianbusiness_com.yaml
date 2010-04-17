@@ -23,7 +23,7 @@ transformRules: {
   },
   ruleList: [
     ["copy", "title", "title"],
-    ["copy", "date", "publishing_datetime"]
+    ["copy", "publishedDate", "publishing_datetime"]
   ]
 }
 

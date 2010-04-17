@@ -18,7 +18,13 @@ module Baron
 	# This is to be a representation of the native Baron content record, matching
 	# the representation details to be stuffed into CouchDB
 	class ContentItem
-		attr_accessor :id, :title, :date
+		attr_accessor :guid, :sourceAltId, :sourceId, :source, :type, :state,
+			:createdBy, :lastModifiedBy, 
+			:createdAt, :lastModifiedAt, :releaseAt, :expireAt,
+			:subjectTags,
+			:title, :altTitle, :abstract, :publishedDate,
+			:contributors,
+			:body
 		#def initialize
 			# ???
 		#end
@@ -212,10 +218,10 @@ module Baron
 					else
 						# XXX: seems harsh until we have better exceptions...
 						# will need it as not all docs will express all attribs
-						#raise "unknown source item ${srcname}"
+						#raise "unknown source item #{srcname}"
 					end
 				else
-					raise "unknown destination attribute ${dstname}"
+					raise "unknown destination attribute #{dstname}"
 				end
 			end
 		end

@@ -14,7 +14,7 @@ transformRules: {
   },
   ruleList: [
     ["copy", "title", "title"], 
-    ["copy", "date", "date"]
+    ["copy", "publishedDate", "date"]
   ]
 }
 
