@@ -6,46 +6,13 @@ require 'rexml/document'
 require 'open-uri'
 require 'rss'
 
+require 'baron/content/item'
+require 'baron/content/rawitem'
+require 'baron/content/transformer'
+
 module Baron
 	BASE = File.dirname(File.dirname(File.expand_path($PROGRAM_NAME)))
 	log = Logger.new(STDERR)
-
-	# This is to be a representation of the native Baron content record, matching
-	# the representation details to be stuffed into CouchDB
-	class ContentItem
-		attr_accessor :guid, :sourceAltId, :sourceId, :source, :type, :state,
-			:createdBy, :lastModifiedBy, 
-			:createdAt, :lastModifiedAt, :releaseAt, :expireAt,
-			:subjectTags,
-			:title, :altTitle, :abstract, :publishedDate,
-			:contributors,
-			:body
-		#def initialize
-			# ???
-		#end
-	end
-
-	# This class represents a "raw" representation of the native content object
-	# The VERY first goal of an input item is to transcribe enough of the detail
-	# into a property map, that while the properties themselves are specific
-	# to an implementation of AbstractSource, are accessible to common paths
-	# later in the pipeline
-	class RawContentItem
-		def initialize()
-			@props = Hash.new
-		end
-		def get(prop)
-			@props[prop]
-		end
-		alias [] get
-		def set(prop, value)
-			@props[prop] = value
-		end
-		alias []= set
-		def hash
-			@props
-		end
-	end
 
 	module InboundFeed
 		# module level method to load a feed by configuration file name
@@ -119,7 +86,7 @@ module Baron
 				#self.transform
 			end
 			def new_raw_item
-				item = Baron::RawContentItem.new
+				item = Baron::Content::RawItem.new
 				item['__adapterName'] = @name
 				item['__adapterType'] = @type
 				item
@@ -161,62 +128,6 @@ module Baron
 			end
 			def load_raw_item
 				raise "concrete implementation must define load_raw_item"
-			end
-		end
-
-		# This class is used by the transform phase. It's job is to:
-		#  - provide the implementation to execute a transform
-		#    - input 1: The RawContentItem to transform
-		#    - input 2: The transformRules from the feed configuration
-		#    - output: a ContentItem proper
-		# But perhaps more importantly, it provides the rule actions themselves
-		# as methods of the form:
-		#   def <action name>_action(*params)
-		#
-		# The rule processor main loop will go through an ordered list of
-		# rules in the form of an array of arrays. each inner array is of
-		# the form:
-		#   ["command", "param1", "param2", ...]
-		# We'll shift off the command, see if the method exists, and if so,
-		# send() our parameters in.
-		class Transformer
-			attr_reader :item
-			def initialize(ruleSet)
-				@ruleSet = ruleSet
-				@item = nil
-			end
-			def run_rules_on(rawItem)
-				self.load_raw(rawItem)
-				self.run_rules
-			end
-			def load_raw(rawItem)
-				@rawItem = rawItem
-				@item = Baron::ContentItem.new
-			end
-			def run_rules
-				@ruleSet['ruleList'].each do |rule|
-					command = rule[0]
-					params = rule[1,rule.size]
-					command += "_action"
-					if self.respond_to? command
-						self.send(command, *params)
-					else
-						raise "unknown action #{command}"
-					end
-				end
-			end
-			def copy_action(dstname, srcname)
-				if item.respond_to? "#{dstname}="
-					if @rawItem[srcname]
-						item.send("#{dstname}=", @rawItem[srcname])
-					else
-						# XXX: seems harsh until we have better exceptions...
-						# will need it as not all docs will express all attribs
-						#raise "unknown source item #{srcname}"
-					end
-				else
-					raise "unknown destination attribute #{dstname}"
-				end
 			end
 		end
 

@@ -3,6 +3,7 @@
 # for an application. It manages, and ultimately contains the entire runtime
 
 require 'baron/app/frame'
+require 'baron/content/transformer'
 
 module Baron
 module App
@@ -17,7 +18,7 @@ module App
 		def main
 			configName = @args[0]
 			myiter = Baron::InboundFeed.load_feed(configName)
-			transformer = Baron::InboundFeed::Transformer.new(myiter.config['transformRules'])
+			transformer = Baron::Content::Transformer.new(myiter.config['transformRules'])
 
 			# XXX: this is very nasty and prototype-y still...
 			myiter.each_with_index do |x,n|
