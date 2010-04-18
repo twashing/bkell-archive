@@ -4,6 +4,7 @@
 
 require 'baron/app/frame'
 require 'baron/content/transformer'
+require 'baron/infeeds.rb'
 
 module Baron
 module App
