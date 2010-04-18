@@ -1,19 +1,14 @@
 
 require 'enumerator'
+require 'logger'
 require 'yaml'
 require 'rexml/document'
 require 'open-uri'
 require 'rss'
 
 module Baron
-	BARON_BASE = File.dirname(File.dirname(File.expand_path($PROGRAM_NAME)))
-
-	# Not sure if we'll use this, but it's not uncommon to need a singleton-like
-	# class to implement the sort of "global" details, and self-instrumentation
-	# for an application. It manages, and ultimately contains the entire runtime
-	# TODO: going to let the needs emerge, and not force anything in here.
-	class AppFrame
-	end
+	BASE = File.dirname(File.dirname(File.expand_path($PROGRAM_NAME)))
+	log = Logger.new(STDERR)
 
 	# This is to be a representation of the native Baron content record, matching
 	# the representation details to be stuffed into CouchDB
@@ -55,11 +50,10 @@ module Baron
 	module InboundFeed
 		# module level method to load a feed by configuration file name
 		def self.load_feed(configName)
-			configFileName = Baron::BARON_BASE + "/etc/infeeds/#{configName}.yaml"
+			configFileName = Baron::BASE + "/etc/infeeds/#{configName}.yaml"
 			raise "Unknown configuration #{configName}" if ! File.exists? configFileName
 			sourceConfig = YAML.load_file(configFileName)
 			inboundSourceType = sourceConfig['sourceAdapter']
-			#sourceConfig = cfg[inboundSourceType]
 			# return the configuration via the lower-level factory
 			Baron::InboundFeed::factory(inboundSourceType, sourceConfig)
 		end
@@ -94,7 +88,7 @@ module Baron
 				@type = sourceConfig['sourceAdapter']
 				@name = sourceConfig['sourceName']
 				@localconfig = sourceConfig[@type]
-				@stateFile = Baron::BARON_BASE + "/var/state/infeed/#{@name}.state"
+				@stateFile = Baron::BASE + "/var/state/infeed/#{@name}.state"
 				@items = Array.new
 				self.execute
 			end
