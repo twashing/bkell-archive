@@ -20,8 +20,11 @@ module Baron
 			def initialize(sourceConfig)
 				@config = sourceConfig
 				@type = sourceConfig['sourceAdapter']
+				raise "must specify sourceAdapter in config" if @type == nil || @type == ""
 				@name = sourceConfig['sourceName']
+				raise "must specify sourceName in config" if @name == nil || @name == ""
 				@localconfig = sourceConfig[@type]
+				raise "must specify adapter section in config" if @localconfig == nil || (! @localconfig.is_a? Hash)
 				@stateFile = Baron::BASE + "/var/state/infeed/#{@name}.state"
 				@items = Array.new
 				self.execute
@@ -51,6 +54,7 @@ module Baron
 				self.discover
 				self.load_raw_items
 				#self.transform
+				@state['endTime'] = Time.now
 			end
 			def new_raw_item
 				item = Baron::Content::RawItem.new

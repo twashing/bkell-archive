@@ -10,6 +10,9 @@ module Baron
 			raise "Unknown configuration #{configName}" if ! File.exists? configFileName
 			sourceConfig = YAML.load_file(configFileName)
 			inboundSourceType = sourceConfig['sourceAdapter']
+			if inboundSourceType == nil || inboundSourceType == ""
+				raise "must specify sourceAdapter in configuration #{configFileName}"
+			end
 			# return the configuration via the lower-level factory
 			Baron::InboundFeed::factory(inboundSourceType, sourceConfig)
 		end
@@ -24,7 +27,7 @@ module Baron
 			when "SimpleRssUrlSource"
 				SimpleRssUrlSource.new(sourceConfigTree)
 			else
-				raise "Unknown source class #{sourceClassName}"
+				raise "Unknown sourceAdapter class #{sourceClassName}"
 			end
 		end
 

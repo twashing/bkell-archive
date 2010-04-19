@@ -24,6 +24,7 @@ module Baron
 				@state['highestTime'] = filefinder.highest_time
 			end
 			def load_raw_items
+				## XXX: this feels like it should be floated up...
 				@filelist.each do |x| 
 					rawitem = self.load_raw_item(File.new(x))
 					rawitem['__sourceFilename'] = x
@@ -31,6 +32,7 @@ module Baron
 				end
 			end
 			def load_raw_item
+				## XXX: this feels like it should be floated up...
 				raise "concrete implementation must define load_raw_item"
 			end
 		end

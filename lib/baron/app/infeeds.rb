@@ -18,6 +18,7 @@ module App
 		end
 		def main
 			configName = @args[0]
+			raise "must specify configuration to run" if configName == nil || configName == ""
 			myiter = Baron::InboundFeed.load_feed(configName)
 			transformer = Baron::Content::Transformer.new(myiter.config['transformRules'])
 
