@@ -25,9 +25,9 @@ transformRules: {
   ],
   ruleEval: |
     item.title = raw['title']
-    item.publishedDate = raw['date']
     item.body = raw['description']
     item.altTitle= raw['link']
+    item.publishedDate = raw.as_time('date')
 }
 
 

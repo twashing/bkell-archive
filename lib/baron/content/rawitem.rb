@@ -1,6 +1,8 @@
 
 #require 'enumerator'
 require 'baron'
+#require 'parsedate'
+require 'time'
 
 module Baron
 module Content
@@ -24,6 +26,10 @@ module Content
 		alias []= set
 		def hash
 			@props
+		end
+		def as_time(prop)
+			tval = @props[prop]
+			Time.parse(tval)
 		end
 	end
 

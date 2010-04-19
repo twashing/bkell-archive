@@ -29,7 +29,15 @@ transformRules: {
     ["copy", "body", "content_encoded"],
     ["copy", "createdBy", "creator"],
     ["copy", "sourceId", "id"]
-  ]
+  ],
+  ruleEval: |
+    item.title = raw['title'] 
+    item.publishedDate = raw.as_time('pubDate') 
+    item.abstract = raw['description'] 
+    item.subjectTags = raw['category'] 
+    item.body = raw['content_encoded'] 
+    item.createdBy = raw['creator'] 
+    item.sourceId = raw['id'] 
 }
 
 
