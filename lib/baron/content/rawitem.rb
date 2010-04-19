@@ -1,8 +1,8 @@
 
 #require 'enumerator'
 require 'baron'
-#require 'parsedate'
 require 'time'
+require 'rexml/document'
 
 module Baron
 module Content
@@ -30,6 +30,11 @@ module Content
 		def as_time(prop)
 			tval = @props[prop]
 			Time.parse(tval)
+		end
+		def as_xml(prop)
+			# wrap in case of fragment
+			tval = "<doc>\n" + @props[prop] + "</doc>\n"
+			REXML::Document.new(tval)
 		end
 	end
 

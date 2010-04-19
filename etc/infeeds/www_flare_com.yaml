@@ -34,10 +34,11 @@ transformRules: {
     item.title = raw['title'] 
     item.publishedDate = raw.as_time('pubDate') 
     item.abstract = raw['description'] 
-    item.subjectTags = raw['category'] 
     item.body = raw['content_encoded'] 
     item.createdBy = raw['creator'] 
-    item.sourceId = raw['id'] 
+    #item.sourceId = raw['id'] 
+    item.sourceId = raw.as_xml('id').root.elements["/doc/guid"].text 
+    item.subjectTags = raw.as_xml('category').root.elements["/doc/category"].text 
 }
 
 
