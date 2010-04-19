@@ -3,8 +3,9 @@
 # for an application. It manages, and ultimately contains the entire runtime
 
 require 'baron/app/frame'
+require 'baron/content/item'
 require 'baron/content/transformer'
-require 'baron/infeeds.rb'
+require 'baron/infeeds'
 
 module Baron
 module App
@@ -20,16 +21,27 @@ module App
 			configName = @args[0]
 			raise "must specify configuration to run" if configName == nil || configName == ""
 			myiter = Baron::InboundFeed.load_feed(configName)
-			transformer = Baron::Content::Transformer.new(myiter.config['transformRules'])
-
-			# XXX: this is very nasty and prototype-y still...
-			myiter.each_with_index do |x,n|
-        			puts "--- #{n} RAW: "
-        			pp x
-        			puts "--- #{n} NATIVE: "
-        			transformer.run_rules_on(x)
-        			pp transformer.item
+			rules = myiter.config['transformRules']
+			if rules['ruleEval']
+				myiter.each_with_index do |raw,n|
+        				puts "--- #{n} RAW: "
+        				pp raw
+					item = Baron::Content::Item.new
+					eval(rules['ruleEval'])
+					pp item
+				end
+			else 
+				# XXX: this is very nasty and prototype-y still...
+				transformer = Baron::Content::Transformer.new(rules)
+				myiter.each_with_index do |x,n|
+        				puts "--- #{n} RAW: "
+        				pp x
+        				puts "--- #{n} NATIVE: "
+        				transformer.run_rules_on(x)
+        				pp transformer.item
+				end
 			end
+
 			myiter.commit_state
 
 		end
