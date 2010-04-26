@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="utf-8"?>
+<records>
+	
+	<!-- 	Baron ==> NewsMLs
+		
+		- NewsML doc has 3 different dates in them - someone else might know the semantics a bit better 
+		- The Baron doc has these 3 dates seem to represent the same data
+			
+    		*          //records/record[ @ReleaseAt ]   ( difference seems to be this is absolute time & controlled by system? )
+    		*          //records/record/PublishDate     ( when content controls date shown to user )
+    		*          //records/record/AirDate     ( semantically same as PublishDate - ok ) 
+	
+			
+	//records/record[ @GUID ]		==> 
+	//records/record[ @RecordType ]		==> //NewsML/NewsItem/NewsManagement/NewsItemType[@FormalName]
+	//records/record[ @CreatedBy ]		==> //NewsML/NewsItem/NewsComponent[@Duid]/NewsComponent[@Duid]/Author
+	//records/record[ @LastModifiedBy ]		==> 
+	//records/record[ @CreatedAt ]		==> //NewsML/NewsItem/NewsManagement/FirstCreated
+	//records/record[ @LastModifiedAt ]		==> //NewsML/NewsItem/NewsManagement/ThisRevisionCreated
+	//records/record[ @ReleaseAt ]		==> //NewsML/NewsItem/Identification/NewsIdentifier/DateId
+	//records/record[ @ExpireAt ]		==> 
+	//records/record[ @State ]		==>	//NewsML/NewsItem/NewsManagement/Status[@FormalName]
+	
+	//records/record/SourceID		==> //NewsML/NewsItem/Identification/NewsIdentifier/PublicIdentifier
+	//records/record/SourceAltID		==> 
+	//records/record/Source		==> 
+	//records/record/SubjectTag		==>  
+	//records/record/Title		==> 	//NewsML/NewsItem/NewsComponent/NewsComponent[@Duid]/NewsComponent[@Duid]/NewsLines/HeadLine
+	//records/record/Abstract		==> //NewsML/NewsItem/NewsComponent/NewsComponent[@Duid]/NewsComponent[@Duid]/SlugLine
+	//records/record/Contributor		==> 
+	//records/record/PublishDate		==> //NewsML/NewsItem/NewsComponent[@Duid]/NewsComponent[@Duid]/DateLine
+	//records/record/AirDate		==> 
+	//records/record/AltTitle		==> 
+	//records/record/Body		==> 	//NewsML/NewsItem/NewsComponent[@Duid]/NewsComponent[@Duid]/NewsComponent/ContentItem/DataContent/nitf/body
+	
+	
+	NewsML bits Not Addressed 
+	
+	//NewsML/Catalog[@Href]
+	//NewsML/NewsEnvelope/DateAndTime
+	//NewsML/NewsEnvelope/NewsService[@FormalName]
+	//NewsML/NewsEnvelope/NewsService/[@FormalName]/<content>
+	//NewsML/NewsItem/Identification/NewsIdentifier/ProviderId
+	//NewsML/NewsItem/Identification/NewsIdentifier/NewsItemId
+	//NewsML/NewsItem/Identification/NewsIdentifier/RevisionId
+	//NewsML/NewsItem/NewsComponent[@Duid]/NewsLines/CopyrightLine
+	//NewsML/NewsItem/NewsComponent[@Duid]/NewsComponent[@Duid]/NewsComponent/Role 
+	//NewsML/NewsItem/NewsComponent[@Duid]/NewsComponent[@Duid]/MoreLink 
+	//NewsML/NewsItem/NewsComponent[@Duid]/NewsComponent[@Duid]/ContentItem/MediaType 
+	//NewsML/NewsItem/NewsComponent[@Duid]/NewsComponent[@Duid]/ContentItem/MimeType 
+	
+	-->
+	<record 
+		GUID="" 
+		RecordType="Article-JUNK" 
+		CreatedBy="Megan Kirkwood" 
+		LastModifiedBy="" 
+		CreatedAt="20100118T000000" 
+		LastModifiedAt="20100118T000000" 
+		ReleaseAt="20100311" 
+		ExpireAt="" 
+		State="Current" >
+		
+		<SourceID>urn:newsml:rogersdigitalmedia.com:20100311:DCR_20100118_FLR_20428.xml:1</SourceID>
+		<SourceAltID></SourceAltID>
+		<Source></Source>
+		<SubjectTag></SubjectTag>
+		<Title>Mad About Ms. Jones</Title>
+		<Abstract>Our Golden Globes beauty pick</Abstract>
+		<Contributor></Contributor>
+		<PublishDate>Mon, Jan 18, 2010</PublishDate>
+		<AirDate></AirDate>
+		<AltTitle></AltTitle>
+		<Body>
+               &lt;body.head&gt;
+                  &lt;hedline&gt;
+                     &lt;hl1&gt;Mad About Ms. Jones&lt;/hl1&gt;
+                  &lt;/hedline&gt;
+               &lt;/body.head&gt;
+               &lt;body.content&gt;
+                  &lt;p&gt;Of all the leading ladies that survived the rained-out red-carpet at this year's Golden Globes, our pick of the night was small screen head-turner, January Jones. Yes, she just so happens to star on one of our fave television shows,&lt;/p&gt;
+                  &lt;p&gt;
+                     &lt;em&gt;Mad Men&lt;/em&gt;
+                  &lt;/p&gt;
+                  &lt;p&gt;, but January brings her A-game to the carpet and, in our humble opinion, steals the spotlight from playing-it-safe A-listers (remember last year's sky coloured Versace and tangerine pout?). Sunday night, we were loving her fresh, no-fuss skin, scarlet lips and nails, and--above all--her unconventional hair band (which probably helped her locks stay put during the washed-out arrivals). All paired with her chic, jet-hued Lanvin? We're smitten, Mrs. Draper.&lt;/p&gt;
+                  &lt;media media-type="image"&gt;
+                     &lt;media-reference source="http://media.flare.topscms.com/images/d8/61/ed7c3d5d492fa2bafccee6b8690c.jpeg"
+                                      alternate-text="Mad About Ms. Jones"
+                                      mime-type="image/jpeg"/&gt;
+                     &lt;media-caption&gt;Mad About Ms. Jones&lt;/media-caption&gt;
+                  &lt;/media&gt;
+                  &lt;p&gt;January Jones&lt;/p&gt;
+                  &lt;p&gt;Information is current as of the original date of publication.&lt;/p&gt;
+               &lt;/body.content&gt;
+		</Body>
+	</record>
+	
+</records>

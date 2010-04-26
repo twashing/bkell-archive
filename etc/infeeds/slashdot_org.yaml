@@ -1,0 +1,33 @@
+sourceName: www_canadianbusiness_com
+sourceDesc: >
+  Primary article content from the www.canadianbusiness.com
+  website, including Canadian Business, MoneySense, and Profit
+  magazines.
+sourceAdapter: SimpleRssUrlSource
+SimpleRssUrlSource: {
+  rssUrls: ["http://rss.slashdot.org/Slashdot/slashdot"],
+  rssItemMappings: {
+    link: link,
+    title: title,
+    date: date,
+    description: description
+  }
+}
+transformRules: {
+  global: {
+    stripHtmlTags: [object, embed, script],
+    extractAbstractFromBody: true
+  },
+  ruleList: [
+    ["copy", "title", "title"], 
+    ["copy", "publishedDate", "date"],
+    ["copy", "body", "description"]
+  ],
+  ruleEval: |
+    item.title = raw['title']
+    item.body = raw['description']
+    item.altTitle= raw['link']
+    item.publishedDate = raw.as_time('date')
+}
+
+
