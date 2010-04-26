@@ -1,6 +1,0 @@
-
----
-dir.work: work
-type.dcr: xslt/baron-dcr.xslt
-db.couch.url: "http://127.0.0.1:5984"
-db.couch.dir: /cash/flareXML
