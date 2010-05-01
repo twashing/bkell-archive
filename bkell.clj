@@ -10,10 +10,10 @@
 	(proxy [DepthFirstAdapter] [] 
 		
 		(caseALoginCommand3 [node] 
-			(println (format "caseALoginCommand3: %" node))
+			(println (str "caseALoginCommand3: " node))
 		)
 		(caseAPrintCommand6 [node] 
-			(println (format "caseAPrintCommand6: %" node)) 
+			(println (str "caseAPrintCommand6: " node)) 
 		)
 	)
 )
