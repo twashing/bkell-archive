@@ -1,0 +1,449 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<system xmlns='com/interrupt/bookkeeping' 
+		xmlns:users='com/interrupt/bookkeeping/users' 
+		xmlns:bkell='com/interrupt/bookkeeping/cc/bkell' 
+		xmlns:command='com/interrupt/bookkeeping/cc/bkell/command' 
+		xmlns:interpret='com/interrupt/bookkeeping/interpret' 
+		xmlns:aauth='com/interrupt/bookkeeping/cc/bkell/aauth' 
+		id='main.system' > 
+	
+	<!-- 	Authentication & Authorization information will not be given at this time.
+			Should use an open, tested system for A & A. This is just an interface to that system. 
+	-->
+	<aauth:aauthentication id='main.authentication' sessiontimeout="6000" >
+		
+		<users:groups id="aauth.groups" >
+			<users:group id="webkell" name="Webkell" owner="root" >
+				
+				<!-- for now, the account levels will be { FREE | PAID } 
+				--> 
+				<users:user id="root" />
+			</users:group>
+		</users:groups>
+		
+		
+		<!-- actions that a user is allowed to do -->
+		<users:users id="aauth.users" >
+			
+			<!-- this user has a default 10 minute session timeout period (1000 * 60 * 10 = 600'000 milliseconds) --> 
+			<users:user id="root" username="root" password="password" logintimeout="600000" 
+			     accountLevel="FREE" defaultGroup='webkell' authenticated="" >
+				
+				<users:userSession id='' groupid='' userid='' >
+				    <aauth:aauthentication />
+				</users:userSession>
+				<aauth:allowedActions id="root.allowedActions" >
+					<command:command name='create'  id='command.create' />
+					<command:command name='add'  id='command.add' />
+					<command:command name='remove'  id='command.remove' />
+					<command:command name='reverse'  id='command.reverse' />
+					<command:command name='find'  id='command.find' />
+					<command:command name='load'  id='command.load' />
+					<command:command name='list'  id='command.list' />
+					<command:command name='print'  id='command.print' />
+					<command:command name='commit'  id='command.commit' />
+					<command:command name='login'  id='command.login' />
+					<command:command name='logout'  id='command.logout' />
+					<command:command name='exit'  id='command.exit' />
+				</aauth:allowedActions>
+				
+				<users:profileDetails id='user.details' >
+					<users:profileDetail id='first.name' name='first.name' value='' />
+					<users:profileDetail id='last.name' name='last.name' value='' />
+					<users:profileDetail id='name' name='email' value='' />
+					<users:profileDetail id='country' name='country' value='' />
+				</users:profileDetails>
+				
+			</users:user>
+		</users:users>
+		
+	</aauth:aauthentication>
+	
+	
+	<users:groups id="main.groups" >
+		<users:group id="webkell" name="Webkell" owner="root" >
+			
+			<users:profileDetails id='group.details' >
+				<users:profileDetail id='defaultCurrency' name='defaultCurrency' value='' />
+			</users:profileDetails>
+			
+			<bookkeeping 
+				xmlns='com/interrupt/bookkeeping'
+				xmlns:account='com/interrupt/bookkeeping/account' 
+				xmlns:journal='com/interrupt/bookkeeping/journal' 
+				xmlns:currency='com/interrupt/bookkeeping/currency' 
+				id='main.bookkeeping' > 
+				
+				
+				<!--
+					1. no 2 currencies can have the same 'id' 
+					2. An account MUST specify in which currency it is denominated 
+					3. Entry(s) should balance in the default currency unless otherwise specified 
+					4. DebitPointer(s) / Debit(s) must be put in Account(s) of the same currency 
+				--> 
+				<currency:currencies id='main.currencies' default='CDN' > 
+					<currency:currency id='CDN' name='Canadian Dollar' /> 
+					<currency:currency id='USD' name='US Dollar' /> 
+					<currency:currency id='BP' name='British Pound' /> 
+					<currency:currency id='EUR' name='Euoropean Euro' /> 
+					<currency:currency id='JPN' name='Japanese Yen' /> 
+				</currency:currencies>
+				
+				
+				<!-- 1. account types are: asset, liability, expense, revenue
+				     2. each account has a given counter weight
+					
+					<account:account type="asset" 		id="" name="" counterWeight="debit" />
+					<account:account type="expense" 	id="" name="" counterWeight="debit" />
+					<account:account type="liability" 	id="" name="" counterWeight="credit"/>
+					<account:account type="revenue" 	id="" name="" counterWeight="credit" />
+				-->
+			    <account:accounts id='main.accounts' > 
+			    	<account:account type="asset" id="" name="" counterWeight="debit" />
+				</account:accounts>  
+				
+				<journal:journals id='main.journals' >
+				    <journal:journal id='generalledger' name='generalledger' type='' balance=''>  
+						<journal:entries id='main.entries'  > 
+							
+							
+							<journal:entry id='qwertySTUB' entrynum='' state='' journalid='generalledger' date='' currency='CDN' > 
+			                    <account:debit id='dtS' amount='120.00' entryid='qwertySTUB' accountid='05' account='' currency='CDN' /> 
+			                    <account:credit id='crS' amount='120.00' entryid='qwertySTUB' accountid='06' account='' currency='CDN' /> 
+			                </journal:entry> 
+							
+						</journal:entries> 
+				    </journal:journal>  
+				</journal:journals>
+			</bookkeeping>
+			
+		</users:group>
+	</users:groups>
+	
+	
+	<users:groups id="group.attic" >
+	</users:groups>
+	
+	
+	<!-- The bkell(shell) sub-system
+	-->
+	<bkell:bkell id='bkell.main' >
+		
+		
+		
+		<!-- command results are put into a generic XML root -->
+		<command:result />
+		
+		
+		<!-- the memory sub-system, a list of user inputs -->
+		<command:memory id='main.memory' >
+			
+			<command:variable name="" />
+		</command:memory>
+		
+		
+		<!-- these are the commands and all the tokens that command can use -->
+		<command:commands id='commands.def' >
+		
+			<command:command name='create'  id='command.create' >
+				
+				<command:tokens id='create.tokens' >
+					
+					<command:token name='system' />
+					<command:token name='debit' />
+					<command:token name='credit' />
+					<command:token name='entry' />
+					<command:token name='entries' />
+					<command:token name='journal' />
+					<command:token name='journals' />
+					<command:token name='transaction' />
+					<command:token name='account' />
+					<command:token name='accounts' />
+					<command:token name='user' />
+					<command:token name='users' />
+					
+					<command:token name='group' />
+					<command:token name='groups' />
+					<command:token name='allowedActions' />
+					<command:token name='command' />
+					<command:token name='profileDetails' />
+					<command:token name='profileDetail' />
+					<command:token name='userSession' />
+					
+				</command:tokens>
+				<command:tokenLiterals id='input.tokens' />
+			</command:command>
+			
+			
+			<command:command name='add'  id='command.add' />
+			<command:command name='remove'  id='command.remove' />
+			<command:command name='reverse'  id='command.reverse' />
+			
+			<command:command name='find'  id='command.find' >
+				
+				<command:tokens id='find.tokens' >
+					
+					<command:token name='system' />
+					<command:token name='debit' />
+					<command:token name='credit' />
+					<command:token name='entry' />
+					<command:token name='entries' />
+					<command:token name='journal' />
+					<command:token name='journals' />
+					<command:token name='transaction' />
+					<command:token name='account' />
+					<command:token name='accounts' />
+					<command:token name='user' />
+					<command:token name='users' />
+					
+					<command:token name='group' />
+					<command:token name='groups' />
+					<command:token name='allowedActions' />
+					<command:token name='command' />
+					<command:token name='profileDetails' />
+					<command:token name='profileDetail' />
+					<command:token name='userSession' />
+					
+				</command:tokens>
+			</command:command>
+			<command:command name='load'  id='command.load' >
+				
+				<command:tokens id='load.tokens' >
+					
+					<command:token name='system' />
+					<command:token name='debit' />
+					<command:token name='credit' />
+					<command:token name='entry' />
+					<command:token name='entries' />
+					<command:token name='journal' />
+					<command:token name='journals' />
+					<command:token name='transaction' />
+					<command:token name='account' />
+					<command:token name='accounts' />
+					<command:token name='user' />
+					<command:token name='users' />
+					
+					<command:token name='group' />
+					<command:token name='groups' />
+					<command:token name='allowedActions' />
+					<command:token name='command' />
+					<command:token name='profileDetails' />
+					<command:token name='profileDetail' />
+					<command:token name='userSession' />
+					
+				</command:tokens>
+			</command:command>
+			<command:command name='list'  id='command.list' >
+				
+				<command:tokens id='list.tokens' >
+					
+					<command:token name='system' />
+					<command:token name='debit' />
+					<command:token name='credit' />
+					<command:token name='entry' />
+					<command:token name='entries' />
+					<command:token name='journal' />
+					<command:token name='journals' />
+					<command:token name='transaction' />
+					<command:token name='account' />
+					<command:token name='accounts' />
+					<command:token name='user' />
+					<command:token name='users' />
+					
+					<command:token name='group' />
+					<command:token name='groups' />
+					<command:token name='allowedActions' />
+					<command:token name='command' />
+					<command:token name='profileDetails' />
+					<command:token name='profileDetail' />
+					<command:token name='userSession' />
+					
+				</command:tokens>
+			</command:command>
+			<command:command name='commit'  id='command.commit' >
+				
+				<command:tokens id='find.tokens' >
+					
+					<command:token name='system' />
+					<command:token name='debit' />
+					<command:token name='credit' />
+					<command:token name='entry' />
+					<command:token name='entries' />
+					<command:token name='journal' />
+					<command:token name='journals' />
+					<command:token name='transaction' />
+					<command:token name='account' />
+					<command:token name='accounts' />
+					<command:token name='user' />
+					<command:token name='users' />
+					
+					<command:token name='group' />
+					<command:token name='groups' />
+					<command:token name='allowedActions' />
+					<command:token name='command' />
+					<command:token name='profileDetails' />
+					<command:token name='profileDetail' />
+					<command:token name='userSession' />
+					
+				</command:tokens>
+			</command:command>
+			<command:command name='login'  id='command.login' >
+				<command:tokens id='list.tokens' >
+					
+					<command:token name='user' />
+					
+				</command:tokens>
+			</command:command>
+			
+			<command:command name='logout'  id='command.logout' />
+			<command:command name='exit'  id='command.exit' />
+			
+						
+		</command:commands>
+		
+		
+		
+		
+		
+		<!-- The definitions of all the tokens and thier possible options
+		-->
+		<command:tokens id='tokens.def' >
+			
+			
+			<command:token name='debit' optionRequired='false' >
+				
+				<command:optionSet id='oset' >
+					
+					<command:options id='entry.option' >
+						<command:option name='entryid' value='0876-42356523-2456' />
+						<command:option name='accountid' value='tims-34577143' />
+						<command:option name='amount' value='155000.00' />
+					</command:options>
+					<command:options id='entryid.single.option' >
+						<command:option name='entryid' value='' />
+					</command:options>
+					<command:options id='accountid.single.option' >
+						<command:option name='accountid' value='' />
+					</command:options>
+					<command:options id='amount.single.option' >
+						<command:option name='amount' value='' />
+					</command:options>
+					<command:options id='id.single.option' >
+						<command:option name='id' value='' />
+					</command:options>
+					
+				</command:optionSet>
+			</command:token>
+			
+			
+			<command:token name='credit' optionRequired='false' >
+				
+				<command:optionSet id='oset' >
+					
+					<command:options id='entry.option' >
+						<command:option name='entryid' value='' />
+						<command:option name='accountid' value='' />
+						<command:option name='amount' value='' />
+					</command:options>
+					<command:options id='entryid.single.option' >
+						<command:option name='entryid' value='' />
+					</command:options>
+					<command:options id='accountid.single.option' >
+						<command:option name='accountid' value='' />
+					</command:options>
+					<command:options id='amount.single.option' >
+						<command:option name='amount' value='' />
+					</command:options>
+					<command:options id='id.option' >
+						<command:option name='id' value='' />
+					</command:options>
+					
+				</command:optionSet>
+			</command:token>
+			
+			
+			<command:token name='entry' optionRequired='false' >
+				
+				<command:optionSet id='oset' >
+					
+					<command:options id='entrynum.option' >
+						<command:option name='entrynum' value='' />
+						<command:option name='journal' value='' />
+						<command:option name='date' value='' />
+					</command:options>
+					<command:options id='entrynum.single.option' >
+						<command:option name='entrynum' value='' />
+					</command:options>
+					<command:options id='journal.single.option' >
+						<command:option name='journal' value='' />
+					</command:options>
+					<command:options id='date.single.option' >
+						<command:option name='date' value='' />
+					</command:options>
+					<command:options id='id.single.option' >
+						<command:option name='id' value='' />
+					</command:options>
+					
+				</command:optionSet>
+			</command:token>
+			
+
+			<command:token name='journal' optionRequired='false' >
+				
+				<command:optionSet id='oset' >
+					
+					<command:options id='name.option' >
+						<command:option name='name' value='' />
+					</command:options>
+					<command:options id='id.option' >
+						<command:option name='id' value='' />
+					</command:options>
+					
+				</command:optionSet>
+			</command:token>
+			
+			
+			
+			<command:token name='transaction' optionRequired='false' >
+				
+				<command:optionSet id='oset' >
+					
+					<command:options id='name.option' >
+						<command:option name='name' value='' />
+					</command:options>
+					<command:options id='id.option' >
+						<command:option name='id' value='' />
+					</command:options>
+					
+				</command:optionSet>
+			</command:token>
+			
+			
+			
+			<command:token name='account' optionRequired='false' >
+				
+				<command:optionSet id='oset' >
+					
+					<command:options id='cweight.option' >
+						<command:option name='name' value='' />
+						<command:option name='type' value='' />
+						<command:option name='counterWeight' value='' />
+						
+					</command:options>
+					<command:options id='name.single.option' >
+						<command:option name='name' value='' />
+					</command:options>
+					<command:options id='id.single.option' >
+						<command:option name='id' value='' />
+					</command:options>
+					
+				</command:optionSet>
+			</command:token>
+			
+			
+		</command:tokens>
+		
+	</bkell:bkell>
+
+</system>
+

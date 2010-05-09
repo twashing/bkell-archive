@@ -41,34 +41,12 @@
     </target>
 
 
-    <!-- =============================== -->
-    <!-- CREATE the generated java files -->
-    <!-- =============================== -->
-    <target name="run-gen" >
-		
-		<available file="gen/" property="genExists" />
-		<if name="genExists">
-			
-		    <else>
-				
-		    	<mkdir dir="gen/"/>
-		    	
-		    	<!-- BOB GENERATION --> 
-				<java classname="com.interrupt.bob.Main" classpathref="bookkeeping.classpath" fork="yes" >
-		    		
-					<!-- <arg line="-gen gen -base . -end .xml -def ${xml.files} -sys ${system.files}" /> --> 
-					<arg line="-gen gen -base . -end .xml -def 'xml/bookkeeping.2.bookkeeping.xml xml/bookkeeping.2.transactions.xml xml/bookkeeping.2.users.xml xml/bookkeeping.authorise.xml xml/bookkeeping.system.xml xml/bookkeeping.debitPointers.xml test/xml/test.currencies.xml test/xml/test.currencies.badpointers.xml xml/logs.xml' -sys 'xml/bookkeeping.2.bookkeeping.xml xml/bookkeeping.2.transactions.xml xml/bookkeeping.2.users.xml xml/bookkeeping.authorise.xml xml/bookkeeping.system.xml xml/bookkeeping.debitPointers.xml test/xml/test.currencies.xml test/xml/test.currencies.badpointers.xml xml/logs.xml'" />
-				</java>
-		    	
-		    </else>
-		</if>
-    </target>
     
     
     <!-- =============================== -->
     <!-- COMPILE targets		 -->
     <!-- =============================== -->
-    <target name="compile-all" depends="init,run-gen,compile-src"/>
+    <target name="compile-all" depends="init,compile-src"/>
 	
     <target name="compile-src" depends="init,compile-gen">
 		
@@ -94,7 +72,7 @@
 		
     </target>
 	
-    <target name="compile-gen" depends="init,run-gen,run-cc">
+    <target name="compile-gen" depends="init,run-cc">
 		
     	
 		<!-- copy over Token with a toString() that doesn't add extra stuff 
