@@ -18,14 +18,30 @@
 	)
 )
 
+
+
 (defn get-parser [] 
 	(Parser. (Lexer. (PushbackReader. (InputStreamReader. java.lang.System/in) 1024)))
 )
 
 (defn demo-bkell [handler] 
 	
-		(. (.parse (get-parser))
-		  apply handler )
+		;;(. (.parse (get-parser))
+		;;  apply handler )
+	       
+	       
+	       ;; loop on input (shell) until 'exit' 
+	       (loop [ dfadapter handler ] 
+		  
+		  (def tree (.parse (get-parser))) 
+		  (. tree apply dfadapter )
+		  
+		  ;; loop unless exit 
+		  (if (true? true) 
+		     (recur dfadapter)
+		  )
+	       )
+
 )
 
 (demo-bkell (get-depth-adapter))
