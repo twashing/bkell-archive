@@ -7,14 +7,68 @@
 
 (defn get-depth-adapter [] 
 	
-	(proxy [DepthFirstAdapter] [] 
-		
-		(caseALoginCommand3 [node] 
-			(println (str "caseALoginCommand3: " node))
-		)
-		(caseAPrintCommand6 [node] 
-			(println (str "caseAPrintCommand6: " node)) 
-		)
+      (proxy [DepthFirstAdapter] [] 
+	 
+	 ;; EXIT commnad 
+	 (caseAExitCommand4 [node] 
+	    
+	    (println (str "caseAExitCommand4: " node))
+	    
+	    (proxy-super inAExitCommand4 node) 
+	    (proxy-super outAExitCommand4 node)
+
+	    (. System exit 0)
+	 )
+
+	 
+	 ;; LOGIN command 
+	 (caseALoginCommand3 [node] 
+	    (println (str "caseALoginCommand3: " node))
+	 )
+	 (caseAPrintCommand6 [node] 
+	    (println (str "caseAPrintCommand6: " node)) 
+	 )
+	 
+	 
+	 ;; load command 
+	 (caseALoadCommand3 [node] 
+	    (println (str "caseALoadCommand3: " node)) 
+	    
+	    (comment "replicating java calls in the 'DepthFirstAdapter'")
+	    
+	    
+	    (proxy-super inALoadCommand3 node)   ;; inALoadCommand3(node);
+		  
+	    (if (not= (. node getLoad ) nil)	 ;; if(node.getLoad() != null) { node.getLoad().apply(this); }
+	       (.. node getLoad (apply this) ) 
+	    )
+	    
+	    (if (not= (. node getLbracket ) nil) ;; if(node.getLbracket() != null) { node.getLbracket().apply(this); }
+	       (.. node getLbracket (apply this) ) 
+	    )
+        
+	    (if (not= (. node getCommandInput ) nil) ;; if(node.getCommandInput() != null) { node.getCommandInput().apply(this); }
+	       (.. node getCommandInput (apply this) ) 
+	    )
+        
+	    (if (not= (. node getRbracket ) nil) ;; if(node.getRbracket() != null) { node.getRbracket().apply(this); }
+	       (.. node getRbracket (apply this) ) 
+	    )
+        
+		  
+	    (proxy-super outALoadCommand3 node)  ;; outALoadCommand3(node);
+
+	 )
+	 
+	 ;; add command (for registering users too) 
+		  ;; 1. check that there's not an existing user 
+		  ;; 2. add corresponding default group to the new user 
+		  ;; 3. add to aauth.groups 
+		  ;; 4. add to aauth.users 
+		  ;; 5. add Associated Bookkeeping to Group 
+	 
+	 ;; 
+	 
 	)
 )
 
