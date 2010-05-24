@@ -6,7 +6,6 @@
    (:import java.io.InputStreamReader) 
    
    (:use clojure.core)
-   (:use depth_adapter)
    
 )
 
@@ -14,10 +13,12 @@
 	(Parser. (Lexer. (PushbackReader. (InputStreamReader. java.lang.System/in) 1024)))
 )
 
-(defn demo-bkell [handler] 
+(defn bkell [handler] 
 	
-	;; loop on input (shell) until 'exit' 
-	(loop [ dfadapter handler ] 
+	
+	(def shell []) 	;; the shell and memory 
+	
+	(loop [ dfadapter handler ] 	;; loop on input (shell) until 'exit' 
 		
 		(def tree (.parse (get-parser))) 
 		(. tree apply dfadapter )
@@ -30,5 +31,7 @@
 	
 )
 
-(demo-bkell (get-depth-adapter))
+(use 'depth_adapter)
+
+(bkell (get-depth-adapter))
 

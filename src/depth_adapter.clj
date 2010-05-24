@@ -5,8 +5,8 @@
 )
 
 (defn get-depth-adapter [] 
-	
-      (proxy [DepthFirstAdapter] [] 
+	 
+   (proxy [DepthFirstAdapter] [] 
 	 
 	 ;; EXIT commnad 
 	 (caseAExitCommand4 [node] 
@@ -14,15 +14,67 @@
 	    (println (str "caseAExitCommand4: " node))
 	    
 	    (proxy-super inAExitCommand4 node) 
-	    (proxy-super outAExitCommand4 node)
-
-	    (. System exit 0)
+	    (proxy-super outAExitCommand4 node) 
+			
+	    (. System exit 0) 
 	 )
 
 	 
 	 ;; LOGIN command 
 	 (caseALoginCommand3 [node] 
 	    (println (str "caseALoginCommand3: " node))
+	    
+	    
+	    (proxy-super inALoginCommand3 node) 
+	    
+	    (if (not= (. node getLogin ) nil) 
+	       (.. node getLogin (apply this) ) 
+	    )
+	    
+	    (if (not= (. node getLbracket ) nil) 
+	       (.. node getLbracket (apply this) ) 
+	    )
+	    
+      (if (not= (. node getCommandInput ) nil) 
+	      (.. node getCommandInput (apply this) ) 
+	    	
+				(do
+					
+				  ;; AXmlCommandInput ... 
+				  (if (instance? com.interrupt.bookkeeping.cc.node.AXmlCommandInput (. node getCommandInput) ) 
+				     (println "XML input")
+				  ) 
+				  
+				  ;; AOptsCommandInput ... 
+				  (if (instance? com.interrupt.bookkeeping.cc.node.AOptsCommandInput (. node getCommandInput) ) 
+				     (println "OPTIONS input")
+				  ) 
+				  
+				  ;; AXpathCommandInput ... 
+				  (if (instance? com.interrupt.bookkeeping.cc.node.AXpathCommandInput (. node getCommandInput) ) 
+				     
+				     (println "XPATH input")
+				     
+				     ;; trim xpath 
+				     ;; ... TODO 
+				     
+				     ;; get User 
+				     ;; ... TODO 
+				     
+				     ;; execute LOAD for 'User' 
+				     ;; ... TODO 
+				     
+				  )
+				)
+	    	
+	    )
+	    
+      (if (not= (. node getRbracket ) nil) 
+	       (.. node getRbracket (apply this) ) 
+	    )
+	    
+      (proxy-super outALoginCommand3 node) 
+	    
 	 )
 	 
 	 ;; PRINT command 
@@ -33,59 +85,72 @@
 	 
 	 ;; LOAD command 
 	 (caseALoadCommand3 [node] 
-	    (println (str "caseALoadCommand3: " node)) 
+	    (println (str "caseALoadCommand3 [" (class (. node getCommandInput)) "]: " node)) 
 	    
-	    (comment "replicating java calls in the 'DepthFirstAdapter'")
-	    
-	    
-	    ;; check user login 
-	    ;; ... TODO 
+	    (comment "replicating java calls in the 'DepthFirstAdapter.caseALoadCommand3'")
 	    
 	    
-	    (proxy-super inALoadCommand3 node)   ;; inALoadCommand3(node);
+	    (proxy-super inALoadCommand3 node) 
 	    
-	    (if (not= (. node getLoad ) nil)	 ;; if(node.getLoad() != null) { node.getLoad().apply(this); }
+	    (if (not= (. node getLoad ) nil) 
 	       (.. node getLoad (apply this) ) 
 	    )
 	    
-	    (if (not= (. node getLbracket ) nil) ;; if(node.getLbracket() != null) { node.getLbracket().apply(this); }
+	    (if (not= (. node getLbracket ) nil) 
 	       (.. node getLbracket (apply this) ) 
 	    )
 	     
-	    (if (not= (. node getCommandInput ) nil) ;; if(node.getCommandInput() != null) { node.getCommandInput().apply(this); }
+	    (if (not= (. node getCommandInput ) nil) 
 	       
-	       (do ;; execute 'if' block 
-		  (.. node getCommandInput (apply this) ) 
-		  
-		  ;; TODO - AOptsCommandInput ... 
-		  (if (instance? com.interrupt.bookkeeping.cc.node.AOptsCommandInput (. node getCommandInput) ) 
-		     (do (println "OPTIONS input"))
-		  ) 
-		  
-		  ;; AXpathCommandInput ... 
-		  (if (instance? com.interrupt.bookkeeping.cc.node.AXpathCommandInput (. node getCommandInput) ) 
-		     
-		     (println "XPATH input")
-		     
-		     ;; trim xpath 
-		     ;; ... TODO 
-		     
-		     ;; get User 
-		     ;; ... TODO 
-		     
-		     ;; execute ADD for 'User' 
-		     ;; ... TODO 
-		     
-		  ) 
-	       )
+		    (do ;; execute 'if' block 
+				  (.. node getCommandInput (apply this) ) 
+				  
+				  
+					(if (not (contains? com.interrupt.bookkeeping/shell :logged-in-user )) 	;; check if there is a 'logged-in-user' 
+		    		
+		    		;;throw an error if no 'logged-in-user' 
+		    		(println "ERROR - NO logged-in-user") 
+		    		
+		    		(do
+			    		
+						  ;; AXmlCommandInput ... 
+						  (if (instance? com.interrupt.bookkeeping.cc.node.AXmlCommandInput (. node getCommandInput) ) 
+						     (println "XML input")
+						  ) 
+						  
+						  ;; AOptsCommandInput ... 
+						  (if (instance? com.interrupt.bookkeeping.cc.node.AOptsCommandInput (. node getCommandInput) ) 
+						     (println "OPTIONS input")
+						  ) 
+						  
+						  ;; AXpathCommandInput ... 
+						  (if (instance? com.interrupt.bookkeeping.cc.node.AXpathCommandInput (. node getCommandInput) ) 
+						     
+						     (println "XPATH input")
+						     
+						     ;; trim xpath 
+						     ;; ... TODO 
+						     
+						     ;; get User 
+						     ;; ... TODO 
+						     
+						     ;; execute LOAD for 'User' 
+						     ;; ... TODO 
+						     
+						  )
+					  )
+					  
+				  )
+				  
+		    )
 	    )
 	    
-	    (if (not= (. node getRbracket ) nil) ;; if(node.getRbracket() != null) { node.getRbracket().apply(this); }
+	    (if (not= (. node getRbracket ) nil) 
 	       (.. node getRbracket (apply this) ) 
 	    )
 	    
 	    
-	    (proxy-super outALoadCommand3 node)  ;; outALoadCommand3(node);
+	    (proxy-super outALoadCommand3 node) 
 	    
 	 )
 	 
