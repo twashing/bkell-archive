@@ -4,6 +4,70 @@
 
 )
 
+(defn operate-dep-inputtype  
+	[node handler_block]	;; input args 
+	
+	(let [ 	checks 
+		
+					[	(fn [node handler] 
+							(if (instance? com.interrupt.bookkeeping.cc.node.AXmlCommandInput (. node getCommandInput) )
+								(do 
+									(println "XML input")
+									
+									;; extract the context 
+									(let [ result_seq []]
+										
+										;; operate with handler
+										(handler result_seq)
+									)
+								)
+							) 
+						)
+						
+						(fn [node handler] 
+							(if (instance? com.interrupt.bookkeeping.cc.node.AOptsCommandInput (. node getCommandInput) )
+								(do 
+									(println "OPTIONS input")
+									
+									;; extract the context 
+									(let [ result_seq []]
+										
+										;; operate with handler
+										(handler result_seq)
+									)
+								)
+							)
+						)
+						
+						(fn [node handler] 
+							(if (instance? com.interrupt.bookkeeping.cc.node.AXpathCommandInput (. node getCommandInput) )
+								
+								(do 
+									(println "XPATH input")
+									
+									;; extract the context 
+									(let [ result_seq []]
+										
+										;; operate with handler
+										(handler result_seq)
+									)
+								)
+							)
+						)
+					]
+			]
+			
+			(doseq [ each_check checks ] 
+				(do
+					(println "each... " each_check) 
+					;;(apply each_check node handler_block)
+				)
+			)
+			
+	)
+	
+)
+
 (defn get-depth-adapter [] 
 	 
    (proxy [DepthFirstAdapter] [] 
@@ -36,37 +100,14 @@
 	    )
 	    
       (if (not= (. node getCommandInput ) nil) 
-	      (.. node getCommandInput (apply this) ) 
-	    	
-				(do
-					
-				  ;; AXmlCommandInput ... 
-				  (if (instance? com.interrupt.bookkeeping.cc.node.AXmlCommandInput (. node getCommandInput) ) 
-				     (println "XML input")
-				  ) 
-				  
-				  ;; AOptsCommandInput ... 
-				  (if (instance? com.interrupt.bookkeeping.cc.node.AOptsCommandInput (. node getCommandInput) ) 
-				     (println "OPTIONS input")
-				  ) 
-				  
-				  ;; AXpathCommandInput ... 
-				  (if (instance? com.interrupt.bookkeeping.cc.node.AXpathCommandInput (. node getCommandInput) ) 
-				     
-				     (println "XPATH input")
-				     
-				     ;; trim xpath 
-				     ;; ... TODO 
-				     
-				     ;; get User 
-				     ;; ... TODO 
-				     
-				     ;; execute LOAD for 'User' 
-				     ;; ... TODO 
-				     
-				  )
-				)
-	    	
+	      
+	      (do 
+	      	
+	      	(.. node getCommandInput (apply this) ) 
+	    		
+	    		;; execute LOGIN 
+					(operate-dep-inputtype node (fn [result_seq] (println "logging in on... " result_seq)))
+	    	)
 	    )
 	    
       (if (not= (. node getRbracket ) nil) 
@@ -111,35 +152,10 @@
 		    		;;throw an error if no 'logged-in-user' 
 		    		(println "ERROR - NO logged-in-user") 
 		    		
-		    		(do
-			    		
-						  ;; AXmlCommandInput ... 
-						  (if (instance? com.interrupt.bookkeeping.cc.node.AXmlCommandInput (. node getCommandInput) ) 
-						     (println "XML input")
-						  ) 
-						  
-						  ;; AOptsCommandInput ... 
-						  (if (instance? com.interrupt.bookkeeping.cc.node.AOptsCommandInput (. node getCommandInput) ) 
-						     (println "OPTIONS input")
-						  ) 
-						  
-						  ;; AXpathCommandInput ... 
-						  (if (instance? com.interrupt.bookkeeping.cc.node.AXpathCommandInput (. node getCommandInput) ) 
-						     
-						     (println "XPATH input")
-						     
-						     ;; trim xpath 
-						     ;; ... TODO 
-						     
-						     ;; get User 
-						     ;; ... TODO 
-						     
-						     ;; execute LOAD for 'User' 
-						     ;; ... TODO 
-						     
-						  )
-					  )
-					  
+		    		
+		    		;; execute LOAD 
+		    		(operate-dep-inputtype node (fn [result_seq] (println "loading... " result_seq)))
+			    	
 				  )
 				  
 		    )
@@ -164,3 +180,6 @@
 	 
 	)
 )
+
+
+
