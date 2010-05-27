@@ -4,6 +4,31 @@
 
 )
 
+
+;; set get base URL ...TODO - put in config 
+(def db-base-URL "http://localhost:8080/exist/rest/") 
+
+;; set root/system dir fragment ...TODO - put in config 
+(def db-system-DIR "rootDir/system.main.system/") 
+
+;; working directory lookup ...TODO - put in config 
+(defn working-dir-lookup 
+	[token]
+	
+	(println "DEBUG > 'working-dir-lookup' CALLED > ["(keyword token)"]" )
+	
+	(	{	:group "aauthentication.main.authentication/groups.aauth.groups/"
+			:user "aauthentication.main.authentication/users.aauth.users/"
+			:account "groups.main.groups/"
+			:journal "groups.main.groups/"
+			:entry "groups.main.groups/"
+			:debit "groups.main.groups/"
+			:credit "groups.main.groups/" 
+		}
+		(keyword token)
+	)
+)
+
 (defn operate-dep-inputtype  
 	[node handler_block]	;; input args 
 	
@@ -36,14 +61,17 @@
 									(def options (.. node getCommandInput getInputOption getCommandoption))
 									
 									(println "DEBUG > extracted > [" token "] > [" options "]")
+									 
+									;; from HASH -> find containing folder for token 
+									(def db-working-DIR (working-dir-lookup (.. token toString trim)))
 									
-									;; TODO - get base URL 
-									;; TODO - append root/system dir fragment 
-									;; TODO - from HASH -> find containing folder for token 
+									(println "DEBUG > db-base-URL["db-base-URL"] > db-system-DIR["db-system-DIR"] > db-working-DIR["db-working-DIR"]") 
+									
 									;; TODO - build XPATH expression to find 'token' based on option 
 									
+									
 									;; TODO - from DB, get 'token' for 'option' args & value 
-									(clojure.contrib.http.agent/result  (clojure.contrib.http.agent/http-agent "http://localhost:8080/exist/rest/" 
+									(comment clojure.contrib.http.agent/result  (clojure.contrib.http.agent/http-agent ... 
 											:method "GET" 
 											:header {"Content-Type" "text/xml"} 
 											
