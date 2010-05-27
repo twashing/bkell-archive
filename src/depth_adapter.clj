@@ -7,12 +7,12 @@
 (defn operate-dep-inputtype  
 	[node handler_block]	;; input args 
 	
-	(let [ 	checks 
+	(let [ checks 
 		
 					[	(fn [node handler] 
 							(if (instance? com.interrupt.bookkeeping.cc.node.AXmlCommandInput (. node getCommandInput) )
 								(do 
-									(println "XML input")
+									(println "XML input[" (.. node getCommandInput toString) "]")
 									
 									;; extract the context 
 									(let [ result_seq []]
@@ -27,13 +27,36 @@
 						(fn [node handler] 
 							(if (instance? com.interrupt.bookkeeping.cc.node.AOptsCommandInput (. node getCommandInput) )
 								(do 
-									(println "OPTIONS input")
+									(println "DEBUG > OPTIONS input > token[" (.. node getCommandInput getInputOption getCommandtoken) "] > options[" (.. node getCommandInput getInputOption getCommandoption) "]")
 									
-									;; extract the context 
-									(let [ result_seq []]
-										
-										;; operate with handler
-										(handler result_seq)
+									;; get token string (ie user, entry, etc) -> 
+									(def token (.. node getCommandInput getInputOption getCommandtoken))
+									
+									;; get option args & value -> use a 'CommandOptionVisitor' 
+									(def options (.. node getCommandInput getInputOption getCommandoption))
+									
+									(println "DEBUG > extracted > [" token "] > [" options "]")
+									
+									;; TODO - get base URL 
+									;; TODO - append root/system dir fragment 
+									;; TODO - from HASH -> find containing folder for token 
+									;; TODO - build XPATH expression to find 'token' based on option 
+									
+									;; TODO - from DB, get 'token' for 'option' args & value 
+									(clojure.contrib.http.agent/result  (clojure.contrib.http.agent/http-agent "http://localhost:8080/exist/rest/" 
+											:method "GET" 
+											:header {"Content-Type" "text/xml"} 
+											
+											;; TODO - parse results, check for i) null or ii) multiple results 
+											
+											:handler 	(fn [agnt] 
+																	(with-open [w (clojure.contrib.io/writer "/tmp/out")] 
+																		(clojure.contrib.io/copy (clojure.contrib.http.agent/stream agnt) w))
+																		
+																		;; TODO - pass built XML to handler 
+																		(handler result_seq)
+																	) 
+										) 
 									)
 								)
 							)
@@ -43,7 +66,7 @@
 							(if (instance? com.interrupt.bookkeeping.cc.node.AXpathCommandInput (. node getCommandInput) )
 								
 								(do 
-									(println "XPATH input")
+									(println "XPATH input[" (.. node getCommandInput toString) "]")
 									
 									;; extract the context 
 									(let [ result_seq []]
@@ -59,8 +82,8 @@
 			
 			(doseq [ each_check checks ] 
 				(do
-					(println "each... " each_check) 
-					;;(apply each_check node handler_block)
+					(println "DEBUG > each... " each_check) 
+					(each_check node handler_block)
 				)
 			)
 			
@@ -75,7 +98,7 @@
 	 ;; EXIT commnad 
 	 (caseAExitCommand4 [node] 
 	    
-	    (println (str "caseAExitCommand4: " node))
+	    (println (str "DEBUG > caseAExitCommand4: " node))
 	    
 	    (proxy-super inAExitCommand4 node) 
 	    (proxy-super outAExitCommand4 node) 
@@ -86,18 +109,16 @@
 	 
 	 ;; LOGIN command 
 	 (caseALoginCommand3 [node] 
-	    (println (str "caseALoginCommand3: " node))
+	    (println "DEBUG > caseALoginCommand3: " node)
 	    
 	    
 	    (proxy-super inALoginCommand3 node) 
 	    
 	    (if (not= (. node getLogin ) nil) 
-	       (.. node getLogin (apply this) ) 
-	    )
+	       (.. node getLogin (apply this) ) )
 	    
 	    (if (not= (. node getLbracket ) nil) 
-	       (.. node getLbracket (apply this) ) 
-	    )
+	       (.. node getLbracket (apply this) ) )
 	    
       (if (not= (. node getCommandInput ) nil) 
 	      
@@ -106,13 +127,12 @@
 	      	(.. node getCommandInput (apply this) ) 
 	    		
 	    		;; execute LOGIN 
-					(operate-dep-inputtype node (fn [result_seq] (println "logging in on... " result_seq)))
+					(operate-dep-inputtype node (fn [result_seq] (println "DEBUG > logging in on... " result_seq)))
 	    	)
 	    )
 	    
       (if (not= (. node getRbracket ) nil) 
-	       (.. node getRbracket (apply this) ) 
-	    )
+	       (.. node getRbracket (apply this) ) )
 	    
       (proxy-super outALoginCommand3 node) 
 	    
@@ -120,13 +140,12 @@
 	 
 	 ;; PRINT command 
 	 (caseAPrintCommand6 [node] 
-	    (println (str "caseAPrintCommand6: " node)) 
-	 )
+	    (println (str "caseAPrintCommand6: " node)) )
 	 
 	 
 	 ;; LOAD command 
 	 (caseALoadCommand3 [node] 
-	    (println (str "caseALoadCommand3 [" (class (. node getCommandInput)) "]: " node)) 
+	    (println "DEBUG > caseALoadCommand3 [" (class (. node getCommandInput)) "]: " node) 
 	    
 	    (comment "replicating java calls in the 'DepthFirstAdapter.caseALoadCommand3'")
 	    
@@ -134,12 +153,10 @@
 	    (proxy-super inALoadCommand3 node) 
 	    
 	    (if (not= (. node getLoad ) nil) 
-	       (.. node getLoad (apply this) ) 
-	    )
+	       (.. node getLoad (apply this) ) )
 	    
 	    (if (not= (. node getLbracket ) nil) 
-	       (.. node getLbracket (apply this) ) 
-	    )
+	       (.. node getLbracket (apply this) ) )
 	     
 	    (if (not= (. node getCommandInput ) nil) 
 	       
@@ -152,7 +169,6 @@
 		    		;;throw an error if no 'logged-in-user' 
 		    		(println "ERROR - NO logged-in-user") 
 		    		
-		    		
 		    		;; execute LOAD 
 		    		(operate-dep-inputtype node (fn [result_seq] (println "loading... " result_seq)))
 			    	
@@ -162,8 +178,7 @@
 	    )
 	    
 	    (if (not= (. node getRbracket ) nil) 
-	       (.. node getRbracket (apply this) ) 
-	    )
+	       (.. node getRbracket (apply this) ) )
 	    
 	    
 	    (proxy-super outALoadCommand3 node) 
