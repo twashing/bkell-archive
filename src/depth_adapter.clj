@@ -5,6 +5,9 @@
 )
 
 (require 'clojure.contrib.str-utils2)
+(require 'clojure.contrib.http.agent) 
+(require 'clojure.contrib.io) 
+
 
 ;; set get base URL ...TODO - put in config 
 (def db-base-URL "http://localhost:8080/exist/rest/") 
@@ -12,7 +15,7 @@
 ;; set root/system dir fragment ...TODO - put in config 
 (def db-system-DIR "rootDir/system.main.system/") 
 
-;; working directory lookup ...TODO - put in config 
+;; working directory lookup ...TODO - put these lookups into config 
 (defn working-dir-lookup 
 	[token]
 	
@@ -27,6 +30,22 @@
 			:credit "groups.main.groups/" 
 		}
 		(keyword token)
+	)
+)
+(defn namespace-lookup 
+	[token]
+	
+	(println "DEBUG > 'namespace-lookup' CALLED > ["token"]" )
+	
+	(	{	"group" "com/interrupt/bookkeeping/users"
+			"user" "com/interrupt/bookkeeping/users"
+			"account"  "com/interrupt/bookkeeping/account"
+			"journal"  "com/interrupt/bookkeeping/journal"
+			"entry"  "com/interrupt/bookkeeping/journal"
+			"debit"  "com/interrupt/bookkeeping/account"
+			"credit"  "com/interrupt/bookkeeping/account" 
+		}
+		token
 	)
 )
 
@@ -95,28 +114,44 @@
 									(def db-working-DIR (working-dir-lookup (.. token toString trim)))
 									
 									;; build another <my.group> to end of db-working-DIR 
-									(def db-leaf-DIR (str (.. token toString trim) "." db-id-ID )	)
-									(def db-full-PARENT (str db-base-URL db-system-DIR db-working-DIR db-leaf-DIR	))
+									(def db-leaf (str (.. token toString trim) "." db-id-ID )	)
+									(def db-full-PARENT (str db-base-URL db-system-DIR db-working-DIR db-leaf	))
+									
+									(def db-document-NAME db-leaf) 
 									
 									
-									(println "DEBUG > db-base-URL["db-base-URL"] > db-system-DIR["db-system-DIR"] > db-working-DIR["db-working-DIR"] > leaf["db-leaf-DIR"]") 
+									(println "DEBUG > db-base-URL["db-base-URL"] > db-system-DIR["db-system-DIR"] > db-working-DIR["db-working-DIR"] > leaf["db-leaf"]") 
 									(println "DEBUG > db-base-URL[" db-full-PARENT "]")
+									
 									
 									;; this will find all <SPEECH> elements in the collection /db/shakespeare  with "Juliet" as the <SPEAKER> 
 									;; 		http://localhost:8080/exist/rest/db/shakespeare?_query=//SPEECH[SPEAKER=%22JULIET%22] 
 									
-									;; TODO - build XPATH expression to find 'token' based on option 
-									;; http://localhost:8080/exist/rest/db/two.xml?_query=
-									;;		declare namespace aauth='com/interrupt/bookkeeping/cc/bkell/aauth';
-									;;		//system/aauth:aauthentication
+									;; build XPATH expression to find 'token' based on option 
+									;; http://localhost:8080/exist/rest/db/two.xml?_query= 
+									;;		declare default element namespace 'com/interrupt/bookkeeping/users' 
+									;;		declare namespace aauth='com/interrupt/bookkeeping/cc/bkell/aauth'; 
+									;;		//system/aauth:aauthentication 
 									
+									;; TODO - a check if we even need a query 
+									(def db-query (str "/" db-leaf "?_query=" 
+												"declare default element namespace '"(namespace-lookup (.. token toString trim)) "';" 
+												;;"declare namespace users='com/interrupt/bookkeeping/users'; declare namespace bkell='com/interrupt/bookkeeping/cc/bkell'; declare namespace command='com/interrupt/bookkeeping/cc/bkell/command'; declare namespace interpret='com/interrupt/bookkeeping/interpret'; declare namespace aauth='com/interrupt/bookkeeping/cc/bkell/aauth'; " 
+												
+												;; TODO - check if we need 'and' conditions 
+												;; "**/<token>[ @option='option_value' [ and @option='option_value' ] ]" 
+												"//"(.. token toString trim)"[ @" 
+													(. (nth (re-seq #"-[a-z]+" (.. (nth option-id 0) getIdOpt getText)) 0) substring 1)		;; TODO - put this part into a function (being re-used) 
+												"='"db-id-ID"']"
+												)
+												
+									)
+									(println "DEBUG > db-query[" db-query "]")
 									
+									(println "DEBUG > FINAL http query[" (str db-full-PARENT db-query) "]")
 									
-									;; "**/<token>[ @option='option_value' [ and @option='option_value' ] ]"
-									
-									
-									;; TODO - from DB, get 'token' for 'option' args & value 
-									(comment clojure.contrib.http.agent/result  (clojure.contrib.http.agent/http-agent ... 
+									;; from DB, get 'token' for 'option' args & value 
+									(clojure.contrib.http.agent/result  (clojure.contrib.http.agent/http-agent (str db-full-PARENT db-query) 
 											:method "GET" 
 											:header {"Content-Type" "text/xml"} 
 											
