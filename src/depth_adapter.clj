@@ -4,6 +4,7 @@
 
 )
 
+(require 'clojure.contrib.str-utils2)
 
 ;; set get base URL ...TODO - put in config 
 (def db-base-URL "http://localhost:8080/exist/rest/") 
@@ -29,8 +30,8 @@
 	)
 )
 
-(defn operate-dep-inputtype  
-	[node handler_block]	;; input args 
+(defn operate-dep-inputtype 
+	[node handler_block]	;; input args ; for now we are going to load by ID 
 	
 	(let [ checks 
 		
@@ -58,16 +59,60 @@
 									(def token (.. node getCommandInput getInputOption getCommandtoken))
 									
 									;; get option args & value -> use a 'CommandOptionVisitor' 
-									(def options (.. node getCommandInput getInputOption getCommandoption))
+									(def options (seq (.. node getCommandInput getInputOption getCommandoption)))
 									
-									(println "DEBUG > extracted > [" token "] > [" options "]")
-									 
+									(def option-id  
+										(take 1 (filter 
+											(fn [input] 
+												(if (instance? com.interrupt.bookkeeping.cc.node.AIdCommandoption input ) 
+													(true? true)
+													(false? false)
+												)
+											)
+											options
+										))
+									)
+									(def db-id-ID 
+										
+										(clojure.contrib.str-utils2/trim 
+											(nth  
+												(clojure.contrib.str-utils2/split (.. (nth option-id 0)	;; class 'com.interrupt.bookkeeping.cc.node.AIdCommandoption' 
+													getIdOpt getText) #"-[a-z]+")
+												1
+											)
+										)
+										
+									)
+									;; (clojure.contrib.str-utils2/trim 
+									;; (for [ thing option-id ] 
+									;;		(class (take 2 (clojure.contrib.str-utils2/split (.. thing getIdOpt getText) #"-[a-z]+") ) ) ) 
+									;; 
+									;; (class option-id) 
+									
+									(println "DEBUG > extracted > [" token "] > [" options "] > [" db-id-ID "]")
+									
 									;; from HASH -> find containing folder for token 
 									(def db-working-DIR (working-dir-lookup (.. token toString trim)))
 									
-									(println "DEBUG > db-base-URL["db-base-URL"] > db-system-DIR["db-system-DIR"] > db-working-DIR["db-working-DIR"]") 
+									;; build another <my.group> to end of db-working-DIR 
+									(def db-leaf-DIR (str (.. token toString trim) "." db-id-ID )	)
+									(def db-full-PARENT (str db-base-URL db-system-DIR db-working-DIR db-leaf-DIR	))
+									
+									
+									(println "DEBUG > db-base-URL["db-base-URL"] > db-system-DIR["db-system-DIR"] > db-working-DIR["db-working-DIR"] > leaf["db-leaf-DIR"]") 
+									(println "DEBUG > db-base-URL[" db-full-PARENT "]")
+									
+									;; this will find all <SPEECH> elements in the collection /db/shakespeare  with "Juliet" as the <SPEAKER> 
+									;; 		http://localhost:8080/exist/rest/db/shakespeare?_query=//SPEECH[SPEAKER=%22JULIET%22] 
 									
 									;; TODO - build XPATH expression to find 'token' based on option 
+									;; http://localhost:8080/exist/rest/db/two.xml?_query=
+									;;		declare namespace aauth='com/interrupt/bookkeeping/cc/bkell/aauth';
+									;;		//system/aauth:aauthentication
+									
+									
+									
+									;; "**/<token>[ @option='option_value' [ and @option='option_value' ] ]"
 									
 									
 									;; TODO - from DB, get 'token' for 'option' args & value 
@@ -82,7 +127,7 @@
 																		(clojure.contrib.io/copy (clojure.contrib.http.agent/stream agnt) w))
 																		
 																		;; TODO - pass built XML to handler 
-																		(handler result_seq)
+																		;; (handler result_seq)
 																	) 
 										) 
 									)
