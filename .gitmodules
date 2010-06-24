@@ -1,0 +1,3 @@
+[submodule "vendor/clj-stacktrace"]
+	path = vendor/clj-stacktrace
+	url = http://github.com/mmcgrana/clj-stacktrace.git

@@ -1,12 +1,39 @@
 
 (ns depth_adapter
    (:import com.interrupt.bookkeeping.cc.analysis.DepthFirstAdapter) 
-
 )
 
-(require 'clojure.contrib.str-utils2)
+(require 'clojure.contrib.str-utils2) 
 (require 'clojure.contrib.http.agent) 
 (require 'clojure.contrib.io) 
+(require 'clojure.contrib.string) 
+
+
+(import (java.net URLEncoder))
+
+
+;; function stolen from http://p.hagelb.org/http-client-send-body 
+(defn url-encode 
+	" Replacing these characters http encoded ones 
+	<space>		%20
+	'					%27
+	;					%3B
+	[					%5B
+	@					%40
+	=					%3D
+	]					%5D "
+  [text]
+  
+  (clojure.contrib.string/replace-str " " "%20"   
+  	(clojure.contrib.string/replace-str "'" "%27"   
+  		(clojure.contrib.string/replace-str ";" "%3B"   
+  			(clojure.contrib.string/replace-str "[" "%5B"   
+  				(clojure.contrib.string/replace-str "@" "%40"   
+  					(clojure.contrib.string/replace-str "=" "%3D"   
+  						(clojure.contrib.string/replace-str "]" "%5D" text 
+  					)))))	
+  )
+))
 
 
 ;; set get base URL ...TODO - put in config 
@@ -91,7 +118,7 @@
 											options
 										))
 									)
-									(def db-id-ID 
+									(def db-id-ID 	;; TODO - chain this to look for other options if 'id' is not there
 										
 										(clojure.contrib.str-utils2/trim 
 											(nth  
@@ -134,7 +161,7 @@
 									;;		//system/aauth:aauthentication 
 									
 									;; TODO - a check if we even need a query 
-									(def db-query (str "/" db-leaf "?_query=" 
+									(def db-query (str "_wrap=no&_query=" 
 												"declare default element namespace '"(namespace-lookup (.. token toString trim)) "';" 
 												;;"declare namespace users='com/interrupt/bookkeeping/users'; declare namespace bkell='com/interrupt/bookkeeping/cc/bkell'; declare namespace command='com/interrupt/bookkeeping/cc/bkell/command'; declare namespace interpret='com/interrupt/bookkeeping/interpret'; declare namespace aauth='com/interrupt/bookkeeping/cc/bkell/aauth'; " 
 												
@@ -148,10 +175,23 @@
 									)
 									(println "DEBUG > db-query[" db-query "]")
 									
-									(println "DEBUG > FINAL http query[" (str db-full-PARENT db-query) "]")
+									(println "DEBUG > FINAL http query[" (str db-full-PARENT "/" db-leaf "?" (url-encode db-query) ) "]")
 									
 									;; from DB, get 'token' for 'option' args & value 
-									(clojure.contrib.http.agent/result  (clojure.contrib.http.agent/http-agent (str db-full-PARENT db-query) 
+									(comment let 	[thing 	(clojure.contrib.http.agent/result 
+																	(clojure.contrib.http.agent/http-agent "http://localhost:8080/exist/rest/rootDir/system.main.system/aauthentication.main.authentication/users.aauth.users/user.one/user.one?_wrap=no&_query=//user" :method "GET" ))]
+										        (. System/out println thing)
+										) 
+									
+									(comment (println "DEBUG > result > " 
+										(clojure.contrib.http.agent/string 
+											(clojure.contrib.http.agent/http-agent 	(str db-full-PARENT "/" db-leaf db-query ) 
+																															:method "GET" :header {"Content-Type" "text/xml"})) )
+									)
+									
+									;; (clojure.contrib.http.agent/result  (clojure.contrib.http.agent/http-agent "http://localhost:8080/exist/rest/rootDir/system.main.system/aauthentication.main.authentication/users.aauth.users/user.one/user.one?_wrap=no&_query=declare%20default%20element%20namespace%20%27com/interrupt/bookkeeping/users%27%3B//user%5B%40id%3D%27one%27%5D" 
+									;; (clojure.contrib.http.agent/result  (clojure.contrib.http.agent/http-agent "?" (url-encode db-query) 
+									(clojure.contrib.http.agent/http-agent (str db-full-PARENT "/" db-leaf "?" (url-encode db-query) ) 
 											:method "GET" 
 											:header {"Content-Type" "text/xml"} 
 											
@@ -165,7 +205,7 @@
 																		;; (handler result_seq)
 																	) 
 										) 
-									)
+									;;)
 								)
 							)
 						)
