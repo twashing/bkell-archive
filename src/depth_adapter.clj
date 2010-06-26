@@ -135,11 +135,6 @@
 										)
 										
 									)
-									;; (clojure.contrib.str-utils2/trim 
-									;; (for [ thing option-id ] 
-									;;		(class (take 2 (clojure.contrib.str-utils2/split (.. thing getIdOpt getText) #"-[a-z]+") ) ) ) 
-									;; 
-									;; (class option-id) 
 									
 									(println "DEBUG > extracted > [" token "] > [" options "] > [" db-id-ID "]")
 									
