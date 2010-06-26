@@ -6,7 +6,6 @@
    (:import java.io.InputStreamReader) 
    
    (:use clojure.core)
-   (:use clj-stacktrace.repl)
    
 )
 

@@ -3,6 +3,12 @@
    (:import com.interrupt.bookkeeping.cc.analysis.DepthFirstAdapter) 
 )
 
+(use 'clj-stacktrace.repl)
+(comment try
+ ("foo")
+ (catch Exception e
+   (clj-stacktrace.repl/pst e)))
+
 (require 'clojure.contrib.str-utils2) 
 (require 'clojure.contrib.http.agent) 
 (require 'clojure.contrib.io) 
@@ -180,18 +186,12 @@
 									;; from DB, get 'token' for 'option' args & value 
 									(comment let 	[thing 	(clojure.contrib.http.agent/result 
 																	(clojure.contrib.http.agent/http-agent "http://localhost:8080/exist/rest/rootDir/system.main.system/aauthentication.main.authentication/users.aauth.users/user.one/user.one?_wrap=no&_query=//user" :method "GET" ))]
-										        (. System/out println thing)
-										) 
-									
+										        (. System/out println thing)) 
 									(comment (println "DEBUG > result > " 
 										(clojure.contrib.http.agent/string 
 											(clojure.contrib.http.agent/http-agent 	(str db-full-PARENT "/" db-leaf db-query ) 
-																															:method "GET" :header {"Content-Type" "text/xml"})) )
-									)
-									
-									;; (clojure.contrib.http.agent/result  (clojure.contrib.http.agent/http-agent "http://localhost:8080/exist/rest/rootDir/system.main.system/aauthentication.main.authentication/users.aauth.users/user.one/user.one?_wrap=no&_query=declare%20default%20element%20namespace%20%27com/interrupt/bookkeeping/users%27%3B//user%5B%40id%3D%27one%27%5D" 
-									;; (clojure.contrib.http.agent/result  (clojure.contrib.http.agent/http-agent "?" (url-encode db-query) 
-									(clojure.contrib.http.agent/http-agent (str db-full-PARENT "/" db-leaf "?" (url-encode db-query) ) 
+																															:method "GET" :header {"Content-Type" "text/xml"})) ))
+									(comment clojure.contrib.http.agent/string (clojure.contrib.http.agent/http-agent (str db-full-PARENT "/" db-leaf "?" (url-encode db-query) ) 
 											:method "GET" 
 											:header {"Content-Type" "text/xml"} 
 											
@@ -203,9 +203,16 @@
 																		
 																		;; TODO - pass built XML to handler 
 																		;; (handler result_seq)
-																	) 
+																	)))
+									(def result-XML (clojure.contrib.http.agent/string (clojure.contrib.http.agent/http-agent (str db-full-PARENT "/" db-leaf "?" (url-encode db-query) ) 
+											:method "GET" 
+											:header {"Content-Type" "text/xml"} 
+											 
 										) 
-									;;)
+									))
+									
+									;; pass built XML sequence to handler
+									(handler (xml-seq result-XML))
 								)
 							)
 						)
