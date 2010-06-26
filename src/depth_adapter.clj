@@ -184,30 +184,11 @@
 									(println "DEBUG > FINAL http query[" (str db-full-PARENT "/" db-leaf "?" (url-encode db-query) ) "]")
 									
 									;; from DB, get 'token' for 'option' args & value 
-									(comment let 	[thing 	(clojure.contrib.http.agent/result 
-																	(clojure.contrib.http.agent/http-agent "http://localhost:8080/exist/rest/rootDir/system.main.system/aauthentication.main.authentication/users.aauth.users/user.one/user.one?_wrap=no&_query=//user" :method "GET" ))]
-										        (. System/out println thing)) 
-									(comment (println "DEBUG > result > " 
-										(clojure.contrib.http.agent/string 
-											(clojure.contrib.http.agent/http-agent 	(str db-full-PARENT "/" db-leaf db-query ) 
-																															:method "GET" :header {"Content-Type" "text/xml"})) ))
-									(comment clojure.contrib.http.agent/string (clojure.contrib.http.agent/http-agent (str db-full-PARENT "/" db-leaf "?" (url-encode db-query) ) 
+									(def result-XML (clojure.contrib.http.agent/string (clojure.contrib.http.agent/http-agent (str db-full-PARENT "/" db-leaf "?" (url-encode db-query) ) 
 											:method "GET" 
 											:header {"Content-Type" "text/xml"} 
 											
 											;; TODO - parse results, check for i) null or ii) multiple results 
-											
-											:handler 	(fn [agnt] 
-																	(with-open [w (clojure.contrib.io/writer "/tmp/out")] 
-																		(clojure.contrib.io/copy (clojure.contrib.http.agent/stream agnt) w))
-																		
-																		;; TODO - pass built XML to handler 
-																		;; (handler result_seq)
-																	)))
-									(def result-XML (clojure.contrib.http.agent/string (clojure.contrib.http.agent/http-agent (str db-full-PARENT "/" db-leaf "?" (url-encode db-query) ) 
-											:method "GET" 
-											:header {"Content-Type" "text/xml"} 
-											 
 										) 
 									))
 									
