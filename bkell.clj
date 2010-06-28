@@ -16,7 +16,7 @@
 (defn bkell [handler] 
 	
 	
-	(def shell []) 	;; the shell and memory 
+	(def shell (ref {})) 	;; the shell and memory 
 	
 	(loop [ dfadapter handler ] 	;; loop on input (shell) until 'exit' 
 		

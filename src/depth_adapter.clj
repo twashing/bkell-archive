@@ -75,7 +75,13 @@
 	      	(.. node getCommandInput (apply this) ) 
 	    		
 	    		;; execute LOGIN 
-					(operate-dep-inputtype node (fn [result_seq] (println "DEBUG > logging in on... " result_seq)))
+					(operate-dep-inputtype node 
+																(fn [result_seq] 
+																	
+																	(println "DEBUG > logging in on... " result_seq)
+																	(dosync (alter com.interrupt.bookkeeping/shell conj { :logged-in-user result_seq } )) 
+																	(println "DEBUG > logged-in-user > " (deref com.interrupt.bookkeeping/shell) )
+																))
 	    	)
 	    )
 	    
