@@ -118,7 +118,7 @@
 				  (.. node getCommandInput (apply this) ) 
 				  
 				  
-					(if (not (contains? com.interrupt.bookkeeping/shell :logged-in-user )) 	;; check if there is a 'logged-in-user' 
+					(if (not (contains? (deref com.interrupt.bookkeeping/shell) :logged-in-user )) 	;; check if there is a 'logged-in-user' 
 		    		
 		    		;;throw an error if no 'logged-in-user' 
 		    		(println "ERROR - NO logged-in-user") 
