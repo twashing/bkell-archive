@@ -34,17 +34,41 @@
 					
 					(proxy [DepthFirstAdapter] [] 
 						
-						(defaultCase [node] 
-							(println "[case] Node["+ node +"] \t\t\t\t class[" (. node getClass) "]")
+					
+						(defaultCase [node]
+							
+							;; (println "[case] Node["+ node +"] \t\t\t\t class[" (. node getClass) "] \t\t\t\t" (. node toString))
+							
+							(comment 
+							(use 'clj-stacktrace.repl)
+							(try
+							 (throw (Exception. "foobar")
+							 (catch Exception e
+							   (clj-stacktrace.repl/pst e))))
+		   				)
+						)
+						
+						(caseTAbbrevRoot [node]
+							;;(println "caseTAbbrevRoot CALLED \t\t\t\t class[" (. node getClass) "] \t\t\t\t" (. node toString))
+						)
+						(caseTAbbrevAttrib [node]
+							;;(println "caseTAbbrevAttrib CALLED \t\t\t\t class[" (. node getClass) "] \t\t\t\t" (. node toString))
+						)
+						(caseTAbbrevRootDesc [node] 
+							(println "caseTAbbrevRootDesc CALLED \t\t\t\t class[" (. node getClass) "] \t\t\t\t" (. node toString))
+						)
+						
+						(caseTLetter [node]
+							(println "caseTLetter CALLED \t\t\t\t\t class[" (. node getClass) "] \t\t\t\t\t" (. node toString))
 						)
 						(caseAPredicatelist [node]
-							(println "caseAPredicatelist CALLED" (. node getClass))
+							(println "caseAPredicatelist CALLED \t\t\t\t class[" (. node getClass) "] \t\t\t\t" (. node toString))
 						)
 						(caseAPredicate [node]
-							(println "caseAPredicate CALLED" (. node getClass))
+							(println "caseAPredicate CALLED \t\t\t\t class[" (. node getClass) "] \t\t\t\t" (. node toString))
 						)
 						(caseARootRelativepathexprPartPart [node] 
-							(println "caseARootRelativepathexprPartPart CALLED" (. node getClass))
+							(println "caseARootRelativepathexprPartPart CALLED \t\t class[" (. node getClass) "] \t\t\t\t" (. node toString))
 						)
 						
 					)
