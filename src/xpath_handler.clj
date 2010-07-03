@@ -8,6 +8,7 @@
 	(:import com.interrupt.cc.xpath.parser.Parser) 
 	(:import com.interrupt.cc.xpath.parser.ParserException) 
   (:import com.interrupt.cc.xpath.analysis.DepthFirstAdapter) 
+  (:import com.interrupt.bob.processor.cc.DepthFirstVisitor)
   
   (:import java.io.InputStreamReader)
   (:import java.io.PushbackReader) 
@@ -23,11 +24,9 @@
 				
 				;; build the XPath parser  
 				(defn get-pushback-parser [xpath-string] 
-					
 					(Parser. (Lexer. (PushbackReader. (InputStreamReader. 
 																							(ByteArrayInputStream. (. xpath-string getBytes))) 
 																							1024)))
-					
 				)
 				
 				;; get DepthFirstAdapter proxy 
@@ -38,6 +37,16 @@
 						(defaultCase [node] 
 							(println "[case] Node["+ node +"] \t\t\t\t class[" (. node getClass) "]")
 						)
+						(caseAPredicatelist [node]
+							(println "caseAPredicatelist CALLED" (. node getClass))
+						)
+						(caseAPredicate [node]
+							(println "caseAPredicate CALLED" (. node getClass))
+						)
+						(caseARootRelativepathexprPartPart [node] 
+							(println "caseARootRelativepathexprPartPart CALLED" (. node getClass))
+						)
+						
 					)
 				) 
 				
@@ -52,14 +61,16 @@
 					   
 					   ;; 1. filter out <spaces> and ` 
 					   (def input-string (filter-xpath-input (.. node getCommandInput toString)))
-					   
-					   ;; 2. token - find i) leaf document to search ii) root & xpath expression to feed to RESTful  exist 
 					   (println "input-string[" input-string "]")
 					   
-								 
-								(def tree (.parse (get-pushback-parser input-string))) 
-								(. tree apply (get-adapter-proxy) )
-							
+					   
+						 ;; 1.1 build an xpath parser 	 
+						 (def tree (.parse (get-pushback-parser input-string))) 
+						 (. tree apply (get-adapter-proxy ) )
+						 
+						 
+						 ;; 2. token - find i) leaf document to search ii) root & xpath expression to feed to RESTful  exist 
+					   	
 					   ;; 3. build RESTful call 
 					   
 					   
