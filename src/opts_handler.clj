@@ -23,14 +23,13 @@
 			   )
 			   (def db-id-ID  ;; TODO - chain this to look for other options if 'id' is not there
 			      
-			      (clojure.contrib.str-utils2/trim 
-				 (nth  
-				    (clojure.contrib.str-utils2/split (.. (nth option-id 0)  ;; class 'com.interrupt.bookkeeping.cc.node.AIdCommandoption' 
-				       getIdOpt getText) #"-[a-z]+")
-				    1
-				 )
-			      )
-			      
+						(clojure.contrib.str-utils2/trim 
+							(nth  
+								(clojure.contrib.str-utils2/split (.. (nth option-id 0)  ;; class 'com.interrupt.bookkeeping.cc.node.AIdCommandoption' 
+									getIdOpt getText) #"-[a-z]+")
+									1
+							)
+						)
 			   )
 			   
 			   (println "DEBUG > extracted > [" token "] > [" options "] > [" db-id-ID "]")

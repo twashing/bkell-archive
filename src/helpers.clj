@@ -37,7 +37,8 @@
 	 :user "aauthentication.main.authentication/users.aauth.users/"
 	 :account "groups.main.groups/"
 	 :journal "groups.main.groups/"
-	 :entry "groups.main.groups/"
+	 :entry "groups.main.groups/" 
+	 :entries "groups.main.groups/" 
 	 :debit "groups.main.groups/"
 	 :credit "groups.main.groups/" 
       }

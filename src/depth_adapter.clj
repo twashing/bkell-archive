@@ -26,7 +26,7 @@
 (defn operate-dep-inputtype 
 	[node handler_block]	;; input args ; for now we are going to load by ID 
 	
-	(let [ checks [	xml_handler option_handler xpath_handler ] ]
+	(let [ checks [	xml_handler option_handler xpath_handler/xpath_handler ] ]
 			
 			(doseq [ each_check checks ] 
 				(do
@@ -43,7 +43,7 @@
 	 
    (proxy [DepthFirstAdapter] [] 
 	 
-	 ;; EXIT commnad 
+	 ;; EXIT command 
 	 (caseAExitCommand4 [node] 
 	    
 	    (println (str "DEBUG > caseAExitCommand4: " node))
@@ -78,9 +78,8 @@
 					(operate-dep-inputtype node 
 																(fn [result_seq] 
 																	
-																	(println "DEBUG > logging in on... " result_seq)
 																	(dosync (alter com.interrupt.bookkeeping/shell conj { :logged-in-user result_seq } )) 
-																	(println "DEBUG > logged-in-user > " (deref com.interrupt.bookkeeping/shell) )
+																	(println "DEBUG > logged-in-user > " ((deref com.interrupt.bookkeeping/shell) :logged-in-user))
 																))
 	    	)
 	    )
@@ -124,7 +123,11 @@
 		    		(println "ERROR - NO logged-in-user") 
 		    		
 		    		;; execute LOAD 
-		    		(operate-dep-inputtype node (fn [result_seq] (println "loading... " result_seq)))
+		    		(operate-dep-inputtype node (fn [result_seq] 
+		    																	
+		    																	(println "loading... " result_seq)
+		    																	
+		    																))
 			    	
 				  )
 				  
@@ -139,12 +142,15 @@
 	    
 	 )
 	 
-	 ;; ADD command (for registering users too) 
+	 ;; TODO - 'load' based on xpath 
+	 ;; TODO - handle variables 
+	 ;; TODO - ADD command (for registering users too) 
 		  ;; 1. check that there's not an existing user 
 		  ;; 2. add corresponding default group to the new user 
 		  ;; 3. add to aauth.groups 
 		  ;; 4. add to aauth.users 
 		  ;; 5. add Associated Bookkeeping to Group 
+	 ;; TODO - finish 'print' command 
 	 
 	)
 )
