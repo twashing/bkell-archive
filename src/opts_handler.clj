@@ -39,7 +39,7 @@
 			   
 			   ;; build another <my.group> to end of db-working-DIR 
 			   (def db-leaf (str (.. token toString trim) "." db-id-ID )   )
-			   (def db-full-PARENT (str db-base-URL db-system-DIR db-working-DIR db-leaf  ))
+			   (def db-full-PARENT (str db-base-URL db-system-DIR db-working-DIR "/" db-leaf  ))
 			   
 			   (def db-document-NAME db-leaf) 
 			   

@@ -28,19 +28,18 @@
 (def db-system-DIR "rootDir/system.main.system/") 
 
 ;; working directory lookup ...TODO - put these lookups into config 
-(defn working-dir-lookup 
-   [token]
+(defn working-dir-lookup [token]
    
    (println "DEBUG > 'working-dir-lookup' CALLED > ["(keyword token)"]" )
    
-   (  {	 :group "aauthentication.main.authentication/groups.aauth.groups/"
-	 :user "aauthentication.main.authentication/users.aauth.users/"
-	 :account "groups.main.groups/"
-	 :journal "groups.main.groups/"
-	 :entry "groups.main.groups/" 
-	 :entries "groups.main.groups/" 
-	 :debit "groups.main.groups/"
-	 :credit "groups.main.groups/" 
+   (  {	 :group "aauthentication.main.authentication/groups.aauth.groups"
+				 :user "aauthentication.main.authentication/users.aauth.users"
+				 :account "groups.main.groups"
+				 :journal "groups.main.groups"
+				 :entry "groups.main.groups" 
+				 :entries "groups.main.groups" 
+				 :debit "groups.main.groups"
+				 :credit "groups.main.groups" 
       }
       (keyword token)
    )

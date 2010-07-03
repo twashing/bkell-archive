@@ -13,6 +13,7 @@
   (:import java.io.InputStreamReader)
   (:import java.io.PushbackReader) 
   (:import java.io.ByteArrayInputStream) 
+  (:import java.util.ArrayList)
   
 )
 				
@@ -37,7 +38,7 @@
 					
 						(defaultCase [node]
 							
-							;; (println "[case] Node["+ node +"] \t\t\t\t class[" (. node getClass) "] \t\t\t\t" (. node toString))
+							(println "\n\n[case] Node["+ node +"] \t\t\t\t class[" (. node getClass) "] \t\t\t\t" (. node toString))
 							
 							;; used an exception throw to find out AbbrevRoot call 
 							(comment 
@@ -69,7 +70,40 @@
 							(println "caseTLetter CALLED \t\t\t\t\t class[" (. node getClass) "] \t\t\t\t\t" (. node toString))
 						)
 						(caseAPredicatelist [node]
-							(println "caseAPredicatelist CALLED \t\t\t\t class[" (. node getClass) "] \t\t\t\t" (. node toString))
+							
+							(proxy-super inAPredicatelist node) 	;; duplicating adapter 'in' call 
+					    
+							(println "caseAPredicatelist CALLED \t\t\t\t class[" (. node getClass) "] \t\t\t\t" (. node toString) "\t\t filtered " (filter-xpath-input (. node toString)))
+							
+							(doseq [ each_predicate (java.util.ArrayList. (. node getPredicate)) ] 
+								(do
+									
+									(println "DEBUG > each predicate... " each_predicate " predicate expresion[" (. each_predicate getExpr) 
+												"] getExprsingle[" (.. each_predicate getExpr getExprsingle) "] ugghhhh!! [" 	;; this is where = breaks off: getComparisonexpr -here- getComparisonexprPart
+														;;(.. each_predicate getExpr getExprsingle getOrexpr getAndexpr getComparisonexpr getComparisonexprPart getRangeexpr) "]" )
+														(.. each_predicate getExpr getExprsingle getOrexpr getAndexpr getComparisonexpr getRangeexpr) "]" )
+									
+									(. each_predicate apply this)
+									
+									;; ** here we are assuming there's only one predicate in the list 
+									(def predicate-name 
+											(clojure.contrib.string/replace-str "@" "" 
+												(clojure.contrib.string/replace-str " " "" 
+													(.. each_predicate getExpr getExprsingle getOrexpr getAndexpr getComparisonexpr getRangeexpr toString)))
+									)
+									(def predicate-value 
+											(clojure.contrib.string/replace-str "'" "" 
+												(clojure.contrib.string/replace-str " " "" 
+													(.. each_predicate getExpr getExprsingle getOrexpr getAndexpr getComparisonexpr getComparisonexprPart getRangeexpr toString)))
+									)
+									
+									(println "predicate-name[" predicate-name "] > predicate-value[" predicate-value "]")
+								)
+							)
+							(println)
+							
+							(proxy-super outAPredicatelist node) 	;; duplicating adapter 'out' call 
+							
 						)
 						(caseARootRelativepathexprPartPart [node] 
 							(println "caseARootRelativepathexprPartPart CALLED \t\t class[" (. node getClass) "] \t\t\t\t" (. node toString))
@@ -89,8 +123,8 @@
 					   
 					   ;; 1. filter out <spaces> and ` 
 					   (def input-string (filter-xpath-input (.. node getCommandInput toString)))
-					   (println "input-string[" input-string "]")
-					   
+					   (println "input-string \t[" input-string "]")
+					   (println "stripped XPath \t[" (clojure.contrib.string/replace-re #"\\[[^\\]]*\\]" "" input-string) "]" )
 					   
 						 ;; 1.1 build an xpath parser 	 
 						 (def tree (.parse (get-pushback-parser input-string))) 
