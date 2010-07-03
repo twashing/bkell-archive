@@ -39,6 +39,7 @@
 							
 							;; (println "[case] Node["+ node +"] \t\t\t\t class[" (. node getClass) "] \t\t\t\t" (. node toString))
 							
+							;; used an exception throw to find out AbbrevRoot call 
 							(comment 
 							(use 'clj-stacktrace.repl)
 							(try
@@ -48,24 +49,27 @@
 		   				)
 						)
 						
+						;; these case functions aren't quite used as far as I can see 
 						(caseTAbbrevRoot [node]
 							;;(println "caseTAbbrevRoot CALLED \t\t\t\t class[" (. node getClass) "] \t\t\t\t" (. node toString))
 						)
 						(caseTAbbrevAttrib [node]
 							;;(println "caseTAbbrevAttrib CALLED \t\t\t\t class[" (. node getClass) "] \t\t\t\t" (. node toString))
 						)
+						(caseAPredicate [node]
+							;;(println "caseAPredicate CALLED \t\t\t\t class[" (. node getClass) "] \t\t\t\t" (. node toString))
+						)
+						
+						
+						
 						(caseTAbbrevRootDesc [node] 
 							(println "caseTAbbrevRootDesc CALLED \t\t\t\t class[" (. node getClass) "] \t\t\t\t" (. node toString))
 						)
-						
 						(caseTLetter [node]
 							(println "caseTLetter CALLED \t\t\t\t\t class[" (. node getClass) "] \t\t\t\t\t" (. node toString))
 						)
 						(caseAPredicatelist [node]
 							(println "caseAPredicatelist CALLED \t\t\t\t class[" (. node getClass) "] \t\t\t\t" (. node toString))
-						)
-						(caseAPredicate [node]
-							(println "caseAPredicate CALLED \t\t\t\t class[" (. node getClass) "] \t\t\t\t" (. node toString))
 						)
 						(caseARootRelativepathexprPartPart [node] 
 							(println "caseARootRelativepathexprPartPart CALLED \t\t class[" (. node getClass) "] \t\t\t\t" (. node toString))
