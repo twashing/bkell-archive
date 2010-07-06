@@ -30,12 +30,42 @@
 																							1024)))
 				)
 				
+				
+				;; pilfered stack ideas and some implementation from: http://programming-puzzler.blogspot.com/2009/04/adts-in-clojure.html
+				(def stack (ref [])) 
+				
+				(defn stack-push [e] 
+					(dosync (alter stack conj e)) 
+					(println "PUSH stack [" (deref stack) "]" )
+					(println))
+				
+				(defn stack-peek [] 
+					(dosync (alter stack first)))
+				
+				(defn stack-pop [] 
+					;;(rest stack)
+					;;(dosync (alter stack conj e))
+				)
+				
+				(defn stack-empty? [] 
+					;; (empty? stack)
+					(dosync (alter stack empty?)))
+				
+				
 				;; get DepthFirstAdapter proxy 
 				(defn get-adapter-proxy [] 
 					
 					(proxy [DepthFirstAdapter] [] 
 						
-					
+						
+						;; keep a stack with 
+						;;	i. 	AbbrevRoot 
+						;;	ii.	Word 
+						;;				- keep the last/previous token 
+						;; 	iii.	RelativePath 
+						;;	iv.	Predicate 
+						
+						
 						(defaultCase [node]
 							
 							(println "\n\n[case] Node["+ node +"] \t\t\t\t class[" (. node getClass) "] \t\t\t\t" (. node toString))
@@ -64,17 +94,22 @@
 						
 						
 						(caseTAbbrevRootDesc [node] 
+							
 							(println "caseTAbbrevRootDesc CALLED \t\t\t\t class[" (. node getClass) "] \t\t\t\t" (. node toString))
+							(stack-push (clojure.contrib.string/replace-str " " "" (. node toString)))
+							
 						)
 						(caseTLetter [node]
+							
 							(println "caseTLetter CALLED \t\t\t\t\t class[" (. node getClass) "] \t\t\t\t\t" (. node toString))
+							(stack-push (clojure.contrib.string/replace-str " " "" (. node toString)))
+							
 						)
 						(caseAPredicatelist [node]
 							
 							(proxy-super inAPredicatelist node) 	;; duplicating adapter 'in' call 
 					    
 							(println "caseAPredicatelist CALLED \t\t\t\t class[" (. node getClass) "] \t\t\t\t" (. node toString) "\t\t filtered " (filter-xpath-input (. node toString)))
-							
 							(doseq [ each_predicate (java.util.ArrayList. (. node getPredicate)) ] 
 								(do
 									
@@ -84,6 +119,8 @@
 														(.. each_predicate getExpr getExprsingle getOrexpr getAndexpr getComparisonexpr getRangeexpr) "]" )
 									
 									(. each_predicate apply this)
+									
+									(stack-push node)
 									
 									;; ** here we are assuming there's only one predicate in the list 
 									(def predicate-name 
@@ -97,10 +134,16 @@
 													(.. each_predicate getExpr getExprsingle getOrexpr getAndexpr getComparisonexpr getComparisonexprPart getRangeexpr toString)))
 									)
 									
-									(println "predicate-name[" predicate-name "] > predicate-value[" predicate-value "]")
+									(println "DEBUG > predicate-name[" predicate-name "] > predicate-value[" predicate-value "]")
 								)
 							)
 							(println)
+							
+							;;* at the end of processing the XPath 
+							;;	- capture leaf document 
+							;;	- build XPath expr to feed to RESTful exist 
+							
+							
 							
 							(proxy-super outAPredicatelist node) 	;; duplicating adapter 'out' call 
 							
