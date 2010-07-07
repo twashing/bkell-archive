@@ -7,7 +7,7 @@
 	(:require clojure.contrib.io) 
 	(:require clojure.contrib.string) 
   
-  (:require helpers) 
+  (:use helpers) 
   
   (:require xml_handler)
   (:require opts_handler)
