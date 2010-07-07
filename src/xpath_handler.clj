@@ -107,18 +107,6 @@
 						
 						;; (peek, then..) pop 'TLetter' & 'RelativePathexpr' 
 						(def top (stack-peek))
-						
-						;; put in a check to see if we are at the leaf document
-						(println "leaf check [" (. (clojure.contrib.string/trim (. top toString)) equals (:leaf-node (deref xpath-data))) "] > top[" (clojure.contrib.string/trim (. top toString)) "] > leaf-node[" (:leaf-node (deref xpath-data)) "]") 
-						(if (. (clojure.contrib.string/trim (. top toString)) equals (:leaf-node (deref xpath-data)))
-							
-							(println "---> We are at the leaf document " ) 
-							;; TODO - write out context directory 
-							;; TODO - write out leaf document 
-							;; TODO - begin writing out XPath expression 
-							
-						)
-						
 						(stack-pop)	;; pop the token 
 						(stack-pop)	;; LATER - pop the relativepathpart - we'll have to assume that there's a relative_path_part... for now  
 						
@@ -138,6 +126,51 @@
 							(instance? com.interrupt.cc.xpath.node.APredicatelist top ) 
 								'() 
 						)
+						
+						;; put in a check to see if we are at the leaf document
+						(println "leaf check [" (. (clojure.contrib.string/trim (. top toString)) equals (:leaf-node (deref xpath-data))) "] > top[" (clojure.contrib.string/trim (. top toString)) "] > leaf-node[" (:leaf-node (deref xpath-data)) "]") 
+						
+						(if (. (clojure.contrib.string/trim (. top toString)) equals (:leaf-node (deref xpath-data)))
+							
+							 
+							(do 
+								
+								(def thing 
+									(. (deref URL-build) substring 	;; get a substring of our long exist URL 
+												0 
+												(+
+														(. 	(deref URL-build) lastIndexOf 				;; get the position of substring
+															(:context-parent (deref xpath-data)))		 
+														(. (:context-parent (deref xpath-data)) length))	;; plus the char length of the leaf document name 
+											))
+								
+								;; write out context directory 
+								(dosync 
+									(alter xpath-data conj 
+										{	:context-dir thing})
+									
+									;; write out leaf document 
+									(def b_index 	(+	(. 	(deref URL-build) lastIndexOf 
+																				(:context-parent (deref xpath-data)))	
+																				(. (:context-parent (deref xpath-data)) length))) 
+									
+									(println "b_index[" (. (deref URL-build) indexOf "/" (+ 1 b_index)) "]")
+									
+									(alter xpath-data conj 
+										{		:leaf-document-name 
+												(. (deref URL-build) substring 
+													(+ 1 b_index) 
+													(. (deref URL-build) indexOf "/" (+ 1 b_index)))
+										})
+									
+									;; TODO - begin writing out XPath expression 
+									
+								)
+								(println "---> We are at the leaf document[" (deref xpath-data) "]" )
+								
+							)
+						)
+						
 					)
 				)
 				(println "URL-build[" (deref URL-build) "]")
@@ -191,10 +224,10 @@
 			 			})
 			 		
 			 		;; with token, lookup context directory 
-			 		(alter xpath-data conj { :context-dir (working-dir-lookup (:leaf-node (deref xpath-data))) } )
+			 		(alter xpath-data conj { :context-parent (working-dir-lookup (:leaf-node (deref xpath-data))) } )
 			 		
 			 		(println "LEAF token > " (:leaf-node (deref xpath-data)))
-			 		(println "LEAF context directory > " (:context-dir (deref xpath-data)))
+			 		(println "LEAF context parent > " (:context-parent (deref xpath-data)))
 			 )
 			 
 			 ;; 1.2 build an xpath parser 	 
