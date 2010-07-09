@@ -53,6 +53,27 @@
 		(dosync (alter stack empty?)))
 	
 	
+	(defn get-url-midpoint [] 
+		(+ 
+			(. 	(deref URL-build) lastIndexOf 				;; get the position of substring
+				(:context-parent (deref xpath-data)))		 
+			(. (:context-parent (deref xpath-data)) length))	;; plus the char length of the leaf document name
+	)
+	(defn get-xpath-part-midpoint [] 
+			 
+			(let [b_index 
+					(+ 1 
+						(.	(:xpath-string (deref xpath-data)) indexOf 
+							(. (:context-parent (deref xpath-data)) substring 
+								0 
+								(. (:context-parent (deref xpath-data)) indexOf ".")))) ]
+			
+						(. (:xpath-string (deref xpath-data)) substring 
+							(+ 1 (. (:xpath-string (deref xpath-data)) indexOf "/" (+ 1 b_index)))
+						)
+			)	
+	)	
+	
 	;; get DepthFirstAdapter proxy 
 	(defn get-adapter-proxy [] 
 		
@@ -93,7 +114,7 @@
 						;;(. each_predicate apply this)
 						
 						
-						;; ** here we are assuming there's only one predicate in the list 
+						;; ** here we are assuming there's only one predicate in the list - getting the 'name' and 'value' 
 						(def predicate-name 
 								(clojure.contrib.string/replace-str "@" "" 
 									(clojure.contrib.string/replace-str " " "" 
@@ -132,16 +153,15 @@
 						
 						(if (. (clojure.contrib.string/trim (. top toString)) equals (:leaf-node (deref xpath-data)))
 							
-							 
-							(do 
-								
+							(do 	;; IF portion here 
 								(def thing 
 									(. (deref URL-build) substring 	;; get a substring of our long exist URL 
 												0 
-												(+
-														(. 	(deref URL-build) lastIndexOf 				;; get the position of substring
-															(:context-parent (deref xpath-data)))		 
-														(. (:context-parent (deref xpath-data)) length))	;; plus the char length of the leaf document name 
+												(get-url-midpoint)
+												;;(+
+												;;		(. 	(deref URL-build) lastIndexOf 				;; get the position of substring
+												;;			(:context-parent (deref xpath-data)))		 
+												;;		(. (:context-parent (deref xpath-data)) length))	;; plus the char length of the leaf document name 
 											))
 								
 								;; write out context directory 
@@ -155,33 +175,24 @@
 																				(. (:context-parent (deref xpath-data)) length))) 
 									
 									(println "b_index[" (. (deref URL-build) indexOf "/" (+ 1 b_index)) "]")
-									
 									(alter xpath-data conj 
 										{		:leaf-document-name 
 												(. (deref URL-build) substring 
 													(+ 1 b_index) 
 													(. (deref URL-build) indexOf "/" (+ 1 b_index)))
 										})
-									
-									;; TODO - begin writing out XPath expression 
-									
 								)
-								(println "---> We are at the leaf document[" (deref xpath-data) "]" )
-								
-							)
+								(println "---> We are at the leaf document[" (deref xpath-data) "]" ))
+							
+							(dosync (alter xpath-data conj  ;; ELSE, get the child XPath part
+								{	:xpath-part	(get-xpath-part-midpoint) })) 
+							
 						)
-						
 					)
 				)
 				(println "URL-build[" (deref URL-build) "]")
 				(println)
 				(println)
-				
-				
-				;;* at the end of processing the XPath 
-				;;	- capture leaf document 
-				;;	- build XPath expr to feed to RESTful exist 
-				
 				
 				(proxy-super outAPredicatelist node) 	;; duplicating adapter 'out' call 
 				
