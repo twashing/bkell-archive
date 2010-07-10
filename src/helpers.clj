@@ -55,10 +55,27 @@
 	 "account"  "com/interrupt/bookkeeping/account"
 	 "journal"  "com/interrupt/bookkeeping/journal"
 	 "entry"  "com/interrupt/bookkeeping/journal"
+	 "entries"  "com/interrupt/bookkeeping/journal"
 	 "debit"  "com/interrupt/bookkeeping/account"
 	 "credit"  "com/interrupt/bookkeeping/account" 
       }
       token
    )
 )
+
+(defn execute-http-call [ db-full-PARENT db-leaf db-query ] 
+	
+	(println "DEBUG > db-query[" db-query "]")
+	(println "DEBUG > FINAL http query[" (str db-full-PARENT "/" db-leaf "?" (url-encode db-query) ) "]")
+	 
+	;; from DB, get 'token' for 'option' args & value 
+	(def result-XML (clojure.contrib.http.agent/string (clojure.contrib.http.agent/http-agent (str db-full-PARENT "/" db-leaf "?" (url-encode db-query) ) 
+		 :method "GET" 
+		 :header {"Content-Type" "text/xml"} 
+		 
+		 ;; TODO - parse results, check for i) null or ii) multiple results 
+	   ) 
+	))
+)
+
 

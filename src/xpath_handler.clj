@@ -243,19 +243,29 @@
 			 
 			 ;; 1.2 build an xpath parser 	 
 			 (def tree (.parse (get-pushback-parser input-string))) 
-			 (. tree apply (get-adapter-proxy ) )
 			 
 			 ;; 2. token - find i) leaf document to search ii) root & xpath expression to feed to RESTful  exist 
-		   ;; 3. build RESTful call 
-		   ;; 4. make RESTful call
-		   ;; 5. pass result sequece to handler 
-		   
-		   ;; extract the context 
-		   (let [ result_seq []]
-		      
-		      ;; operate with handler
-		      (handler result_seq)
+		   (. tree apply (get-adapter-proxy ) )
+			 
+			 ;; 3. build RESTful call 
+		   (def db-query (str "_wrap=no&_query=" 
+			    "declare default element namespace '"(namespace-lookup (:leaf-node (deref xpath-data))) "';" 
+			    
+			    ;; TODO - check if we need 'and' conditions 
+			    ;; "**/<token>[ @option='option_value' [ and @option='option_value' ] ]" 
+			    "//"(:leaf-node (deref xpath-data))"[ @" predicate-name "='" predicate-value "']" 
+			    )
+			    
 		   )
+		   
+		   
+		   (def db-full-PARENT (str db-base-URL "rootDir/" (:context-dir (deref xpath-data))))
+		   
+		   ;; 4. make RESTful call  &  5. pass result sequece to handler
+		   (handler (xml-seq 
+		   	(execute-http-call db-full-PARENT (:leaf-document-name (deref xpath-data)) db-query))
+		   )
+		   
 		)
    )
 )
