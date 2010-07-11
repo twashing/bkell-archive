@@ -78,7 +78,11 @@
 					(operate-dep-inputtype node 
 																(fn [result_seq] 
 																	
-																	(dosync (alter com.interrupt.bookkeeping/shell conj { :logged-in-user result_seq } )) 
+																	(dosync 
+																		(alter com.interrupt.bookkeeping/shell conj 
+																						{ :logged-in-user result_seq } )
+																		(alter com.interrupt.bookkeeping/shell conj 
+																						{	:previous result_seq })) 
 																	(println "DEBUG > logged-in-user > " ((deref com.interrupt.bookkeeping/shell) :logged-in-user))
 																))
 	    	)
@@ -126,7 +130,8 @@
 		    		(operate-dep-inputtype node (fn [result_seq] 
 		    																	
 		    																	(println "loading... " result_seq)
-		    																	
+		    																	(dosync (alter com.interrupt.bookkeeping/shell conj 
+																							{	:previous result_seq }))
 		    																))
 			    	
 				  )
@@ -141,16 +146,79 @@
 	    (proxy-super outALoadCommand3 node) 
 	    
 	 )
-	 
-	 ;; TODO - 'load' based on xpath 
+	
+	(caseStart [node] 
+			
+			(println "DEBUG > caseStart CALLED > com.interrupt.bookkeeping/shell[" (deref com.interrupt.bookkeeping/shell) "]")
+			
+			(proxy-super inStart node) 
+      
+      (.. node getPExpr (apply this) )
+      (.. node getEOF (apply this) )
+      
+      (proxy-super outStart node) 
+      
+	) 
+	
+	(caseAAddCommand1 [node]		;; public void caseAAddCommand1(AAddCommand1 node)
+				
+				(println "DEBUG > caseAAddCommand1 [" (class (. node getCommandInput)) "]: " node) 
+	    	
+	    	
+        (proxy-super inAAddCommand1 node) 
+	    	
+		    (if (not= (. node getAdd ) nil) 
+		       (.. node getAdd (apply this) ) ) 
+		    
+        (if (not= (. node getLbdepth1 ) nil) 
+		       (.. node getLbdepth1 (apply this) ) ) 
+		    
+		    (if (not= (. node getLbdepth2 ) nil) 
+		       (.. node getLbdepth2 (apply this) ) ) 
+		    
+        (if (not= (. node getCommandInput ) nil) 
+		       (.. node getCommandInput (apply this) )		;; any i) 'load' ii) direct XML or iii) variable should be in the shell's :previous 
+		       
+		    ) 
+		    
+		    (if (not= (. node getRbdepth2 ) nil) 
+		       (.. node getRbdepth2 (apply this) ) ) 
+		    
+				(let [ copy (. node getIlist) ]
+						
+						(doseq [ each_copy copy ] 
+							(do 
+								
+								;; apply each element in the list 
+								(. each_copy apply this)
+								
+								;; check if we are dealing with a 'User'
+								
+								
+							)
+						)
+						
+				)
+        (if (not= (. node getRbdepth1 ) nil) 
+		       (.. node getRbdepth1 (apply this) ) ) 
+		    
+		    
+        
+        (proxy-super outAAddCommand1 node) 
+	    	
+	)
+
 	 ;; TODO - handle variables 
+	 
 	 ;; TODO - ADD command (for registering users too) 
 		  ;; 1. check that there's not an existing user 
 		  ;; 2. add corresponding default group to the new user 
 		  ;; 3. add to aauth.groups 
 		  ;; 4. add to aauth.users 
 		  ;; 5. add Associated Bookkeeping to Group 
+	 
 	 ;; TODO - finish 'print' command 
+	 
 	 
 	)
 )

@@ -174,13 +174,27 @@
 																				(:context-parent (deref xpath-data)))	
 																				(. (:context-parent (deref xpath-data)) length))) 
 									
-									(println "b_index[" (. (deref URL-build) indexOf "/" (+ 1 b_index)) "]")
-									(alter xpath-data conj 
-										{		:leaf-document-name 
-												(. (deref URL-build) substring 
-													(+ 1 b_index) 
-													(. (deref URL-build) indexOf "/" (+ 1 b_index)))
-										})
+									(println "b_index[" b_index "] > +1[" (+ 1 b_index) "] > :context-parent["(:context-parent (deref xpath-data))"] > URL-build["
+											(deref URL-build)"] > indexOf '/' [" (. (deref URL-build) indexOf "/") "] > FINAL["
+											(. (deref URL-build) indexOf "/" (+ 1 b_index))"] > 'if' check["(< (. (deref URL-build) indexOf "/" (+ 1 b_index)) 0 )"]")
+											
+											
+									(if (> (. (deref URL-build) indexOf "/" (+ 1 b_index)) 0 )
+										 
+										(alter xpath-data conj 			;; if context directory is NOT the same as leaf document 
+											{		:leaf-document-name 
+													(. (deref URL-build) substring 
+														(+ 1 b_index) 
+														(. (deref URL-build) indexOf "/" (+ 1 b_index)))
+											})
+										
+										(alter xpath-data conj			;; if context directory IS the same as leaf document 
+											{		:leaf-document-name 
+													(str (:leaf-node (deref xpath-data)) "." predicate-value )
+											}
+										)
+										
+									)
 								)
 								(println "---> We are at the leaf document[" (deref xpath-data) "]" ))
 							
@@ -262,9 +276,9 @@
 		   (def db-full-PARENT (str db-base-URL "rootDir/" (:context-dir (deref xpath-data))))
 		   
 		   ;; 4. make RESTful call  &  5. pass result sequece to handler
-		   (handler (xml-seq 
-		   	(execute-http-call db-full-PARENT (:leaf-document-name (deref xpath-data)) db-query))
-		   )
+		   ;;(handler (xml-seq 
+		   (println "loading..."	(execute-http-call db-full-PARENT (:leaf-document-name (deref xpath-data)) db-query))
+		   ;;)
 		   
 		)
    )
