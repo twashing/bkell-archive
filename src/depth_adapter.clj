@@ -8,6 +8,7 @@
 	(:require clojure.contrib.string) 
   
   (:use helpers) 
+  (:use clojure.xml)
   
   (:require xml_handler)
   (:require opts_handler)
@@ -177,6 +178,7 @@
 		       (.. node getLbdepth2 (apply this) ) ) 
 		    
         (if (not= (. node getCommandInput ) nil) 
+        	 
 		       (.. node getCommandInput (apply this) )		;; any i) 'load' ii) direct XML or iii) variable should be in the shell's :previous 
 		       
 		    ) 
@@ -192,8 +194,23 @@
 								;; apply each element in the list 
 								(. each_copy apply this)
 								
-								;; check if we are dealing with a 'User'
+								(println "Add command > node[" (class (:previous @com.interrupt.bookkeeping/shell ))
+									"] > each_copy["(. each_copy getClass)"] > match?[" 
+									(and 	(instance? com.interrupt.bookkeeping.users.IUsers node)
+												(instance? com.interrupt.bookkeeping.users.IUser each_copy ) ) "]")
 								
+								
+								;; check if we are adding a 'User' to 'Users' 
+								(and 	(instance? com.interrupt.bookkeeping.users.IUsers node)
+											(instance? com.interrupt.bookkeeping.users.IUser each_copy ) 
+									
+									;; 1. check that there's not an existing user 
+									;; 2. add corresponding default group to the new user 
+									;; 3. add to aauth.groups 
+									;; 4. add to aauth.users 
+									;; 5. add Associated Bookkeeping to Group 
+									
+								)
 								
 							)
 						)
@@ -207,19 +224,12 @@
         (proxy-super outAAddCommand1 node) 
 	    	
 	)
-
-	 ;; TODO - handle variables 
-	 
-	 ;; TODO - ADD command (for registering users too) 
-		  ;; 1. check that there's not an existing user 
-		  ;; 2. add corresponding default group to the new user 
-		  ;; 3. add to aauth.groups 
-		  ;; 4. add to aauth.users 
-		  ;; 5. add Associated Bookkeeping to Group 
-	 
-	 ;; TODO - finish 'print' command 
-	 
-	 
+		
+	 	;; TODO - handle variables 
+	 	
+	 	;; TODO - finish 'print' command 
+	 	
+	 	
 	)
 )
 

@@ -277,7 +277,9 @@
 		   
 		   ;; 4. make RESTful call  &  5. pass result sequece to handler
 		   ;;(handler (xml-seq 
-		   (println "loading..."	(execute-http-call db-full-PARENT (:leaf-document-name (deref xpath-data)) db-query))
+		   (println "loading..."	(type				;; (with-out-str (clojure.xml/emit 
+		   													(execute-http-call db-full-PARENT (:leaf-document-name (deref xpath-data)) db-query))
+		   													)
 		   ;;)
 		   
 		)
