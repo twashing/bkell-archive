@@ -17,6 +17,8 @@
   
   (:use helpers) 
   
+  (:require clojure.xml)
+  
 )
 
 
@@ -276,11 +278,19 @@
 		   (def db-full-PARENT (str db-base-URL "rootDir/" (:context-dir (deref xpath-data))))
 		   
 		   ;; 4. make RESTful call  &  5. pass result sequece to handler
+		   
+		   (let [xml_string (execute-http-call db-full-PARENT (:leaf-document-name (deref xpath-data)) db-query)]
+		   		(handler (clojure.xml/parse (ByteArrayInputStream. (.getBytes xml_string "UTF-8"))))
+		   )
+		   
+		   ;;
+		   
 		   ;;(handler (xml-seq 
-		   (println "loading..."	(type				;; (with-out-str (clojure.xml/emit 
-		   													(execute-http-call db-full-PARENT (:leaf-document-name (deref xpath-data)) db-query))
-		   													)
-		   ;;)
+		   ;;			(execute-http-call db-full-PARENT (:leaf-document-name (deref xpath-data)) db-query)))
+		   
+		   
+		   ;;(with-out-str (clojure.xml/emit
+		   ;;))
 		   
 		)
    )

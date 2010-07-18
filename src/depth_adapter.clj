@@ -194,14 +194,14 @@
 								;; apply each element in the list 
 								(. each_copy apply this)
 								
-								(println "Add command > node[" (class (:previous @com.interrupt.bookkeeping/shell ))
+								(println "Add command > 1[" (:tag (:previous @com.interrupt.bookkeeping/shell )) "] > 2[" (= (keyword "users") (:tag (:previous @com.interrupt.bookkeeping/shell ))) 
 									"] > each_copy["(. each_copy getClass)"] > match?[" 
 									(and 	(instance? com.interrupt.bookkeeping.users.IUsers node)
 												(instance? com.interrupt.bookkeeping.users.IUser each_copy ) ) "]")
 								
 								
 								;; check if we are adding a 'User' to 'Users' 
-								(and 	(instance? com.interrupt.bookkeeping.users.IUsers node)
+								(and 	(= (keyword "users") (:tag (:previous @com.interrupt.bookkeeping/shell )))
 											(instance? com.interrupt.bookkeeping.users.IUser each_copy ) 
 									
 									;; 1. check that there's not an existing user 

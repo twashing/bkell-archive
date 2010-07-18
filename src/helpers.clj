@@ -72,13 +72,15 @@
 	(println "DEBUG > FINAL http query[" (str db-full-PARENT "/" db-leaf "?" (url-encode db-query) ) "]")
 	 
 	;; from DB, get 'token' for 'option' args & value 
-	(println "result-XML > "(type (def result-XML (clojure.contrib.http.agent/string (clojure.contrib.http.agent/http-agent (str db-full-PARENT "/" db-leaf "?" (url-encode db-query) ) 
+	(clojure.contrib.http.agent/string (clojure.contrib.http.agent/http-agent (str db-full-PARENT "/" db-leaf "?" (url-encode db-query) ) 
+			
 		 :method "GET" 
 		 :header {"Content-Type" "text/xml"} 
 		 
 		 ;; TODO - parse results, check for i) null or ii) multiple results 
 	   ) 
-	))))
+	)
+	;;(println "result-XML [" result-XML "] > type[" (type result-XML) "]")
 )
 
 
