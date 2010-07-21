@@ -1,7 +1,8 @@
 
 (ns depth_adapter
+  
   (:import com.interrupt.bookkeeping.cc.analysis.DepthFirstAdapter) 
-   
+  
 	(:require clojure.contrib.str-utils2) 
 	(:require clojure.contrib.http.agent) 
 	(:require clojure.contrib.io) 
@@ -31,7 +32,7 @@
 			
 			(doseq [ each_check checks ] 
 				(do
-					(println "DEBUG > each... " each_check) 
+					(println "DEBUG > each > check[" each_check "] > node[" node "]" ) 
 					(each_check node handler_block)
 				)
 			)
@@ -179,30 +180,46 @@
 		    
         (if (not= (. node getCommandInput ) nil) 
         	 
-		       (.. node getCommandInput (apply this) )		;; any i) 'load' ii) direct XML or iii) variable should be in the shell's :previous 
-		       
+        	 (do 
+	        	 
+	        	 ;; any i) 'load' ii) direct XML or iii) variable should be in the shell's :previous 
+			       (.. node getCommandInput (apply this) ) 
+			       
+			       ;; set the :previous result as the :command-context 
+			       (dosync (alter com.interrupt.bookkeeping/shell conj 
+								{ :command-context (:previous @com.interrupt.bookkeeping/shell) } ))
+		       )
 		    ) 
 		    
 		    (if (not= (. node getRbdepth2 ) nil) 
 		       (.. node getRbdepth2 (apply this) ) ) 
 		    
+		    (println)
+		    (println "shell > before arguments > [" @com.interrupt.bookkeeping/shell "]")
 				(let [ copy (. node getIlist) ]
 						
 						(doseq [ each_copy copy ] 
 							(do 
 								
-								;; apply each element in the list 
-								(. each_copy apply this)
-								
-								(println "Add command > 1[" (:tag (:previous @com.interrupt.bookkeeping/shell )) "] > 2[" (= (keyword "users") (:tag (:previous @com.interrupt.bookkeeping/shell ))) 
-									"] > each_copy["(. each_copy getClass)"] > match?[" 
-									(and 	(instance? com.interrupt.bookkeeping.users.IUsers node)
-												(instance? com.interrupt.bookkeeping.users.IUser each_copy ) ) "]")
-								
+;; apply each element in the list 
+(. each_copy apply this)
+(operate-dep-inputtype each_copy 
+			(fn [result_seq] 
+				
+				(dosync 
+					(alter com.interrupt.bookkeeping/shell conj 
+									{	:previous result_seq })) 
+			))
+
+								(println 	"Add command > context[" (:tag (:command-context @com.interrupt.bookkeeping/shell )) 
+													"] > users?[" (= (keyword "users") (:tag (:command-context @com.interrupt.bookkeeping/shell ))) 
+													"] > :previous / each_copy["(:previous @com.interrupt.bookkeeping/shell)"] > match?[" 
+														(and 	(= (keyword "users") (:tag (:command-context @com.interrupt.bookkeeping/shell )))
+																	(= (keyword "user") (:tag (:previous @com.interrupt.bookkeeping/shell )))) "]")
 								
 								;; check if we are adding a 'User' to 'Users' 
-								(and 	(= (keyword "users") (:tag (:previous @com.interrupt.bookkeeping/shell )))
-											(instance? com.interrupt.bookkeeping.users.IUser each_copy ) 
+								(and 	(= (keyword "users") (:tag (:command-context @com.interrupt.bookkeeping/shell )))
+											(= (keyword "user") (:tag (:previous @com.interrupt.bookkeeping/shell ))) 
 									
 									;; 1. check that there's not an existing user 
 									;; 2. add corresponding default group to the new user 

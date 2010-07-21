@@ -22,6 +22,22 @@
   )
 ))
 
+(defn filterSpacesFromXML [text]
+  
+  (clojure.contrib.string/replace-str "< " "<"   
+  	(clojure.contrib.string/replace-str " : " ":"   
+  		(clojure.contrib.string/replace-str " / >" " />"   
+  			(clojure.contrib.string/replace-str "< /" "</"   
+  				(clojure.contrib.string/replace-str "</ " "</"   
+  					(clojure.contrib.string/replace-str " / " "/"   
+  						(clojure.contrib.string/replace-re #"=\"\s" "=\""
+  							(clojure.contrib.string/replace-re #"\s\"" "\"" 
+  								(clojure.contrib.string/replace-str " = " "=" 
+  					text 
+  					)))))))))
+  )
+		
+		
 ;; set get base URL ...TODO - put in config 
 (def db-base-URL "http://localhost:8080/exist/rest/") 
 
