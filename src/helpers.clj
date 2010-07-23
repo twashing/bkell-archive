@@ -1,4 +1,6 @@
-(ns helpers) 
+
+(ns helpers 
+	(:use clj-stacktrace.repl)) 
 
 (defn url-encode 
 	" Replacing these characters http encoded ones 
@@ -85,18 +87,38 @@
 (defn execute-http-call [ db-full-PARENT db-leaf db-query ] 
 	
 	(println "DEBUG > db-query[" db-query "]")
-	(println "DEBUG > FINAL http query[" (str db-full-PARENT "/" db-leaf "?" (url-encode db-query) ) "]")
-	 
-	;; from DB, get 'token' for 'option' args & value 
-	(clojure.contrib.http.agent/string (clojure.contrib.http.agent/http-agent (str db-full-PARENT "/" db-leaf "?" (url-encode db-query) ) 
-			
-		 :method "GET" 
-		 :header {"Content-Type" "text/xml"} 
-		 
-		 ;; TODO - parse results, check for i) null or ii) multiple results 
-	   ) 
+	(let [final-query (str db-full-PARENT "/" db-leaf 
+					(if (not (nil? db-query)) 
+						(str "?" (url-encode db-query))))
+			 ]
+		
+		;; from DB, get 'token' for 'option' args & value 
+		(println "DEBUG > FINAL http query[" final-query "]")
+		
+		(let [agt (clojure.contrib.http.agent/http-agent   
+								
+							 	;; TODO - parse results, check for i) null or ii) multiple results 
+						  	final-query
+						  	:method "GET" 
+							 	:header {"Content-Type" "text/xml"} 
+							 	)]
+				(if (clojure.contrib.http.agent/error? agt)
+					(str "<error method='GET' query='" final-query "' errors='" (agent-errors agt) "' />")
+					(clojure.contrib.http.agent/string agt))
+		)
+		
+		
+		;;(clojure.contrib.http.agent/string (clojure.contrib.http.agent/http-agent   
+				
+			 	;; TODO - parse results, check for i) null or ii) multiple results 
+		;;  	final-query
+		;;  	:method "GET" 
+		;;	 	:header {"Content-Type" "text/xml"} 
+		;;	 	)
+		;;)
 	)
 	;;(println "result-XML [" result-XML "] > type[" (type result-XML) "]")
 )
+
 
 

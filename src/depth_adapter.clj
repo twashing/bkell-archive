@@ -201,16 +201,17 @@
 						(doseq [ each_copy copy ] 
 							(do 
 								
-;; apply each element in the list 
-(. each_copy apply this)
-(operate-dep-inputtype each_copy 
-			(fn [result_seq] 
-				
-				(dosync 
-					(alter com.interrupt.bookkeeping/shell conj 
-									{	:previous result_seq })) 
-			))
-
+								;; apply each element in the list 
+								(. each_copy apply this)
+								(operate-dep-inputtype each_copy 
+											(fn [result_seq] 
+												
+												(dosync 
+													(alter com.interrupt.bookkeeping/shell conj 
+																	{	:previous result_seq })) 
+											))
+								
+								;; DEBUG 
 								(println 	"Add command > context[" (:tag (:command-context @com.interrupt.bookkeeping/shell )) 
 													"] > users?[" (= (keyword "users") (:tag (:command-context @com.interrupt.bookkeeping/shell ))) 
 													"] > :previous / each_copy["(:previous @com.interrupt.bookkeeping/shell)"] > match?[" 
@@ -222,10 +223,46 @@
 											(= (keyword "user") (:tag (:previous @com.interrupt.bookkeeping/shell ))) 
 									
 									;; 1. check that there's not an existing user 
+									(let [check-user
+													(execute-http-call 	;; TODO - put in 404 check 
+														(str db-base-URL db-system-DIR) 
+														(str  																				;; stringing together lookup URL leaf  
+															(working-dir-lookup (:tag (:previous @com.interrupt.bookkeeping/shell ))) 
+																"/" 
+																(str 
+																	(name (:tag (:previous @com.interrupt.bookkeeping/shell ))) 
+																	"." 
+																	(:id (:attrs (:previous @com.interrupt.bookkeeping/shell ))))
+																"/"
+																(str 			;; repeating user name as leaf document 
+																	(name (:tag (:previous @com.interrupt.bookkeeping/shell ))) 
+																	"." 
+																	(:id (:attrs (:previous @com.interrupt.bookkeeping/shell )))))
+														nil
+													)
+											 ]
+										
+										(println "check-user[" check-user "]")
+										(let [ parsed-check (clojure.xml/parse (ByteArrayInputStream. (.getBytes check-user "UTF-8")))] 
+											
+											(println "parsed-checked[" parsed-check "]")
+											(if	(and	(= (keyword "user") (:tag parsed-check))
+														(= 	(:id (:attr (:previous @com.interrupt.bookkeeping/shell ))) 	;; checking incoming user against existing user 
+																(:id (:attrs parsed-check)))
+													)
+													(println "user[" (:id (:attrs parsed-check)) "] ALREADY exists") ;; TODO - throw error to user 
+													(println "ADDING user[" (:id (:attrs parsed-check)) "]")			;; TODO - go through add user process 
+													
+											)
+											
+										)
+										
+									)
+									
 									;; 2. add corresponding default group to the new user 
 									;; 3. add to aauth.groups 
 									;; 4. add to aauth.users 
-									;; 5. add Associated Bookkeeping to Group 
+									;; 5. add associated Bookkeeping to Group 
 									
 								)
 								
