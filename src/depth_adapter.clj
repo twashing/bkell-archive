@@ -32,7 +32,7 @@
 			
 			(doseq [ each_check checks ] 
 				(do
-					(println "DEBUG > each > check[" each_check "] > node[" node "]" ) 
+					;;(println "DEBUG > each > check[" each_check "] > node[" node "]" ) 
 					(each_check node handler_block)
 				)
 			)
@@ -251,18 +251,53 @@
 																(:id (:attrs parsed-check)))
 													)
 													(println "user[" (:id (:attrs parsed-check)) "] ALREADY exists") ;; TODO - throw error to user 
-													(println "ADDING user[" (:id (:attrs parsed-check)) "]")			;; TODO - go through add user process 
-													
+													(do 
+														
+														(println "ADDING user[" (:id (:attrs parsed-check)) "]")			;; TODO - go through add user process 
+														
+														;; 2. add to aauth.groups and corresponding default group to the new user
+														(let [aauth-group (clojure.xml/parse "etc/xml/add.group.xml")] 
+															
+															(println "...loading add.group.xml[" aauth-group "]")
+															(println "CREATED group" (assoc aauth-group 
+																																:attrs 	{	
+																																					:id (str "group." (:id (:attrs parsed-check))) , 
+																																					:name (str "group." (:id (:attrs parsed-check))) , 
+																																					:owner (:id (:attrs parsed-check)) 
+																																				},  
+																														 		:content 	[ 
+																														 								{ 
+																														 									:tag "user", 
+																														 									:attrs 	{ 
+																												 																:xmlns "com/interrupt/bookkeeping/users", 
+																												 																:id (:id (:attrs parsed-check)) 
+																												 															}
+																														 								} 
+																														 						 	] 
+																									 			))
+																;; TODO ... PUT to eXist
+															
+														)
+														
+														
+														;; 3. add to aauth.users ... PUT to eXist
+														
+														
+														;; 4. profile Details ... PUT to eXist
+														
+														
+														;; 5. add associated Bookkeeping to Group ... PUT to eXist
+														(println "...loading default.bookkeeping.xml[" (clojure.xml/parse "etc/xml/default.bookkeeping.xml") "]")
+														
+														
+													)
 											)
 											
 										)
 										
 									)
 									
-									;; 2. add corresponding default group to the new user 
-									;; 3. add to aauth.groups 
-									;; 4. add to aauth.users 
-									;; 5. add associated Bookkeeping to Group 
+									 
 									
 								)
 								

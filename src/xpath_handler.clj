@@ -198,7 +198,8 @@
 										
 									)
 								)
-								(println "---> We are at the leaf document[" (deref xpath-data) "]" ))
+								;;(println "---> We are at the leaf document[" (deref xpath-data) "]" )
+								)
 							
 							(dosync (alter xpath-data conj  ;; ELSE, get the child XPath part
 								{	:xpath-part	(get-xpath-part-midpoint) })) 
@@ -234,7 +235,7 @@
 		   ;; 1. filter out <spaces> and ` 
 		   (def input-string (filter-xpath-input (.. node getCommandInput toString)))
 		   (println "input-string \t[" input-string "]")
-		   (println "stripped XPath \t[" (clojure.contrib.string/replace-re #"\\[[^\\]]*\\]" "" input-string) "]" )
+		   ;;(println "stripped XPath \t[" (clojure.contrib.string/replace-re #"\\[[^\\]]*\\]" "" input-string) "]" )
 		   
 			 ;; 1.1 
 			 (dosync 

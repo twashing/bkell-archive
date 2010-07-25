@@ -49,8 +49,7 @@
 ;; working directory lookup ...TODO - put these lookups into config 
 (defn working-dir-lookup [token]
    
-   (println "DEBUG > 'working-dir-lookup' CALLED > ["(keyword token)"]" )
-   
+   ;;(println "DEBUG > 'working-dir-lookup' CALLED > ["(keyword token)"]" )
    (  {	 :group "aauthentication.main.authentication/groups.aauth.groups"
 				 :user "aauthentication.main.authentication/users.aauth.users"
 				 :users "aauthentication.main.authentication/users.aauth.users"
@@ -69,8 +68,7 @@
 (defn namespace-lookup 
    [token]
    
-   (println "DEBUG > 'namespace-lookup' CALLED > ["token"]" )
-   
+   ;;(println "DEBUG > 'namespace-lookup' CALLED > ["token"]" )
    (  {	 "group" "com/interrupt/bookkeeping/users"
 	 "user" "com/interrupt/bookkeeping/users"
 	 "account"  "com/interrupt/bookkeeping/account"
@@ -106,18 +104,7 @@
 					(str "<error method='GET' query='" final-query "' errors='" (agent-errors agt) "' />")
 					(clojure.contrib.http.agent/string agt))
 		)
-		
-		
-		;;(clojure.contrib.http.agent/string (clojure.contrib.http.agent/http-agent   
-				
-			 	;; TODO - parse results, check for i) null or ii) multiple results 
-		;;  	final-query
-		;;  	:method "GET" 
-		;;	 	:header {"Content-Type" "text/xml"} 
-		;;	 	)
-		;;)
 	)
-	;;(println "result-XML [" result-XML "] > type[" (type result-XML) "]")
 )
 
 
