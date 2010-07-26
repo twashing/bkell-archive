@@ -82,29 +82,24 @@
    )
 )
 
-(defn execute-http-call [ db-full-PARENT db-leaf db-query ] 
-	
-	(println "DEBUG > db-query[" db-query "]")
-	(let [final-query (str db-full-PARENT "/" db-leaf 
-					(if (not (nil? db-query)) 
-						(str "?" (url-encode db-query))))
-			 ]
+(defn execute-http-call [ full-URL http-method header-hash xml-content ] 
 		
 		;; from DB, get 'token' for 'option' args & value 
-		(println "DEBUG > FINAL http query[" final-query "]")
+		(println "DEBUG > FINAL http query[" full-URL "]")
 		
 		(let [agt (clojure.contrib.http.agent/http-agent   
 								
 							 	;; TODO - parse results, check for i) null or ii) multiple results 
-						  	final-query
-						  	:method "GET" 
-							 	:header {"Content-Type" "text/xml"} 
+						  	full-URL 
+						  	:method http-method 
+							 	:header header-hash 
+							 	:body xml-content 
 							 	)]
 				(if (clojure.contrib.http.agent/error? agt)
-					(str "<error method='GET' query='" final-query "' errors='" (agent-errors agt) "' />")
+					(str "<error method='GET' query='" full-URL "' errors='" (agent-errors agt) "' />")
 					(clojure.contrib.http.agent/string agt))
 		)
-	)
+	;;)
 )
 
 

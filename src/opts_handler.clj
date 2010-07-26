@@ -71,7 +71,12 @@
 						    
 					   )
 					   
-					   (handler (xml-seq (execute-http-call db-full-PARENT db-leaf db-query)))
+					   (handler (xml-seq 
+					   		(execute-http-call 	(str db-full-PARENT "/" db-leaf (str "?" (url-encode db-query))) 
+					   												"GET" 
+					   												{"Content-Type" "text/xml"}
+					   												nil )
+					   					))
 					   
 					)
 		     )

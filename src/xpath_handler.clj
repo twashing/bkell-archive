@@ -280,18 +280,14 @@
 		   
 		   ;; 4. make RESTful call  &  5. pass result sequece to handler
 		   
-		   (let [xml_string (execute-http-call db-full-PARENT (:leaf-document-name (deref xpath-data)) db-query)]
-		   		(handler (clojure.xml/parse (ByteArrayInputStream. (.getBytes xml_string "UTF-8"))))
-		   )
-		   
-		   ;;
-		   
-		   ;;(handler (xml-seq 
-		   ;;			(execute-http-call db-full-PARENT (:leaf-document-name (deref xpath-data)) db-query)))
-		   
-		   
-		   ;;(with-out-str (clojure.xml/emit
-		   ;;))
+				(let [xml_string 
+				   		(execute-http-call 
+				   					(str db-full-PARENT "/" (:leaf-document-name (deref xpath-data)) (str "?" (url-encode db-query)))
+				   					"GET" 
+				   					{"Content-Type" "text/xml"}
+				   					nil 
+				   		)] 
+ 					(handler (clojure.xml/parse (ByteArrayInputStream. (.getBytes xml_string "UTF-8")))))
 		   
 		)
    )

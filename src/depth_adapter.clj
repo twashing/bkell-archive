@@ -15,6 +15,8 @@
   (:require opts_handler)
   (:require xpath_handler)
   
+  (:require commands.add)
+  
 )
 
 
@@ -222,83 +224,7 @@
 								(and 	(= (keyword "users") (:tag (:command-context @com.interrupt.bookkeeping/shell )))
 											(= (keyword "user") (:tag (:previous @com.interrupt.bookkeeping/shell ))) 
 									
-									;; 1. check that there's not an existing user 
-									(let [check-user
-													(execute-http-call 	;; TODO - put in 404 check 
-														(str db-base-URL db-system-DIR) 
-														(str  																				;; stringing together lookup URL leaf  
-															(working-dir-lookup (:tag (:previous @com.interrupt.bookkeeping/shell ))) 
-																"/" 
-																(str 
-																	(name (:tag (:previous @com.interrupt.bookkeeping/shell ))) 
-																	"." 
-																	(:id (:attrs (:previous @com.interrupt.bookkeeping/shell ))))
-																"/"
-																(str 			;; repeating user name as leaf document 
-																	(name (:tag (:previous @com.interrupt.bookkeeping/shell ))) 
-																	"." 
-																	(:id (:attrs (:previous @com.interrupt.bookkeeping/shell )))))
-														nil
-													)
-											 ]
-										
-										(println "check-user[" check-user "]")
-										(let [ parsed-check (clojure.xml/parse (ByteArrayInputStream. (.getBytes check-user "UTF-8")))] 
-											
-											(println "parsed-checked[" parsed-check "]")
-											(if	(and	(= (keyword "user") (:tag parsed-check))
-														(= 	(:id (:attr (:previous @com.interrupt.bookkeeping/shell ))) 	;; checking incoming user against existing user 
-																(:id (:attrs parsed-check)))
-													)
-													(println "user[" (:id (:attrs parsed-check)) "] ALREADY exists") ;; TODO - throw error to user 
-													(do 
-														
-														(println "ADDING user[" (:id (:attrs parsed-check)) "]")			;; TODO - go through add user process 
-														
-														;; 2. add to aauth.groups and corresponding default group to the new user
-														(let [aauth-group (clojure.xml/parse "etc/xml/add.group.xml")] 
-															
-															(println "...loading add.group.xml[" aauth-group "]")
-															(println "CREATED group" (assoc aauth-group 
-																																:attrs 	{	
-																																					:id (str "group." (:id (:attrs parsed-check))) , 
-																																					:name (str "group." (:id (:attrs parsed-check))) , 
-																																					:owner (:id (:attrs parsed-check)) 
-																																				},  
-																														 		:content 	[ 
-																														 								{ 
-																														 									:tag "user", 
-																														 									:attrs 	{ 
-																												 																:xmlns "com/interrupt/bookkeeping/users", 
-																												 																:id (:id (:attrs parsed-check)) 
-																												 															}
-																														 								} 
-																														 						 	] 
-																									 			))
-																;; TODO ... PUT to eXist
-															
-														)
-														
-														
-														;; 3. add to aauth.users ... PUT to eXist
-														
-														
-														;; 4. profile Details ... PUT to eXist
-														
-														
-														;; 5. add associated Bookkeeping to Group ... PUT to eXist
-														(println "...loading default.bookkeeping.xml[" (clojure.xml/parse "etc/xml/default.bookkeeping.xml") "]")
-														
-														
-													)
-											)
-											
-										)
-										
-									)
-									
-									 
-									
+									(add-user db-base-URL db-system-DIR)
 								)
 								
 							)
