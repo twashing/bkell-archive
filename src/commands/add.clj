@@ -64,7 +64,7 @@
 																			)
 																]
 																
-													(println "CREATED group " db-group )
+													(println "CREATED group [" db-group "] / XML[" (with-out-str (clojure.xml/emit db-group)) "]" )
 													
 													;; PUT to eXist
 													(execute-http-call 		
@@ -72,7 +72,8 @@
 																																"/" "group." (:id (:attrs (:previous @com.interrupt.bookkeeping/shell ))) 
 																																"/" "group." (:id (:attrs (:previous @com.interrupt.bookkeeping/shell ))))
 																								"PUT" 
-																								{"Content-Type" "text/xml"}
+																								{	"Content-Type" "text/xml"
+																									"Authorization" "Basic YWRtaW46"}
 																								(with-out-str (clojure.xml/emit db-group))
 																							
 														

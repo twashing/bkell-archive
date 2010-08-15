@@ -43,6 +43,7 @@
 ;; set get base URL ...TODO - put in config 
 (def db-base-URL "http://localhost:8080/exist/rest/") 
 
+
 ;; set root/system dir fragment ...TODO - put in config 
 (def db-system-DIR "rootDir/system.main.system/") 
 
