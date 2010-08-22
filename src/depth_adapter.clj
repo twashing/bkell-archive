@@ -3,7 +3,7 @@
   
   (:import com.interrupt.bookkeeping.cc.analysis.DepthFirstAdapter) 
   
-	(:require clojure.contrib.str-utils2) 
+	;;(:require clojure.contrib.str-utils2) 
 	(:require clojure.contrib.http.agent) 
 	(:require clojure.contrib.io) 
 	(:require clojure.contrib.string) 

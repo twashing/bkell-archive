@@ -1,6 +1,8 @@
 
 (ns helpers 
-	(:use clj-stacktrace.repl)) 
+	(:use clj-stacktrace.repl)
+	(:require clojure.contrib.string)
+	(:require clojure.contrib.http.agent)) 
 
 (defn url-encode 
 	" Replacing these characters http encoded ones 
@@ -86,7 +88,7 @@
 (defn execute-http-call [ full-URL http-method header-hash xml-content ] 
 		
 		;; from DB, get 'token' for 'option' args & value 
-		(println "DEBUG > FINAL http query[" full-URL "]")
+		(println "DEBUG > FINAL http query[" full-URL "] > http-method[" http-method "] > header-hash[" header-hash "] > xml-content[" xml-content "]")
 		
 		(let [agt (clojure.contrib.http.agent/http-agent   
 								
@@ -100,7 +102,6 @@
 					(str "<error method='GET' query='" full-URL "' errors='" (agent-errors agt) "' />")
 					(clojure.contrib.http.agent/string agt))
 		)
-	;;)
 )
 
 
