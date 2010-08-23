@@ -1,3 +1,6 @@
 [submodule "vendor/clj-stacktrace"]
 	path = vendor/clj-stacktrace
 	url = http://github.com/mmcgrana/clj-stacktrace.git
+[submodule "vendor/clojure-http-client"]
+	path = vendor/clojure-http-client
+	url = git://github.com/technomancy/clojure-http-client.git

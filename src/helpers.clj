@@ -2,7 +2,8 @@
 (ns helpers 
 	(:use clj-stacktrace.repl)
 	(:require clojure.contrib.string)
-	(:require clojure.contrib.http.agent)) 
+	(:require clojure.contrib.http.agent)
+	(:require clojure-http.resourcefully)) 
 
 (defn url-encode 
 	" Replacing these characters http encoded ones 
@@ -90,17 +91,23 @@
 		;; from DB, get 'token' for 'option' args & value 
 		(println "DEBUG > FINAL http query[" full-URL "] > http-method[" http-method "] > header-hash[" header-hash "] > xml-content[" xml-content "]")
 		
-		(let [agt (clojure.contrib.http.agent/http-agent   
-								
-							 	;; TODO - parse results, check for i) null or ii) multiple results 
-						  	full-URL 
-						  	:method http-method 
-							 	:header header-hash 
-							 	:body xml-content 
-							 	)]
-				(if (clojure.contrib.http.agent/error? agt)
-					(str "<error method='GET' query='" full-URL "' errors='" (agent-errors agt) "' />")
-					(clojure.contrib.http.agent/string agt))
+		(cond 
+			(. "GET" equals http-method) 
+				(let [agt (clojure.contrib.http.agent/http-agent   
+										
+									 	;; TODO - parse results, check for i) null or ii) multiple results 
+								  	full-URL 
+								  	:method http-method 
+									 	:header header-hash 
+									 	:body xml-content 
+									 	)]
+						(if (clojure.contrib.http.agent/error? agt)
+							(str "<error method='GET' query='" full-URL "' errors='" (agent-errors agt) "' />")
+							(clojure.contrib.http.agent/string agt))
+				)
+			
+			(. "PUT" equals http-method)
+				(clojure-http.resourcefully/put full-URL header-hash xml-content)
 		)
 )
 
