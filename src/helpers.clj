@@ -3,7 +3,8 @@
 	(:use clj-stacktrace.repl)
 	(:require clojure.contrib.string)
 	(:require clojure.contrib.http.agent)
-	(:require clojure-http.resourcefully)) 
+	(:require clojure-http.resourcefully)
+	(:require clojure.pprint)) 
 
 (defn url-encode 
 	" Replacing these characters http encoded ones 
@@ -107,7 +108,10 @@
 				)
 			
 			(. "PUT" equals http-method)
-				(clojure-http.resourcefully/put full-URL header-hash xml-content)
+				(try 
+					(clojure-http.resourcefully/put full-URL header-hash xml-content)
+					(catch Exception e { :msg "Error" :code 500 :dmsg (. e getMessage ) } )
+				)
 		)
 )
 
