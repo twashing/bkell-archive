@@ -1,5 +1,5 @@
 
-(ns com.interrupt.bookkeeping
+(ns bkell
    (:import com.interrupt.bookkeeping.cc.parser.Parser) 
    (:import com.interrupt.bookkeeping.cc.lexer.Lexer) 
    (:import java.io.PushbackReader) 
@@ -18,20 +18,18 @@
 	
 	(def shell (ref {})) 	;; the shell and memory 
 	
-	(loop [ dfadapter handler ] 	;; loop on input (shell) until 'exit' 
+	(loop [ dfadapter handler ] 	;; binds 'handler' to 'dfadapter' 
 		
 		(def tree (.parse (get-parser))) 
 		(. tree apply dfadapter )
 		
-		;; loop unless exit 
-		(if (true? true) 
+		(if (true? true)				;; loop unless exit 
 		   (recur dfadapter)
 		)
 	)
 	
 )
 
-(use 'depth_adapter)
-
-(bkell (get-depth-adapter))
+;;(use 'depth_adapter)
+;;(bkell (get-depth-adapter))
 

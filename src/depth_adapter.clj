@@ -83,11 +83,11 @@
 																(fn [result_seq] 
 																	
 																	(dosync 
-																		(alter com.interrupt.bookkeeping/shell conj 
+																		(alter bkell/shell conj 
 																						{ :logged-in-user result_seq } )
-																		(alter com.interrupt.bookkeeping/shell conj 
+																		(alter bkell/shell conj 
 																						{	:previous result_seq })) 
-																	(println "DEBUG > logged-in-user > " ((deref com.interrupt.bookkeeping/shell) :logged-in-user))
+																	(println "DEBUG > logged-in-user > " ((deref bkell/shell) :logged-in-user))
 																))
 	    	)
 	    )
@@ -125,7 +125,7 @@
 				  (.. node getCommandInput (apply this) ) 
 				  
 				  
-					(if (not (contains? (deref com.interrupt.bookkeeping/shell) :logged-in-user )) 	;; check if there is a 'logged-in-user' 
+					(if (not (contains? (deref bkell/shell) :logged-in-user )) 	;; check if there is a 'logged-in-user' 
 		    		
 		    		;;throw an error if no 'logged-in-user' 
 		    		(println "ERROR - NO logged-in-user") 
@@ -134,7 +134,7 @@
 		    		(operate-dep-inputtype node (fn [result_seq] 
 		    																	
 		    																	(println "loading... " result_seq)
-		    																	(dosync (alter com.interrupt.bookkeeping/shell conj 
+		    																	(dosync (alter bkell/shell conj 
 																							{	:previous result_seq }))
 		    																))
 			    	
@@ -153,7 +153,7 @@
 	
 	(caseStart [node] 
 			
-			(println "DEBUG > caseStart CALLED > com.interrupt.bookkeeping/shell[" (deref com.interrupt.bookkeeping/shell) "]")
+			(println "DEBUG > caseStart CALLED > bkell/shell[" (deref bkell/shell) "]")
 			
 			(proxy-super inStart node) 
       
@@ -188,8 +188,8 @@
 			       (.. node getCommandInput (apply this) ) 
 			       
 			       ;; set the :previous result as the :command-context 
-			       (dosync (alter com.interrupt.bookkeeping/shell conj 
-								{ :command-context (:previous @com.interrupt.bookkeeping/shell) } ))
+			       (dosync (alter bkell/shell conj 
+								{ :command-context (:previous @bkell/shell) } ))
 		       )
 		    ) 
 		    
@@ -197,7 +197,7 @@
 		       (.. node getRbdepth2 (apply this) ) ) 
 		    
 		    (println)
-		    (println "shell > before arguments > [" @com.interrupt.bookkeeping/shell "]")
+		    (println "shell > before arguments > [" @bkell/shell "]")
 				(let [ copy (. node getIlist) ]
 						
 						(doseq [ each_copy copy ] 
@@ -209,20 +209,20 @@
 											(fn [result_seq] 
 												
 												(dosync 
-													(alter com.interrupt.bookkeeping/shell conj 
+													(alter bkell/shell conj 
 																	{	:previous result_seq })) 
 											))
 								
 								;; DEBUG 
-								(println 	"Add command > context[" (:tag (:command-context @com.interrupt.bookkeeping/shell )) 
-													"] > users?[" (= (keyword "users") (:tag (:command-context @com.interrupt.bookkeeping/shell ))) 
-													"] > :previous / each_copy["(:previous @com.interrupt.bookkeeping/shell)"] > match?[" 
-														(and 	(= (keyword "users") (:tag (:command-context @com.interrupt.bookkeeping/shell )))
-																	(= (keyword "user") (:tag (:previous @com.interrupt.bookkeeping/shell )))) "]")
+								(println 	"Add command > context[" (:tag (:command-context @bkell/shell )) 
+													"] > users?[" (= (keyword "users") (:tag (:command-context @bkell/shell ))) 
+													"] > :previous / each_copy["(:previous @bkell/shell)"] > match?[" 
+														(and 	(= (keyword "users") (:tag (:command-context @bkell/shell )))
+																	(= (keyword "user") (:tag (:previous @bkell/shell )))) "]")
 								
 								;; check if we are adding a 'User' to 'Users' 
-								(and 	(= (keyword "users") (:tag (:command-context @com.interrupt.bookkeeping/shell )))
-											(= (keyword "user") (:tag (:previous @com.interrupt.bookkeeping/shell ))) 
+								(and 	(= (keyword "users") (:tag (:command-context @bkell/shell )))
+											(= (keyword "user") (:tag (:previous @bkell/shell ))) 
 									
 									(add-user db-base-URL db-system-DIR)
 								)

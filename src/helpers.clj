@@ -94,17 +94,9 @@
 		
 		(cond 
 			(. "GET" equals http-method) 
-				(let [agt (clojure.contrib.http.agent/http-agent   
-										
-									 	;; TODO - parse results, check for i) null or ii) multiple results 
-								  	full-URL 
-								  	:method http-method 
-									 	:header header-hash 
-									 	:body xml-content 
-									 	)]
-						(if (clojure.contrib.http.agent/error? agt)
-							(str "<error method='GET' query='" full-URL "' errors='" (agent-errors agt) "' />")
-							(clojure.contrib.http.agent/string agt))
+				(try 
+					(clojure-http.resourcefully/get full-URL header-hash xml-content)
+					(catch Exception e { :msg "Error" :code 500 :dmsg (. e getMessage ) } )
 				)
 			
 			(. "PUT" equals http-method)

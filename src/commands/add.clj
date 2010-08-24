@@ -6,17 +6,17 @@
 							(str 
 								db-base-URL 
 								db-system-DIR 
-								(working-dir-lookup (:tag (:previous @com.interrupt.bookkeeping/shell ))) 	;; stringing together lookup URL leaf 
+								(working-dir-lookup (:tag (:previous @bkell/shell ))) 	;; stringing together lookup URL leaf 
 								"/" 
 								(str 
-									(name (:tag (:previous @com.interrupt.bookkeeping/shell ))) 
+									(name (:tag (:previous @bkell/shell ))) 
 									"." 
-									(:id (:attrs (:previous @com.interrupt.bookkeeping/shell ))))
+									(:id (:attrs (:previous @bkell/shell ))))
 								"/"
 								(str 			;; repeating user name as leaf document 
-									(name (:tag (:previous @com.interrupt.bookkeeping/shell ))) 
+									(name (:tag (:previous @bkell/shell ))) 
 									"." 
-									(:id (:attrs (:previous @com.interrupt.bookkeeping/shell )))))
+									(:id (:attrs (:previous @bkell/shell )))))
 								"GET" 
 								{"Content-Type" "text/xml"} 
 								nil
@@ -29,7 +29,7 @@
 				
 				(println "parsed-checked[" parsed-check "]")
 				(if	(and	(= (keyword "user") (:tag parsed-check))
-							(= 	(:id (:attr (:previous @com.interrupt.bookkeeping/shell ))) 	;; checking incoming user against existing user 
+							(= 	(:id (:attr (:previous @bkell/shell ))) 	;; checking incoming user against existing user 
 									(:id (:attrs parsed-check)))
 						)
 						(println "user[" (:id (:attrs parsed-check)) "] ALREADY exists") ;; TODO - throw error to user 
@@ -42,22 +42,22 @@
 								
 								(println "...loading add.group.xml[" aauth-group "]")
 								(let [local-id 	(str 
-													(name (:tag (:previous @com.interrupt.bookkeeping/shell ))) 
+													(name (:tag (:previous @bkell/shell ))) 
 													"." 
-													(:id (:attrs (:previous @com.interrupt.bookkeeping/shell ))))] 
+													(:id (:attrs (:previous @bkell/shell ))))] 
 											
 											(let [db-group 	(assoc aauth-group 
 																							:attrs 	{	
 																												:id local-id , 
 																												:name local-id , 
-																												:owner (:id (:attrs (:previous @com.interrupt.bookkeeping/shell ))) 
+																												:owner (:id (:attrs (:previous @bkell/shell ))) 
 																											}, 
 																					 		:content 	[ 
 																					 								{ 
 																					 									:tag (keyword "user"), 
 																					 									:attrs 	{ 
 																			 																:xmlns "com/interrupt/bookkeeping/users", 
-																			 																:id (:id (:attrs (:previous @com.interrupt.bookkeeping/shell ))) 
+																			 																:id (:id (:attrs (:previous @bkell/shell ))) 
 																			 															}
 																					 								} 
 																					 						 	] 
@@ -69,8 +69,8 @@
 													;; PUT to eXist
 													(execute-http-call 		
 																								(str db-base-URL db-system-DIR (working-dir-lookup :group)
-																																"/" "group." (:id (:attrs (:previous @com.interrupt.bookkeeping/shell ))) 
-																																"/" "group." (:id (:attrs (:previous @com.interrupt.bookkeeping/shell ))))
+																																"/" "group." (:id (:attrs (:previous @bkell/shell ))) 
+																																"/" "group." (:id (:attrs (:previous @bkell/shell ))))
 																								"PUT" 
 																								{	"Content-Type" "text/xml"
 																									"Authorization" "Basic YWRtaW46"}
