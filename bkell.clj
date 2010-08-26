@@ -16,14 +16,14 @@
 (defn bkell [handler] 
 	
 	
-	(def shell (ref {})) 	;; the shell and memory 
+	(def shell (ref { :active true })) 	;; the shell and memory 
 	
 	(loop [ dfadapter handler ] 	;; binds 'handler' to 'dfadapter' 
 		
 		(def tree (.parse (get-parser))) 
 		(. tree apply dfadapter )
 		
-		(if (true? true)				;; loop unless exit 
+		(if (true? (:active (deref bkell/shell)))				;; loop unless exit 
 		   (recur dfadapter)
 		)
 	)

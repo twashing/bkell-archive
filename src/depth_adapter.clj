@@ -55,7 +55,10 @@
 	    (proxy-super inAExitCommand4 node) 
 	    (proxy-super outAExitCommand4 node) 
 			
-	    (. System exit 0) 
+			(dosync 
+				(alter bkell/shell conj 	;; make the shell inactive to disable loop 
+					{	:active false }))
+	    
 	 )
 
 	 

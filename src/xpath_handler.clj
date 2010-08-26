@@ -183,12 +183,18 @@
 											
 									(if (> (. (deref URL-build) indexOf "/" (+ 1 b_index)) 0 )
 										 
-										(alter xpath-data conj 			;; if context directory is NOT the same as leaf document 
-											{		:leaf-document-name 
-													(. (deref URL-build) substring 
-														(+ 1 b_index) 
-														(. (deref URL-build) indexOf "/" (+ 1 b_index)))
-											})
+										(let 	[	leaf-doc 
+														(. (deref URL-build) substring 
+															(+ 1 b_index) 
+															(. (deref URL-build) indexOf "/" (+ 1 b_index)))
+													] 
+											(alter xpath-data conj 			;; if context directory is NOT the same as leaf document 
+												{		:leaf-document-name (str leaf-doc "/" leaf-doc)
+														;;(. (deref URL-build) substring 
+														;;	(+ 1 b_index) 
+														;;	(. (deref URL-build) indexOf "/" (+ 1 b_index)))
+												})
+										)
 										
 										(alter xpath-data conj			;; if context directory IS the same as leaf document 
 											{		:leaf-document-name 
@@ -198,7 +204,7 @@
 										
 									)
 								)
-								;;(println "---> We are at the leaf document[" (deref xpath-data) "]" )
+								(println "---> We are at the leaf document[" (deref xpath-data) "]" )
 								)
 							
 							(dosync (alter xpath-data conj  ;; ELSE, get the child XPath part
@@ -280,18 +286,28 @@
 		   
 		   ;; 4. make RESTful call  &  5. pass result sequece to handler
 		   
-				(let [xml_string 
+				(let [result-hash 
 				   		(execute-http-call 
-				   					(str db-full-PARENT "/" (:leaf-document-name (deref xpath-data)) (str "?" (url-encode db-query)))
+				   					;;(str db-full-PARENT "/" (:leaf-document-name (deref xpath-data)) (str "?" (url-encode db-query)))
+				   					(str db-full-PARENT "/" (:leaf-document-name (deref xpath-data)) (str "?" db-query))
 				   					"GET" 
 				   					{"Content-Type" "text/xml"}
 				   					nil 
 				   		)] 
- 					(handler (clojure.xml/parse (ByteArrayInputStream. (.getBytes xml_string "UTF-8")))))
-		   
+ 					(let [	xml-string 
+	 								(clojure.contrib.str-utils/str-join nil 
+										(:body-seq result-hash ))   
+								]
+	 					
+	 					(println "xpath_handler > string > " xml-string )
+	 					(handler 
+							(clojure.xml/parse (ByteArrayInputStream. (. xml-string getBytes ) )))
+ 					)
+		   	)
 		)
    )
 )
 
 
+ 
 
