@@ -27,6 +27,13 @@
   					)))))	
   )
 ))
+(defn url-encode-spaces 
+	" Replacing just spaces  
+	<space>		%20 "
+  [text]
+  
+  (clojure.contrib.string/replace-str " " "%20" text )	
+)
 
 (defn filterSpacesFromXML [text]
   
@@ -43,8 +50,9 @@
   					)))))))))
   )
 		
-		
+
 ;; set get base URL ...TODO - put in config 
+;; TODO - replace URL with a config value 
 (def db-base-URL "http://localhost:8080/exist/rest/") 
 
 

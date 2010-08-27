@@ -289,11 +289,13 @@
 				(let [result-hash 
 				   		(execute-http-call 
 				   					;;(str db-full-PARENT "/" (:leaf-document-name (deref xpath-data)) (str "?" (url-encode db-query)))
-				   					(str db-full-PARENT "/" (:leaf-document-name (deref xpath-data)) (str "?" db-query))
+				   					(str db-full-PARENT "/" (:leaf-document-name (deref xpath-data)) (str "?" (url-encode-spaces db-query)))
 				   					"GET" 
 				   					{"Content-Type" "text/xml"}
 				   					nil 
-				   		)] 
+				   		)]
+				  
+				  (println "result-hash > " result-hash )
  					(let [	xml-string 
 	 								(clojure.contrib.str-utils/str-join nil 
 										(:body-seq result-hash ))   
