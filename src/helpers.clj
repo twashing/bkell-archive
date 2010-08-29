@@ -82,13 +82,14 @@
    [token]
    
    ;;(println "DEBUG > 'namespace-lookup' CALLED > ["token"]" )
-   (  {	 "group" "com/interrupt/bookkeeping/users"
-	 "user" "com/interrupt/bookkeeping/users"
-	 "account"  "com/interrupt/bookkeeping/account"
-	 "journal"  "com/interrupt/bookkeeping/journal"
-	 "entry"  "com/interrupt/bookkeeping/journal"
-	 "entries"  "com/interrupt/bookkeeping/journal"
-	 "debit"  "com/interrupt/bookkeeping/account"
+   (  {	 "group" "com/interrupt/bookkeeping/users" 
+	 "user" "com/interrupt/bookkeeping/users" 
+	 "users" "com/interrupt/bookkeeping/users" 
+	 "account"  "com/interrupt/bookkeeping/account" 
+	 "journal"  "com/interrupt/bookkeeping/journal" 
+	 "entry"  "com/interrupt/bookkeeping/journal" 
+	 "entries"  "com/interrupt/bookkeeping/journal" 
+	 "debit"  "com/interrupt/bookkeeping/account" 
 	 "credit"  "com/interrupt/bookkeeping/account" 
       }
       token

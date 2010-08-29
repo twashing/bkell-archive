@@ -40,7 +40,7 @@
 	(def xpath-data (ref {})) 
 	
 	;; we're gonna build our eXist URL with this 
-	(def URL-build (ref "")) 
+	;;(def URL-build (ref "")) 
 	
 	;; pilfered stack ideas and some implementation from: http://programming-puzzler.blogspot.com/2009/04/adts-in-clojure.html 
 	(def stack (ref [])) 
@@ -55,9 +55,9 @@
 		(dosync (alter stack empty?)))
 	
 	
-	(defn get-url-midpoint [] 
+	(defn get-url-midpoint [#^String URL-build] 
 		(+ 
-			(. 	(deref URL-build) lastIndexOf 				;; get the position of substring
+			(. URL-build lastIndexOf 				;; get the position of substring
 				(:context-parent (deref xpath-data)))		 
 			(. (:context-parent (deref xpath-data)) length))	;; plus the char length of the leaf document name
 	)
@@ -79,6 +79,7 @@
 	;; get DepthFirstAdapter proxy 
 	(defn get-adapter-proxy [] 
 		
+		(let [URL-build (atom "")] 		;; we're gonna build our eXist URL with this 
 		(proxy [DepthFirstAdapter] [] 
 			
 			;; keep a stack with 
@@ -112,7 +113,7 @@
 											;;(.. each_predicate getExpr getExprsingle getOrexpr getAndexpr getComparisonexpr getComparisonexprPart getRangeexpr) "]" )
 											(.. each_predicate getExpr getExprsingle getOrexpr getAndexpr getComparisonexpr getRangeexpr) "]" )
 						
-						;; LATER - DON'T traverse children & evaluate... for now 
+						;; TODO - DON'T traverse children & evaluate... for now 
 						;;(. each_predicate apply this)
 						
 						
@@ -133,15 +134,16 @@
 						(stack-pop)	;; pop the token 
 						(stack-pop)	;; LATER - pop the relativepathpart - we'll have to assume that there's a relative_path_part... for now  
 						
-						(println "top of stack["top"] > class["(. top getClass)"]")
+						(println "top of stack["top"] > class["(. top getClass)"] / predicate-value[" predicate-value "] > class["(. predicate-value getClass)"]")
 						(cond 
 							(instance? com.interrupt.cc.xpath.node.TAbbrevRootDesc top ) 
 								'() 
 							
 							(instance? com.interrupt.cc.xpath.node.TLetter top ) 
-								(dosync 
-									(alter URL-build str (clojure.contrib.string/replace-str " " "" (. top toString) ) "." predicate-value)
-									(alter URL-build str "/"))
+								(do 
+									(swap! URL-build str (clojure.contrib.string/replace-str " " "" (. top toString) ) "." predicate-value)
+									(swap! URL-build str "/")
+								)
 							
 							;;(instance? com.interrupt.cc.xpath.node.ARootRelativepathexprPartPart  top ) 
 							;;	(dosync (alter URL-build str "/"))
@@ -157,11 +159,11 @@
 							
 							(do 	;; IF portion here 
 								(def thing 
-									(. (deref URL-build) substring 	;; get a substring of our long exist URL 
+									(. @URL-build substring 	;; get a substring of our long exist URL 
 												0 
-												(get-url-midpoint)
+												(get-url-midpoint @URL-build)
 												;;(+
-												;;		(. 	(deref URL-build) lastIndexOf 				;; get the position of substring
+												;;		(. 	URL-build lastIndexOf 				;; get the position of substring
 												;;			(:context-parent (deref xpath-data)))		 
 												;;		(. (:context-parent (deref xpath-data)) length))	;; plus the char length of the leaf document name 
 											))
@@ -172,27 +174,27 @@
 										{	:context-dir thing})
 									
 									;; write out leaf document 
-									(def b_index 	(+	(. 	(deref URL-build) lastIndexOf 
+									(def b_index 	(+	(. 	@URL-build lastIndexOf 
 																				(:context-parent (deref xpath-data)))	
 																				(. (:context-parent (deref xpath-data)) length))) 
 									
 									(println "b_index[" b_index "] > +1[" (+ 1 b_index) "] > :context-parent["(:context-parent (deref xpath-data))"] > URL-build["
-											(deref URL-build)"] > indexOf '/' [" (. (deref URL-build) indexOf "/") "] > FINAL["
-											(. (deref URL-build) indexOf "/" (+ 1 b_index))"] > 'if' check["(< (. (deref URL-build) indexOf "/" (+ 1 b_index)) 0 )"]")
+											@URL-build"] > indexOf '/' [" (. @URL-build indexOf "/") "] > FINAL["
+											(. @URL-build indexOf "/" (+ 1 b_index))"] > 'if' check["(< (. @URL-build indexOf "/" (+ 1 b_index)) 0 )"]")
 											
 											
-									(if (> (. (deref URL-build) indexOf "/" (+ 1 b_index)) 0 )
+									(if (> (. @URL-build indexOf "/" (+ 1 b_index)) 0 )
 										 
 										(let 	[	leaf-doc 
-														(. (deref URL-build) substring 
+														(. @URL-build substring 
 															(+ 1 b_index) 
-															(. (deref URL-build) indexOf "/" (+ 1 b_index)))
+															(. @URL-build indexOf "/" (+ 1 b_index)))
 													] 
 											(alter xpath-data conj 			;; if context directory is NOT the same as leaf document 
 												{		:leaf-document-name (str leaf-doc "/" leaf-doc)
-														;;(. (deref URL-build) substring 
+														;;(. URL-build substring 
 														;;	(+ 1 b_index) 
-														;;	(. (deref URL-build) indexOf "/" (+ 1 b_index)))
+														;;	(. URL-build indexOf "/" (+ 1 b_index)))
 												})
 										)
 										
@@ -213,7 +215,7 @@
 						)
 					)
 				)
-				(println "URL-build[" (deref URL-build) "]")
+				(println "URL-build[" @URL-build "]")
 				(println)
 				(println)
 				
@@ -226,6 +228,7 @@
 				(stack-push node) 
 				
 			)
+		)
 		)
 	) 
 	
