@@ -31,7 +31,7 @@
 		<account:account type="liability" 	id="" name="" counterWeight="credit"/>
 		<account:account type="revenue" 	id="" name="" counterWeight="credit" />
 	-->
-    <account:accounts id='main.accounts' >  
+	<account:accounts id='main.accounts' >  
 	</account:accounts>  
 	
 	<journal:journals id='main.journals' >

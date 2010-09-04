@@ -29,14 +29,6 @@
 					
 					(println "user ALREADY exists") ;; TODO - throw error to user
 					
-;;					(let [ parsed-check (clojure.xml/parse (ByteArrayInputStream. (.getBytes check-user "UTF-8")))] 
-					
-;;				(println "parsed-checked[" parsed-check "]")
-;;				(if	(and	(= (keyword "user") (:tag parsed-check))
-;;							(= 	(:id (:attr (:previous @bkell/shell ))) 	;; checking incoming user against existing user 
-;;									(:id (:attrs parsed-check)))
-;;						)
-;;						(println "user[" (:id (:attrs parsed-check)) "] ALREADY exists") ;; TODO - throw error to user 
 					(do 
 						
 						(println "ADDING user[" (:previous @bkell/shell ) "]")  
@@ -68,9 +60,9 @@
 																		)
 															]
 															
-												(println "CREATED group [" db-group "] / XML[" (with-out-str (clojure.xml/emit db-group)) "]" )
 												
-												;; PUT to eXist
+												;; PUT to eXist 
+												(println "CREATing group [" db-group "] / XML[" (with-out-str (clojure.xml/emit db-group)) "]" )
 												(execute-http-call 		
 																							(str db-base-URL db-system-DIR (working-dir-lookup :group)
 																															"/" "group." (:id (:attrs (:previous @bkell/shell ))) 
@@ -82,24 +74,34 @@
 																						
 													
 												)
+												
+												;; 3. add to aauth.users ... PUT to eXist 
+												;; 4. profile Details ... PUT to eXist	... TODO 
+												(println "CREATing user [" (:previous @bkell/shell ) "] / XML[" (with-out-str (clojure.xml/emit (:previous @bkell/shell ))) "]" )
+												(execute-http-call 		
+																							(str db-base-URL db-system-DIR (working-dir-lookup :user)
+																															"/" "user." (:id (:attrs (:previous @bkell/shell ))) 
+																															"/" "user." (:id (:attrs (:previous @bkell/shell ))))
+																							"PUT" 
+																							{	"Content-Type" "text/xml"
+																								"Authorization" "Basic YWRtaW46"}
+																							(with-out-str (clojure.xml/emit (:previous @bkell/shell )))
+												)
+												
+												;; 5. add associated Bookkeeping to Group ... PUT to eXist 
+												(execute-http-call 		
+																							(str db-base-URL db-system-DIR (working-dir-lookup :bookkeeping)
+																															"/" "group." (:id (:attrs (:previous @bkell/shell ))) 
+																															"/bookkeeping.main.bookkeeping/bookkeeping.main.bookkeeping" )
+																							"PUT" 
+																							{	"Content-Type" "text/xml"
+																								"Authorization" "Basic YWRtaW46"}
+																							(slurp "etc/xml/default.bookkeeping.xml" )
+												)
 										)
 								)
 						)
-							
 						
-						
-						;; 3. add to aauth.users ... PUT to eXist
-						
-						
-						;; 4. profile Details ... PUT to eXist
-						
-						
-						;; 5. add associated Bookkeeping to Group ... PUT to eXist
-						;;(println "...loading default.bookkeeping.xml[" (clojure.xml/parse "etc/xml/default.bookkeeping.xml") "]")
-						
-						
-;;					)
-;;				)
 			)
 			)
 	)
