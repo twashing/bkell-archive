@@ -105,13 +105,13 @@
 			(. "GET" equals http-method) 
 				(try 
 					(clojure-http.resourcefully/get full-URL header-hash xml-content)
-					(catch Exception e { :msg "Error" :code 500 :dmsg (. e getMessage ) } )
+					(catch Exception e { :msg "Error" :dmsg (. e getMessage ) } )
 				)
 			
 			(. "PUT" equals http-method)
 				(try 
 					(clojure-http.resourcefully/put full-URL header-hash xml-content)
-					(catch Exception e { :msg "Error" :code 500 :dmsg (. e getMessage ) } )
+					(catch Exception e { :msg "Error" :dmsg (. e getMessage ) } )
 				)
 		)
 )

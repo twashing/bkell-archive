@@ -219,7 +219,7 @@
 								;; DEBUG 
 								(println 	"Add command > context[" (:tag (:command-context @bkell/shell )) 
 													"] > users?[" (= (keyword "users") (:tag (:command-context @bkell/shell ))) 
-													"] > :previous / each_copy["(:previous @bkell/shell)"] > match?[" 
+													"] > :previous / each_copy[" (:previous @bkell/shell)"] > match?[" 
 														(and 	(= (keyword "users") (:tag (:command-context @bkell/shell )))
 																	(= (keyword "user") (:tag (:previous @bkell/shell )))) "]")
 								
