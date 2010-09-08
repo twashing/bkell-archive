@@ -104,7 +104,7 @@
 				
 				<journal:journals id='main.journals' >
 				    <journal:journal id='generalledger' name='generalledger' type='' balance=''>  
-						<journal:entries id='main.entries'  > 
+						<journal:entries id='main.entries' > 
 							
 							
 							<journal:entry id='qwertySTUB' entrynum='' state='' journalid='generalledger' date='' currency='CDN' > 

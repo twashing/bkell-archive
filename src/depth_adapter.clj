@@ -223,11 +223,15 @@
 														(and 	(= (keyword "users") (:tag (:command-context @bkell/shell )))
 																	(= (keyword "user") (:tag (:previous @bkell/shell )))) "]")
 								
-								;; check if we are adding a 'User' to 'Users' 
-								(and 	(= (keyword "users") (:tag (:command-context @bkell/shell )))
-											(= (keyword "user") (:tag (:previous @bkell/shell ))) 
-									
-									(add-user db-base-URL db-system-DIR)
+								(if (and 	(= (keyword "users") (:tag (:command-context @bkell/shell )))
+											(= (keyword "user") (:tag (:previous @bkell/shell ))))
+										
+										;; we are adding a user 
+										(add-user db-base-URL db-system-DIR (:previous @bkell/shell))
+										
+										;; this is a generic 'add' 
+										(add-generic db-base-URL db-system-DIR (:previous @bkell/shell))
+										
 								)
 								
 							)
