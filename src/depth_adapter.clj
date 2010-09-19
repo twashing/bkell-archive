@@ -230,7 +230,7 @@
 										(add-user db-base-URL db-system-DIR (:previous @bkell/shell))
 										
 										;; this is a generic 'add' 
-										(add-generic db-base-URL db-system-DIR (:previous @bkell/shell))
+										(add-generic db-base-URL db-system-DIR (:previous @bkell/shell) (:command-context @bkell/shell ))
 										
 								)
 								

@@ -34,6 +34,16 @@
   
   (clojure.contrib.string/replace-str " " "%20" text )	
 )
+(defn url-encode-newlines 
+	" Replacing just newlines"
+  [text]
+  
+  (clojure.contrib.string/replace-str (str \newline) "" text )	
+)
+(defn strip-xml-header [text]
+  (clojure.contrib.string/replace-str "<?xml version='1.0' encoding='UTF-8'?>" "" text )	
+)
+
 
 (defn filterSpacesFromXML [text]
   
@@ -113,6 +123,12 @@
 					(clojure-http.resourcefully/put full-URL header-hash xml-content)
 					(catch Exception e { :msg "Error" :dmsg (. e getMessage ) } )
 				)
+			(. "POST" equals http-method)
+				(try 
+					(clojure-http.resourcefully/post full-URL header-hash xml-content)
+					(catch Exception e { :msg "Error" :dmsg (. e getMessage ) } )
+				)
+			
 		)
 )
 

@@ -1,3 +1,5 @@
+(require 'clojure.contrib.string)
+
 (defn add-user [db-base-URL db-system-DIR working-USER] 
 		
 		;; 1. check that there's not an existing user 
@@ -107,23 +109,32 @@
 	)
 )
 
-(defn add-generic [db-base-URL db-system-DIR working-ITEM]
+(defn add-generic [db-base-URL db-system-DIR working-ITEM command-context]
 		
 		
 		;; ... TODO - logic to build XQuery to use to insert 
 		
 		;; PUT to eXist 
 		(println "CREATing [" working-ITEM "] / XML[" (with-out-str (clojure.xml/emit working-ITEM)) "]" )
-		(execute-http-call 		
-													(str db-base-URL db-system-DIR (working-dir-lookup :bookkeeping)
-																					"/" "group." (:id (:attrs working-ITEM)) 
-																					"/bookkeeping.main.bookkeeping/bookkeeping.main.bookkeeping" 
+		(let [result (execute-http-call 		
+													(url-encode-newlines (url-encode-spaces (str db-base-URL db-system-DIR (working-dir-lookup :bookkeeping)
+																					"/" "group." (:id (:attrs (:logged-in-user @bkell/shell))) ".group"
+																					"/" "group." (:id (:attrs (:logged-in-user @bkell/shell))) ".group"
+																					;;"/bookkeeping.main.bookkeeping/bookkeeping.main.bookkeeping" 
 																					"?_wrap=no&_query="
-																					)
-													"POST" 
-													{	"Content-Type" "text/xml"
+																					"declare default element namespace '"(namespace-lookup (clojure.contrib.string/as-str (:tag working-ITEM)))"';"
+"update insert "(strip-xml-header (with-out-str (clojure.xml/emit working-ITEM)))
+	" into //"(clojure.contrib.string/as-str (:tag command-context))
+		"[@id='" (:id (:attrs command-context)) "']"
+
+																					)))
+													"GET" 
+													{	"Content-Type" "text/xml" 
+														"Connection" "Keep-Alive"
 														"Authorization" "Basic YWRtaW46" }
-													(slurp "etc/xml/default.bookkeeping.xml" )
+													nil
+		)]
+		(println "result[" result "]")
 		)
 )
 
