@@ -1,4 +1,7 @@
 (require 'clojure.contrib.string)
+(use 'helpers) 
+(require 'bkell) 
+
 
 (defn add-user [db-base-URL db-system-DIR working-USER] 
 		
@@ -27,8 +30,12 @@
 			
 			(println "check-user[" check-user "]")	;; TODO - if <error/>, ADD user; user exists otherwise 
 			
-			(if (not (= (:msg check-user) "Error"))
-					
+			(if (and 
+                ;; (not (= (:msg check-user) "Error"))
+                (= (:msg check-user) "OK")
+                (= (:code check-user) 200)
+				)
+
 					(println "user ALREADY exists") ;; TODO - throw error to user
 					
 					(do 

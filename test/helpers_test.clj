@@ -18,10 +18,10 @@
 		{ "Content-Type" "text/xml" } 
 		nil)]
 		
-		(println "test result [" result-GET "]")
-		(is (not (nil? result-GET)) "GET result should not be nil")
-		(is (. (:msg result-GET ) equals "OK"))
-		(is (. (:code result-GET ) equals 200))
+		(println "test result [" result-GET "]") 
+		(is (not (nil? result-GET)) "GET result should not be nil") 
+		(is (. (:msg result-GET ) equals "OK")) 
+		(is (. (:code result-GET ) equals 200)) 
 		
 		(let [ parsed-test (clojure.xml/parse (ByteArrayInputStream. (.getBytes 
 			(clojure.contrib.str-utils/str-join nil (:body-seq result-GET ))		;; get the XML string  

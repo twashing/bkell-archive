@@ -13,10 +13,13 @@
 	(Parser. (Lexer. (PushbackReader. (InputStreamReader. java.lang.System/in) 1024)))
 )
 
+(defn init-shell [] 
+	(def shell (ref { :active true })) 	;; the shell and memory 
+)
+
 (defn bkell [handler] 
 	
-	
-	(def shell (ref { :active true })) 	;; the shell and memory 
+	(init-shell)
 	
 	(loop [ dfadapter handler ] 	;; binds 'handler' to 'dfadapter' 
 		
