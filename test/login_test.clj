@@ -1,15 +1,23 @@
 (ns login-test
 
-	(:use [helpers] :reload-all)
-	(:use [clojure.test])
-	(:use [depth_adapter])
-	(:require [bkell])
+	;;(:use [helpers] :reload-all)
+	;;(:use [depth_adapter])
+	;;(:require [bkell])
 
-	(:import java.io.ByteArrayInputStream)
-	(:require clojure.contrib.str-utils)
-    (:require commands.add)
+    ;;(:use [clojure.test])
+	;;(:import java.io.ByteArrayInputStream)
+	;;(:require clojure.contrib.str-utils)
+    ;;(:require commands.add)
 )
 
+(use 'helpers )
+(use 'depth_adapter)
+(require 'bkell)
+
+(use 'clojure.test)
+(import 'java.io.ByteArrayInputStream)
+(require 'clojure.contrib.str-utils)
+(require 'commands.add)
 
 (def configs (load-file "etc/config/config.test.clj"))
 
@@ -19,12 +27,16 @@
     "Initialize the shell"
     [test]
 
+    (println "test-fixture-shell CALLED")
     (bkell/init-shell)
+
+    (test)
 )
 (defn test-fixture-db
     "test to clear out shell memory before a test is run"
     [test]
 
+    (println "test-fixture-db CALLED")
     ;; make the shell active
 	(dosync
 		(alter bkell/shell conj
@@ -43,8 +55,8 @@
 
 )
 
-(use-fixtures :once test-fixture-shell)
-(use-fixtures :each test-fixture-db)
+(use-fixtures :once login-test/test-fixture-shell )
+(use-fixtures :each login-test/test-fixture-db )
 
 ;; test basic login
 (deftest test-login []
@@ -56,18 +68,21 @@
 ;; test result when already logged in
 (deftest test-existing-login []
 
+    (is (= 5 5))
 )
 
 
 ;; test a login with a bad password
 (deftest test-bad-password []
 
+    (is (= 5 5))
 )
 
 
 ;; test logging out
 (deftest test-logout []
 
+    (is (= 5 5))
 )
 
 
