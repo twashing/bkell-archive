@@ -6,27 +6,7 @@
 (defn add-user [db-base-URL db-system-DIR working-USER] 
 		
 		;; 1. check that there's not an existing user 
-		(let [check-user
-						(execute-http-call 	;; TODO - put in 404 check 
-							(str 
-								db-base-URL 
-								db-system-DIR 
-								(working-dir-lookup (:tag working-USER)) 	;; stringing together lookup URL leaf 
-								"/" 
-								(str 
-									(name (:tag working-USER)) 
-									"." 
-									(:id (:attrs working-USER)))
-								"/"
-								(str 			;; repeating user name as leaf document 
-									(name (:tag working-USER)) 
-									"." 
-									(:id (:attrs working-USER))))
-								"GET" 
-								{"Content-Type" "text/xml"} 
-								nil
-						)
-				 ]
+		(let [check-user (get-user db-base-URL db-system-DIR working-USER) ]
 			
 			(println "check-user[" check-user "]")	;; TODO - if <error/>, ADD user; user exists otherwise 
 			

@@ -1,23 +1,16 @@
 (ns login-test
 
-	;;(:use [helpers] :reload-all)
-	;;(:use [depth_adapter])
-	;;(:require [bkell])
+	(:use [helpers] :reload-all)
+	(:use [depth_adapter])
+	(:require [bkell])
 
-    ;;(:use [clojure.test])
-	;;(:import java.io.ByteArrayInputStream)
-	;;(:require clojure.contrib.str-utils)
-    ;;(:require commands.add)
+    (:use [clojure.test])
+	(:import java.io.ByteArrayInputStream)
+	(:require clojure.contrib.str-utils)
+    (:require commands.add)
+    (:require commands.remove)
 )
 
-(use 'helpers )
-(use 'depth_adapter)
-(require 'bkell)
-
-(use 'clojure.test)
-(import 'java.io.ByteArrayInputStream)
-(require 'clojure.contrib.str-utils)
-(require 'commands.add)
 
 (def configs (load-file "etc/config/config.test.clj"))
 
@@ -32,26 +25,24 @@
 
     (test)
 )
+
 (defn test-fixture-db
     "test to clear out shell memory before a test is run"
     [test]
 
     (println "test-fixture-db CALLED")
-    ;; make the shell active
-	(dosync
-		(alter bkell/shell conj
-			{ :active true }))
 
+    ;; make the shell active
     ;; create a basic user in the DB
+	(dosync (alter bkell/shell conj { :active true }))
     (add-user (:url-test configs) (:system-dir configs) { :tag "user" :attrs { :id "test.user" } } )
 
     ;; ** execute the TEST function
     (test)
 
     ;; make the shell inactive
-	(dosync
-		(alter bkell/shell conj
-			{ :active false }))
+	(dosync (alter bkell/shell conj { :active false }))
+    (remove-user (:url-test configs) (:system-dir configs) { :tag "user" :attrs { :id "test.user" } } )
 
 )
 

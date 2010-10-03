@@ -128,9 +128,36 @@
 					(clojure-http.resourcefully/post full-URL header-hash xml-content)
 					(catch Exception e { :msg "Error" :dmsg (. e getMessage ) } )
 				)
+			(. "DELETE" equals http-method)
+				(try 
+					(clojure-http.resourcefully/delete full-URL header-hash nil)
+					(catch Exception e { :msg "Error" :dmsg (. e getMessage ) } )
+				)
 			
 		)
 )
 
 
 
+(defn get-user [db-base-URL db-system-DIR working-USER] 
+
+	(execute-http-call 	;; TODO - put in 404 check 
+		(str 
+			db-base-URL 
+			db-system-DIR 
+			(working-dir-lookup (:tag working-USER)) 	;; stringing together lookup URL leaf 
+			"/" 
+			(str 
+				(name (:tag working-USER)) 
+				"." 
+				(:id (:attrs working-USER)))
+			"/"
+			(str 			;; repeating user name as leaf document 
+				(name (:tag working-USER)) 
+				"." 
+				(:id (:attrs working-USER))))
+			"GET" 
+			{"Content-Type" "text/xml"} 
+			nil
+	)
+)
