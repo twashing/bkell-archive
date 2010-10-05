@@ -4,7 +4,10 @@
 	(:require clojure.contrib.string)
 	(:require clojure.contrib.http.agent)
 	(:require clojure-http.resourcefully)
-	(:require clojure.pprint)) 
+	(:require clojure.pprint)
+  
+    (:import java.io.ByteArrayInputStream)
+) 
 
 (defn url-encode 
 	" Replacing these characters http encoded ones 
@@ -138,11 +141,19 @@
 )
 
 
+(defn parse-xml-to-hash [x-input]
+
+  (clojure.xml/parse (ByteArrayInputStream. (.getBytes 
+	(clojure.contrib.str-utils/str-join nil x-input)		;; get the XML string  
+	"UTF-8"))) 
+)	
 
 (defn get-user [db-base-URL db-system-DIR working-USER] 
 
-	(execute-http-call 	;; TODO - put in 404 check 
-		(str 
+    (let 
+      [result-hash 
+	    (execute-http-call 	;; TODO - put in 404 check 
+		  (str 
 			db-base-URL 
 			db-system-DIR 
 			(working-dir-lookup (:tag working-USER)) 	;; stringing together lookup URL leaf 
@@ -159,5 +170,10 @@
 			"GET" 
 			{"Content-Type" "text/xml"} 
 			nil
-	)
+      ) ]
+	  
+      (println "RESULT USER > result-hash... " result-hash)
+      (parse-xml-to-hash (:body-seq result-hash))
+    )
+
 )

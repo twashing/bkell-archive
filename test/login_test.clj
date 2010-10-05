@@ -43,7 +43,7 @@
 
     ;; make the shell inactive
 	(dosync (alter bkell/shell conj { :active false }))
-    (remove-user (:url-test configs) (:system-dir configs) { :tag "user" :attrs { :id "test.user" } } )
+    (remove-user (:url-test configs) (:system-dir configs) { :tag "user" :attrs { :id "test.user" } :content { :tag "stub" } } )
 
 )
 
@@ -56,7 +56,10 @@
     
     (let [
           user_seq 
-          (login-user (helpers/get-user (:url-test configs) (:system-dir configs) { :tag "user" :attrs { :id "test.user"}} )) ]
+          (login-user 
+            (helpers/get-user   (:url-test configs) (:system-dir configs) 
+                                { :tag "user" :attrs { :id "test.user"} :content {:tag "stub"} } 
+            )) ]
       
       (is (not (nil? user_seq))
           (str 
@@ -65,8 +68,6 @@
       )
       (is (not (nil? (@bkell/shell :logged-in-user)))
           "User should be in a 'logged-in-user' state")
-
-      (println "ZZzzz... " (@bkell/shell :logged-in-user))
     )
 )
 
@@ -76,12 +77,12 @@
 
     (let [
           user_seq 
-          (login-user (helpers/get-user (:url-test configs) (:system-dir configs) { :tag "user" :attrs { :id "test.user"}} )) ]
+          (login-user (helpers/get-user (:url-test configs) (:system-dir configs) { :tag "user" :attrs { :id "test.user"} :content {:tag "stub"} } )) ]
       
       (try 
         (def 
           nd_user 
-          (login-user (helpers/get-user (:url-test configs) (:system-dir configs) { :tag "user" :attrs { :id "test.user"}} )) )
+          (login-user (helpers/get-user (:url-test configs) (:system-dir configs) { :tag "user" :attrs { :id "test.user"} :content {:tag "stub"} } )) )
         ;;(catch ...)
         (finally 
           (is (not (nil? nd_user)) "2nd_user SHOULD NOT be nil") 

@@ -79,15 +79,19 @@
 					   
 						
 					   (handler 
-(clojure.xml/parse (ByteArrayInputStream. (.getBytes 
-	(clojure.contrib.str-utils/str-join nil 
-	(:body-seq 
+;;(clojure.xml/parse (ByteArrayInputStream. (.getBytes 
+;;	(clojure.contrib.str-utils/str-join nil 
+	
+    (helpers/parse-xml-to-hash 
+      (:body-seq 
 		(execute-http-call 	(str db-full-PARENT "/" db-leaf (str "?" (url-encode db-query))) 
 										"GET" 
 										{"Content-Type" "text/xml"}
 										nil )	
-	))		;; get the XML string  
-	"UTF-8"))) 
+	  )
+    )
+;;    )		;; get the XML string  
+;;	"UTF-8"))) 
 	
 					   )
 					   
@@ -95,6 +99,4 @@
 		     )
 		  )
 
-		  
-	
-							   												
+
