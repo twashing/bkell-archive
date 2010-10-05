@@ -16,6 +16,7 @@
   (:require xpath_handler)
   
   (:require commands.add)
+  (:require commands.authenticate)
   
 )
 
@@ -82,16 +83,17 @@
 	      	(.. node getCommandInput (apply this) ) 
 	    		
 	    		;; execute LOGIN 
-					(operate-dep-inputtype node 
-																(fn [result_seq] 
-																	
-																	(dosync 
-																		(alter bkell/shell conj 
-																						{ :logged-in-user result_seq } )
-																		(alter bkell/shell conj 
-																						{	:previous result_seq })) 
-																	(println "DEBUG > logged-in-user > " ((deref bkell/shell) :logged-in-user))
-																))
+				(operate-dep-inputtype node 
+					(fn [result_seq] 
+						
+                        (login-user result_seq)
+						(comment dosync 
+							(alter bkell/shell conj 
+											{ :logged-in-user result_seq } )
+							(alter bkell/shell conj 
+											{	:previous result_seq })) 
+						(println "DEBUG > logged-in-user > " ((deref bkell/shell) :logged-in-user))
+					))
 	    	)
 	    )
 	    

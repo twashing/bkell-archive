@@ -9,6 +9,7 @@
 	(:require clojure.contrib.str-utils)
     (:require commands.add)
     (:require commands.remove)
+    (:require commands.authenticate)
 )
 
 
@@ -46,13 +47,25 @@
 
 )
 
-(use-fixtures :once login-test/test-fixture-shell )
-(use-fixtures :each login-test/test-fixture-db )
+;;(use-fixtures :once login-test/test-fixture-shell )
+(use-fixtures :each login-test/test-fixture-shell login-test/test-fixture-db )
 
 ;; test basic login
 (deftest test-login []
 
-    (is (= 5 5))
+    
+    (let [
+          user_seq 
+          (login-user (helpers/get-user (:url-test configs) (:system-dir configs) { :tag "user" :attrs { :id "test.user"}} )) ]
+      
+      (is (not (nil? user_seq))
+          (str 
+              "User should NOT be nil > inputs > " 
+                (:url-test configs) " " (:system-dir configs) " " { :tag "user" :attrs { :id "test.user"}} )
+      )
+      (is (not (nil? (@bkell/shell :logged-in-user)))
+          "User should be in a 'logged-in-user' state")
+    )
 )
 
 
