@@ -65,6 +65,8 @@
       )
       (is (not (nil? (@bkell/shell :logged-in-user)))
           "User should be in a 'logged-in-user' state")
+
+      (println "ZZzzz... " (@bkell/shell :logged-in-user))
     )
 )
 
@@ -72,7 +74,21 @@
 ;; test result when already logged in
 (deftest test-existing-login []
 
-    (is (= 5 5))
+    (let [
+          user_seq 
+          (login-user (helpers/get-user (:url-test configs) (:system-dir configs) { :tag "user" :attrs { :id "test.user"}} )) ]
+      
+      (try 
+        (def 
+          nd_user 
+          (login-user (helpers/get-user (:url-test configs) (:system-dir configs) { :tag "user" :attrs { :id "test.user"}} )) )
+        ;;(catch ...)
+        (finally 
+          (is (not (nil? nd_user)) "2nd_user SHOULD NOT be nil") 
+        )
+      )
+
+    )
 )
 
 

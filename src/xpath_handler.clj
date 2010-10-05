@@ -45,10 +45,10 @@
 	;; pilfered stack ideas and some implementation from: http://programming-puzzler.blogspot.com/2009/04/adts-in-clojure.html 
 	(def stack (ref [])) 
 	(defn stack-peek [] 
-		(peek (deref stack)))
+		(peek @stack))
 	(defn stack-push [e] 
 		(dosync (alter stack conj e)) 
-		(println "PUSH stack [" (deref stack) "]" ))
+		(println "PUSH stack [" @stack "]" ))
 	(defn stack-pop [] 
 		(dosync (alter stack pop)))
 	(defn stack-empty? [] 
@@ -58,20 +58,20 @@
 	(defn get-url-midpoint [#^String URL-build] 
 		(+ 
 			(. URL-build lastIndexOf 				;; get the position of substring
-				(:context-parent (deref xpath-data)))		 
-			(. (:context-parent (deref xpath-data)) length))	;; plus the char length of the leaf document name
+				(:context-parent @xpath-data))		 
+			(. (:context-parent @xpath-data) length))	;; plus the char length of the leaf document name
 	)
 	(defn get-xpath-part-midpoint [] 
 			 
 			(let [b_index 
 					(+ 1 
-						(.	(:xpath-string (deref xpath-data)) indexOf 
-							(. (:context-parent (deref xpath-data)) substring 
+						(.	(:xpath-string @xpath-data) indexOf 
+							(. (:context-parent @xpath-data) substring 
 								0 
-								(. (:context-parent (deref xpath-data)) indexOf ".")))) ]
+								(. (:context-parent @xpath-data) indexOf ".")))) ]
 			
-						(. (:xpath-string (deref xpath-data)) substring 
-							(+ 1 (. (:xpath-string (deref xpath-data)) indexOf "/" (+ 1 b_index)))
+						(. (:xpath-string @xpath-data) substring 
+							(+ 1 (. (:xpath-string @xpath-data) indexOf "/" (+ 1 b_index)))
 						)
 			)	
 	)	
@@ -153,9 +153,9 @@
 						)
 						
 						;; put in a check to see if we are at the leaf document
-						(println "leaf check [" (. (clojure.contrib.string/trim (. top toString)) equals (:leaf-node (deref xpath-data))) "] > top[" (clojure.contrib.string/trim (. top toString)) "] > leaf-node[" (:leaf-node (deref xpath-data)) "]") 
+						(println "leaf check [" (. (clojure.contrib.string/trim (. top toString)) equals (:leaf-node @xpath-data)) "] > top[" (clojure.contrib.string/trim (. top toString)) "] > leaf-node[" (:leaf-node @xpath-data) "]") 
 						
-						(if (. (clojure.contrib.string/trim (. top toString)) equals (:leaf-node (deref xpath-data)))
+						(if (. (clojure.contrib.string/trim (. top toString)) equals (:leaf-node @xpath-data))
 							
 							(do 	;; IF portion here 
 								(def thing 
@@ -164,8 +164,8 @@
 												(get-url-midpoint @URL-build)
 												;;(+
 												;;		(. 	URL-build lastIndexOf 				;; get the position of substring
-												;;			(:context-parent (deref xpath-data)))		 
-												;;		(. (:context-parent (deref xpath-data)) length))	;; plus the char length of the leaf document name 
+												;;			(:context-parent @xpath-data))		 
+												;;		(. (:context-parent @xpath-data) length))	;; plus the char length of the leaf document name 
 											))
 								
 								;; write out context directory 
@@ -175,10 +175,10 @@
 									
 									;; write out leaf document 
 									(def b_index 	(+	(. 	@URL-build lastIndexOf 
-																				(:context-parent (deref xpath-data)))	
-																				(. (:context-parent (deref xpath-data)) length))) 
+																				(:context-parent @xpath-data))	
+																				(. (:context-parent @xpath-data) length))) 
 									
-									(println "b_index[" b_index "] > +1[" (+ 1 b_index) "] > :context-parent["(:context-parent (deref xpath-data))"] > URL-build["
+									(println "b_index[" b_index "] > +1[" (+ 1 b_index) "] > :context-parent["(:context-parent @xpath-data)"] > URL-build["
 											@URL-build"] > indexOf '/' [" (. @URL-build indexOf "/") "] > FINAL["
 											(. @URL-build indexOf "/" (+ 1 b_index))"] > 'if' check["(< (. @URL-build indexOf "/" (+ 1 b_index)) 0 )"]")
 											
@@ -200,13 +200,13 @@
 										
 										(alter xpath-data conj			;; if context directory IS the same as leaf document 
 											{		:leaf-document-name 
-													(str (:leaf-node (deref xpath-data)) "." predicate-value )
+													(str (:leaf-node @xpath-data) "." predicate-value )
 											}
 										)
 										
 									)
 								)
-								(println "---> We are at the leaf document[" (deref xpath-data) "]" )
+								(println "---> We are at the leaf document[" @xpath-data "]" )
 								)
 							
 							(dosync (alter xpath-data conj  ;; ELSE, get the child XPath part
@@ -255,16 +255,16 @@
 			 		;; for token substring between last / and [ 
 			 		(alter xpath-data conj { 
 			 				:leaf-node 
-			 				(. 	(:xpath-string (deref xpath-data)) substring 
-						 			(+ (. (:xpath-string (deref xpath-data)) lastIndexOf "/") 1)
-						 			(. (:xpath-string (deref xpath-data)) lastIndexOf "[")) 
+			 				(. 	(:xpath-string @xpath-data) substring 
+						 			(+ (. (:xpath-string @xpath-data) lastIndexOf "/") 1)
+						 			(. (:xpath-string @xpath-data) lastIndexOf "[")) 
 			 			})
 			 		
 			 		;; with token, lookup context directory 
-			 		(alter xpath-data conj { :context-parent (working-dir-lookup (:leaf-node (deref xpath-data))) } )
+			 		(alter xpath-data conj { :context-parent (working-dir-lookup (:leaf-node @xpath-data)) } )
 			 		
-			 		(println "LEAF token > " (:leaf-node (deref xpath-data)))
-			 		(println "LEAF context parent > " (:context-parent (deref xpath-data)))
+			 		(println "LEAF token > " (:leaf-node @xpath-data))
+			 		(println "LEAF context parent > " (:context-parent @xpath-data))
 			 )
 			 
 			 ;; 1.2 build an xpath parser 	 
@@ -275,24 +275,24 @@
 			 
 			 ;; 3. build RESTful call 
 		   (def db-query (str "_wrap=no&_query=" 
-			    "declare default element namespace '"(namespace-lookup (:leaf-node (deref xpath-data))) "';" 
+			    "declare default element namespace '"(namespace-lookup (:leaf-node @xpath-data)) "';" 
 			    
 			    ;; TODO - check if we need 'and' conditions 
 			    ;; "**/<token>[ @option='option_value' [ and @option='option_value' ] ]" 
-			    "//"(:leaf-node (deref xpath-data))"[ @" predicate-name "='" predicate-value "']" 
+			    "//"(:leaf-node @xpath-data)"[ @" predicate-name "='" predicate-value "']" 
 			    )
 			    
 		   )
 		   
 		   
-		   (def db-full-PARENT (str db-base-URL "rootDir/" (:context-dir (deref xpath-data))))
+		   (def db-full-PARENT (str db-base-URL "rootDir/" (:context-dir @xpath-data)))
 		   
 		   ;; 4. make RESTful call  &  5. pass result sequece to handler
 		   
 				(let [result-hash 
 				   		(execute-http-call 
-				   					;;(str db-full-PARENT "/" (:leaf-document-name (deref xpath-data)) (str "?" (url-encode db-query)))
-				   					(str db-full-PARENT "/" (:leaf-document-name (deref xpath-data)) (str "?" (url-encode-spaces db-query)))
+				   					;;(str db-full-PARENT "/" (:leaf-document-name @xpath-data) (str "?" (url-encode db-query)))
+				   					(str db-full-PARENT "/" (:leaf-document-name @xpath-data) (str "?" (url-encode-spaces db-query)))
 				   					"GET" 
 				   					{"Content-Type" "text/xml"}
 				   					nil 

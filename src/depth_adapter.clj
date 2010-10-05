@@ -87,12 +87,7 @@
 					(fn [result_seq] 
 						
                         (login-user result_seq)
-						(comment dosync 
-							(alter bkell/shell conj 
-											{ :logged-in-user result_seq } )
-							(alter bkell/shell conj 
-											{	:previous result_seq })) 
-						(println "DEBUG > logged-in-user > " ((deref bkell/shell) :logged-in-user))
+						(println "DEBUG > logged-in-user > " (@bkell/shell :logged-in-user))
 					))
 	    	)
 	    )
@@ -130,19 +125,19 @@
 				  (.. node getCommandInput (apply this) ) 
 				  
 				  
-					(if (not (contains? (deref bkell/shell) :logged-in-user )) 	;; check if there is a 'logged-in-user' 
+					(if (not (contains? @bkell/shell :logged-in-user )) 	;; check if there is a 'logged-in-user' 
 		    		
 		    		;;throw an error if no 'logged-in-user' 
 		    		(println "ERROR - NO logged-in-user") 
 		    		
 		    		;; execute LOAD 
 		    		(operate-dep-inputtype node (fn [result_seq] 
-		    																	
-		    																	(println "loading... " result_seq)
-		    																	(dosync (alter bkell/shell conj 
-																							{	:previous result_seq }))
-		    																))
-			    	
+							
+							(println "loading... " result_seq)
+							(dosync (alter bkell/shell conj 
+										{	:previous result_seq }))
+						))
+
 				  )
 				  
 		    )
@@ -158,7 +153,7 @@
 	
 	(caseStart [node] 
 			
-			(println "DEBUG > caseStart CALLED > bkell/shell[" (deref bkell/shell) "]")
+			(println "DEBUG > caseStart CALLED > bkell/shell[" @bkell/shell "]")
 			
 			(proxy-super inStart node) 
       
