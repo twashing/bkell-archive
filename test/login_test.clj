@@ -96,14 +96,32 @@
 ;; test a login with a bad password
 (deftest test-bad-password []
 
-    (is (= 5 5))
+    (comment let [  logged-in-user  
+            (login-user 
+              (helpers/get-user 
+                (:url-test configs) (:system-dir configs) { :tag "user" :attrs { :id "test.user" :password "fubar" } :content {:tag "stub"} } ))]
+        (is (not (nil? nd_user)) "2nd_user SHOULD NOT be nil") 
+    )
 )
 
 
 ;; test logging out
 (deftest test-logout []
 
-    (is (= 5 5))
+    (let [
+          user_seq 
+          (login-user (helpers/get-user (:url-test configs) (:system-dir configs) { :tag "user" :attrs { :id "test.user"} :content {:tag "stub"} } )) ]
+         
+        (let [logged-out-user 
+            (logout-user 
+              (helpers/get-user 
+                (:url-test configs) (:system-dir configs) { :tag "user" :attrs { :id "test.user"} :content {:tag "stub"} } ))] 
+          
+          (is (not (nil? logged-out-user)) "SHOULD return the logged-out-user") 
+          (is (nil? (@bkell/shell :logged-in-user)) "there SHOULD NOT be a logged-in-user" )
+        )
+
+    )
 )
 
 
