@@ -101,10 +101,99 @@
 	 
 	 ;; PRINT command 
 	 (caseAPrintCommand6 [node] 
-	    (println (str "caseAPrintCommand6: " node)) )
+	    (println (str "caseAPrintCommand6: " node)) 
+        
+        (proxy-super inAPrintCommand6 node)
+        
+        (if (not= (. node getPrint) nil)
+            (.. node getPrint (apply this)))
+
+
+        (if (not= (. node getLbracket) nil)
+            (.. node getLbracket (apply this)))
+
+        (if (not= (. node getCommandInput) nil)
+            (.. node getCommandInput (apply this))
+        )
+            
+        ;; print the result 
+		(println " > " (:previous @bkell/shell))
+
+        (if (not= (. node getRbracket) nil)
+            (.. node getRbracket (apply this)))
+        
+        (proxy-super outAPrintCommand6 node)
+        
+     )
 	 
 	 
-	 ;; LOAD command 
+     ;; VARIABLE assignment 
+     (caseATwohandexpr [node]   ;; ATwohandexpr node
+        
+        
+        (proxy-super inATwohandexpr node) 
+        
+        (if (not= (. node getVar ) nil) 
+            (.. node getVar (apply this)))
+         
+        (if (not= (. node getWord) nil) 
+            
+            (do 
+                (.. node getWord (apply this)))
+        )
+        (if (not= (. node getEquals) nil) 
+            (.. node getEquals (apply this)))
+
+        (if (not= (. node getCommand ) nil) 
+            
+            (do 
+                (.. node getCommand (apply this)) )
+        )
+        
+        ;; the 'previousCommandResult' has already been set 
+        ;; get variable name 
+        (let [variableName (.. node getWord getText trim)]
+            
+            (println "putting variableName into memory[" variableName "] > previous > " (:previous @bkell/shell) ) 
+            
+            ;; setting the variableName to the command result 
+		    (dosync (alter bkell/shell assoc 
+				       (keyword variableName) 
+                       (:previous @bkell/shell) 
+                     ))
+            
+        )
+        
+        (proxy-super outATwohandexpr node)
+        
+     ) 
+
+     ;; VARIABLE access 
+     (caseAVarCommandInput [node]   ;; AVarCommandInput node
+        
+        (proxy-super inAVarCommandInput node) 
+        
+        (if (not= (. node getVarname ) nil) 
+            
+            (.. node getVarname (apply this))
+
+            ;; remove the '@' sign 
+            ;;** if this fails, then the user only put in the '@' 
+            (let [variableName (.. node getVarname toString (substring 1) trim) ]
+            
+		        (dosync (alter bkell/shell assoc 
+                       :previous 
+				       ((keyword variableName) @bkell/shell) 
+                     ))
+                
+            )
+        )
+        
+        (proxy-super outAVarCommandInput node ) 
+        
+     )
+	 
+     ;; LOAD command 
 	 (caseALoadCommand3 [node] 
 	    (println "DEBUG > caseALoadCommand3 [" (class (. node getCommandInput)) "]: " node) 
 	    
