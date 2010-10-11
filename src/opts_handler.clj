@@ -1,6 +1,8 @@
 
-		  (defn option_handler [node handler] 
-		     (if (instance? com.interrupt.bookkeeping.cc.node.AOptsCommandInput (. node getCommandInput) )
+(defn option_handler [node handler] 
+    (try 
+        
+                (if (instance? com.interrupt.bookkeeping.cc.node.AOptsCommandInput (. node getCommandInput) )
 					(do 
 					   (println "DEBUG > OPTIONS input > token[" (.. node getCommandInput getInputOption getCommandtoken) "] > options[" (.. node getCommandInput getInputOption getCommandoption) "]")
 					   
@@ -25,12 +27,8 @@
 						
 					   (def db-id-ID  ;; TODO - chain this to look for other options if 'id' is not there
 					      
-								;;(clojure.contrib.str-utils2/trim 
 								(clojure.contrib.string/trim 
 									(nth  
-										;;(clojure.contrib.str-utils2/split (.. (nth option-id 0)  ;; class 'com.interrupt.bookkeeping.cc.node.AIdCommandoption' 
-										;;	getIdOpt getText) #"-[a-z]+")
-										;;	1
 										(clojure.contrib.string/split #"-[a-z]+" (.. (nth option-id 0)  ;; class 'com.interrupt.bookkeeping.cc.node.AIdCommandoption' 
 											getIdOpt getText) )
 											1
@@ -79,9 +77,7 @@
 					   
 						
 					   (handler 
-;;(clojure.xml/parse (ByteArrayInputStream. (.getBytes 
-;;	(clojure.contrib.str-utils/str-join nil 
-	
+	                        
     (helpers/parse-xml-to-hash 
       (:body-seq 
 		(execute-http-call 	(str db-full-PARENT "/" db-leaf (str "?" (url-encode db-query))) 
@@ -90,13 +86,13 @@
 										nil )	
 	  )
     )
-;;    )		;; get the XML string  
-;;	"UTF-8"))) 
 	
 					   )
 					   
 					)
 		     )
+             (catch Exception e (println "EEeee.. opts_hanlder not processing"))
 		  )
-
+         
+)
 

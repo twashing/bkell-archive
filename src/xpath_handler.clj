@@ -234,7 +234,8 @@
 	
 	
 (defn xpath_handler [node handler] 
-   (if (instance? com.interrupt.bookkeeping.cc.node.AXpathCommandInput (. node getCommandInput) ) 
+  (try  
+    (if (instance? com.interrupt.bookkeeping.cc.node.AXpathCommandInput (. node getCommandInput) ) 
 		
 		(do 
 		   
@@ -311,8 +312,8 @@
 		   	)
 		)
    )
+   (catch Exception e (println "EEeee.. xpath_hanlder not processing"))
+   )
 )
 
-
- 
 

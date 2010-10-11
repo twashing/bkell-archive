@@ -126,6 +126,89 @@
         
      )
 	 
+     ;; CREATE command 
+    (caseACreateCommand3 [node]
+        
+        (proxy-super inACreateCommand3 node)
+        
+        (if (not= (. node getCreate) nil)
+            (.. node getCreate (apply this)))
+        
+        (if (not= (. node getLbracket) nil)
+            (.. node getLbracket (apply this)))
+        
+        (if (not= (. node getCommandInput) nil)
+            
+            (do 
+            (.. node getCommandInput (apply this))
+        
+	    	;; execute LOGIN 
+			(operate-dep-inputtype node 
+				(fn [result_seq] 
+
+					(println "DEBUG > create result > " result_seq)
+					(dosync (alter bkell/shell conj { :previous result_seq }))
+				))
+             )
+        )
+        
+        (if (not= (. node getRbracket) nil)
+            (.. node getRbracket (apply this)))
+        
+        (proxy-super outACreateCommand3 node)
+        
+    )
+
+    
+    ;; UPDATE command 
+    (caseAUpdateCommand1 [node] ;; AUpdateCommand1 node
+        
+        (proxy-super inAUpdateCommand1 node)
+        
+        (if (not= (. node getUpdate) nil)
+            (.. node getUpdate (apply this)))
+        
+        (if (not= (. node getLbdepth1) nil)
+            (.. node getLbdepth1 (apply this)))
+        
+        (if (not= (. node getLbdepth2) nil)
+            (.. node getLbdepth2 (apply this)))
+        
+        (if (not= (. node getC1) nil)
+            
+            (do 
+                (.. node getC1 (apply this))
+			    (operate-dep-inputtype (. node getC1) 
+				    (fn [result_seq] 
+                        
+					    (println "DEBUG > update CONTEXT result > " result_seq)
+					    (dosync (alter bkell/shell conj { :previous result_seq }))
+				    ))
+            )
+        )
+        
+        (if (not= (. node getRbdepth2) nil)
+            (.. node getRbdepth2 (apply this)))
+        
+        (if (not= (. node getC2) nil)
+            
+            (do 
+                (.. node getC2 (apply this))
+			    (operate-dep-inputtype (. node getC2) 
+				    (fn [result_seq] 
+                        
+					    (println "DEBUG > update CLIENT result > " result_seq)
+					    (dosync (alter bkell/shell conj { :previous result_seq }))
+				    ))
+            )
+        )
+        
+        (if (not= (. node getRbdepth1) nil)
+            (.. node getRbdepth1 (apply this)))
+        
+        (proxy-super outAUpdateCommand1 node)
+        
+    )
 	 
      ;; VARIABLE assignment 
      (caseATwohandexpr [node]   ;; ATwohandexpr node
@@ -333,10 +416,6 @@
 	    	
 	)
 		
-	 	;; TODO - handle variables 
-	 	
-	 	;; TODO - finish 'print' command 
-	 	
 	 	
 	)
 )
