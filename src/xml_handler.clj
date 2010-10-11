@@ -20,9 +20,13 @@
 
 (defmethod xml_handler [:Node :handler] [node handler] 
 			
-   (if (instance? com.interrupt.bookkeeping.cc.node.AXmlCommandInput (. node getCommandInput) )
-      (xml_handler (. node getCommandInput) handler)
-      (println "EEeee.. xml_hanlder not processing")
+   (try 
+      (if (instance? com.interrupt.bookkeeping.cc.node.AXmlCommandInput (. node getCommandInput) )
+        (xml_handler (. node getCommandInput) handler)
+        (println "EEeee.. xml_hanlder not processing")
+      )
+      (catch Exception e 
+        (println "EEeee.. xml_hanlder not processing"))
    ) 
 )
 

@@ -101,7 +101,7 @@
 	 
 	 ;; PRINT command 
 	 (caseAPrintCommand6 [node] 
-	    (println (str "caseAPrintCommand6: " node)) 
+	    ;;(println (str "caseAPrintCommand6: " node)) 
         
         (proxy-super inAPrintCommand6 node)
         
@@ -197,7 +197,7 @@
 			    (operate-dep-inputtype (. node getC2) 
 				    (fn [result_seq] 
                         
-					    (println "DEBUG > update CLIENT result > " result_seq)
+					    (println "DEBUG > update CLIENT input [ " (.. node getC1) " ] > result > " result_seq)
 					    (dosync (alter bkell/shell conj { :previous result_seq }))
 				    ))
             )
