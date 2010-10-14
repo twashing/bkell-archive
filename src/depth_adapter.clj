@@ -375,76 +375,86 @@
       
 	) 
 	
-	(caseAAddCommand1 [node]		;; public void caseAAddCommand1(AAddCommand1 node)
-				
-				(println "DEBUG > caseAAddCommand1 [" (class (. node getCommandInput)) "]: " node) 
-	    	
-	    	
+    (caseAAddCommand1 [node]        ;; public void caseAAddCommand1(AAddCommand1 node)
+                
+                (println "DEBUG > caseAAddCommand1 [" (class (. node getCommandInput)) "]: " node) 
+            
+            
         (proxy-super inAAddCommand1 node) 
-	    	
-		    (if (not= (. node getAdd ) nil) 
-		       (.. node getAdd (apply this) ) ) 
-		    
+            
+            (if (not= (. node getAdd ) nil) 
+               (.. node getAdd (apply this) ) ) 
+            
         (if (not= (. node getLbdepth1 ) nil) 
-		       (.. node getLbdepth1 (apply this) ) ) 
-		    
-		    (if (not= (. node getLbdepth2 ) nil) 
-		       (.. node getLbdepth2 (apply this) ) ) 
-		    
+               (.. node getLbdepth1 (apply this) ) ) 
+            
+            (if (not= (. node getLbdepth2 ) nil) 
+               (.. node getLbdepth2 (apply this) ) ) 
+            
         (if (not= (. node getCommandInput ) nil) 
-        	 
-        	 (do 
-	        	    
-	        	    ;; any i) 'load' ii) direct XML or iii) variable should be in the shell's :previous 
-			        (.. node getCommandInput (apply this) ) 
-			        
-			        ;; set the :previous result as the :command-context 
-			        (operate-dep-inputtype node 
-				        (fn [result_seq] 
-                            
-					        (println "DEBUG > add CONTEXT result > " result_seq)
-			                (dosync (alter bkell/shell conj 
-								{ :command-context result_seq } ))
-				        ))
-		       )
-		    ) 
-		    
-		    (if (not= (. node getRbdepth2 ) nil) 
-		       (.. node getRbdepth2 (apply this) ) ) 
-		    
-		    (println)
-		    (println "shell > before arguments > [" @bkell/shell "]")
-				(let [ copy (. node getIlist) ]
-						
-						(doseq [ each_copy copy ] 
-							(do 
-								
-								;; apply each element in the list 
-								(. each_copy apply this)
-								(operate-dep-inputtype each_copy 
-									(fn [result_seq] 
-										
-                                        (let [  aclient 
-                                                (conj   ( :command-context @bkell/shell ) 
-                                                        { :content (assoc result_seq :mode "create")}) 
-                                             ]
-					                        (dosync (alter bkell/shell conj 
-                                                { :previous aclient } ) )
-                                        )
-		                                (println "shell > F3 > [" @bkell/shell "]")
-									))
-							)
-						)
-						
-				)
+             
+             (do 
+                 
+                 ;; any i) 'load' ii) direct XML or iii) variable should be in the shell's :previous 
+                   (.. node getCommandInput (apply this) ) 
+                   
+                   ;; set the :previous result as the :command-context 
+                   (dosync (alter bkell/shell conj 
+                                { :command-context (:previous @bkell/shell) } ))
+               )
+            ) 
+            
+            (if (not= (. node getRbdepth2 ) nil) 
+               (.. node getRbdepth2 (apply this) ) ) 
+            
+            (println)
+            (println "shell > before arguments > [" @bkell/shell "]")
+                (let [ copy (. node getIlist) ]
+                        
+                        (doseq [ each_copy copy ] 
+                            (do 
+                                
+                                ;; apply each element in the list 
+                                (. each_copy apply this)
+                                (operate-dep-inputtype each_copy 
+                                            (fn [result_seq] 
+                                                
+                                                (dosync 
+                                                    (alter bkell/shell conj 
+                                                                    {   :previous result_seq })) 
+                                            ))
+                                
+                                ;; DEBUG 
+                                (println    "Add command > context[" (:tag (:command-context @bkell/shell )) 
+                                                    "] > users?[" (= (keyword "users") (:tag (:command-context @bkell/shell ))) 
+                                                    "] > :previous / each_copy[" (:previous @bkell/shell)"] > match?[" 
+                                                        (and    (= (keyword "users") (:tag (:command-context @bkell/shell )))
+                                                                    (= (keyword "user") (:tag (:previous @bkell/shell )))) "]")
+                                
+                                (if (and    (= (keyword "users") (:tag (:command-context @bkell/shell )))
+                                            (= (keyword "user") (:tag (:previous @bkell/shell ))))
+                                        
+                                        ;; we are adding a user 
+                                        (add-user db-base-URL db-system-DIR (:previous @bkell/shell))
+                                        
+                                        ;; this is a generic 'add' 
+                                        (add-generic db-base-URL db-system-DIR (:previous @bkell/shell) (:command-context @bkell/shell ))
+                                        
+                                )
+                                
+                            )
+                        )
+                        
+                )
         (if (not= (. node getRbdepth1 ) nil) 
-		       (.. node getRbdepth1 (apply this) ) ) 
+               (.. node getRbdepth1 (apply this) ) ) 
+            
+            
         
         (proxy-super outAAddCommand1 node) 
-	    	
-	)
-		
-	 	
+            
+    )
+	 
 	)
 )
 
