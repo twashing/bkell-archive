@@ -233,17 +233,37 @@
 	) 
 	
 	
-(defn xpath_handler [node handler] 
+(defmulti xpath_handler   (fn [input handler] 
+                          [
+                            (if (instance? com.interrupt.bookkeeping.cc.node.AXpathCommandInput input ) 
+                              :AXpathCommandInput   ;; com.interrupt.bookkeeping.cc.node.AXpathCommandInput
+                              :Node   ;;com.interrupt.bookkeeping.cc.node.Node
+                            )
+                            :handler 
+                          ])
+)
+(defmethod xpath_handler [:Node :handler] [node handler] 
+    
+   (try 
+      (if (instance? com.interrupt.bookkeeping.cc.node.AXpathCommandInput (. node getCommandInput) )
+        (xpath_handler (. node getCommandInput) handler)
+        (println "EEeee.. xpath_handler not processing")
+      )
+      (catch Exception e 
+        (println "EEeee.. xpath_handler not processing > Error Message[" (. e getMessage) "]")) ;; > StackTrace[" (. e printStackTrace) "]"))
+   ) 
+)
+(defmethod xpath_handler [:AXpathCommandInput :handler] [xinput handler] 
   (try  
-    (if (instance? com.interrupt.bookkeeping.cc.node.AXpathCommandInput (. node getCommandInput) ) 
+    (if (instance? com.interrupt.bookkeeping.cc.node.AXpathCommandInput xinput ) 
 		
 		(do 
 		   
-		   (println "xpath_handler > node[" (.. node getClass) "] > getLoad[" (.. node getLoad getText) "]")
-		   (println "XPATH input[" (.. node getCommandInput toString) "]")
+		   (println "xpath_handler > xinput[" (. xinput getClass) "]")
+		   (println "XPATH input[" (. xinput toString) "]")
 		   
 		   ;; 1. filter out <spaces> and ` 
-		   (def input-string (filter-xpath-input (.. node getCommandInput toString)))
+		   (def input-string (filter-xpath-input (. xinput toString)))
 		   (println "input-string \t[" input-string "]")
 		   ;;(println "stripped XPath \t[" (clojure.contrib.string/replace-re #"\\[[^\\]]*\\]" "" input-string) "]" )
 		   

@@ -16,6 +16,7 @@
   (:require xpath_handler)
   
   (:require commands.add)
+  (:require commands.update)
   (:require commands.authenticate)
   
 )
@@ -183,6 +184,7 @@
                         
 					    (println "DEBUG > update CONTEXT result > " result_seq)
 					    (dosync (alter bkell/shell conj { :previous result_seq }))
+                        (dosync (alter bkell/shell conj { :command-context result_seq } ))
 				    ))
             )
         )
@@ -199,9 +201,13 @@
                         
 					    (println "DEBUG > update CLIENT input [ " (.. node getC1) " ] > result > " result_seq)
 
-                        (dosync (alter bkell/shell assoc :mode "update"))
 					    (dosync (alter bkell/shell conj { :previous result_seq }))
 				    ))
+                    (println "Update command > context[" (:tag (:command-context @bkell/shell )) 
+                             "] > :previous / each_copy[" (:previous @bkell/shell)"]" )
+                    
+                    ;; this is a generic 'add' 
+                    (update-generic db-base-URL db-system-DIR (:previous @bkell/shell) (:command-context @bkell/shell ))
             )
         )
         
@@ -399,8 +405,7 @@
                    (.. node getCommandInput (apply this) ) 
                    
                    ;; set the :previous result as the :command-context 
-                   (dosync (alter bkell/shell conj 
-                                { :command-context (:previous @bkell/shell) } ))
+                   (dosync (alter bkell/shell conj { :command-context (:previous @bkell/shell) } ))
                )
             ) 
             

@@ -20,8 +20,8 @@
 
 (defmethod xml_handler [:Node :handler] [node handler] 
     
-            (println "xml_handler CALLED[:Node :handler] > AXmlCommandInput instance? > " 
-              (instance? com.interrupt.bookkeeping.cc.node.AXmlCommandInput (. node getCommandInput) ))
+            ;;(println "xml_handler CALLED[:Node :handler] > AXmlCommandInput instance? > " 
+            ;;  (instance? com.interrupt.bookkeeping.cc.node.AXmlCommandInput (. node getCommandInput) ))
    
    (try 
       (if (instance? com.interrupt.bookkeeping.cc.node.AXmlCommandInput (. node getCommandInput) )
@@ -29,7 +29,7 @@
         (println "EEeee.. xml_hanlder not processing")
       )
       (catch Exception e 
-        (println "EEeee.. xml_hanlder not processing > Error Message[" (. e getMessage) "] > StackTrace[" (. e printStackTrace) "]"))
+        (println "EEeee.. xml_hanlder not processing > Error Message[" (. e getMessage) "]"))   ;; > StackTrace[" (. e printStackTrace) "]"))
    ) 
 )
 
