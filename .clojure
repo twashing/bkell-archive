@@ -4,4 +4,16 @@ vendor/clj-stacktrace/src:
 vendor/clojure-http-client/src:
 vendor/compojure/src:
 lib/zob/bob.jar:
-lib/xpath20.jar
+lib/xpath20.jar:
+lib/clout-0.3.1.jar:
+lib/commons-codec-1.4.jar:
+lib/commons-fileupload-1.2.1.jar:
+lib/commons-io-1.4.jar:
+lib/compojure-0.5.2.jar:
+lib/jetty-6.1.14.jar:
+lib/jetty-util-6.1.14.jar:
+lib/ring-core-0.3.1.jar:
+lib/ring-jetty-adapter-0.3.3.jar:
+lib/ring-servlet-0.3.3.jar:
+lib/servlet-api-2.5-6.1.14.jar:
+lib/servlet-api-2.5.jar
