@@ -4,3 +4,6 @@
 [submodule "vendor/clojure-http-client"]
 	path = vendor/clojure-http-client
 	url = git://github.com/technomancy/clojure-http-client.git
+[submodule "vendor/compojure"]
+	path = vendor/compojure
+	url = http://github.com/weavejester/compojure.git
