@@ -1,0 +1,7 @@
+.:
+build/gen:build/src:src:test:
+vendor/clj-stacktrace/src:
+vendor/clojure-http-client/src:
+vendor/compojure/src:
+lib/zob/bob.jar:
+lib/xpath20.jar
