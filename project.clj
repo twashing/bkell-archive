@@ -8,7 +8,11 @@
                         [ring/ring-jetty-adapter "0.3.3"]
                         [log4j/log4j "1.2.7"]
                         [sablecc "3.2"]
+                        [clj-stacktrace "0.1.2"]
+                        [clojure-http-client "1.1.0-SNAPSHOT"]
 				  ]
+
+  :library-path "lib/"
 	
 )
 
