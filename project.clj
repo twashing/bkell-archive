@@ -10,9 +10,12 @@
                         [sablecc "3.2"]
                         [clj-stacktrace "0.1.2"]
                         [clojure-http-client "1.1.0-SNAPSHOT"]
+                        [com.interrupt/bookkeeping "0.0.0-prealpha"]
+                        [com.interrupt/bob "0.0.0-prealpha"]
 				  ]
 
-  :library-path "lib/"
+    :dev-dependencies   [   [exist-db "1.4.0"]
+                        ]
 	
 )
 
