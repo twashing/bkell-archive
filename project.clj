@@ -14,8 +14,22 @@
                         [com.interrupt/bob "0.0.0-prealpha"]
 				  ]
 
-    :dev-dependencies   [   [exist-db "1.4.0"]
-                        ]
+  :dev-dependencies  [ [org.exist/exist "1.4"]
+                       [org.exist/exist-modules "1.4"]
+                       [antlr/antlr "2.7.7"] 
+                       [org.apache/commons-pool "1.5.1"]
+                       [org.apache/commons-collections "3.2.1"]
+                       [org.apache/commons-logging "1.1.1"]
+                       [jgroups/jgroups-all "2.2.7"]
+                       [log4j/log4j "1.2.15"]
+                       [quartz/quartz "1.6.5"]
+                       [sunxacml/sunxacml "1.2"]
+                       [xmldb/xmldb "unknown"]
+                       [xmlrpc/xmlrpc-client "3.0"]
+                       [xmlrpc/xmlrpc-common "3.0"]
+                       [xmlrpc/xmlrpc-server "3.1.2"]
+                       [javax.transaction/jta "1.1"]
+                    ] 
 	
 )
 

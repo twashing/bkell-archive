@@ -1,0 +1,42 @@
+
+Abstract
+The bkell project is a Clojure implementation of 'Bookkeeping'. 'Bookkeeping' provides a Shell and API for maintaining balanced records for business transactions. 
+
+
+Download
+git co 'https://github.com/twashing/bkell.git' 
+
+
+Build
+... 
+
+
+Run
+... 
+
+
+Tests 
+lein test - runs all tests
+lein test <namespace/mytest> - runs a particular test
+
+
+Other
+
+A) Including Exist database as a dev-dependency 
+
+1. Download latest from: http://exist-db.org/download.html
+2. Do a headless extraction using:  java -jar eXist-setup-1.4.0-rev10440.jar -p destdir
+3. Necessary jars are listed here: http://demo.exist-db.org/exist/deployment.xml?q=.//section[ft:query(.//title,%20'embedded')]%20or%20.//section[ft:query(.,%20'embedded')]&id=3.3.6#N1042D
+4. install them in your local directory with the command: 
+
+mvn install:install-file -DgroupId=group-id \
+                         -DartifactId=artifact-id \
+                         -Dversion=version \
+                         -Dpackaging=packaging \
+                         -Dfile=fileToInstall
+ex) mvn install:install-file -DgroupId=org.exist -DartifactId=exist -Dversion=1.4 -Dpackaging=jar -Dfile=./exist.jar && 
+
+** deploying a jar to a remote location requires a slightly different command, for example: 
+ex) mvn deploy:deploy-file -DgroupId=com.interrupt -DartifactId=bob -Dversion=0.0.0-prealpha -Dpackaging=jar -Dfile=./Bookkeeping/lib/zob/bob.jar  -DrepositoryId=sonatypeSnapshots -Durl=https://oss.sonatype.org/service/local/staging/deploy/maven2 -DrepositoryId=sonatypeReleases 
+
+
