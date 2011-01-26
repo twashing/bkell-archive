@@ -118,6 +118,56 @@
   )
 )
 
+(defn execute-embedded-db [ full-URL http-method header-hash xml-content ]
+  
+  (let [cl (. Class forName "org.exist.xmldb.DatabaseImpl")]
+    (let [database (. cl newInstance)]
+      (. database setProperty "create-database" "true")
+      (. org.xmldb.api.DatabaseManager registerDatabase database)
+      
+      (println "DEBUG > FINAL embedded query[" full-URL "] > http-method[" http-method "] > header-hash[" header-hash "] > xml-content[" xml-content "]")
+      
+      (let [col (. org.xmldb.api.DatabaseManager getCollection 
+                  (subs full-URL 0 (. full-URL lastIndexOf "/")) ;; get just the collection name 
+                  "admin" "")]
+      
+	      (cond 
+		    (. "GET" equals http-method) 
+	          (let [resource (. col getResource)]
+			  )
+		    (. "PUT" equals http-method)
+			  (try 
+	              ;; createResource / storeResource
+			  )
+		    (. "POST" equals http-method)
+			  (try 
+	              ;; createResource / storeResource
+			  )
+		    (. "DELETE" equals http-method)
+	          (. col removeResource)
+	      )
+      )
+      (comment 
+        (let [col (. org.xmldb.api.DatabaseManager getCollection full-URL "admin" "")]
+          
+          (let [resource (. col createResource "tim" "XMLResource")]
+            
+            (. resource setContent "<fubar/>")
+            (. col storeResource resource)
+          
+          )
+          (let [resources (. col listResources)]
+            ;;(println resources) 
+            (reduce (fn [l r] (println r)) (seq resources))
+          )
+          ;;(let [dmanager (. col getService "DatabaseManagerInstance" "1.0")]
+          ;;  (. dmanager shutdown))
+        )
+      )
+    )
+  )
+) 
+
 
 (defn execute-http-call [ full-URL http-method header-hash xml-content ] 
 		
