@@ -29,6 +29,8 @@
                        [xmlrpc/xmlrpc-common "3.0"]
                        [xmlrpc/xmlrpc-server "3.1.2"]
                        [javax.transaction/jta "1.1"]
+                       [xerces/xercesImpl "2.6.2"]
+                       [xml-resolver/xml-resolver "1.2"]
                     ] 
 	
 )
