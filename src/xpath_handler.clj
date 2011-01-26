@@ -311,7 +311,7 @@
 		   ;; 4. make RESTful call  &  5. pass result sequece to handler
 		   
 				(let [result-hash 
-				   		(execute-http-call 
+				   		(execute-command 
 				   					;;(str db-full-PARENT "/" (:leaf-document-name @xpath-data) (str "?" (url-encode db-query)))
 				   					(str db-full-PARENT "/" (:leaf-document-name @xpath-data) (str "?" (url-encode-spaces db-query)))
 				   					"GET" 

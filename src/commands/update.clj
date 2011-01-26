@@ -10,7 +10,7 @@
 		
 		;; PUT to eXist 
 		(println "UPDATing [" working-ITEM "] / XML[" (with-out-str (clojure.xml/emit working-ITEM)) "]" )
-		(let [result (execute-http-call 		
+		(let [result (execute-command 		
 				(url-encode-newlines (url-encode-spaces (str db-base-URL db-system-DIR (working-dir-lookup :bookkeeping)
 												"/" "group." (:id (:attrs (:logged-in-user @bkell/shell))) ".group"
 												"/" "group." (:id (:attrs (:logged-in-user @bkell/shell))) ".group"

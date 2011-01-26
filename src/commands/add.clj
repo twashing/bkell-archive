@@ -52,7 +52,7 @@
 			
 												;; PUT to eXist 
 												(println "CREATing group [" db-group "] / XML[" (with-out-str (clojure.xml/emit db-group)) "]" )
-										        (execute-http-call 		
+										        (execute-command 		
 														(str db-base-URL db-system-DIR (working-dir-lookup :group)
 																						"/" "group." (:id (:attrs working-USER)) 
 																						"/" "group." (:id (:attrs working-USER)))
@@ -67,7 +67,7 @@
 												;; 3. add to aauth.users ... PUT to eXist 
 												;; 4. profile Details ... PUT to eXist	... TODO 
 												(println "CREATing user [" working-USER "] / XML[" (with-out-str (clojure.xml/emit working-USER)) "]" )
-												(execute-http-call 		
+												(execute-command 		
 														(str db-base-URL db-system-DIR (working-dir-lookup :user)
 																						"/" "user." (:id (:attrs working-USER)) 
 																						"/" "user." (:id (:attrs working-USER)))
@@ -78,7 +78,7 @@
 												)
 												
 												;; 5. add associated Bookkeeping to Group ... PUT to eXist 
-												(execute-http-call 		
+												(execute-command 		
 														(str db-base-URL db-system-DIR (working-dir-lookup :bookkeeping)
 																						"/" "group." (:id (:attrs working-USER)) 
 																						"/bookkeeping.main.bookkeeping/bookkeeping.main.bookkeeping" )
@@ -103,7 +103,7 @@
 		
 		;; PUT to eXist 
 		(println "CREATing [" working-ITEM "] / XML[" (with-out-str (clojure.xml/emit working-ITEM)) "]" )
-		(let [result (execute-http-call 		
+		(let [result (execute-command 		
 				(url-encode-newlines (url-encode-spaces (str db-base-URL db-system-DIR (working-dir-lookup :bookkeeping)
 												"/" "group." (:id (:attrs (:logged-in-user @bkell/shell))) ".group"
 												"/" "group." (:id (:attrs (:logged-in-user @bkell/shell))) ".group"

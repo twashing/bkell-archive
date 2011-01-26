@@ -80,7 +80,7 @@
 	                        
     (helpers/parse-xml-to-hash 
       (:body-seq 
-		(execute-http-call 	(str db-full-PARENT "/" db-leaf (str "?" (url-encode db-query))) 
+		(execute-command 	(str db-full-PARENT "/" db-leaf (str "?" (url-encode db-query))) 
 										"GET" 
 										{"Content-Type" "text/xml"}
 										nil )	

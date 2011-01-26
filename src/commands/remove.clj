@@ -22,7 +22,7 @@
 								
 								;; PUT to eXist 
 								(println "REMOVing group [" working-USER "]" )
-								(execute-http-call 		
+								(execute-command 		
 									(str db-base-URL db-system-DIR (working-dir-lookup :group)
 										"/" "group." (:id (:attrs working-USER)))
 									"DELETE" 
@@ -35,7 +35,7 @@
 								;; 4. profile Details ... PUT to eXist	... TODO 
 								(println "REMOVing user [" working-USER "] / XML[" 
                                     (with-out-str (clojure.xml/emit working-USER)) "]" )
-								(execute-http-call 		
+								(execute-command 		
 									(str db-base-URL db-system-DIR (working-dir-lookup :user)
 										"/" "user." (:id (:attrs working-USER)))
 									"DELETE" 
@@ -45,7 +45,7 @@
 								)
 								
 								;; 5. add associated Bookkeeping to Group ... PUT to eXist 
-								(execute-http-call 		
+								(execute-command 		
 									(str db-base-URL db-system-DIR (working-dir-lookup :bookkeeping)
 										"/" "group." (:id (:attrs working-USER)) )
 									"DELETE" 

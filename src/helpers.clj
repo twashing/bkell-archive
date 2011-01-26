@@ -109,6 +109,16 @@
    )
 )
 
+
+
+(defn execute-command [ full-URL http-method header-hash xml-content ] 
+  (if (empty? (re-seq #"http:\/\/\/exist" full-URL))
+    (execute-http-call full-URL http-method header-hash xml-content) ;; true - a remote DB call 
+    ;; (execute-embedded-db full-URL http-method header-hash xml-content) ;; false - a local DB call
+  )
+)
+
+
 (defn execute-http-call [ full-URL http-method header-hash xml-content ] 
 		
 		;; from DB, get 'token' for 'option' args & value 
@@ -152,7 +162,7 @@
 
     (let 
       [result-hash 
-	    (execute-http-call 	;; TODO - put in 404 check 
+	    (execute-command 	;; TODO - put in 404 check 
 		  (str 
 			db-base-URL 
 			db-system-DIR 
