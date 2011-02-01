@@ -110,14 +110,6 @@
 )
 
 
-
-(defn execute-command [ full-URL http-method header-hash xml-content ] 
-  (if (empty? (re-seq #"http:\/\/\/exist" full-URL))
-    (execute-http-call full-URL http-method header-hash xml-content) ;; true - a remote DB call 
-    ;; (execute-embedded-db full-URL http-method header-hash xml-content) ;; false - a local DB call
-  )
-)
-
 (defn execute-embedded-db [ full-URL http-method header-hash xml-content ]
   
   (let [cl (. Class forName "org.exist.xmldb.DatabaseImpl")]
@@ -133,7 +125,9 @@
       
 	      (cond 
 		    (. "GET" equals http-method) 
-	          (let [resource (. col getResource)]
+	          (let  [resource (. col  getResource 
+                                      (subs full-URL (+ 1 (. full-URL lastIndexOf "/"))) )  ;; the name of the document
+                    ]
 			  )
 		    (. "PUT" equals http-method)
 			  (try 
@@ -146,24 +140,13 @@
 		    (. "DELETE" equals http-method)
 	          (. col removeResource)
 	      )
+
+          (let [dmanager (. col getService "DatabaseInstanceManager" "1.0")]
+            (. dmanager shutdown))
       )
-      (comment 
-        (let [col (. org.xmldb.api.DatabaseManager getCollection full-URL "admin" "")]
-          
-          (let [resource (. col createResource "tim" "XMLResource")]
-            
-            (. resource setContent "<fubar/>")
-            (. col storeResource resource)
-          
-          )
-          (let [resources (. col listResources)]
-            ;;(println resources) 
-            (reduce (fn [l r] (println r)) (seq resources))
-          )
-          ;;(let [dmanager (. col getService "DatabaseManagerInstance" "1.0")]
-          ;;  (. dmanager shutdown))
-        )
-      )
+      
+      (. org.xmldb.api.DatabaseManager deregisterDatabase database)
+      
     )
   )
 ) 
@@ -198,6 +181,14 @@
 				)
 			
 		)
+)
+
+
+(defn execute-command [ full-URL http-method header-hash xml-content ] 
+  (if (empty? (re-seq #"http:\/\/\/exist" full-URL))
+    (execute-http-call full-URL http-method header-hash xml-content) ;; true - a remote DB call 
+    (execute-embedded-db full-URL http-method header-hash xml-content) ;; false - a local DB call
+  )
 )
 
 
