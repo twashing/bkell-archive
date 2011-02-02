@@ -119,38 +119,47 @@
       
       (println "DEBUG > FINAL embedded query[" full-URL "] > http-method[" http-method "] > header-hash[" header-hash "] > xml-content[" xml-content "]")
       
-      (let [col (. org.xmldb.api.DatabaseManager getCollection 
-                  (subs full-URL 0 (. full-URL lastIndexOf "/")) ;; get just the collection name 
-                  "admin" "")]
+      (let  [col 
+                  (try  (. org.xmldb.api.DatabaseManager getCollection 
+                          (subs full-URL 0 (. full-URL lastIndexOf "/")) ;; get just the collection name 
+                        "admin" "")
+                        (catch java.lang.Exception e (println (str "Error type[" (type e) "] > msg[" (. e getMessage) "]" )))
       
-	      (cond 
-		    (. "GET" equals http-method) 
-	          (let  [resource (. col  getResource 
-                                      (subs full-URL (+ 1 (. full-URL lastIndexOf "/"))) )  ;; the name of the document
-                    ]
-			  )
-		    (. "PUT" equals http-method)
-			  (try 
-	              ;; createResource / storeResource
-			  )
-		    (. "POST" equals http-method)
-			  (try 
-	              ;; createResource / storeResource
-			  )
-		    (. "DELETE" equals http-method)
-	          (. col removeResource)
-	      )
-
-          (let [dmanager (. col getService "DatabaseInstanceManager" "1.0")]
-            (. dmanager shutdown))
+                  )
+            ]
+           
+	      (if col 
+            (try    ;; only executing of parent collection was found 
+              (cond 
+		        (. "GET" equals http-method) 
+	              (let  [resource (. col  getResource 
+                                    (subs full-URL (+ 1 (. full-URL lastIndexOf "/"))) )  ;; the name of the document
+                                ])
+		        (. "PUT" equals http-method)
+			      (try ;; createResource / storeResource
+			      )
+		        (. "POST" equals http-method)
+			      (try ;; createResource / storeResource
+			      )
+		        (. "DELETE" equals http-method)
+	              (. col removeResource)
+              )
+                  
+              ;;(finally 
+              ;;  (do 
+              ;;    (let [dmanager (. col getService "DatabaseInstanceManager" "1.0")]
+              ;;      (. dmanager shutdown))
+                  
+              ;;    (. org.xmldb.api.DatabaseManager deregisterDatabase database)))
+            )
+            nil
+          )
       )
-      
-      (. org.xmldb.api.DatabaseManager deregisterDatabase database)
-      
     )
   )
 ) 
 
+;;(execute-embedded-db "http:///exist/rest/testDB/aauthentication.main.authentication/users.aauth.users/user.test.user/user.test.user" "GET" nil nil)
 
 (defn execute-http-call [ full-URL http-method header-hash xml-content ] 
 		
@@ -185,7 +194,7 @@
 
 
 (defn execute-command [ full-URL http-method header-hash xml-content ] 
-  (if (empty? (re-seq #"http:\/\/\/exist" full-URL))
+  (if (empty? (re-seq #"http:\/\/\/exist" full-URL))    ;; check for URL prefix - http:///exist
     (execute-http-call full-URL http-method header-hash xml-content) ;; true - a remote DB call 
     (execute-embedded-db full-URL http-method header-hash xml-content) ;; false - a local DB call
   )
@@ -224,7 +233,9 @@
       ) ]
 	  
       (println "RESULT USER > result-hash... " result-hash)
-      (parse-xml-to-hash (:body-seq result-hash))
+      (if (not (nil? result-hash))
+        (parse-xml-to-hash (:body-seq result-hash))
+      )
     )
 
 )
