@@ -10,6 +10,7 @@
     (:require commands.add)
     (:require commands.remove)
     (:require commands.authenticate)
+    (:require clojure.contrib.logging)
 )
 
 
@@ -21,7 +22,7 @@
     "Initialize the shell"
     [test]
 
-    (println "test-fixture-shell CALLED")
+    (clojure.contrib.logging/debug "test-fixture-shell CALLED")
     (bkell/init-shell)
 
     (test)
@@ -31,7 +32,7 @@
     "test to clear out shell memory before a test is run"
     [test]
 
-    (println "test-fixture-db CALLED")
+    (clojure.contrib.logging/debug "test-fixture-db CALLED")
 
     ;; make the shell active
     ;; create a basic user in the DB
@@ -92,6 +93,7 @@
     )
 )
 
+(comment 
 
 ;; test a login with a bad password
 (deftest test-bad-password []
@@ -124,4 +126,5 @@
     )
 )
 
+) 
 

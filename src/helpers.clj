@@ -159,8 +159,6 @@
   )
 ) 
 
-;;(execute-embedded-db "http:///exist/rest/testDB/aauthentication.main.authentication/users.aauth.users/user.test.user/user.test.user" "GET" nil nil)
-
 (defn execute-http-call [ full-URL http-method header-hash xml-content ] 
 		
 		;; from DB, get 'token' for 'option' args & value 
