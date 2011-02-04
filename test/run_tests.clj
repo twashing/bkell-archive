@@ -1,9 +1,11 @@
 (use 'clojure.test)
+(require 'clojure.contrib.logging)
+
 (require 'login-test)
 (run-tests 'login-test)
 
 ;;                                (comment  
-;;								(println 	"Add command > context[" (:tag (:command-context @bkell/shell )) 
+;;								(clojure.contrib.logging/info 	"Add command > context[" (:tag (:command-context @bkell/shell )) 
 ;;													"] > users?[" (= (keyword "users") (:tag (:command-context @bkell/shell ))) 
 ;;													"] > :previous / each_copy[" (:previous @bkell/shell)"] > match?[" 
 ;;														(and 	(= (keyword "users") (:tag (:command-context @bkell/shell )))

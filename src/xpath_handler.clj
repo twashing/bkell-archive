@@ -18,6 +18,7 @@
   (:use helpers) 
   
   (:require clojure.xml)
+  (:require clojure.contrib.logging)
   
 )
 
@@ -48,7 +49,7 @@
 		(peek @stack))
 	(defn stack-push [e] 
 		(dosync (alter stack conj e)) 
-		(println "PUSH stack [" @stack "]" ))
+		(clojure.contrib.logging/info "PUSH stack [" @stack "]" ))
 	(defn stack-pop [] 
 		(dosync (alter stack pop)))
 	(defn stack-empty? [] 
@@ -90,13 +91,13 @@
 			;;	iv.	Predicate 
 			(caseTAbbrevRootDesc [node] 
 				
-				(println "caseTAbbrevRootDesc CALLED \t\t\t\t class[" (. node getClass) "] \t\t\t\t" (. node toString))
+				(clojure.contrib.logging/info "caseTAbbrevRootDesc CALLED \t\t\t\t class[" (. node getClass) "] \t\t\t\t" (. node toString))
 				(stack-push node)
 				
 			)
 			(caseTLetter [node] 
 				
-				(println "caseTLetter CALLED \t\t\t\t\t class[" (. node getClass) "] \t\t\t\t\t" (. node toString))
+				(clojure.contrib.logging/info "caseTLetter CALLED \t\t\t\t\t class[" (. node getClass) "] \t\t\t\t\t" (. node toString))
 				(stack-push node)
 				
 			)
@@ -104,11 +105,11 @@
 				
 				(proxy-super inAPredicatelist node) 	;; duplicating adapter 'in' call 
 		    
-				(println "caseAPredicatelist CALLED \t\t\t\t class[" (. node getClass) "] \t\t\t\t" (. node toString) "\t\t filtered " (filter-xpath-input (. node toString)))
+				(clojure.contrib.logging/info "caseAPredicatelist CALLED \t\t\t\t class[" (. node getClass) "] \t\t\t\t" (. node toString) "\t\t filtered " (filter-xpath-input (. node toString)))
 				(doseq [ each_predicate (java.util.ArrayList. (. node getPredicate)) ] 
 					(do
 						
-						(println "DEBUG > each predicate... " each_predicate " predicate expresion[" (. each_predicate getExpr) 
+						(clojure.contrib.logging/info "DEBUG > each predicate... " each_predicate " predicate expresion[" (. each_predicate getExpr) 
 									"] getExprsingle[" (.. each_predicate getExpr getExprsingle) "] ugghhhh!! [" 	;; this is where = breaks off: getComparisonexpr -here- getComparisonexprPart
 											;;(.. each_predicate getExpr getExprsingle getOrexpr getAndexpr getComparisonexpr getComparisonexprPart getRangeexpr) "]" )
 											(.. each_predicate getExpr getExprsingle getOrexpr getAndexpr getComparisonexpr getRangeexpr) "]" )
@@ -126,7 +127,7 @@
 								(clojure.contrib.string/replace-str "'" "" 
 									(clojure.contrib.string/replace-str " " "" 
 										(.. each_predicate getExpr getExprsingle getOrexpr getAndexpr getComparisonexpr getComparisonexprPart getRangeexpr toString))))
-						(println "DEBUG > predicate-name[" predicate-name "] > predicate-value[" predicate-value "]")
+						(clojure.contrib.logging/info "DEBUG > predicate-name[" predicate-name "] > predicate-value[" predicate-value "]")
 						
 						
 						;; (peek, then..) pop 'TLetter' & 'RelativePathexpr' 
@@ -134,7 +135,7 @@
 						(stack-pop)	;; pop the token 
 						(stack-pop)	;; LATER - pop the relativepathpart - we'll have to assume that there's a relative_path_part... for now  
 						
-						(println "top of stack["top"] > class["(. top getClass)"] / predicate-value[" predicate-value "] > class["(. predicate-value getClass)"]")
+						(clojure.contrib.logging/info "top of stack["top"] > class["(. top getClass)"] / predicate-value[" predicate-value "] > class["(. predicate-value getClass)"]")
 						(cond 
 							(instance? com.interrupt.cc.xpath.node.TAbbrevRootDesc top ) 
 								'() 
@@ -153,7 +154,7 @@
 						)
 						
 						;; put in a check to see if we are at the leaf document
-						(println "leaf check [" (. (clojure.contrib.string/trim (. top toString)) equals (:leaf-node @xpath-data)) "] > top[" (clojure.contrib.string/trim (. top toString)) "] > leaf-node[" (:leaf-node @xpath-data) "]") 
+						(clojure.contrib.logging/info "leaf check [" (. (clojure.contrib.string/trim (. top toString)) equals (:leaf-node @xpath-data)) "] > top[" (clojure.contrib.string/trim (. top toString)) "] > leaf-node[" (:leaf-node @xpath-data) "]") 
 						
 						(if (. (clojure.contrib.string/trim (. top toString)) equals (:leaf-node @xpath-data))
 							
@@ -178,7 +179,7 @@
 																				(:context-parent @xpath-data))	
 																				(. (:context-parent @xpath-data) length))) 
 									
-									(println "b_index[" b_index "] > +1[" (+ 1 b_index) "] > :context-parent["(:context-parent @xpath-data)"] > URL-build["
+									(clojure.contrib.logging/info "b_index[" b_index "] > +1[" (+ 1 b_index) "] > :context-parent["(:context-parent @xpath-data)"] > URL-build["
 											@URL-build"] > indexOf '/' [" (. @URL-build indexOf "/") "] > FINAL["
 											(. @URL-build indexOf "/" (+ 1 b_index))"] > 'if' check["(< (. @URL-build indexOf "/" (+ 1 b_index)) 0 )"]")
 											
@@ -206,7 +207,7 @@
 										
 									)
 								)
-								(println "---> We are at the leaf document[" @xpath-data "]" )
+								(clojure.contrib.logging/info "---> We are at the leaf document[" @xpath-data "]" )
 								)
 							
 							(dosync (alter xpath-data conj  ;; ELSE, get the child XPath part
@@ -215,16 +216,16 @@
 						)
 					)
 				)
-				(println "URL-build[" @URL-build "]")
-				(println)
-				(println)
+				(clojure.contrib.logging/info "URL-build[" @URL-build "]")
+				(clojure.contrib.logging/info)
+				(clojure.contrib.logging/info)
 				
 				(proxy-super outAPredicatelist node) 	;; duplicating adapter 'out' call 
 				
 			)
 			(caseARootRelativepathexprPartPart [node] 
 				
-				(println "caseARootRelativepathexprPartPart CALLED \t\t class[" (. node getClass) "] \t\t\t\t" (. node toString)) 
+				(clojure.contrib.logging/info "caseARootRelativepathexprPartPart CALLED \t\t class[" (. node getClass) "] \t\t\t\t" (. node toString)) 
 				(stack-push node) 
 				
 			)
@@ -247,10 +248,10 @@
    (try 
       (if (instance? com.interrupt.bookkeeping.cc.node.AXpathCommandInput (. node getCommandInput) )
         (xpath_handler (. node getCommandInput) handler)
-        (println "EEeee.. xpath_handler not processing")
+        (clojure.contrib.logging/info "EEeee.. xpath_handler not processing")
       )
       (catch Exception e 
-        (println "EEeee.. xpath_handler not processing > Error Message[" (. e getMessage) "]")) ;; > StackTrace[" (. e printStackTrace) "]"))
+        (clojure.contrib.logging/info "EEeee.. xpath_handler not processing > Error Message[" (. e getMessage) "]")) ;; > StackTrace[" (. e printStackTrace) "]"))
    ) 
 )
 (defmethod xpath_handler [:AXpathCommandInput :handler] [xinput handler] 
@@ -259,13 +260,13 @@
 		
 		(do 
 		   
-		   (println "xpath_handler > xinput[" (. xinput getClass) "]")
-		   (println "XPATH input[" (. xinput toString) "]")
+		   (clojure.contrib.logging/info "xpath_handler > xinput[" (. xinput getClass) "]")
+		   (clojure.contrib.logging/info "XPATH input[" (. xinput toString) "]")
 		   
 		   ;; 1. filter out <spaces> and ` 
 		   (def input-string (filter-xpath-input (. xinput toString)))
-		   (println "input-string \t[" input-string "]")
-		   ;;(println "stripped XPath \t[" (clojure.contrib.string/replace-re #"\\[[^\\]]*\\]" "" input-string) "]" )
+		   (clojure.contrib.logging/info "input-string \t[" input-string "]")
+		   ;;(clojure.contrib.logging/info "stripped XPath \t[" (clojure.contrib.string/replace-re #"\\[[^\\]]*\\]" "" input-string) "]" )
 		   
 			 ;; 1.1 
 			 (dosync 
@@ -284,8 +285,8 @@
 			 		;; with token, lookup context directory 
 			 		(alter xpath-data conj { :context-parent (working-dir-lookup (:leaf-node @xpath-data)) } )
 			 		
-			 		(println "LEAF token > " (:leaf-node @xpath-data))
-			 		(println "LEAF context parent > " (:context-parent @xpath-data))
+			 		(clojure.contrib.logging/info "LEAF token > " (:leaf-node @xpath-data))
+			 		(clojure.contrib.logging/info "LEAF context parent > " (:context-parent @xpath-data))
 			 )
 			 
 			 ;; 1.2 build an xpath parser 	 
@@ -319,20 +320,20 @@
 				   					nil 
 				   		)]
 				  
-				  (println "result-hash > " result-hash )
+				  (clojure.contrib.logging/info "result-hash > " result-hash )
  					(let [	xml-string 
 	 								(clojure.contrib.str-utils/str-join nil 
 										(:body-seq result-hash ))   
 								]
 	 					
-	 					(println "xpath_handler > string > " xml-string )
+	 					(clojure.contrib.logging/info "xpath_handler > string > " xml-string )
 	 					(handler 
 							(clojure.xml/parse (ByteArrayInputStream. (. xml-string getBytes ) )))
  					)
 		   	)
 		)
    )
-   (catch Exception e (println "EEeee.. xpath_hanlder not processing"))
+   (catch Exception e (clojure.contrib.logging/info "EEeee.. xpath_hanlder not processing"))
    )
 )
 

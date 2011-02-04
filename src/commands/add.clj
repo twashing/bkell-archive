@@ -1,6 +1,7 @@
 (require 'clojure.contrib.string)
 (use 'helpers) 
 (require 'bkell) 
+(require 'clojure.contrib.logging)
 
 
 (defn add-user [db-base-URL db-system-DIR working-USER] 
@@ -8,7 +9,7 @@
 		;; 1. check that there's not an existing user 
 		(let [check-user (get-user db-base-URL db-system-DIR working-USER) ]
 			
-			(println "check-user[" check-user "]")	;; TODO - if <error/>, ADD user; user exists otherwise 
+			(clojure.contrib.logging/info "check-user[" check-user "]")	;; TODO - if <error/>, ADD user; user exists otherwise 
 			
 			(if (and 
                 ;; (not (= (:msg check-user) "Error"))
@@ -16,16 +17,16 @@
                 (= (:code check-user) 200)
 				)
 
-					(println "user ALREADY exists") ;; TODO - throw error to user
+					(clojure.contrib.logging/info "user ALREADY exists") ;; TODO - throw error to user
 					
 					(do 
 						
-						(println "ADDING user[" working-USER "]")  
+						(clojure.contrib.logging/info "ADDING user[" working-USER "]")  
 						
 						;; 2. add to aauth.groups and corresponding default group to the new user
 						(let [aauth-group (clojure.xml/parse "etc/xml/add.group.xml")] 
 							
-							(println "...loading add.group.xml[" aauth-group "]")
+							(clojure.contrib.logging/info "...loading add.group.xml[" aauth-group "]")
 							(let [local-id 	(str 
 												(name (:tag working-USER)) 
 												"." 
@@ -51,7 +52,7 @@
 						
 			
 												;; PUT to eXist 
-												(println "CREATing group [" db-group "] / XML[" (with-out-str (clojure.xml/emit db-group)) "]" )
+												(clojure.contrib.logging/info "CREATing group [" db-group "] / XML[" (with-out-str (clojure.xml/emit db-group)) "]" )
 										        (execute-command 		
 														(str db-base-URL db-system-DIR (working-dir-lookup :group)
 																						"/" "group." (:id (:attrs working-USER)) 
@@ -66,7 +67,7 @@
 												
 												;; 3. add to aauth.users ... PUT to eXist 
 												;; 4. profile Details ... PUT to eXist	... TODO 
-												(println "CREATing user [" working-USER "] / XML[" (with-out-str (clojure.xml/emit working-USER)) "]" )
+												(clojure.contrib.logging/info "CREATing user [" working-USER "] / XML[" (with-out-str (clojure.xml/emit working-USER)) "]" )
 												(execute-command 		
 														(str db-base-URL db-system-DIR (working-dir-lookup :user)
 																						"/" "user." (:id (:attrs working-USER)) 
@@ -102,7 +103,7 @@
 		;; ... TODO - logic to build XQuery to use to insert 
 		
 		;; PUT to eXist 
-		(println "CREATing [" working-ITEM "] / XML[" (with-out-str (clojure.xml/emit working-ITEM)) "]" )
+		(clojure.contrib.logging/info "CREATing [" working-ITEM "] / XML[" (with-out-str (clojure.xml/emit working-ITEM)) "]" )
 		(let [result (execute-command 		
 				(url-encode-newlines (url-encode-spaces (str db-base-URL db-system-DIR (working-dir-lookup :bookkeeping)
 												"/" "group." (:id (:attrs (:logged-in-user @bkell/shell))) ".group"
@@ -121,7 +122,7 @@
 													"Authorization" "Basic YWRtaW46" }
 												nil
 		)]
-		(println "result[" result "]")
+		(clojure.contrib.logging/info "result[" result "]")
 		)
 )
 

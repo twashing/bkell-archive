@@ -3,6 +3,7 @@
 
 (import 'java.io.ByteArrayInputStream) 
 (require 'clojure.xml)
+(require 'clojure.contrib.logging)
 
 
 
@@ -20,16 +21,16 @@
 
 (defmethod xml_handler [:Node :handler] [node handler] 
     
-            ;;(println "xml_handler CALLED[:Node :handler] > AXmlCommandInput instance? > " 
+            ;;(clojure.contrib.logging/info "xml_handler CALLED[:Node :handler] > AXmlCommandInput instance? > " 
             ;;  (instance? com.interrupt.bookkeeping.cc.node.AXmlCommandInput (. node getCommandInput) ))
    
    (try 
       (if (instance? com.interrupt.bookkeeping.cc.node.AXmlCommandInput (. node getCommandInput) )
         (xml_handler (. node getCommandInput) handler)
-        (println "EEeee.. xml_hanlder not processing")
+        (clojure.contrib.logging/info "EEeee.. xml_hanlder not processing")
       )
       (catch Exception e 
-        (println "EEeee.. xml_hanlder not processing > Error Message[" (. e getMessage) "]"))   ;; > StackTrace[" (. e printStackTrace) "]"))
+        (clojure.contrib.logging/info "EEeee.. xml_hanlder not processing > Error Message[" (. e getMessage) "]"))   ;; > StackTrace[" (. e printStackTrace) "]"))
    ) 
 )
 
@@ -38,10 +39,10 @@
    (if (instance? com.interrupt.bookkeeping.cc.node.AXmlCommandInput xinput )
 			(do 
 			   
-			   (println "XML input[" xinput "]")
+			   (clojure.contrib.logging/info "XML input[" xinput "]")
 			   (let [xml-string (filterSpacesFromXML (. xinput toString))] 
 			   		
-			   		(println "XML filtered[" xml-string "]")
+			   		(clojure.contrib.logging/info "XML filtered[" xml-string "]")
 			   		(handler (clojure.xml/parse (ByteArrayInputStream. (.getBytes xml-string "UTF-8"))))
 			   		
 			   )

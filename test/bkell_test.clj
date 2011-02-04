@@ -2,6 +2,7 @@
 	(:use [bkell] :reload-all)
 	(:use [clojure.test])
 	(:use depth_adapter)
+    (:require clojure.contrib.logging)
 )
 
 
@@ -14,13 +15,13 @@
 			
 			(send agt 
 				(fn [] 
-					(println "FINAL > " 
+					(clojure.contrib.logging/info "FINAL > " 
 						(with-out-str (bkell (get-depth-adapter)))))
 				nil
 			) 
 		)
 		
-		(println "foobar")
+		(clojure.contrib.logging/info "foobar")
 	)
 	
 	(comment	;; TODO - try and test callback code with threads 
@@ -28,7 +29,7 @@
 		(future 
 			(bkell (get-depth-adapter)))
 		)
-		(println "foobar")
+		(clojure.contrib.logging/info "foobar")
 		
 	)
 	

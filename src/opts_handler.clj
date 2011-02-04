@@ -1,10 +1,12 @@
 
+(require 'clojure.contrib.logging)
+
 (defn option_handler [node handler] 
     (try 
         
                 (if (instance? com.interrupt.bookkeeping.cc.node.AOptsCommandInput (. node getCommandInput) )
 					(do 
-					   (println "DEBUG > OPTIONS input > token[" (.. node getCommandInput getInputOption getCommandtoken) "] > options[" (.. node getCommandInput getInputOption getCommandoption) "]")
+					   (clojure.contrib.logging/info "DEBUG > OPTIONS input > token[" (.. node getCommandInput getInputOption getCommandtoken) "] > options[" (.. node getCommandInput getInputOption getCommandoption) "]")
 					   
 					   ;; get token string (ie user, entry, etc) -> 
 					   (def token (.. node getCommandInput getInputOption getCommandtoken))
@@ -23,7 +25,7 @@
 						 options
 					      ))
 					   )
-						(println "Hello World >> " (.. (nth option-id 0) getIdOpt getText) " >> " (type (.. (nth option-id 0) getIdOpt getText)) )
+						(clojure.contrib.logging/info "Hello World >> " (.. (nth option-id 0) getIdOpt getText) " >> " (type (.. (nth option-id 0) getIdOpt getText)) )
 						
 					   (def db-id-ID  ;; TODO - chain this to look for other options if 'id' is not there
 					      
@@ -36,7 +38,7 @@
 								)
 					   )
 					   
-					   (println "DEBUG > extracted > [" token "] > [" options "] > [" db-id-ID "]")
+					   (clojure.contrib.logging/info "DEBUG > extracted > [" token "] > [" options "] > [" db-id-ID "]")
 					   
 					   ;; from HASH -> find containing folder for token 
 					   (def db-working-DIR (working-dir-lookup (.. token toString trim)))
@@ -48,8 +50,8 @@
 					   (def db-document-NAME db-leaf) 
 					   
 					   
-					   (println "DEBUG > db-base-URL["db-base-URL"] > db-system-DIR["db-system-DIR"] > db-working-DIR["db-working-DIR"] > leaf["db-leaf"]") 
-					   (println "DEBUG > db-base-URL[" db-full-PARENT "]")
+					   (clojure.contrib.logging/info "DEBUG > db-base-URL["db-base-URL"] > db-system-DIR["db-system-DIR"] > db-working-DIR["db-working-DIR"] > leaf["db-leaf"]") 
+					   (clojure.contrib.logging/info "DEBUG > db-base-URL[" db-full-PARENT "]")
 					   
 					   
 					   ;; this will find all <SPEECH> elements in the collection /db/shakespeare  with "Juliet" as the <SPEAKER> 
@@ -91,7 +93,7 @@
 					   
 					)
 		     )
-             (catch Exception e (println "EEeee.. opts_hanlder not processing"))
+             (catch Exception e (clojure.contrib.logging/info "EEeee.. opts_hanlder not processing"))
 		  )
          
 )

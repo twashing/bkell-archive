@@ -1,6 +1,7 @@
 (require 'clojure.contrib.string)
 (use 'helpers) 
 (require 'bkell) 
+(require 'clojure.contrib.logging)
 
 
 (defn remove-user [db-base-URL db-system-DIR working-USER] 
@@ -8,7 +9,7 @@
 		;; 1. check that there's not an existing user 
 		(let [check-user (get-user db-base-URL db-system-DIR working-USER) ]
 			
-			(println "check-user[" check-user "]")	;; TODO - if <error/>, ADD user; user exists otherwise 
+			(clojure.contrib.logging/info "check-user[" check-user "]")	;; TODO - if <error/>, ADD user; user exists otherwise 
 			
 			(if (and 
                   (= (:msg check-user) "OK")
@@ -17,11 +18,11 @@
                 
 					(do 
 						
-						(println "REMOVING user[" working-USER "]")  
+						(clojure.contrib.logging/info "REMOVING user[" working-USER "]")  
 		
 								
 								;; PUT to eXist 
-								(println "REMOVing group [" working-USER "]" )
+								(clojure.contrib.logging/info "REMOVing group [" working-USER "]" )
 								(execute-command 		
 									(str db-base-URL db-system-DIR (working-dir-lookup :group)
 										"/" "group." (:id (:attrs working-USER)))
@@ -33,7 +34,7 @@
 								
 								;; 3. add to aauth.users ... PUT to eXist 
 								;; 4. profile Details ... PUT to eXist	... TODO 
-								(println "REMOVing user [" working-USER "] / XML[" 
+								(clojure.contrib.logging/info "REMOVing user [" working-USER "] / XML[" 
                                     (with-out-str (clojure.xml/emit working-USER)) "]" )
 								(execute-command 		
 									(str db-base-URL db-system-DIR (working-dir-lookup :user)
@@ -55,7 +56,7 @@
 								)
 		
 			        )
-			        (println "user DOES NOT exist") ;; TODO - throw error if user does not exist 
+			        (clojure.contrib.logging/info "user DOES NOT exist") ;; TODO - throw error if user does not exist 
 		  	  
 			)
 	)

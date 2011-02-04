@@ -1,6 +1,7 @@
 (require 'clojure.contrib.string)
 (use 'helpers) 
 (require 'bkell) 
+(require 'clojure.contrib.logging)
 
 
 (defn update-generic [db-base-URL db-system-DIR working-ITEM command-context]
@@ -9,7 +10,7 @@
 		;; ... TODO - logic to build XQuery to use to insert 
 		
 		;; PUT to eXist 
-		(println "UPDATing [" working-ITEM "] / XML[" (with-out-str (clojure.xml/emit working-ITEM)) "]" )
+		(clojure.contrib.logging/info "UPDATing [" working-ITEM "] / XML[" (with-out-str (clojure.xml/emit working-ITEM)) "]" )
 		(let [result (execute-command 		
 				(url-encode-newlines (url-encode-spaces (str db-base-URL db-system-DIR (working-dir-lookup :bookkeeping)
 												"/" "group." (:id (:attrs (:logged-in-user @bkell/shell))) ".group"
@@ -28,7 +29,7 @@
 													"Authorization" "Basic YWRtaW46" }
 												nil
 		)]
-		(println "result[" result "]")
+		(clojure.contrib.logging/info "result[" result "]")
 		)
 )
 

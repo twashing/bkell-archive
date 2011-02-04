@@ -5,6 +5,7 @@
 	(:require clojure.contrib.http.agent)
 	(:require clojure-http.resourcefully)
 	(:require clojure.pprint)
+    (:require clojure.contrib.logging)
   
     (:import java.io.ByteArrayInputStream)
 ) 
@@ -75,7 +76,7 @@
 ;; working directory lookup ...TODO - put these lookups into config 
 (defn working-dir-lookup [token]
    
-   ;;(println "DEBUG > 'working-dir-lookup' CALLED > ["(keyword token)"]" )
+   ;;(clojure.contrib.logging/info "DEBUG > 'working-dir-lookup' CALLED > ["(keyword token)"]" )
    (  {	 :group "aauthentication.main.authentication/groups.aauth.groups"
 				 :user "aauthentication.main.authentication/users.aauth.users"
 				 :users "aauthentication.main.authentication/users.aauth.users"
@@ -94,7 +95,7 @@
 (defn namespace-lookup 
    [token]
    
-   ;;(println "DEBUG > 'namespace-lookup' CALLED > ["token"]" )
+   ;;(clojure.contrib.logging/info "DEBUG > 'namespace-lookup' CALLED > ["token"]" )
    (  {	 "group" "com/interrupt/bookkeeping/users" 
 	 "user" "com/interrupt/bookkeeping/users" 
 	 "users" "com/interrupt/bookkeeping/users" 
@@ -117,13 +118,13 @@
       (. database setProperty "create-database" "true")
       (. org.xmldb.api.DatabaseManager registerDatabase database)
       
-      (println "DEBUG > FINAL embedded query[" full-URL "] > http-method[" http-method "] > header-hash[" header-hash "] > xml-content[" xml-content "]")
+      (clojure.contrib.logging/info "DEBUG > FINAL embedded query[" full-URL "] > http-method[" http-method "] > header-hash[" header-hash "] > xml-content[" xml-content "]")
       
       (let  [col 
                   (try  (. org.xmldb.api.DatabaseManager getCollection 
                           (subs full-URL 0 (. full-URL lastIndexOf "/")) ;; get just the collection name 
                         "admin" "")
-                        (catch java.lang.Exception e (println (str "Error type[" (type e) "] > msg[" (. e getMessage) "]" )))
+                        (catch java.lang.Exception e (clojure.contrib.logging/info (str "Error type[" (type e) "] > msg[" (. e getMessage) "]" )))
       
                   )
             ]
@@ -162,7 +163,7 @@
 (defn execute-http-call [ full-URL http-method header-hash xml-content ] 
 		
 		;; from DB, get 'token' for 'option' args & value 
-		(println "DEBUG > FINAL http query[" full-URL "] > http-method[" http-method "] > header-hash[" header-hash "] > xml-content[" xml-content "]")
+		(clojure.contrib.logging/info "DEBUG > FINAL http query[" full-URL "] > http-method[" http-method "] > header-hash[" header-hash "] > xml-content[" xml-content "]")
 		
 		(cond 
 			(. "GET" equals http-method) 
@@ -230,7 +231,7 @@
 			nil
       ) ]
 	  
-      (println "RESULT USER > result-hash... " result-hash)
+      (clojure.contrib.logging/info "RESULT USER > result-hash... " result-hash)
       (if (not (nil? result-hash))
         (parse-xml-to-hash (:body-seq result-hash))
       )
