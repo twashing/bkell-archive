@@ -19,7 +19,7 @@
 		{ "Content-Type" "text/xml" } 
 		nil)]
 		
-		(clojure.contrib.logging/info "test result [" result-GET "]") 
+		(clojure.contrib.logging/info ("test result [" result-GET "]") )
 		(is (not (nil? result-GET)) "GET result should not be nil") 
 		(is (. (:msg result-GET ) equals "OK")) 
 		(is (. (:code result-GET ) equals 200)) 
@@ -49,7 +49,7 @@
 		"<test-good-http-put/>" 
 		)]
 		
-		(clojure.contrib.logging/info "test result [" result-PUT "]")
+		(clojure.contrib.logging/info ("test result [" result-PUT "]"))
 		(is (not (nil? result-PUT)) "PUT result should not be nil") 
 		(is (. (:code result-PUT ) equals 201) "response code SHOULD be 201" )
 		(is (. (:msg result-PUT ) equals "Created") "test xml should have been 'Created'" )
@@ -63,7 +63,7 @@
 		"<test-bad-passwd/>" 
 		)]
 		
-		(clojure.contrib.logging/info "test result [" result-PUT "]")
+		(clojure.contrib.logging/info ("test result [" result-PUT "]"))
 		(is (not (nil? result-PUT)) "PUT result should not be nil") 
 		(is (. (:code result-PUT ) equals 500) "response code SHOULD be 500" )
 		(is (. (:msg result-PUT ) equals "Error") "test PUT should return 'Error'" )

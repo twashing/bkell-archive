@@ -1,10 +1,10 @@
 
 (use 'helpers) 
+(require 'clojure.contrib.logging)
+
 
 (import 'java.io.ByteArrayInputStream) 
 (require 'clojure.xml)
-(require 'clojure.contrib.logging)
-
 
 
 (defmulti xml_handler   (fn [input handler] 
@@ -27,10 +27,10 @@
    (try 
       (if (instance? com.interrupt.bookkeeping.cc.node.AXmlCommandInput (. node getCommandInput) )
         (xml_handler (. node getCommandInput) handler)
-        (clojure.contrib.logging/info "EEeee.. xml_hanlder not processing")
+        (clojure.contrib.logging/info ("EEeee.. xml_hanlder not processing"))
       )
       (catch Exception e 
-        (clojure.contrib.logging/info "EEeee.. xml_hanlder not processing > Error Message[" (. e getMessage) "]"))   ;; > StackTrace[" (. e printStackTrace) "]"))
+        (clojure.contrib.logging/info ("EEeee.. xml_hanlder not processing > Error Message[" (. e getMessage) "]")))   ;; > StackTrace[" (. e printStackTrace) "]"))
    ) 
 )
 
@@ -39,10 +39,10 @@
    (if (instance? com.interrupt.bookkeeping.cc.node.AXmlCommandInput xinput )
 			(do 
 			   
-			   (clojure.contrib.logging/info "XML input[" xinput "]")
+			   (clojure.contrib.logging/info ("XML input[" xinput "]"))
 			   (let [xml-string (filterSpacesFromXML (. xinput toString))] 
 			   		
-			   		(clojure.contrib.logging/info "XML filtered[" xml-string "]")
+			   		(clojure.contrib.logging/info ("XML filtered[" xml-string "]"))
 			   		(handler (clojure.xml/parse (ByteArrayInputStream. (.getBytes xml-string "UTF-8"))))
 			   		
 			   )

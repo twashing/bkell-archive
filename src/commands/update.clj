@@ -10,7 +10,7 @@
 		;; ... TODO - logic to build XQuery to use to insert 
 		
 		;; PUT to eXist 
-		(clojure.contrib.logging/info "UPDATing [" working-ITEM "] / XML[" (with-out-str (clojure.xml/emit working-ITEM)) "]" )
+		(clojure.contrib.logging/info ("UPDATing [" working-ITEM "] / XML[" (with-out-str (clojure.xml/emit working-ITEM)) "]" ))
 		(let [result (execute-command 		
 				(url-encode-newlines (url-encode-spaces (str db-base-URL db-system-DIR (working-dir-lookup :bookkeeping)
 												"/" "group." (:id (:attrs (:logged-in-user @bkell/shell))) ".group"
@@ -29,7 +29,7 @@
 													"Authorization" "Basic YWRtaW46" }
 												nil
 		)]
-		(clojure.contrib.logging/info "result[" result "]")
+		(clojure.contrib.logging/info ("result[" result "]"))
 		)
 )
 
