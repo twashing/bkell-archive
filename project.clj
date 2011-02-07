@@ -16,6 +16,7 @@
 
   :dev-dependencies  [ [org.exist/exist "1.4"]
                        [org.exist/exist-modules "1.4"]
+                       [org.exist/exist-ngram-module "1.4"]
                        [antlr/antlr "2.7.7"] 
                        [org.apache/commons-pool "1.5.1"]
                        [org.apache/commons-collections "3.2.1"]

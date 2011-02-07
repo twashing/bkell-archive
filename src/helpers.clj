@@ -76,7 +76,7 @@
 ;; working directory lookup ...TODO - put these lookups into config 
 (defn working-dir-lookup [token]
    
-   ;;(clojure.contrib.logging/info ("DEBUG > 'working-dir-lookup' CALLED > ["(keyword token)"]" ))
+   ;;(clojure.contrib.logging/info (str "DEBUG > 'working-dir-lookup' CALLED > ["(keyword token)"]" ))
    (  {	 :group "aauthentication.main.authentication/groups.aauth.groups"
 				 :user "aauthentication.main.authentication/users.aauth.users"
 				 :users "aauthentication.main.authentication/users.aauth.users"
@@ -95,7 +95,7 @@
 (defn namespace-lookup 
    [token]
    
-   ;;(clojure.contrib.logging/info ("DEBUG > 'namespace-lookup' CALLED > ["token"]" ))
+   ;;(clojure.contrib.logging/info (str "DEBUG > 'namespace-lookup' CALLED > ["token"]" ))
    (  {	 "group" "com/interrupt/bookkeeping/users" 
 	 "user" "com/interrupt/bookkeeping/users" 
 	 "users" "com/interrupt/bookkeeping/users" 
@@ -120,11 +120,17 @@
       
       (clojure.contrib.logging/info (str "DEBUG > FINAL embedded query[" full-URL "] > http-method[" http-method "] > header-hash[" header-hash "] > xml-content[" xml-content "]"))
       
+      (let  [ name-parent (subs full-URL 0 (. full-URL lastIndexOf "/"))
+              name-leaf   (subs full-URL (+ 1 (. full-URL lastIndexOf "/")))
+            ]
+
+      (clojure.contrib.logging/warn (str "parent: " name-parent))
+      (clojure.contrib.logging/warn (str "leaf: " name-leaf))
       (let  [col 
-                  (try  (. org.xmldb.api.DatabaseManager getCollection 
-                          (subs full-URL 0 (. full-URL lastIndexOf "/")) ;; get just the collection name 
+                  (try  (. org.xmldb.api.DatabaseManager getCollection name-parent 
+                          ;;(subs full-URL 0 (. full-URL lastIndexOf "/")) ;; get just the collection name 
                         "admin" "")
-                        (catch java.lang.Exception e (clojure.contrib.logging/info (str "Error type[" (type e) "] > msg[" (. e getMessage) "]" )))
+                        (catch java.lang.Exception e (clojure.contrib.logging/info (str str "Error type[" (type e) "] > msg[" (. e getMessage) "]" )))
       
                   )
             ]
@@ -133,11 +139,12 @@
             (try    ;; only executing of parent collection was found 
               (cond 
 		        (. "GET" equals http-method) 
-	              (let  [resource (. col  getResource 
-                                    (subs full-URL (+ 1 (. full-URL lastIndexOf "/"))) )  ;; the name of the document
+	              (let  [resource (. col  getResource name-leaf
+                                    ;;(subs full-URL (+ 1 (. full-URL lastIndexOf "/"))) ;; the name of the document
+                                  ) 
                                 ])
 		        (. "PUT" equals http-method)
-			      (try ;; createResource / storeResource
+			      (try  (. col createResource (. col createId) "XMLResource" ) 
 			      )
 		        (. "POST" equals http-method)
 			      (try ;; createResource / storeResource
@@ -156,6 +163,7 @@
             nil
           )
       )
+      )
     )
   )
 ) 
@@ -163,7 +171,7 @@
 (defn execute-http-call [ full-URL http-method header-hash xml-content ] 
 		
 		;; from DB, get 'token' for 'option' args & value 
-		(clojure.contrib.logging/info ("DEBUG > FINAL http query[" full-URL "] > http-method[" http-method "] > header-hash[" header-hash "] > xml-content[" xml-content "]"))
+		(clojure.contrib.logging/info (str "DEBUG > FINAL http query[" full-URL "] > http-method[" http-method "] > header-hash[" header-hash "] > xml-content[" xml-content "]"))
 		
 		(cond 
 			(. "GET" equals http-method) 
@@ -231,7 +239,7 @@
 			nil
       ) ]
 	  
-      (clojure.contrib.logging/info ("RESULT USER > result-hash... " result-hash))
+      (clojure.contrib.logging/info (str "RESULT USER > result-hash... " result-hash))
       (if (not (nil? result-hash))
         (parse-xml-to-hash (:body-seq result-hash))
       )

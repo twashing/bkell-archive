@@ -22,7 +22,7 @@
     "Initialize the shell"
     [test]
 
-    (clojure.contrib.logging/debug "test-fixture-shell CALLED")
+    (clojure.contrib.logging/info "test-fixture-shell CALLED")
     (bkell/init-shell)
 
     (test)
@@ -32,7 +32,7 @@
     "test to clear out shell memory before a test is run"
     [test]
 
-    (clojure.contrib.logging/debug "test-fixture-db CALLED")
+    (clojure.contrib.logging/info "test-fixture-db CALLED")
 
     ;; make the shell active
     ;; create a basic user in the DB
@@ -41,7 +41,9 @@
 
     ;; ** execute the TEST function
     (test)
-
+    
+    (clojure.contrib.logging/info "test-fixture-db EXIT")
+    
     ;; make the shell inactive
 	(dosync (alter bkell/shell conj { :active false }))
     (remove-user (:url-test configs) (:system-dir configs) { :tag "user" :attrs { :id "test.user" } :content { :tag "stub" } } )
@@ -55,19 +57,23 @@
 (deftest test-login []
 
     
-    (let [
-          user_seq 
-          (login-user 
+    (let [ user_seq 
             (helpers/get-user   (:url-test configs) (:system-dir configs) 
                                 { :tag "user" :attrs { :id "test.user"} :content {:tag "stub"} } 
-            )) ]
+            ) ]
+      
+      ;;(login-user user_seq)
+      (clojure.pprint/pprint user_seq)
+      (clojure.pprint/pprint bkell/shell)
+      
       
       (is (not (nil? user_seq))
           (str 
               "User should NOT be nil > inputs > " 
                 (:url-test configs) " " (:system-dir configs) " " { :tag "user" :attrs { :id "test.user"}} )
       )
-      (is (not (nil? (@bkell/shell :logged-in-user)))
+      
+      (is (not (nil? (bkell/shell :logged-in-user)))
           "User should be in a 'logged-in-user' state")
     )
 )

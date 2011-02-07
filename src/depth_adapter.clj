@@ -54,7 +54,7 @@
 	 ;; EXIT command 
 	 (caseAExitCommand4 [node] 
 	    
-	    (clojure.contrib.logging/info (str "DEBUG > caseAExitCommand4: " node))
+	    (clojure.contrib.logging/info (str str "DEBUG > caseAExitCommand4: " node))
 	    
 	    (proxy-super inAExitCommand4 node) 
 	    (proxy-super outAExitCommand4 node) 
@@ -68,7 +68,7 @@
 	 
 	 ;; LOGIN command 
 	 (caseALoginCommand3 [node] 
-	    (clojure.contrib.logging/info ("DEBUG > caseALoginCommand3: " node))
+	    (clojure.contrib.logging/info (str "DEBUG > caseALoginCommand3: " node))
 	    
 	    
 	    (proxy-super inALoginCommand3 node) 
@@ -90,7 +90,7 @@
 					(fn [result_seq] 
 						
                         (login-user result_seq)
-						(clojure.contrib.logging/info ("DEBUG > logged-in-user > " (@bkell/shell :logged-in-user)))
+						(clojure.contrib.logging/info (str "DEBUG > logged-in-user > " (@bkell/shell :logged-in-user)))
 					))
 	    	)
 	    )
@@ -104,7 +104,7 @@
 	 
 	 ;; PRINT command 
 	 (caseAPrintCommand6 [node] 
-	    ;;(clojure.contrib.logging/info (str "caseAPrintCommand6: " node)) 
+	    ;;(clojure.contrib.logging/info (str str "caseAPrintCommand6: " node)) 
         
         (proxy-super inAPrintCommand6 node)
         
@@ -120,7 +120,7 @@
         )
             
         ;; print the result 
-		(clojure.contrib.logging/info (" > " (:previous @bkell/shell)))
+		(clojure.contrib.logging/info (str " > " (:previous @bkell/shell)))
 
         (if (not= (. node getRbracket) nil)
             (.. node getRbracket (apply this)))
@@ -149,7 +149,7 @@
 			(operate-dep-inputtype node 
 				(fn [result_seq] 
 
-					(clojure.contrib.logging/info ("DEBUG > create result > " result_seq))
+					(clojure.contrib.logging/info (str "DEBUG > create result > " result_seq))
 					(dosync (alter bkell/shell conj { :previous result_seq }))
 				))
              )
@@ -184,7 +184,7 @@
 			    (operate-dep-inputtype (. node getC1) 
 				    (fn [result_seq] 
                         
-					    (clojure.contrib.logging/info ("DEBUG > update CONTEXT result > " result_seq))
+					    (clojure.contrib.logging/info (str "DEBUG > update CONTEXT result > " result_seq))
 					    (dosync (alter bkell/shell conj { :previous result_seq }))
                         (dosync (alter bkell/shell conj { :command-context result_seq } ))
 				    ))
@@ -201,11 +201,11 @@
 			    (operate-dep-inputtype (. node getC2) 
 				    (fn [result_seq] 
                         
-					    (clojure.contrib.logging/info ("DEBUG > update CLIENT input [ " (.. node getC1) " ] > result > " result_seq))
+					    (clojure.contrib.logging/info (str "DEBUG > update CLIENT input [ " (.. node getC1) " ] > result > " result_seq))
 
 					    (dosync (alter bkell/shell conj { :previous result_seq }))
 				    ))
-                    (clojure.contrib.logging/info ("Update command > context[" (:tag (:command-context @bkell/shell )) 
+                    (clojure.contrib.logging/info (str "Update command > context[" (:tag (:command-context @bkell/shell )) 
                              "] > :previous / each_copy[" (:previous @bkell/shell)"]" ))
                     
                     ;; this is a generic 'add' 
@@ -284,7 +284,7 @@
         ;; get variable name 
         (let [variableName (.. node getWord getText trim)]
             
-            (clojure.contrib.logging/info ("putting variableName into memory[" variableName "] > previous > " (:previous @bkell/shell) ) )
+            (clojure.contrib.logging/info (str "putting variableName into memory[" variableName "] > previous > " (:previous @bkell/shell) ) )
             
             ;; setting the variableName to the command result 
 		    (dosync (alter bkell/shell assoc 
@@ -325,7 +325,7 @@
 	 
      ;; LOAD command 
 	 (caseALoadCommand3 [node] 
-	    (clojure.contrib.logging/info ("DEBUG > caseALoadCommand3 [" (class (. node getCommandInput)) "]: " node) )
+	    (clojure.contrib.logging/info (str "DEBUG > caseALoadCommand3 [" (class (. node getCommandInput)) "]: " node) )
 	    
 	    (comment "replicating java calls in the 'DepthFirstAdapter.caseALoadCommand3'")
 	    
@@ -352,7 +352,7 @@
 		    		;; execute LOAD 
 		    		(operate-dep-inputtype node (fn [result_seq] 
 							
-							(clojure.contrib.logging/info ("loading... " result_seq))
+							(clojure.contrib.logging/info (str "loading... " result_seq))
 							(dosync (alter bkell/shell conj 
 										{	:previous result_seq }))
 						))
@@ -372,7 +372,7 @@
 	
 	(caseStart [node] 
 			
-			(clojure.contrib.logging/info ("DEBUG > caseStart CALLED > bkell/shell[" @bkell/shell "]"))
+			(clojure.contrib.logging/info (str "DEBUG > caseStart CALLED > bkell/shell[" @bkell/shell "]"))
 			
 			(proxy-super inStart node) 
       
@@ -385,7 +385,7 @@
 	
     (caseAAddCommand1 [node]        ;; public void caseAAddCommand1(AAddCommand1 node)
                 
-                (clojure.contrib.logging/info ("DEBUG > caseAAddCommand1 [" (class (. node getCommandInput)) "]: " node) )
+                (clojure.contrib.logging/info (str "DEBUG > caseAAddCommand1 [" (class (. node getCommandInput)) "]: " node) )
             
             
         (proxy-super inAAddCommand1 node) 
@@ -415,7 +415,7 @@
                (.. node getRbdepth2 (apply this) ) ) 
             
             (clojure.contrib.logging/info "")
-            (clojure.contrib.logging/info ( "shell > before arguments > [" @bkell/shell "]"))
+            (clojure.contrib.logging/info (str  "shell > before arguments > [" @bkell/shell "]"))
                 (let [ copy (. node getIlist) ]
                         
                         (doseq [ each_copy copy ] 
