@@ -135,14 +135,15 @@
   
 )
 
-(defn internal-execute-embedded-db [ full-URL name-parent name-leaf http-method header-hash xml-content col ]
+(defn internal-execute-embedded-db [ full-URL http-method header-hash xml-content col ]
 
             (try    ;; only executing of parent collection was found 
               (cond 
 		        (. "GET" equals http-method) 
-	              (. col  getResource name-leaf)
+	              (let  [res (. col  getResource (parse-url full-URL :name-leaf))]
+                    (. res getContent))
 		        (. "PUT" equals http-method)
-			      (let  [resource (. col createResource name-leaf "XMLResource" ) ]
+			      (let  [resource (. col createResource (parse-url full-URL :name-leaf) "XMLResource" ) ]
                       
                       (. resource setContent xml-content)
                       (. col storeResource resource))
@@ -165,33 +166,28 @@
 (defn execute-embedded-db [ full-URL http-method header-hash xml-content ]
   
   (clojure.contrib.logging/warn (str "execute-embedded-db CALLED [" full-URL "] > http-method[" http-method "] > header-hash[" header-hash "] > xml-content[" xml-content "]"))
-  (let [cl (. Class forName "org.exist.xmldb.DatabaseImpl")]
+  (let [cl (. Class forName "org.exist.xmldb.DatabaseImpl")]  ;; fire up db class driver and initialize database
     (let [database (. cl newInstance)]
       (. database setProperty "create-database" "true")
       (. org.xmldb.api.DatabaseManager registerDatabase database)
       
-      (let  [ name-parent (subs full-URL 0 (. full-URL lastIndexOf "/"))      ;; get just the collection name 
-              name-leaf   (subs full-URL (+ 1 (. full-URL lastIndexOf "/")))  ;; the name of the document
-            ]
-
-      (clojure.contrib.logging/debug (str "parent: " name-parent))
-      (clojure.contrib.logging/debug (str "leaf: " name-leaf))
-      (let  [col  (try  (. org.xmldb.api.DatabaseManager getCollection name-parent "admin" "")
+      (clojure.contrib.logging/debug (str "parent: " (parse-url full-URL :name-parent)) )
+      (clojure.contrib.logging/debug (str "leaf: " (parse-url full-URL :name-leaf)) )
+      (let  [col  (try  (. org.xmldb.api.DatabaseManager getCollection (parse-url full-URL :name-parent) "admin" "")  ;; get parent collection for URL 
                         (catch java.lang.Exception e (clojure.contrib.logging/info (str str "Error type[" (type e) "] > msg[" (. e getMessage) "]" )))
                   )
             ]
            
           (clojure.contrib.logging/debug (str "parent collection: " col))
 	      (if (nil?  col)
-            (let [root  (. org.xmldb.api.DatabaseManager getCollection "xmldb:exist:///db")]
+            (let [root  (. org.xmldb.api.DatabaseManager getCollection (parse-url full-URL :chunk-root))]
               (let  [mgt (. root getService "CollectionManagementService" "1.0")]
-                (let  [col (. mgt createCollection "exist/rest/testDB/aauthentication.main.authentication/users.aauth.users/user.test.user")]
-                    (internal-execute-embedded-db full-URL name-parent name-leaf http-method header-hash xml-content col)
+                (let  [col (. mgt createCollection (parse-url full-URL :chunk-parent))]
+                    (internal-execute-embedded-db full-URL http-method header-hash xml-content col)
                 )
               ))
-            (internal-execute-embedded-db full-URL name-parent name-leaf http-method header-hash xml-content col)
+            (internal-execute-embedded-db full-URL http-method header-hash xml-content col)
           )
-      )
       )
     )
   )
