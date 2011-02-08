@@ -110,6 +110,31 @@
    )
 )
 
+
+  
+(defn parse-url 
+
+  "This function just groks for various chunks of the URL. So for example: 
+  
+  URL:  xmldb:exist:///db/exist/rest/testDB/groups.main.groups/group.test.user/bookkeeping.main.bookkeeping/bookkeeping.main.bookkeeping
+  
+  chunk-root: xmldb:exist:///db/
+  chunk-parent: exist/rest/testDB/groups.main.groups/group.test.user/bookkeeping.main.bookkeeping/
+  name-parent:  xmldb:exist:///db/exist/rest/testDB/groups.main.groups/group.test.user/bookkeeping.main.bookkeeping/
+  name-leaf:  bookkeeping.main.bookkeeping"
+
+  [url key-name]
+  
+  (def url-parse-map  { :chunk-root   #(first (re-seq #"xmldb:exist:\/\/\/db" %))
+                        :chunk-parent #(subs ((:name-parent url-parse-map) %) (count ((:chunk-root url-parse-map) %)))
+                        :name-parent  #(subs % 0 (. % lastIndexOf "/"))
+                        :name-leaf    #(subs % (+ 1 (. % lastIndexOf "/")))
+                      })
+
+  ((key-name url-parse-map) url)
+  
+)
+
 (defn internal-execute-embedded-db [ full-URL name-parent name-leaf http-method header-hash xml-content col ]
 
             (try    ;; only executing of parent collection was found 
@@ -117,21 +142,10 @@
 		        (. "GET" equals http-method) 
 	              (. col  getResource name-leaf)
 		        (. "PUT" equals http-method)
-
 			      (let  [resource (. col createResource name-leaf "XMLResource" ) ]
                       
-                      (println "Internal-here 1")
                       (. resource setContent xml-content)
-                      (. col storeResource resource)
-        
-        (let [resources (seq (. col listResources))]
-          (println (str "resources: " (class resources) " <==> " (. resources toString))) 
-
-          (doseq [each resources]
-            (println (str "result: " each)))
-        )
-        
-			      )
+                      (. col storeResource resource))
 
 		        (. "POST" equals http-method)
 			      (try ;; createResource / storeResource
