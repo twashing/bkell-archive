@@ -118,14 +118,14 @@
       (. database setProperty "create-database" "true")
       (. org.xmldb.api.DatabaseManager registerDatabase database)
       
-      (clojure.contrib.logging/info (str "DEBUG > FINAL embedded query[" full-URL "] > http-method[" http-method "] > header-hash[" header-hash "] > xml-content[" xml-content "]"))
+      (clojure.contrib.logging/debug (str "DEBUG > FINAL embedded query[" full-URL "] > http-method[" http-method "] > header-hash[" header-hash "] > xml-content[" xml-content "]"))
       
       (let  [ name-parent (subs full-URL 0 (. full-URL lastIndexOf "/"))
               name-leaf   (subs full-URL (+ 1 (. full-URL lastIndexOf "/")))
             ]
 
-      (clojure.contrib.logging/warn (str "parent: " name-parent))
-      (clojure.contrib.logging/warn (str "leaf: " name-leaf))
+      (clojure.contrib.logging/debug (str "parent: " name-parent))
+      (clojure.contrib.logging/debug (str "leaf: " name-leaf))
       (let  [col 
                   (try  (. org.xmldb.api.DatabaseManager getCollection name-parent 
                           ;;(subs full-URL 0 (. full-URL lastIndexOf "/")) ;; get just the collection name 
@@ -171,7 +171,7 @@
 (defn execute-http-call [ full-URL http-method header-hash xml-content ] 
 		
 		;; from DB, get 'token' for 'option' args & value 
-		(clojure.contrib.logging/info (str "DEBUG > FINAL http query[" full-URL "] > http-method[" http-method "] > header-hash[" header-hash "] > xml-content[" xml-content "]"))
+		(clojure.contrib.logging/debug (str "DEBUG > FINAL http query[" full-URL "] > http-method[" http-method "] > header-hash[" header-hash "] > xml-content[" xml-content "]"))
 		
 		(cond 
 			(. "GET" equals http-method) 
