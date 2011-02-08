@@ -201,7 +201,7 @@
 
 
 (defn execute-command [ full-URL http-method header-hash xml-content ] 
-  (if (empty? (re-seq #"http:\/\/\/exist" full-URL))    ;; check for URL prefix - http:///exist
+  (if (empty? (re-seq #"xmldb:exist:\/\/\/exist" full-URL))    ;; check for URL prefix - xmldb:exist:///exist
     (execute-http-call full-URL http-method header-hash xml-content) ;; true - a remote DB call 
     (execute-embedded-db full-URL http-method header-hash xml-content) ;; false - a local DB call
   )
@@ -240,8 +240,10 @@
       ) ]
 	  
       (clojure.contrib.logging/info (str "RESULT USER > result-hash... " result-hash))
-      (if (not (nil? result-hash))
-        (parse-xml-to-hash (:body-seq result-hash))
+      (and 
+        (not (nil? result-hash))
+        (nil? (:msg result-hash))   ;; this message is usually "Error" 
+        (parse-xml-to-hash (:body-seq result-hash)) ;; evaluation last expression if preceding is true 
       )
     )
 

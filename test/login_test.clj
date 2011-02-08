@@ -78,6 +78,8 @@
     )
 )
 
+(comment 
+
 
 ;; test result when already logged in
 (deftest test-existing-login []
@@ -98,8 +100,6 @@
 
     )
 )
-
-(comment 
 
 ;; test a login with a bad password
 (deftest test-bad-password []
