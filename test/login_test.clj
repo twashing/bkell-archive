@@ -62,7 +62,7 @@
                                 { :tag "user" :attrs { :id "test.user"} :content {:tag "stub"} } 
             ) ]
       
-      ;;(login-user user_seq)
+      (login-user user_seq)
       (clojure.pprint/pprint user_seq)
       (clojure.pprint/pprint bkell/shell)
       
@@ -78,6 +78,8 @@
     )
 )
 
+
+(comment 
 
 ;; test result when already logged in
 (deftest test-existing-login []
@@ -98,8 +100,6 @@
 
     )
 )
-
-(comment 
 
 ;; test a login with a bad password
 (deftest test-bad-password []

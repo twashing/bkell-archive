@@ -15,6 +15,7 @@
 				  ]
 
   :dev-dependencies  [ [org.exist/exist "1.4.1"]
+                       [org.exist/exist-optional "1.4.1"]
                        [org.exist/exist-modules "1.4.1"]
                        [org.exist/exist-ngram-module "1.4.1"]
                        [jline/jline "0.9.94"]
