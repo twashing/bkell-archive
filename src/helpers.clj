@@ -135,58 +135,53 @@
   
 )
 
-(defn internal-execute-embedded-db [ full-URL http-method header-hash xml-content col ]
-
-            (try    ;; only executing of parent collection was found 
-              (cond 
-		        (. "GET" equals http-method) 
-	              (let  [res (. col  getResource (parse-url full-URL :name-leaf))]
-                    (. res getContent))
-		        (. "PUT" equals http-method)
-			      (let  [resource (. col createResource (parse-url full-URL :name-leaf) "XMLResource" ) ]
-                      
-                      (. resource setContent xml-content)
-                      (. col storeResource resource))
-
-		        (. "POST" equals http-method)
-			      (try ;; createResource / storeResource
-			      )
-		        (. "DELETE" equals http-method)
-	              (. col removeResource)
-              )
-                  
-              ;;(finally 
-              ;;  (do 
-              ;;    (let [dmanager (. col getService "DatabaseInstanceManager" "1.0")]
-              ;;      (. dmanager shutdown))
-                  
-              ;;    (. org.xmldb.api.DatabaseManager deregisterDatabase database)))
-            )
+(defn internal-create-resource [col full-URL xml-content] 
+  
+  (let  [resource (. col createResource (parse-url full-URL :name-leaf) "XMLResource" ) ]
+      
+      (. resource setContent xml-content)
+      (. col storeResource resource))
 )
 (defn execute-embedded-db [ full-URL http-method header-hash xml-content ]
   
-  (clojure.contrib.logging/warn (str "execute-embedded-db CALLED [" full-URL "] > http-method[" http-method "] > header-hash[" header-hash "] > xml-content[" xml-content "]"))
+  (clojure.contrib.logging/info (str "execute-embedded-db CALLED [" full-URL "] > http-method[" http-method "] > header-hash[" header-hash "] > xml-content[" xml-content "]"))
   (let [cl (. Class forName "org.exist.xmldb.DatabaseImpl")]  ;; fire up db class driver and initialize database
     (let [database (. cl newInstance)]
       (. database setProperty "create-database" "true")
       (. org.xmldb.api.DatabaseManager registerDatabase database)
       
-      (clojure.contrib.logging/debug (str "parent: " (parse-url full-URL :name-parent)) )
-      (clojure.contrib.logging/debug (str "leaf: " (parse-url full-URL :name-leaf)) )
+      (clojure.contrib.logging/debug (str "URL parent: " (parse-url full-URL :name-parent)) )
+      (clojure.contrib.logging/debug (str "URL leaf: " (parse-url full-URL :name-leaf)) )
+      
       (let  [col  (try  (. org.xmldb.api.DatabaseManager getCollection (parse-url full-URL :name-parent) "admin" "")  ;; get parent collection for URL 
-                        (catch java.lang.Exception e (clojure.contrib.logging/info (str str "Error type[" (type e) "] > msg[" (. e getMessage) "]" )))
+                        (catch java.lang.Exception e (clojure.contrib.logging/info (str "Error type[" (type e) "] > msg[" (. e getMessage) "]" )))
                   )
             ]
            
           (clojure.contrib.logging/debug (str "parent collection: " col))
-	      (if (nil?  col)
-            (let [root  (. org.xmldb.api.DatabaseManager getCollection (parse-url full-URL :chunk-root))]
-              (let  [mgt (. root getService "CollectionManagementService" "1.0")]
-                (let  [col (. mgt createCollection (parse-url full-URL :chunk-parent))]
-                    (internal-execute-embedded-db full-URL http-method header-hash xml-content col)
-                )
-              ))
-            (internal-execute-embedded-db full-URL http-method header-hash xml-content col)
+          (try    ;; only executing of parent collection was found 
+            (cond 
+		      (. "GET" equals http-method) 
+			    (if (not (nil?  col))
+			      (let  [res (. col  getResource (parse-url full-URL :name-leaf))]
+		            (. res getContent)))
+		      (. "PUT" equals http-method)
+			    (if (nil?  col)
+		          (let [root  (. org.xmldb.api.DatabaseManager getCollection (parse-url full-URL :chunk-root))]
+		            (let  [mgt (. root getService "CollectionManagementService" "1.0")]
+		              (let  [col (. mgt createCollection (parse-url full-URL :chunk-parent))]
+		                  (internal-create-resource col full-URL xml-content)
+		              )
+		            ))
+		          (internal-create-resource col full-URL xml-content))
+
+		      (. "POST" equals http-method)
+		        (try ;; createResource / storeResource
+		        )
+		      (. "DELETE" equals http-method)
+	            (. col removeResource)
+            )
+                
           )
       )
     )

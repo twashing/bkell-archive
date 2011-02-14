@@ -79,10 +79,8 @@
 )
 
 
-(comment 
-
 ;; test result when already logged in
-(deftest test-existing-login []
+#_(deftest test-existing-login []
 
     (let [
           user_seq 
@@ -102,9 +100,9 @@
 )
 
 ;; test a login with a bad password
-(deftest test-bad-password []
+#_(deftest test-bad-password []
 
-    (comment let [  logged-in-user  
+    (let [  logged-in-user  
             (login-user 
               (helpers/get-user 
                 (:url-test configs) (:system-dir configs) { :tag "user" :attrs { :id "test.user" :password "fubar" } :content {:tag "stub"} } ))]
@@ -114,7 +112,7 @@
 
 
 ;; test logging out
-(deftest test-logout []
+#_(deftest test-logout []
 
     (let [
           user_seq 
@@ -131,6 +129,4 @@
 
     )
 )
-
-) 
 

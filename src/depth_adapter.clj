@@ -25,7 +25,7 @@
 
 
 (use 'clj-stacktrace.repl)
-(comment try
+#_(try
  ("foo")
  (catch Exception e
    (clj-stacktrace.repl/pst e)))
@@ -327,7 +327,7 @@
 	 (caseALoadCommand3 [node] 
 	    (clojure.contrib.logging/info (str "DEBUG > caseALoadCommand3 [" (class (. node getCommandInput)) "]: " node) )
 	    
-	    (comment "replicating java calls in the 'DepthFirstAdapter.caseALoadCommand3'")
+	    ;; "replicating java calls in the 'DepthFirstAdapter.caseALoadCommand3'"
 	    
 	    
 	    (proxy-super inALoadCommand3 node) 

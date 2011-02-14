@@ -1,4 +1,4 @@
-(ns helper-test
+(ns helpers-test
 	(:use [helpers] :reload-all)
 	(:use [clojure.test])
 	(:import java.io.ByteArrayInputStream) 
@@ -10,8 +10,22 @@
 (def configs (load-file "etc/config/config.test.clj"))
 
 
+(deftest test-execute-embedded-db 
+  
+  ;; try GET on an empty DB 
+  (let [  result-GET (execute-embedded-db (:url-test-helper configs) "GET" {} nil) ]
+    (is (nil? result-GET) "GET result SHOULD be nil") 
+  )
+  
+  ;; PUT, then try to GET 
+  (execute-embedded-db (:url-test-helper configs) "PUT" {"Content-Type" "text/xml"} "<testContent/>") 
+  (let [  result-GET (execute-embedded-db (:url-test-helper configs) "GET" {} nil) ]
+    (is (not (nil? result-GET)) "GET result should NOT be nil")
+  )
+)
+
 ;; test HTTP GET 
-(deftest test-http-get 
+#_(deftest test-http-get 
 	
 	(let [result-GET (execute-http-call 
 		(str (:url-test configs) "/thing") 
@@ -39,7 +53,7 @@
 
 
 ;; test HTTP PUT 
-(deftest test-http-put 
+#_(deftest test-http-put 
 	
 	;; test good request 
 	(let [result-PUT (execute-http-call 
@@ -70,7 +84,7 @@
 	)
 	
 	;; test no Authorization	TODO - this should fail 
-	(comment (let [result-PUT (execute-http-call 
+	#_(let [result-PUT (execute-http-call 
 		(str (:url-test configs) "/test/test-no-authorization" ) 
 		"PUT" 
 		{	"Content-Type" "text/xml" } 
@@ -81,7 +95,7 @@
 		(is (not (nil? result-PUT)) "PUT result should not be nil") 
 		(is (. (:code result-PUT ) equals 401) "response code SHOULD be 201" )
 		(is (. (:msg result-PUT ) equals "Created") "test xml should have been 'Created'" )
-	))
+	)
 	
 )
 

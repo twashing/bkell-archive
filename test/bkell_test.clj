@@ -10,8 +10,7 @@
 	
 	(use 'depth_adapter)
 	
-	(comment 
-		(let [agt (agent java.lang.System/in)] 
+		#_(let [agt (agent java.lang.System/in)] 
 			
 			(send agt 
 				(fn [] 
@@ -22,16 +21,13 @@
 		)
 		
 		(clojure.contrib.logging/info "foobar")
-	)
 	
-	(comment	;; TODO - try and test callback code with threads 
-		(def my-future
+	    ;; TODO - try and test callback code with threads 
+		#_(def my-future
 		(future 
 			(bkell (get-depth-adapter)))
 		)
 		(clojure.contrib.logging/info "foobar")
 		
-	)
-	
 )
 
