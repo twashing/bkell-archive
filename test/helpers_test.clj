@@ -55,6 +55,7 @@
 
 
 
+;; putting these tests on the shelf - needs to have DB running over HTTP
 ;; test HTTP GET 
 #_(deftest test-http-get 
 	

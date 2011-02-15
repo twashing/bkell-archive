@@ -4,7 +4,6 @@
 	(:require clojure.contrib.string)
 	(:require clojure.contrib.http.agent)
 	(:require clojure-http.resourcefully)
-	(:require clojure.pprint)
     (:require clojure.contrib.logging)
   
     (:import java.io.ByteArrayInputStream)
@@ -235,7 +234,7 @@
 
 
 (defn execute-command [ full-URL http-method header-hash xml-content ] 
-  (clojure.pprint/pprint (str "execute-command CALLED > full-URL["full-URL"] > http-method["http-method"] > header-hash["header-hash"] > xml-content["xml-content"]"))
+  (clojure.contrib.logging/debug (str "execute-command CALLED > full-URL["full-URL"] > http-method["http-method"] > header-hash["header-hash"] > xml-content["xml-content"]"))
   (if (empty? (re-seq #"xmldb:exist:\/\/\/db" full-URL))    ;; check for URL prefix - xmldb:exist:///db
     (execute-http-call full-URL http-method header-hash xml-content) ;; true - a remote DB call 
     (execute-embedded-db full-URL http-method header-hash xml-content) ;; false - a local DB call
@@ -253,7 +252,7 @@
 (defn get-user [db-base-URL db-system-DIR working-USER] 
 
     (let 
-      [result-hash 
+      [result
 	    (execute-command 	;; TODO - put in 404 check 
 		  (str 
 			db-base-URL 
@@ -274,11 +273,12 @@
 			nil
       ) ]
 	  
-      (clojure.contrib.logging/info (str "RESULT USER > result-hash... " result-hash))
-      (and 
-        (not (nil? result-hash))
-        (nil? (:msg result-hash))   ;; this message is usually "Error" 
-        (parse-xml-to-hash (:body-seq result-hash)) ;; evaluation last expression if preceding is true 
+      (clojure.contrib.logging/info (str "RESULT USER > type[" (type result) "] > result[" result "]" ))
+      (if (not (nil? result))
+        (if (map? result)
+          (if (not (nil? (:msg result)))   ;; this message is usually "Error" 
+            (parse-xml-to-hash (:body-seq result)))
+          (parse-xml-to-hash result))
       )
     )
 

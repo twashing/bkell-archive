@@ -50,28 +50,25 @@
 
 )
 
-;;(use-fixtures :once login-test/test-fixture-shell )
 (use-fixtures :each login-test/test-fixture-shell login-test/test-fixture-db )
+(comment deftest test-ping [] 
+  (clojure.contrib.logging/info "test-ping > hello"))
+
 
 ;; test basic login
 (deftest test-login []
 
     
-    (let [ user_seq 
-            (helpers/get-user   (:url-test configs) (:system-dir configs) 
-                                { :tag "user" :attrs { :id "test.user"} :content {:tag "stub"} } 
-            ) ]
+    (let [ user_seq (helpers/get-user   (:url-test configs) (:system-dir configs) 
+                      { :tag "user" :attrs { :id "test.user"} :content {:tag "stub"} } ) ]
       
       (login-user user_seq)
-      (clojure.pprint/pprint user_seq)
-      (clojure.pprint/pprint bkell/shell)
-      
+      (clojure.contrib.logging/error (str "test-login > Retrieved User > " user_seq))
       
       (is (not (nil? user_seq))
           (str 
               "User should NOT be nil > inputs > " 
-                (:url-test configs) " " (:system-dir configs) " " { :tag "user" :attrs { :id "test.user"}} )
-      )
+                (:url-test configs) " " (:system-dir configs) " " { :tag "user" :attrs { :id "test.user"}} ))
       
       (is (not (nil? (bkell/shell :logged-in-user)))
           "User should be in a 'logged-in-user' state")
