@@ -9,6 +9,20 @@
 
 (def configs (load-file "etc/config/config.test.clj"))
 
+(defn test-fixture-db [test]
+   
+  ;; delete DB content before and after running a test
+  (execute-embedded-db (:url-test configs) "DELETE" {} nil) 
+  (test)  ;; ** execute the TEST function
+  (execute-embedded-db (:url-test configs) "DELETE" {} nil) 
+   
+)
+(use-fixtures :each helpers-test/test-fixture-db )
+
+
+;; ==============
+;;  BEGIN TESTs
+;; ==============
 
 (deftest test-execute-embedded-db 
   

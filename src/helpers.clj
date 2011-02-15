@@ -179,9 +179,20 @@
 		        (try ;; createResource / storeResource
 		        )
 		      (. "DELETE" equals http-method)
-	            (. col removeResource)
+                (try  ;; with XML:DB, no way to check type of URI (collection or resource), i) trying collection then ii) resource 
+	              
+		          (let [root  (. org.xmldb.api.DatabaseManager getCollection (parse-url full-URL :chunk-root))]
+		            (let  [mgt (. root getService "CollectionManagementService" "1.0")]     ;; first try removing collection 
+		              (. mgt removeCollection (str (parse-url full-URL :chunk-parent) (parse-url full-URL :name-leaf)))))
+                  (catch java.lang.Exception e          ;; if failed, try removing resource
+                    (clojure.contrib.logging/info (str "URI not a collection, trying resource > Error[" (type e) "] > msg[" (. e getMessage) "]" ))
+                    (try  (let  [resource (. col getResource (parse-url full-URL :name-leaf) "XMLResource" ) ]
+                            (. col removeResource resource))
+                          (catch java.lang.Exception e (clojure.contrib.logging/info (str "URI not a resource, nil > Error type[" 
+                            (type e) "] > msg[" (. e getMessage) "]" ))))
+                  )
+                )
             )
-                
           )
       )
     )
