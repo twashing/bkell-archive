@@ -24,7 +24,7 @@
 ;;  BEGIN TESTs
 ;; ==============
 
-(deftest test-execute-embedded-db 
+(deftest test-execute-embedded-db-1
   
   ;; try GET on an empty DB 
   (let [  result-GET (execute-embedded-db (:url-test-helper configs) "GET" {} nil) ]
@@ -37,6 +37,23 @@
     (is (not (nil? result-GET)) "GET result should NOT be nil")
   )
 )
+
+(deftest test-execute-embedded-db-2
+  
+  ;; PUT, then try to GET 
+  (execute-embedded-db (:url-test-helper configs) "PUT" {"Content-Type" "text/xml"} "<testContent/>") 
+  (let [  result-GET (execute-embedded-db (:url-test-helper configs) "GET" {} nil) ]
+    (is (not (nil? result-GET)) "GET result should NOT be nil")
+  )
+  
+  ;; DELETE, then try to GET 
+  (execute-embedded-db (:url-test-helper configs) "DELETE" {} nil) 
+  (let [  result-GET (execute-embedded-db (:url-test-helper configs) "GET" {} nil) ]
+    (is (nil? result-GET) "GET result should be nil AFTER delete")
+  )
+)
+
+
 
 ;; test HTTP GET 
 #_(deftest test-http-get 
