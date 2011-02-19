@@ -37,7 +37,7 @@
     ;; make the shell active
     ;; create a basic user in the DB
 	(dosync (alter bkell/shell conj { :active true }))
-    (add-user (:url-test configs) (:system-dir configs) { :tag "user" :attrs { :id "test.user" } } )
+    (add-user (:url-test configs) (:system-dir configs) { :tag "user" :attrs { :id "test.user" :password "testing" } } )
 
     ;; ** execute the TEST function
     (test)
@@ -77,28 +77,57 @@
 
 
 ;; test result when already logged in
-#_(deftest test-existing-login []
-
-    (let [
-          user_seq 
-          (login-user (helpers/get-user (:url-test configs) (:system-dir configs) { :tag "user" :attrs { :id "test.user"} :content {:tag "stub"} } )) ]
+(deftest test-existing-login []
+    
+    (let [ user_seq (helpers/get-user   (:url-test configs) (:system-dir configs) 
+                      { :tag "user" :attrs { :id "test.user"} :content {:tag "stub"} } ) ]
       
-      (try 
-        (def 
-          nd_user 
-          (login-user (helpers/get-user (:url-test configs) (:system-dir configs) { :tag "user" :attrs { :id "test.user"} :content {:tag "stub"} } )) )
-        ;;(catch ...)
-        (finally 
-          (is (not (nil? nd_user)) "2nd_user SHOULD NOT be nil") 
-        )
-      )
+      (login-user user_seq)
+      (clojure.contrib.logging/error (str "test-existing-login > Retrieved User > " user_seq))
+      
+      (let [ nd_user (helpers/get-user   (:url-test configs) (:system-dir configs) 
+                      { :tag "user" :attrs { :id "test.user"} :content {:tag "stub"} } ) ]
+        
+        ;; check that nd_user is NOT nil 
+        (is (not (nil? nd_user))
+            (str "2nd User should NOT be nil > inputs > " 
+                (:url-test configs) " " (:system-dir configs) " " { :tag "user" :attrs { :id "test.user"}} ))
+      
 
+        ;; login the '2nd_user' 
+        (def nd_error nil)
+        (try  (login-user nd_user)
+              (catch Exception e (def nd_error e)))
+
+        ;; check that there are no errors 
+        (is (nil? nd_error)
+            (str "There should be NO errors when logging in nd_user" ))
+        
+      )
+      
     )
+    
+    ;; ** ADD another user and try to login him in, without logging 1st user out; there SHOULD be an error 
+    (add-user (:url-test configs) (:system-dir configs) { :tag "user" :attrs { :id "new.user" } } )
+    
+    (let [ new_user (helpers/get-user   (:url-test configs) (:system-dir configs) 
+                      { :tag "user" :attrs { :id "new.user"} :content {:tag "stub"} } ) ]
+      
+      (def new_error nil)
+      (try  (login-user new_user)
+            (catch Exception e (def new_error e)))
+      
+      ;; There SHOULD be errors when trying to login a new user without logging out the old 
+      (is (not (nil? new_error))
+        (str "There SHOULD be errors when logging in new_user (existing user still logged in)" ))
+    )
+    (remove-user (:url-test configs) (:system-dir configs) { :tag "user" :attrs { :id "nd.user" } } )
 )
 
+;; TODO - this function doesn't hold water; login just puts the user into the shell; need an 'authenticate' function 
 ;; test a login with a bad password
 #_(deftest test-bad-password []
-
+    
     (let [  logged-in-user  
             (login-user 
               (helpers/get-user 
@@ -109,21 +138,18 @@
 
 
 ;; test logging out
-#_(deftest test-logout []
+(deftest test-logout []
 
-    (let [
-          user_seq 
-          (login-user (helpers/get-user (:url-test configs) (:system-dir configs) { :tag "user" :attrs { :id "test.user"} :content {:tag "stub"} } )) ]
+    (let [ user_seq (helpers/get-user   (:url-test configs) (:system-dir configs) 
+                      { :tag "user" :attrs { :id "test.user"} :content {:tag "stub"} } ) ]
+      
+      (login-user user_seq)
+      (is (not (nil? (bkell/shell :logged-in-user)))
+          "test-logout > User should be in a 'logged-in-user' state")
          
-        (let [logged-out-user 
-            (logout-user 
-              (helpers/get-user 
-                (:url-test configs) (:system-dir configs) { :tag "user" :attrs { :id "test.user"} :content {:tag "stub"} } ))] 
-          
-          (is (not (nil? logged-out-user)) "SHOULD return the logged-out-user") 
-          (is (nil? (@bkell/shell :logged-in-user)) "there SHOULD NOT be a logged-in-user" )
-        )
-
+      (logout-user user_seq)
+      (is (nil? (@bkell/shell :logged-in-user)) "there SHOULD NOT be a logged-in-user" )
+      
     )
 )
 
