@@ -109,7 +109,6 @@
     
     ;; ** ADD another user and try to login him in, without logging 1st user out; there SHOULD be an error 
     (add-user (:url-test configs) (:system-dir configs) { :tag "user" :attrs { :id "new.user" } } )
-    
     (let [ new_user (helpers/get-user   (:url-test configs) (:system-dir configs) 
                       { :tag "user" :attrs { :id "new.user"} :content {:tag "stub"} } ) ]
       
@@ -138,7 +137,7 @@
 
 
 ;; test logging out
-(deftest test-logout []
+(deftest test-logout-1 []
 
     (let [ user_seq (helpers/get-user   (:url-test configs) (:system-dir configs) 
                       { :tag "user" :attrs { :id "test.user"} :content {:tag "stub"} } ) ]
@@ -152,4 +151,26 @@
       
     )
 )
+
+;; ensure that user being logged out is indeed logged in 
+(deftest test-logout-2 []
+  
+  (let [ user_seq (helpers/get-user   (:url-test configs) (:system-dir configs) 
+                    { :tag "user" :attrs { :id "test.user"} :content {:tag "stub"} } ) ]
+    
+    (login-user user_seq)
+    (is (not (nil? (bkell/shell :logged-in-user)))
+        "test-logout > User should be in a 'logged-in-user' state")
+    
+    (def logout_error nil)
+    (try  (logout-user { :tag "user" :attrs { :id "new.user" } })
+          (catch Exception e (def logout_error e)))
+
+    (is (not (nil? logout_error))
+      (str "There SHOULD be an error when trying to logout different user from existing logged in user" ))
+    
+  )
+  
+)
+
 

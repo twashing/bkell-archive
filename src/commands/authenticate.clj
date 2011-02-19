@@ -1,7 +1,7 @@
 (require 'bkell) 
 
-(defn login-user [user_seq]
-    
+(defn same-user-check [user_seq]
+
     ;; check if 
     ;;  i) there is a logged-in-user 
     ;;  ii) incoming user & logged-in-user are same (OK)
@@ -12,6 +12,10 @@
         (:id (:attrs (:logged-in-user @bkell/shell)))
         (:id (:attrs user_seq))))
       (throw (Exception. "A different user is logged in")))
+)
+(defn login-user [user_seq]
+    
+    (same-user-check user_seq)
     (dosync 
 	  (alter bkell/shell conj 
 		{ :logged-in-user user_seq } )
@@ -21,6 +25,8 @@
 )
 
 (defn logout-user [user_seq] 
+
+    (same-user-check user_seq)
     (dosync 
         (alter bkell/shell dissoc :logged-in-user )
 		(alter bkell/shell conj { :previous user_seq } )
