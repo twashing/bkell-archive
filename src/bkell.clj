@@ -6,6 +6,7 @@
    (:import java.io.InputStreamReader) 
    
    (:use clojure.core)
+   (:require depth_adapter)
    
 )
 
@@ -17,7 +18,7 @@
 	(def shell (ref { :active true })) 	;; the shell and memory 
 )
 
-(defn bkell [handler] 
+(defn run [handler] 
 	
 	(init-shell)
 	
@@ -33,6 +34,9 @@
 	
 )
 
-;;(use 'depth_adapter)
-;;(bkell (get-depth-adapter))
+(defn bkell []
+
+  (init-shell)
+  (run (depth_adapter/get-depth-adapter @bkell/shell))
+)
 

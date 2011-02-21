@@ -1,6 +1,6 @@
 (require 'clojure.contrib.string)
 (use 'helpers) 
-(require 'bkell) 
+;;(require 'bkell) 
 (require 'clojure.contrib.logging)
 
 

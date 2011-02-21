@@ -24,7 +24,7 @@
 )
 
 
-(use 'clj-stacktrace.repl)
+#_(use 'clj-stacktrace.repl)
 #_(try
  ("foo")
  (catch Exception e
@@ -47,7 +47,7 @@
 	
 )
 
-(defn get-depth-adapter [] 
+(defn get-depth-adapter [ shell ] 
 	 
    (proxy [DepthFirstAdapter] [] 
 	 
@@ -60,7 +60,7 @@
 	    (proxy-super outAExitCommand4 node) 
 			
 			(dosync 
-				(alter bkell/shell conj 	;; make the shell inactive to disable loop 
+				(alter shell conj 	;; make the shell inactive to disable loop 
 					{	:active false }))
 	    
 	 )
@@ -89,8 +89,8 @@
 				(operate-dep-inputtype node 
 					(fn [result_seq] 
 						
-                        (login-user result_seq)
-						(clojure.contrib.logging/info (str "DEBUG > logged-in-user > " (@bkell/shell :logged-in-user)))
+                        (login-user result_seq shell)
+						(clojure.contrib.logging/info (str "DEBUG > logged-in-user > " (shell :logged-in-user)))
 					))
 	    	)
 	    )
@@ -120,7 +120,7 @@
         )
             
         ;; print the result 
-		(clojure.contrib.logging/info (str " > " (:previous @bkell/shell)))
+		(clojure.contrib.logging/info (str " > " (:previous shell)))
 
         (if (not= (. node getRbracket) nil)
             (.. node getRbracket (apply this)))
@@ -150,7 +150,7 @@
 				(fn [result_seq] 
 
 					(clojure.contrib.logging/info (str "DEBUG > create result > " result_seq))
-					(dosync (alter bkell/shell conj { :previous result_seq }))
+					(dosync (alter shell conj { :previous result_seq }))
 				))
              )
         )
@@ -185,8 +185,8 @@
 				    (fn [result_seq] 
                         
 					    (clojure.contrib.logging/info (str "DEBUG > update CONTEXT result > " result_seq))
-					    (dosync (alter bkell/shell conj { :previous result_seq }))
-                        (dosync (alter bkell/shell conj { :command-context result_seq } ))
+					    (dosync (alter shell conj { :previous result_seq }))
+                        (dosync (alter shell conj { :command-context result_seq } ))
 				    ))
             )
         )
@@ -203,13 +203,13 @@
                         
 					    (clojure.contrib.logging/info (str "DEBUG > update CLIENT input [ " (.. node getC1) " ] > result > " result_seq))
 
-					    (dosync (alter bkell/shell conj { :previous result_seq }))
+					    (dosync (alter shell conj { :previous result_seq }))
 				    ))
-                    (clojure.contrib.logging/info (str "Update command > context[" (:tag (:command-context @bkell/shell )) 
-                             "] > :previous / each_copy[" (:previous @bkell/shell)"]" ))
+                    (clojure.contrib.logging/info (str "Update command > context[" (:tag (:command-context shell )) 
+                             "] > :previous / each_copy[" (:previous shell)"]" ))
                     
                     ;; this is a generic 'add' 
-                    (update-generic db-base-URL db-system-DIR (:previous @bkell/shell) (:command-context @bkell/shell ))
+                    (update-generic db-base-URL db-system-DIR (:previous shell) (:logged-in-user shell ) (:command-context shell ))
             )
         )
         
@@ -284,12 +284,12 @@
         ;; get variable name 
         (let [variableName (.. node getWord getText trim)]
             
-            (clojure.contrib.logging/info (str "putting variableName into memory[" variableName "] > previous > " (:previous @bkell/shell) ) )
+            (clojure.contrib.logging/info (str "putting variableName into memory[" variableName "] > previous > " (:previous shell) ) )
             
             ;; setting the variableName to the command result 
-		    (dosync (alter bkell/shell assoc 
+		    (dosync (alter shell assoc 
 				       (keyword variableName) 
-                       (:previous @bkell/shell) 
+                       (:previous shell) 
                      ))
             
         )
@@ -311,9 +311,9 @@
             ;;** if this fails, then the user only put in the '@' 
             (let [variableName (.. node getVarname toString (substring 1) trim) ]
             
-		        (dosync (alter bkell/shell assoc 
+		        (dosync (alter shell assoc 
                        :previous 
-				       ((keyword variableName) @bkell/shell) 
+				       ((keyword variableName) shell) 
                      ))
                 
             )
@@ -344,7 +344,7 @@
 				  (.. node getCommandInput (apply this) ) 
 				  
 				  
-					(if (not (contains? @bkell/shell :logged-in-user )) 	;; check if there is a 'logged-in-user' 
+					(if (not (contains? shell :logged-in-user )) 	;; check if there is a 'logged-in-user' 
 		    		
 		    		;;throw an error if no 'logged-in-user' 
 		    		(clojure.contrib.logging/info "ERROR - NO logged-in-user") 
@@ -353,7 +353,7 @@
 		    		(operate-dep-inputtype node (fn [result_seq] 
 							
 							(clojure.contrib.logging/info (str "loading... " result_seq))
-							(dosync (alter bkell/shell conj 
+							(dosync (alter shell conj 
 										{	:previous result_seq }))
 						))
 
@@ -372,7 +372,7 @@
 	
 	(caseStart [node] 
 			
-			(clojure.contrib.logging/info (str "DEBUG > caseStart CALLED > bkell/shell[" @bkell/shell "]"))
+			(clojure.contrib.logging/info (str "DEBUG > caseStart CALLED > shell[" shell "]"))
 			
 			(proxy-super inStart node) 
       
@@ -407,7 +407,7 @@
                    (.. node getCommandInput (apply this) ) 
                    
                    ;; set the :previous result as the :command-context 
-                   (dosync (alter bkell/shell conj { :command-context (:previous @bkell/shell) } ))
+                   (dosync (alter shell conj { :command-context (:previous shell) } ))
                )
             ) 
             
@@ -415,7 +415,7 @@
                (.. node getRbdepth2 (apply this) ) ) 
             
             (clojure.contrib.logging/info "")
-            (clojure.contrib.logging/info (str  "shell > before arguments > [" @bkell/shell "]"))
+            (clojure.contrib.logging/info (str  "shell > before arguments > [" shell "]"))
                 (let [ copy (. node getIlist) ]
                         
                         (doseq [ each_copy copy ] 
@@ -427,25 +427,25 @@
                                             (fn [result_seq] 
                                                 
                                                 (dosync 
-                                                    (alter bkell/shell conj 
+                                                    (alter shell conj 
                                                                     {   :previous result_seq })) 
                                             ))
                                 
                                 ;; DEBUG 
-                                (clojure.contrib.logging/info    ("Add command > context[" (:tag (:command-context @bkell/shell )) 
-                                                    "] > users?[" (= (keyword "users") (:tag (:command-context @bkell/shell ))) 
-                                                    "] > :previous / each_copy[" (:previous @bkell/shell)"] > match?[" 
-                                                        (and    (= (keyword "users") (:tag (:command-context @bkell/shell )))
-                                                                    (= (keyword "user") (:tag (:previous @bkell/shell )))) "]"))
+                                (clojure.contrib.logging/info    ("Add command > context[" (:tag (:command-context shell )) 
+                                                    "] > users?[" (= (keyword "users") (:tag (:command-context shell ))) 
+                                                    "] > :previous / each_copy[" (:previous shell)"] > match?[" 
+                                                        (and    (= (keyword "users") (:tag (:command-context shell )))
+                                                                    (= (keyword "user") (:tag (:previous shell )))) "]"))
                                 
-                                (if (and    (= (keyword "users") (:tag (:command-context @bkell/shell )))
-                                            (= (keyword "user") (:tag (:previous @bkell/shell ))))
+                                (if (and    (= (keyword "users") (:tag (:command-context shell )))
+                                            (= (keyword "user") (:tag (:previous shell ))))
                                         
                                         ;; we are adding a user 
-                                        (add-user db-base-URL db-system-DIR (:previous @bkell/shell))
+                                        (add-user db-base-URL db-system-DIR (:previous shell))
                                         
                                         ;; this is a generic 'add' 
-                                        (add-generic db-base-URL db-system-DIR (:previous @bkell/shell) (:command-context @bkell/shell ))
+                                        (add-generic db-base-URL db-system-DIR (:previous shell) (:previous shell) (:command-context shell ))
                                         
                                 )
                                 

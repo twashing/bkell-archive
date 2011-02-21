@@ -1,6 +1,6 @@
 (require 'clojure.contrib.string)
 (use 'helpers) 
-(require 'bkell) 
+;;(require 'bkell) 
 (require 'clojure.contrib.logging)
 
 
@@ -97,7 +97,7 @@
 	)
 )
 
-(defn add-generic [db-base-URL db-system-DIR working-ITEM command-context]
+(defn add-generic [db-base-URL db-system-DIR working-ITEM working-USER command-context]
 		
 		
 		;; ... TODO - logic to build XQuery to use to insert 
@@ -106,8 +106,8 @@
 		(clojure.contrib.logging/info (str "CREATing [" working-ITEM "] / XML[" (with-out-str (clojure.xml/emit working-ITEM)) "]" ))
 		(let [result (execute-command 		
 				(url-encode-newlines (url-encode-spaces (str db-base-URL db-system-DIR (working-dir-lookup :bookkeeping)
-												"/" "group." (:id (:attrs (:logged-in-user @bkell/shell))) ".group"
-												"/" "group." (:id (:attrs (:logged-in-user @bkell/shell))) ".group"
+												"/" "group." (:id (:attrs working-USER)) ".group"
+												"/" "group." (:id (:attrs working-USER)) ".group"
 												;;"/bookkeeping.main.bookkeeping/bookkeeping.main.bookkeeping" 
 												"?_wrap=no&_query="
 												"declare default element namespace '"
