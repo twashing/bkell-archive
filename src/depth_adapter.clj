@@ -31,6 +31,11 @@
    (clj-stacktrace.repl/pst e)))
 
 
+(defn print-to-shell [msg]
+
+  (clojure.contrib.logging/warn (str " > " msg) )
+)
+
 (defn operate-dep-inputtype 
 	[node handler_block]	;; input args ; for now we are going to load by ID 
 	
@@ -104,7 +109,7 @@
 	 
 	 ;; PRINT command 
 	 (caseAPrintCommand6 [node] 
-	    ;;(clojure.contrib.logging/info (str str "caseAPrintCommand6: " node)) 
+	    (clojure.contrib.logging/warn (str "caseAPrintCommand6: " node)) 
         
         (proxy-super inAPrintCommand6 node)
         
@@ -120,7 +125,7 @@
         )
             
         ;; print the result 
-		(clojure.contrib.logging/info (str " > " (:previous shell)))
+        (print-to-shell  (:previous shell))
 
         (if (not= (. node getRbracket) nil)
             (.. node getRbracket (apply this)))
@@ -131,6 +136,7 @@
 	 
      ;; CREATE command 
     (caseACreateCommand3 [node]
+		(clojure.contrib.logging/info (str "caseACreateCommand3 CALLED: " node))
         
         (proxy-super inACreateCommand3 node)
         
