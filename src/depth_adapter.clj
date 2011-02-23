@@ -3,10 +3,10 @@
   
   (:import com.interrupt.bookkeeping.cc.analysis.DepthFirstAdapter) 
   
-	;;(:require clojure.contrib.str-utils2) 
-	(:require clojure.contrib.http.agent) 
-	(:require clojure.contrib.io) 
-	(:require clojure.contrib.string) 
+    ;;(:require clojure.contrib.str-utils2) 
+    (:require clojure.contrib.http.agent) 
+    (:require clojure.contrib.io) 
+    (:require clojure.contrib.string) 
   
   (:use helpers) 
   (:use clojure.xml)
@@ -31,80 +31,85 @@
    (clj-stacktrace.repl/pst e)))
 
 
+(defn print-to-shell [msg]
+
+  (clojure.contrib.logging/warn (str " > " msg) )
+)
+
 (defn operate-dep-inputtype 
-	[node handler_block]	;; input args ; for now we are going to load by ID 
-	
-	(let [ checks [	xml_handler option_handler xpath_handler/xpath_handler ] ]
-			
-			(doseq [ each_check checks ] 
-				(do
-					;;(clojure.contrib.logging/info "DEBUG > each > check[" each_check "] > node[" node "]" ) 
-					(each_check node handler_block)
-				)
-			)
-			
-	)
-	
+    [node handler_block]    ;; input args ; for now we are going to load by ID 
+    
+    (let [ checks [ xml_handler option_handler xpath_handler/xpath_handler ] ]
+            
+            (doseq [ each_check checks ] 
+                (do
+                    ;;(clojure.contrib.logging/info "DEBUG > each > check[" each_check "] > node[" node "]" ) 
+                    (each_check node handler_block)
+                )
+            )
+            
+    )
+    
 )
 
 (defn get-depth-adapter [ shell ] 
-	 
+     
    (proxy [DepthFirstAdapter] [] 
-	 
-	 ;; EXIT command 
-	 (caseAExitCommand4 [node] 
-	    
-	    (clojure.contrib.logging/info (str str "DEBUG > caseAExitCommand4: " node))
-	    
-	    (proxy-super inAExitCommand4 node) 
-	    (proxy-super outAExitCommand4 node) 
-			
-			(dosync 
-				(alter shell conj 	;; make the shell inactive to disable loop 
-					{	:active false }))
-	    
-	 )
+     
+     ;; EXIT command 
+     (caseAExitCommand4 [node] 
+        
+        (clojure.contrib.logging/info (str str "DEBUG > caseAExitCommand4: " node))
+        
+        (proxy-super inAExitCommand4 node) 
+        (proxy-super outAExitCommand4 node) 
+            
+            (dosync 
+                (alter shell conj   ;; make the shell inactive to disable loop 
+                    {   :active false }))
+        
+     )
 
-	 
-	 ;; LOGIN command 
-	 (caseALoginCommand3 [node] 
-	    (clojure.contrib.logging/info (str "DEBUG > caseALoginCommand3: " node))
-	    
-	    
-	    (proxy-super inALoginCommand3 node) 
-	    
-	    (if (not= (. node getLogin ) nil) 
-	       (.. node getLogin (apply this) ) )
-	    
-	    (if (not= (. node getLbracket ) nil) 
-	       (.. node getLbracket (apply this) ) )
-	    
+     
+     ;; LOGIN command 
+     (caseALoginCommand3 [node] 
+        (clojure.contrib.logging/info (str "DEBUG > caseALoginCommand3: " node))
+        
+        
+        (proxy-super inALoginCommand3 node) 
+        
+        (if (not= (. node getLogin ) nil) 
+           (.. node getLogin (apply this) ) )
+        
+        (if (not= (. node getLbracket ) nil) 
+           (.. node getLbracket (apply this) ) )
+        
       (if (not= (. node getCommandInput ) nil) 
-	      
-	      (do 
-	      	
-	      	(.. node getCommandInput (apply this) ) 
-	    		
-	    		;; execute LOGIN 
-				(operate-dep-inputtype node 
-					(fn [result_seq] 
-						
+          
+          (do 
+            
+            (.. node getCommandInput (apply this) ) 
+                
+                ;; execute LOGIN 
+                (operate-dep-inputtype node 
+                    (fn [result_seq] 
+                        
                         (login-user result_seq shell)
-						(clojure.contrib.logging/info (str "DEBUG > logged-in-user > " (shell :logged-in-user)))
-					))
-	    	)
-	    )
-	    
+                        (clojure.contrib.logging/info (str "DEBUG > logged-in-user > " (shell :logged-in-user)))
+                    ))
+            )
+        )
+        
       (if (not= (. node getRbracket ) nil) 
-	       (.. node getRbracket (apply this) ) )
-	    
+           (.. node getRbracket (apply this) ) )
+        
       (proxy-super outALoginCommand3 node) 
-	    
-	 )
-	 
-	 ;; PRINT command 
-	 (caseAPrintCommand6 [node] 
-	    ;;(clojure.contrib.logging/info (str str "caseAPrintCommand6: " node)) 
+        
+     )
+     
+     ;; PRINT command 
+     (caseAPrintCommand6 [node] 
+        (clojure.contrib.logging/warn (str "caseAPrintCommand6: " node)) 
         
         (proxy-super inAPrintCommand6 node)
         
@@ -120,7 +125,7 @@
         )
             
         ;; print the result 
-		(clojure.contrib.logging/info (str " > " (:previous shell)))
+        (print-to-shell  (:previous shell))
 
         (if (not= (. node getRbracket) nil)
             (.. node getRbracket (apply this)))
@@ -128,9 +133,10 @@
         (proxy-super outAPrintCommand6 node)
         
      )
-	 
+     
      ;; CREATE command 
     (caseACreateCommand3 [node]
+        (clojure.contrib.logging/info (str "caseACreateCommand3 CALLED: " node))
         
         (proxy-super inACreateCommand3 node)
         
@@ -145,13 +151,13 @@
             (do 
             (.. node getCommandInput (apply this))
         
-	    	;; execute LOGIN 
-			(operate-dep-inputtype node 
-				(fn [result_seq] 
+            ;; execute LOGIN 
+            (operate-dep-inputtype node 
+                (fn [result_seq] 
 
-					(clojure.contrib.logging/info (str "DEBUG > create result > " result_seq))
-					(dosync (alter shell conj { :previous result_seq }))
-				))
+                    (clojure.contrib.logging/info (str "DEBUG > create result > " result_seq))
+                    (dosync (alter shell conj { :previous result_seq }))
+                ))
              )
         )
         
@@ -181,13 +187,13 @@
             
             (do 
                 (.. node getC1 (apply this))
-			    (operate-dep-inputtype (. node getC1) 
-				    (fn [result_seq] 
+                (operate-dep-inputtype (. node getC1) 
+                    (fn [result_seq] 
                         
-					    (clojure.contrib.logging/info (str "DEBUG > update CONTEXT result > " result_seq))
-					    (dosync (alter shell conj { :previous result_seq }))
+                        (clojure.contrib.logging/info (str "DEBUG > update CONTEXT result > " result_seq))
+                        (dosync (alter shell conj { :previous result_seq }))
                         (dosync (alter shell conj { :command-context result_seq } ))
-				    ))
+                    ))
             )
         )
         
@@ -198,13 +204,13 @@
             
             (do 
                 (.. node getC2 (apply this))
-			    (operate-dep-inputtype (. node getC2) 
-				    (fn [result_seq] 
+                (operate-dep-inputtype (. node getC2) 
+                    (fn [result_seq] 
                         
-					    (clojure.contrib.logging/info (str "DEBUG > update CLIENT input [ " (.. node getC1) " ] > result > " result_seq))
+                        (clojure.contrib.logging/info (str "DEBUG > update CLIENT input [ " (.. node getC1) " ] > result > " result_seq))
 
-					    (dosync (alter shell conj { :previous result_seq }))
-				    ))
+                        (dosync (alter shell conj { :previous result_seq }))
+                    ))
                     (clojure.contrib.logging/info (str "Update command > context[" (:tag (:command-context shell )) 
                              "] > :previous / each_copy[" (:previous shell)"]" ))
                     
@@ -219,7 +225,7 @@
         (proxy-super outAUpdateCommand1 node)
         
     )
-	 
+     
      ;; COMMIT 
     (caseACommitCommand7 [node]     ;; ACommitCommand7 node
         
@@ -287,8 +293,8 @@
             (clojure.contrib.logging/info (str "putting variableName into memory[" variableName "] > previous > " (:previous shell) ) )
             
             ;; setting the variableName to the command result 
-		    (dosync (alter shell assoc 
-				       (keyword variableName) 
+            (dosync (alter shell assoc 
+                       (keyword variableName) 
                        (:previous shell) 
                      ))
             
@@ -311,9 +317,9 @@
             ;;** if this fails, then the user only put in the '@' 
             (let [variableName (.. node getVarname toString (substring 1) trim) ]
             
-		        (dosync (alter shell assoc 
+                (dosync (alter shell assoc 
                        :previous 
-				       ((keyword variableName) shell) 
+                       ((keyword variableName) shell) 
                      ))
                 
             )
@@ -322,67 +328,67 @@
         (proxy-super outAVarCommandInput node ) 
         
      )
-	 
+     
      ;; LOAD command 
-	 (caseALoadCommand3 [node] 
-	    (clojure.contrib.logging/info (str "DEBUG > caseALoadCommand3 [" (class (. node getCommandInput)) "]: " node) )
-	    
-	    ;; "replicating java calls in the 'DepthFirstAdapter.caseALoadCommand3'"
-	    
-	    
-	    (proxy-super inALoadCommand3 node) 
-	    
-	    (if (not= (. node getLoad ) nil) 
-	       (.. node getLoad (apply this) ) )
-	    
-	    (if (not= (. node getLbracket ) nil) 
-	       (.. node getLbracket (apply this) ) )
-	     
-	    (if (not= (. node getCommandInput ) nil) 
-	       
-		    (do ;; execute 'if' block 
-				  (.. node getCommandInput (apply this) ) 
-				  
-				  
-					(if (not (contains? shell :logged-in-user )) 	;; check if there is a 'logged-in-user' 
-		    		
-		    		;;throw an error if no 'logged-in-user' 
-		    		(clojure.contrib.logging/info "ERROR - NO logged-in-user") 
-		    		
-		    		;; execute LOAD 
-		    		(operate-dep-inputtype node (fn [result_seq] 
-							
-							(clojure.contrib.logging/info (str "loading... " result_seq))
-							(dosync (alter shell conj 
-										{	:previous result_seq }))
-						))
+     (caseALoadCommand3 [node] 
+        (clojure.contrib.logging/info (str "DEBUG > caseALoadCommand3 [" (class (. node getCommandInput)) "]: " node) )
+        
+        ;; "replicating java calls in the 'DepthFirstAdapter.caseALoadCommand3'"
+        
+        
+        (proxy-super inALoadCommand3 node) 
+        
+        (if (not= (. node getLoad ) nil) 
+           (.. node getLoad (apply this) ) )
+        
+        (if (not= (. node getLbracket ) nil) 
+           (.. node getLbracket (apply this) ) )
+         
+        (if (not= (. node getCommandInput ) nil) 
+           
+            (do ;; execute 'if' block 
+                  (.. node getCommandInput (apply this) ) 
+                  
+                  
+                    (if (not (contains? shell :logged-in-user ))    ;; check if there is a 'logged-in-user' 
+                    
+                    ;;throw an error if no 'logged-in-user' 
+                    (clojure.contrib.logging/info "ERROR - NO logged-in-user") 
+                    
+                    ;; execute LOAD 
+                    (operate-dep-inputtype node (fn [result_seq] 
+                            
+                            (clojure.contrib.logging/info (str "loading... " result_seq))
+                            (dosync (alter shell conj 
+                                        {   :previous result_seq }))
+                        ))
 
-				  )
-				  
-		    )
-	    )
-	    
-	    (if (not= (. node getRbracket ) nil) 
-	       (.. node getRbracket (apply this) ) )
-	    
-	    
-	    (proxy-super outALoadCommand3 node) 
-	    
-	 )
-	
-	(caseStart [node] 
-			
-			(clojure.contrib.logging/info (str "DEBUG > caseStart CALLED > shell[" shell "]"))
-			
-			(proxy-super inStart node) 
+                  )
+                  
+            )
+        )
+        
+        (if (not= (. node getRbracket ) nil) 
+           (.. node getRbracket (apply this) ) )
+        
+        
+        (proxy-super outALoadCommand3 node) 
+        
+     )
+    
+    (caseStart [node] 
+            
+            (clojure.contrib.logging/info (str "DEBUG > caseStart CALLED > shell[" shell "]"))
+            
+            (proxy-super inStart node) 
       
       (.. node getPExpr (apply this) )
       (.. node getEOF (apply this) )
       
       (proxy-super outStart node) 
       
-	) 
-	
+    ) 
+    
     (caseAAddCommand1 [node]        ;; public void caseAAddCommand1(AAddCommand1 node)
                 
                 (clojure.contrib.logging/info (str "DEBUG > caseAAddCommand1 [" (class (. node getCommandInput)) "]: " node) )
@@ -461,8 +467,8 @@
         (proxy-super outAAddCommand1 node) 
             
     )
-	 
-	)
+     
+    )
 )
 
 

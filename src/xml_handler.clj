@@ -7,7 +7,7 @@
 (require 'clojure.xml)
 
 
-(defmulti xml_handler   (fn [input handler] 
+#_(defmulti xml_handler   (fn [input handler] 
                           [
                             (if (instance? com.interrupt.bookkeeping.cc.node.AXmlCommandInput input ) 
                               :AXmlCommandInput   ;; com.interrupt.bookkeeping.cc.node.AXmlCommandInput
@@ -19,7 +19,7 @@
 
 
 
-(defmethod xml_handler [:Node :handler] [node handler] 
+#_(defmethod xml_handler [:Node :handler] [node handler] 
     
             ;;(clojure.contrib.logging/info "xml_handler CALLED[:Node :handler] > AXmlCommandInput instance? > " 
             ;;  (instance? com.interrupt.bookkeeping.cc.node.AXmlCommandInput (. node getCommandInput) ))
@@ -34,21 +34,35 @@
    ) 
 )
 
-(defmethod xml_handler [:AXmlCommandInput :handler] [xinput handler]
+#_(defmethod xml_handler [:AXmlCommandInput :handler] [xinput handler]
   
    (if (instance? com.interrupt.bookkeeping.cc.node.AXmlCommandInput xinput )
-			(do 
-			   
-			   (clojure.contrib.logging/info (str "XML input[" xinput "]"))
-			   (let [xml-string (filterSpacesFromXML (. xinput toString))] 
-			   		
-			   		(clojure.contrib.logging/info (str "XML filtered[" xml-string "]"))
-			   		(handler (clojure.xml/parse (ByteArrayInputStream. (.getBytes xml-string "UTF-8"))))
-			   		
-			   )
-			   
-			)
+            (do 
+               
+               (clojure.contrib.logging/info (str "XML input[" xinput "]"))
+               (let [xml-string (filterSpacesFromXML (. xinput toString))] 
+                    
+                    (clojure.contrib.logging/info (str "XML filtered[" xml-string "]"))
+                    (handler (clojure.xml/parse (ByteArrayInputStream. (.getBytes xml-string "UTF-8"))))
+                    
+               )
+               
+            )
    ) 
 
+)
+
+(defn xml_handler [xinput handler]
+  
+   (if (instance? com.interrupt.bookkeeping.cc.node.AXmlCommandInput xinput ) 
+       (clojure.contrib.logging/warn (str "XML input[" xinput "]"))
+       (let [xml-string (filterSpacesFromXML (. xinput toString))] 
+            
+            (clojure.contrib.logging/warn (str "XML filtered[" xml-string "]"))
+            (handler (clojure.xml/parse (ByteArrayInputStream. (.getBytes xml-string "UTF-8"))))
+            
+       )
+   )
+   
 )
 
