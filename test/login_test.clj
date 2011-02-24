@@ -11,6 +11,7 @@
     (:require commands.remove)
     (:require commands.authenticate)
     (:require clojure.contrib.logging)
+    (:require bkell)
 )
 
 
@@ -62,7 +63,7 @@
     (let [ user_seq (helpers/get-user   (:url-test configs) (:system-dir configs) 
                       { :tag "user" :attrs { :id "test.user"} :content {:tag "stub"} } ) ]
       
-      (login-user user_seq)
+      (login-user user_seq @bkell/shell)
       (clojure.contrib.logging/error (str "test-login > Retrieved User > " user_seq))
       
       (is (not (nil? user_seq))
@@ -82,7 +83,7 @@
     (let [ user_seq (helpers/get-user   (:url-test configs) (:system-dir configs) 
                       { :tag "user" :attrs { :id "test.user"} :content {:tag "stub"} } ) ]
       
-      (login-user user_seq)
+      (login-user user_seq @bkell/shell)
       (clojure.contrib.logging/error (str "test-existing-login > Retrieved User > " user_seq))
       
       (let [ nd_user (helpers/get-user   (:url-test configs) (:system-dir configs) 
@@ -96,7 +97,7 @@
 
         ;; login the '2nd_user' 
         (def nd_error nil)
-        (try  (login-user nd_user)
+        (try  (login-user nd_user @bkell/shell)
               (catch Exception e (def nd_error e)))
 
         ;; check that there are no errors 
@@ -113,7 +114,7 @@
                       { :tag "user" :attrs { :id "new.user"} :content {:tag "stub"} } ) ]
       
       (def new_error nil)
-      (try  (login-user new_user)
+      (try  (login-user new_user @bkell/shell)
             (catch Exception e (def new_error e)))
       
       ;; There SHOULD be errors when trying to login a new user without logging out the old 
@@ -130,7 +131,8 @@
     (let [  logged-in-user  
             (login-user 
               (helpers/get-user 
-                (:url-test configs) (:system-dir configs) { :tag "user" :attrs { :id "test.user" :password "fubar" } :content {:tag "stub"} } ))]
+                (:url-test configs) (:system-dir configs) { :tag "user" :attrs { :id "test.user" :password "fubar" } :content {:tag "stub"} } ) 
+                @bkell/shell)]
         (is (not (nil? nd_user)) "2nd_user SHOULD NOT be nil") 
     )
 )
@@ -142,7 +144,7 @@
     (let [ user_seq (helpers/get-user   (:url-test configs) (:system-dir configs) 
                       { :tag "user" :attrs { :id "test.user"} :content {:tag "stub"} } ) ]
       
-      (login-user user_seq)
+      (login-user user_seq @bkell/shell)
       (is (not (nil? (bkell/shell :logged-in-user)))
           "test-logout > User should be in a 'logged-in-user' state")
          
@@ -158,7 +160,7 @@
   (let [ user_seq (helpers/get-user   (:url-test configs) (:system-dir configs) 
                     { :tag "user" :attrs { :id "test.user"} :content {:tag "stub"} } ) ]
     
-    (login-user user_seq)
+    (login-user user_seq @bkell/shell)
     (is (not (nil? (bkell/shell :logged-in-user)))
         "test-logout > User should be in a 'logged-in-user' state")
     
