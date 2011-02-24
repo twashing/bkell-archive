@@ -11,6 +11,7 @@
     (:require commands.remove)
     (:require commands.authenticate)
     (:require clojure.contrib.logging)
+    ;;(:require debug)
     (:require bkell)
 )
 
@@ -52,8 +53,6 @@
 )
 
 (use-fixtures :each login-test/test-fixture-shell login-test/test-fixture-db )
-(comment deftest test-ping [] 
-  (clojure.contrib.logging/info "test-ping > hello"))
 
 
 ;; test basic login
@@ -63,7 +62,8 @@
     (let [ user_seq (helpers/get-user   (:url-test configs) (:system-dir configs) 
                       { :tag "user" :attrs { :id "test.user"} :content {:tag "stub"} } ) ]
       
-      (login-user user_seq @bkell/shell)
+      ;;(debug/debug-repl)
+      (login-user user_seq bkell/shell)
       (clojure.contrib.logging/error (str "test-login > Retrieved User > " user_seq))
       
       (is (not (nil? user_seq))
@@ -83,7 +83,7 @@
     (let [ user_seq (helpers/get-user   (:url-test configs) (:system-dir configs) 
                       { :tag "user" :attrs { :id "test.user"} :content {:tag "stub"} } ) ]
       
-      (login-user user_seq @bkell/shell)
+      (login-user user_seq bkell/shell)
       (clojure.contrib.logging/error (str "test-existing-login > Retrieved User > " user_seq))
       
       (let [ nd_user (helpers/get-user   (:url-test configs) (:system-dir configs) 
@@ -97,7 +97,7 @@
 
         ;; login the '2nd_user' 
         (def nd_error nil)
-        (try  (login-user nd_user @bkell/shell)
+        (try  (login-user nd_user bkell/shell)
               (catch Exception e (def nd_error e)))
 
         ;; check that there are no errors 
@@ -114,7 +114,7 @@
                       { :tag "user" :attrs { :id "new.user"} :content {:tag "stub"} } ) ]
       
       (def new_error nil)
-      (try  (login-user new_user @bkell/shell)
+      (try  (login-user new_user bkell/shell)
             (catch Exception e (def new_error e)))
       
       ;; There SHOULD be errors when trying to login a new user without logging out the old 
@@ -132,7 +132,7 @@
             (login-user 
               (helpers/get-user 
                 (:url-test configs) (:system-dir configs) { :tag "user" :attrs { :id "test.user" :password "fubar" } :content {:tag "stub"} } ) 
-                @bkell/shell)]
+                bkell/shell)]
         (is (not (nil? nd_user)) "2nd_user SHOULD NOT be nil") 
     )
 )
@@ -144,11 +144,11 @@
     (let [ user_seq (helpers/get-user   (:url-test configs) (:system-dir configs) 
                       { :tag "user" :attrs { :id "test.user"} :content {:tag "stub"} } ) ]
       
-      (login-user user_seq @bkell/shell)
+      (login-user user_seq bkell/shell)
       (is (not (nil? (bkell/shell :logged-in-user)))
           "test-logout > User should be in a 'logged-in-user' state")
          
-      (logout-user user_seq)
+      (logout-user user_seq bkell/shell)
       (is (nil? (@bkell/shell :logged-in-user)) "there SHOULD NOT be a logged-in-user" )
       
     )
@@ -160,7 +160,7 @@
   (let [ user_seq (helpers/get-user   (:url-test configs) (:system-dir configs) 
                     { :tag "user" :attrs { :id "test.user"} :content {:tag "stub"} } ) ]
     
-    (login-user user_seq @bkell/shell)
+    (login-user user_seq bkell/shell)
     (is (not (nil? (bkell/shell :logged-in-user)))
         "test-logout > User should be in a 'logged-in-user' state")
     

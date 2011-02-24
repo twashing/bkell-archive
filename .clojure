@@ -1,1 +1,1 @@
-.:build/gen:build/src:src:test
+.:build/gen/:build/src/:src/:test/:vendor/254110/:src/commands/
