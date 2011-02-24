@@ -10,6 +10,8 @@
    
 )
 
+(defn pst [] (. *e printStackTrace))
+
 (defn get-parser [] 
 	(Parser. (Lexer. (PushbackReader. (InputStreamReader. java.lang.System/in) 1024)))
 )
@@ -37,6 +39,6 @@
 (defn bkell []
 
   (init-shell)
-  (run (depth_adapter/get-depth-adapter @bkell/shell))
+  (run (depth_adapter/get-depth-adapter bkell/shell))
 )
 

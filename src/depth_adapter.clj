@@ -20,6 +20,7 @@
   (:require commands.authenticate)
 
   (:require clojure.contrib.logging)
+  (:require debug)
   
 )
 
@@ -95,7 +96,7 @@
                     (fn [result_seq] 
                         
                         (login-user result_seq shell)
-                        (clojure.contrib.logging/info (str "DEBUG > logged-in-user > " (shell :logged-in-user)))
+                        (clojure.contrib.logging/info (str "DEBUG > logged-in-user > " (:logged-in-user @shell)))
                     ))
             )
         )
@@ -125,7 +126,7 @@
         )
             
         ;; print the result 
-        (print-to-shell  (:previous shell))
+        (print-to-shell  (:previous @shell))
 
         (if (not= (. node getRbracket) nil)
             (.. node getRbracket (apply this)))
@@ -211,11 +212,11 @@
 
                         (dosync (alter shell conj { :previous result_seq }))
                     ))
-                    (clojure.contrib.logging/info (str "Update command > context[" (:tag (:command-context shell )) 
-                             "] > :previous / each_copy[" (:previous shell)"]" ))
+                    (clojure.contrib.logging/info (str "Update command > context[" (:tag (:command-context @shell )) 
+                             "] > :previous / each_copy[" (:previous @shell)"]" ))
                     
                     ;; this is a generic 'add' 
-                    (update-generic db-base-URL db-system-DIR (:previous shell) (:logged-in-user shell ) (:command-context shell ))
+                    (update-generic db-base-URL db-system-DIR (:previous @shell) (:logged-in-user @shell ) (:command-context @shell ))
             )
         )
         
@@ -290,12 +291,12 @@
         ;; get variable name 
         (let [variableName (.. node getWord getText trim)]
             
-            (clojure.contrib.logging/info (str "putting variableName into memory[" variableName "] > previous > " (:previous shell) ) )
+            (clojure.contrib.logging/info (str "putting variableName into memory[" variableName "] > previous > " (:previous @shell) ) )
             
             ;; setting the variableName to the command result 
             (dosync (alter shell assoc 
                        (keyword variableName) 
-                       (:previous shell) 
+                       (:previous @shell) 
                      ))
             
         )
@@ -319,7 +320,7 @@
             
                 (dosync (alter shell assoc 
                        :previous 
-                       ((keyword variableName) shell) 
+                       ((keyword variableName) @shell) 
                      ))
                 
             )
@@ -350,7 +351,7 @@
                   (.. node getCommandInput (apply this) ) 
                   
                   
-                    (if (not (contains? shell :logged-in-user ))    ;; check if there is a 'logged-in-user' 
+                    (if (not (contains? @shell :logged-in-user ))    ;; check if there is a 'logged-in-user' 
                     
                     ;;throw an error if no 'logged-in-user' 
                     (clojure.contrib.logging/info "ERROR - NO logged-in-user") 
@@ -378,7 +379,7 @@
     
     (caseStart [node] 
             
-            (clojure.contrib.logging/info (str "DEBUG > caseStart CALLED > shell[" shell "]"))
+            (clojure.contrib.logging/info (str "DEBUG > caseStart CALLED > shell[" @shell "]"))
             
             (proxy-super inStart node) 
       
@@ -413,7 +414,8 @@
                    (.. node getCommandInput (apply this) ) 
                    
                    ;; set the :previous result as the :command-context 
-                   (dosync (alter shell conj { :command-context (:previous shell) } ))
+                   ;;(debug/debug-repl)
+                   (dosync (alter shell conj { :command-context (:previous @shell) } ))
                )
             ) 
             
@@ -421,7 +423,7 @@
                (.. node getRbdepth2 (apply this) ) ) 
             
             (clojure.contrib.logging/info "")
-            (clojure.contrib.logging/info (str  "shell > before arguments > [" shell "]"))
+            (clojure.contrib.logging/info (str  "shell > before arguments > [" @shell "]"))
                 (let [ copy (. node getIlist) ]
                         
                         (doseq [ each_copy copy ] 
@@ -438,20 +440,20 @@
                                             ))
                                 
                                 ;; DEBUG 
-                                (clojure.contrib.logging/info    ("Add command > context[" (:tag (:command-context shell )) 
-                                                    "] > users?[" (= (keyword "users") (:tag (:command-context shell ))) 
-                                                    "] > :previous / each_copy[" (:previous shell)"] > match?[" 
-                                                        (and    (= (keyword "users") (:tag (:command-context shell )))
-                                                                    (= (keyword "user") (:tag (:previous shell )))) "]"))
+                                (clojure.contrib.logging/info    (str "Add command > context[" (:tag (:command-context @shell )) 
+                                                    "] > users?[" (= (keyword "users") (:tag (:command-context @shell ))) 
+                                                    "] > :previous / each_copy[" (:previous @shell)"] > match?[" 
+                                                        (and    (= (keyword "users") (:tag (:command-context @shell )))
+                                                                    (= (keyword "user") (:tag (:previous @shell )))) "]"))
                                 
-                                (if (and    (= (keyword "users") (:tag (:command-context shell )))
-                                            (= (keyword "user") (:tag (:previous shell ))))
+                                (if (and    (= (keyword "users") (:tag (:command-context @shell )))
+                                            (= (keyword "user") (:tag (:previous @shell ))))
                                         
                                         ;; we are adding a user 
-                                        (add-user db-base-URL db-system-DIR (:previous shell))
+                                        (add-user db-base-URL db-system-DIR (:previous @shell))
                                         
                                         ;; this is a generic 'add' 
-                                        (add-generic db-base-URL db-system-DIR (:previous shell) (:previous shell) (:command-context shell ))
+                                        (add-generic db-base-URL db-system-DIR (:previous @shell) (:previous @shell) (:command-context @shell ))
                                         
                                 )
                                 
