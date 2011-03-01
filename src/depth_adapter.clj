@@ -392,7 +392,7 @@
     
     (caseAAddCommand1 [node]        ;; public void caseAAddCommand1(AAddCommand1 node)
                 
-                (clojure.contrib.logging/info (str "DEBUG > caseAAddCommand1 [" (class (. node getCommandInput)) "]: " node) )
+        (clojure.contrib.logging/info (str "DEBUG > caseAAddCommand1 [" (class (. node getCommandInput)) "]: " node) )
             
             
         (proxy-super inAAddCommand1 node) 

@@ -1,6 +1,7 @@
 
 (ns helpers 
 	(:use clj-stacktrace.repl)
+	(:require clojure.string)
 	(:require clojure.contrib.string)
 	(:require clojure.contrib.http.agent)
 	(:require clojure-http.resourcefully)
@@ -50,7 +51,7 @@
 
 (defn filterSpacesFromXML [text]
   
-  (clojure.contrib.string/replace-str "< " "<"   
+  (let [prep (clojure.contrib.string/replace-str "< " "<"   
   	(clojure.contrib.string/replace-str " : " ":"   
   		(clojure.contrib.string/replace-str " / >" " />"   
   			(clojure.contrib.string/replace-str "< /" "</"   
@@ -58,15 +59,29 @@
   					(clojure.contrib.string/replace-str " / " "/"   
   						(clojure.contrib.string/replace-re #"=\"\s" "=\""
   							(clojure.contrib.string/replace-re #"\s\"" "\"" 
-  								(clojure.contrib.string/replace-str " = " "=" 
+  							;;(clojure.contrib.string/replace-re #"\"\s" "\"" 
+  							    ;;(clojure.contrib.string/replace-re #"\s'" "'" 
+  							    ;;(clojure.contrib.string/replace-re #"'\s" "'" 
+  								    (clojure.contrib.string/replace-str " = " "=" 
   					text 
-  					)))))))))
+  					)))))))))]
+
+    (comment -- this is supposed to turn something like A. into B.
+        A. <profileDetail xmlns=' com/interrupt/bookkeeping/users ' id=' email ' name=' email ' value=' twashing-gmail.com ' >
+        B. <profileDetail xmlns='com/interrupt/bookkeeping/users' id='email' name='email' value='twashing-gmail.com' >
+    )
+    (loop [list (re-seq #"\s[\/\.a-zA-Z]+\s" prep)  text prep]  ;; get a sequence of all attribute's trailing spaces 
+      (if (empty? list) ;; recurse through the sequence until empty
+        text
+        (recur (rest list) (let [cur (first list)] (clojure.string/replace-first text cur (clojure.contrib.string/trim cur))) ) ))
   )
+)
 		
 
 ;; set get base URL ...TODO - put in config 
 ;; TODO - replace URL with a config value 
-(def db-base-URL "http://localhost:8080/exist/rest/") 
+(def configs (load-file "etc/config/config.clj"))
+(def db-base-URL (:db-base-URL configs)) 
 
 
 ;; set root/system dir fragment ...TODO - put in config 

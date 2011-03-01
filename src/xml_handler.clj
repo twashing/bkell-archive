@@ -2,9 +2,9 @@
 (use 'helpers) 
 (require 'clojure.contrib.logging)
 
-
 (import 'java.io.ByteArrayInputStream) 
 (require 'clojure.xml)
+(require 'debug)
 
 
 #_(defmulti xml_handler   (fn [input handler] 
@@ -58,6 +58,7 @@
        (clojure.contrib.logging/warn (str "XML input[" xinput "]"))
        (let [xml-string (filterSpacesFromXML (. xinput toString))] 
             
+            ;;(debug/debug-repl)
             (clojure.contrib.logging/warn (str "XML filtered[" xml-string "]"))
             (handler (clojure.xml/parse (ByteArrayInputStream. (.getBytes xml-string "UTF-8"))))
             
