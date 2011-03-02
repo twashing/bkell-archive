@@ -65,16 +65,18 @@
   )
 )
 
-(defn filterSpacesFromXML [text] 
-  
+(defn filterSpacesFromXML 
+
+  "this is supposed to turn something like A. into B.
+     A. <profileDetail xmlns=' com/interrupt/bookkeeping/users ' id=' email ' name=' email ' value=' twashing-gmail.com ' >
+     B. <profileDetail xmlns='com/interrupt/bookkeeping/users' id='email' name='email' value='twashing-gmail.com' >"
+  [text] 
+
   (let [prep (fsxml-prep text)]
   
-    (loop [list (re-seq #"\s[\/\.a-zA-Z]+\s" prep)  text prep]  ;; get a sequence of all attribute's trailing spaces 
-      (if (empty? list) ;; recurse through the sequence until empty
-        text
-        (recur (rest list) (let [cur (first list)] (clojure.string/replace-first text cur (clojure.contrib.string/trim cur)))) )
-    )
-  )
+    (reduce 
+            #(clojure.string/replace-first %1 %2 (clojure.contrib.string/trim %2)) 
+            text (re-seq #"\s[\/\-\.a-zA-Z]+\s" prep)) )
 )
 
 
