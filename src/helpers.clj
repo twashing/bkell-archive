@@ -8,6 +8,8 @@
     (:require clojure.contrib.logging)
   
     (:import java.io.ByteArrayInputStream)
+    
+    (:require debug)
 ) 
 
 (defn url-encode 
@@ -49,20 +51,18 @@
 )
 
 
-(defn fsxml-prep [text] 
+(defn fsxml-prep 
+
+  "This is a pre-filter for 'filterSpacesFromXML'. This is supposed to turn something like A. into B.
+     A. < profileDetail xmlns = ' com / interrupt / bookkeeping / users ' id = ' country ' name = ' country ' value = ' U.S.A ' / > < / profileDetails >
+     B. <profileDetail xmlns=' com/interrupt/bookkeeping/users ' id=' country ' name=' country ' value=' U.S.A ' /> </ profileDetails >"
+  [text] 
   
   (let [smap { "< " "<" " : " ":" " / >" " />" "< /" "</" " / " "/" #"=\"\s" "=\"" #"\s\"" "\"" " = " "=" }]  ;; map of all pattenrs to find 
-    (loop [skeys (keys smap) txt text]  ;; loop point with i) search keys and ii) text 
-      (if (empty? skeys)
-        txt                 ;; return text if we've exhasted search keys 
-        (recur              ;; otherwise recurse with remaining keys and ii) altered text 
-          (rest skeys) 
-          (let [cur (first skeys)] 
-            (apply (if (string? cur) clojure.contrib.string/replace-str clojure.contrib.string/replace-re )
-              `(~cur ~(smap cur) ~txt ) )))
-      )
-    )
-  )
+    
+    (reduce 
+            #((if (string? %2) clojure.contrib.string/replace-str clojure.contrib.string/replace-re) %2 (smap %2) %1 ) 
+            text (keys smap)) )
 )
 
 (defn filterSpacesFromXML 
@@ -76,7 +76,7 @@
   
     (reduce 
             #(clojure.string/replace-first %1 %2 (clojure.contrib.string/trim %2)) 
-            text (re-seq #"\s[\/\-\.a-zA-Z]+\s" prep)) )
+            prep (re-seq #"\s[\/\-\.a-zA-Z]+\s" prep)) )
 )
 
 
