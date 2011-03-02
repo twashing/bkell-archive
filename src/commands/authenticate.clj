@@ -7,7 +7,7 @@
     ;;  i) there is a logged-in-user 
     ;;  ii) incoming user & logged-in-user are same (OK)
     ;;  iii) incoming user & logged-in-user are different (ERROR)
-      ;;(debug/debug-repl)
+      (debug/debug-repl)
 	(and 
       (not (nil? (:logged-in-user @shell)))
       (not (= 

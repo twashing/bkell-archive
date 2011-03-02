@@ -49,34 +49,34 @@
 )
 
 
-(defn filterSpacesFromXML [text]
+(defn fsxml-prep [text] 
   
-  (let [prep (clojure.contrib.string/replace-str "< " "<"   
-  	(clojure.contrib.string/replace-str " : " ":"   
-  		(clojure.contrib.string/replace-str " / >" " />"   
-  			(clojure.contrib.string/replace-str "< /" "</"   
-  				(clojure.contrib.string/replace-str "</ " "</"   
-  					(clojure.contrib.string/replace-str " / " "/"   
-  						(clojure.contrib.string/replace-re #"=\"\s" "=\""
-  							(clojure.contrib.string/replace-re #"\s\"" "\"" 
-  							;;(clojure.contrib.string/replace-re #"\"\s" "\"" 
-  							    ;;(clojure.contrib.string/replace-re #"\s'" "'" 
-  							    ;;(clojure.contrib.string/replace-re #"'\s" "'" 
-  								    (clojure.contrib.string/replace-str " = " "=" 
-  					text 
-  					)))))))))]
-
-    (comment -- this is supposed to turn something like A. into B.
-        A. <profileDetail xmlns=' com/interrupt/bookkeeping/users ' id=' email ' name=' email ' value=' twashing-gmail.com ' >
-        B. <profileDetail xmlns='com/interrupt/bookkeeping/users' id='email' name='email' value='twashing-gmail.com' >
+  (let [smap { "< " "<" " : " ":" " / >" " />" "< /" "</" " / " "/" #"=\"\s" "=\"" #"\s\"" "\"" " = " "=" }]  ;; map of all pattenrs to find 
+    (loop [skeys (keys smap) txt text]  ;; loop point with i) search keys and ii) text 
+      (if (empty? skeys)
+        txt                 ;; return text if we've exhasted search keys 
+        (recur              ;; otherwise recurse with remaining keys and ii) altered text 
+          (rest skeys) 
+          (let [cur (first skeys)] 
+            (apply (if (string? cur) clojure.contrib.string/replace-str clojure.contrib.string/replace-re )
+              `(~cur ~(smap cur) ~txt ) )))
+      )
     )
+  )
+)
+
+(defn filterSpacesFromXML [text] 
+  
+  (let [prep (fsxml-prep text)]
+  
     (loop [list (re-seq #"\s[\/\.a-zA-Z]+\s" prep)  text prep]  ;; get a sequence of all attribute's trailing spaces 
       (if (empty? list) ;; recurse through the sequence until empty
         text
-        (recur (rest list) (let [cur (first list)] (clojure.string/replace-first text cur (clojure.contrib.string/trim cur))) ) ))
+        (recur (rest list) (let [cur (first list)] (clojure.string/replace-first text cur (clojure.contrib.string/trim cur)))) )
+    )
   )
 )
-		
+
 
 ;; set get base URL ...TODO - put in config 
 ;; TODO - replace URL with a config value 

@@ -1,6 +1,6 @@
 (require 'clojure.contrib.string)
 (use 'helpers) 
-;;(require 'bkell) 
+(require 'bkell) 
 (require 'clojure.contrib.logging)
 
 
@@ -103,7 +103,7 @@
 		;; ... TODO - logic to build XQuery to use to insert 
 		
 		;; PUT to eXist 
-		(clojure.contrib.logging/info (str "CREATing [" working-ITEM "] / XML[" (with-out-str (clojure.xml/emit working-ITEM)) "]" ))
+		(clojure.contrib.logging/info (str "CREATing [" working-ITEM "] / XML[" (with-out-str (clojure.xml/emit working-ITEM)) "] / CONTEXT[" command-context "]" ))
 		(let [result (execute-command 		
 				(url-encode-newlines (url-encode-spaces (str db-base-URL db-system-DIR (working-dir-lookup :bookkeeping)
 												"/" "group." (:id (:attrs working-USER)) ".group"

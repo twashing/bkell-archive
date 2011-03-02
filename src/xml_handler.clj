@@ -58,7 +58,7 @@
        (clojure.contrib.logging/warn (str "XML input[" xinput "]"))
        (let [xml-string (filterSpacesFromXML (. xinput toString))] 
             
-            ;;(debug/debug-repl)
+            (debug/debug-repl)
             (clojure.contrib.logging/warn (str "XML filtered[" xml-string "]"))
             (handler (clojure.xml/parse (ByteArrayInputStream. (.getBytes xml-string "UTF-8"))))
             
