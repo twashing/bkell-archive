@@ -230,12 +230,12 @@
 					(catch Exception e { :msg "Error" :dmsg (. e getMessage ) } )
 				)
 			
-			(. "PUT" equals http-method)
+			(. "PUT" equals http-method)  ;; CREATE 
 				(try 
 					(clojure-http.resourcefully/put full-URL header-hash xml-content)
 					(catch Exception e { :msg "Error" :dmsg (. e getMessage ) } )
 				)
-			(. "POST" equals http-method)
+			(. "POST" equals http-method) ;; CREATE / UPDATE 
 				(try 
 					(clojure-http.resourcefully/post full-URL header-hash xml-content)
 					(catch Exception e { :msg "Error" :dmsg (. e getMessage ) } )

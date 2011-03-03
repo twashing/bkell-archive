@@ -1,4 +1,5 @@
 (require 'clojure.contrib.string)
+(require 'clojure.string)
 (use 'helpers) 
 (require 'bkell) 
 (require 'clojure.contrib.logging)
@@ -99,30 +100,31 @@
 
 (defn add-generic [db-base-URL db-system-DIR working-ITEM working-USER command-context]
 		
-		
+		{ :pre [(not (clojure.string/blank? command-context ))] } 
+        
 		;; ... TODO - logic to build XQuery to use to insert 
 		
 		;; PUT to eXist 
-		(clojure.contrib.logging/info (str "CREATing [" working-ITEM "] / XML[" (with-out-str (clojure.xml/emit working-ITEM)) "] / CONTEXT[" command-context "]" ))
-		(let [result (execute-command 		
-				(url-encode-newlines (url-encode-spaces (str db-base-URL db-system-DIR (working-dir-lookup :bookkeeping)
-												"/" "group." (:id (:attrs working-USER)) ".group"
-												"/" "group." (:id (:attrs working-USER)) ".group"
-												;;"/bookkeeping.main.bookkeeping/bookkeeping.main.bookkeeping" 
-												"?_wrap=no&_query="
-												"declare default element namespace '"
-                                                    (namespace-lookup (clojure.contrib.string/as-str (:tag working-ITEM)))"';"
-                                                "update insert "(strip-xml-header (with-out-str (clojure.xml/emit working-ITEM)))
-	                                                " into //"(clojure.contrib.string/as-str (:tag command-context))
-		                                                "[@id='" (:id (:attrs command-context)) "']"
-																					)))
-												"GET" 
-												{	"Content-Type" "text/xml" 
-													"Connection" "Keep-Alive"
-													"Authorization" "Basic YWRtaW46" }
-												nil
-		)]
-		(clojure.contrib.logging/info (str "result[" result "]"))
-		)
+		(clojure.contrib.logging/info 
+          (str "CREATing [" working-ITEM "] / XML[" 
+            (with-out-str (clojure.xml/emit working-ITEM)) "] / CONTEXT[" command-context "]" ))
+        
+		(let [rxml (strip-xml-header (with-out-str (clojure.xml/emit working-ITEM)))] 
+          (execute-command 		
+			(url-encode-newlines (url-encode-spaces (str db-base-URL db-system-DIR (working-dir-lookup :bookkeeping)
+				"/" "group." (:id (:attrs working-USER)) ".group"
+				"/" "group." (:id (:attrs working-USER)) ".group"
+				"?_wrap=no&_query="
+				"declare default element namespace '" (namespace-lookup (clojure.contrib.string/as-str (:tag working-ITEM)))"';"
+                "update insert " rxml 
+	                " into //"(clojure.contrib.string/as-str (:tag command-context))
+		                "[@id='" (:id (:attrs command-context)) "']"
+													)))
+				"GET" 
+				{	"Content-Type" "text/xml" 
+					"Connection" "Keep-Alive"
+					"Authorization" "Basic YWRtaW46" }
+				rxml
+		))
 )
 
