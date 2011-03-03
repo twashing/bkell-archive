@@ -102,8 +102,6 @@
 		
 		{ :pre [(not (clojure.string/blank? command-context ))] } 
         
-		;; ... TODO - logic to build XQuery to use to insert 
-		
 		;; PUT to eXist 
 		(clojure.contrib.logging/info 
           (str "CREATing [" working-ITEM "] / XML[" 

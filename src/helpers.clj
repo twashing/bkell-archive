@@ -218,7 +218,18 @@
   )
 ) 
 
-(defn execute-http-call [ full-URL http-method header-hash xml-content ] 
+(defn execute-http-call 
+
+  "this function assumes eXist-db is running with the following services available
+  
+  RESTful Interface: 
+  http://exist-db.org/devguide_rest.html
+  
+  XQuery Update Extensions: 
+  http://exist-db.org/update_ext.html
+  "
+
+  [ full-URL http-method header-hash xml-content ] 
 		
 		;; from DB, get 'token' for 'option' args & value 
 		(clojure.contrib.logging/debug (str "DEBUG > FINAL http query[" full-URL "] > http-method[" http-method "] > header-hash[" header-hash "] > xml-content[" xml-content "]"))
@@ -294,6 +305,7 @@
       (if (not (nil? result))
         (if (map? result)
           (if (not (nil? (:msg result)))   ;; this message is usually "Error" 
+            result
             (parse-xml-to-hash (:body-seq result)))
           (parse-xml-to-hash result))
       )
