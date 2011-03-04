@@ -58,7 +58,7 @@
      B. <profileDetail xmlns=' com/interrupt/bookkeeping/users ' id=' country ' name=' country ' value=' U.S.A ' /> </ profileDetails >"
   [text] 
   
-  (let [smap { "< " "<" " : " ":" " / >" " />" "< /" "</" " / " "/" #"=\"\s" "=\"" #"\s\"" "\"" " = " "=" }]  ;; map of all pattenrs to find 
+  (let [smap { #"\"" "'" "< " "<" " : " ":" " / >" " />" "< /" "</" " / " "/" " = " "=" #"=\"\s" "=\"" #"\s\"" "\"" }]  ;; map of all pattenrs to find 
     
     (reduce 
             #((if (string? %2) clojure.contrib.string/replace-str clojure.contrib.string/replace-re) %2 (smap %2) %1 ) 
@@ -72,8 +72,10 @@
      B. <profileDetail xmlns='com/interrupt/bookkeeping/users' id='email' name='email' value='twashing-gmail.com' >"
   [text] 
 
+  (debug/debug-repl)
   (let [prep (fsxml-prep text)]
-  
+    
+    (debug/debug-repl)
     (reduce 
             #(clojure.string/replace-first %1 %2 (clojure.contrib.string/trim %2)) 
             prep (re-seq #"\s[\/\-\.a-zA-Z]+\s" prep)) )

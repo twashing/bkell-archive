@@ -41,14 +41,9 @@
     [node handler_block]    ;; input args ; for now we are going to load by ID 
     
     (let [ checks [ xml_handler option_handler xpath_handler/xpath_handler ] ]
-            
-            (doseq [ each_check checks ] 
-                (do
-                    ;;(clojure.contrib.logging/info "DEBUG > each > check[" each_check "] > node[" node "]" ) 
-                    (each_check node handler_block)
-                )
-            )
-            
+      
+      (doseq [ each_check checks ] 
+        (each_check node handler_block))
     )
     
 )
@@ -89,17 +84,17 @@
           
           (do 
             
-            (.. node getCommandInput (apply this) ) 
-                
-                ;; execute LOGIN 
-                (operate-dep-inputtype node 
-                    (fn [result_seq] 
-                        
-                        (login-user result_seq shell)
-                        (clojure.contrib.logging/info (str "DEBUG > logged-in-user > " (:logged-in-user @shell)))
-                    ))
-            )
-        )
+            ;;(debug/debug-repl)
+            
+            ;; execute LOGIN 
+            (operate-dep-inputtype (.. node getCommandInput) 
+                (fn [result_seq] 
+                    
+                    (login-user result_seq shell)
+                    (clojure.contrib.logging/info (str "DEBUG > logged-in-user > " (:logged-in-user @shell)))
+                ))
+          )
+      )
         
       (if (not= (. node getRbracket ) nil) 
            (.. node getRbracket (apply this) ) )

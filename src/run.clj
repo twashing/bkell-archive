@@ -1,4 +1,10 @@
 
 (require 'bkell)
-(bkell/bkell)
+
+(defn run []
+  (require 'bkell)
+  (bkell/bkell)
+)
+
+(run)
 
