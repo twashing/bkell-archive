@@ -34,7 +34,53 @@ B) /system.main.system/groups.main.groups/<group.webkell>
         doc & path ->   group.webkell/bookkeeping.main.bookkeeping/journals.main.journals/journal.generalledger/entries.main.entries/entry.qwertySTUB
 
 "
-
-
+  (:require clojure.contrib.str-utils2)
+  (:require clojure.contrib.string)
+  (:require debug)
 )
+
+
+
+(defn get-mapping [location map-list]
+  
+  (loop [mitem (first map-list) mlist map-list ]
+    
+    (if (clojure.contrib.str-utils2/contains? location mitem)
+      [ mitem (last (clojure.contrib.string/split (re-pattern mitem) location)) ]
+      (recur (first (rest mlist)) (rest mlist) ))
+    
+  )
+)
+
+
+(defn string-xpath-part [part]  ;; convert "fu.bar" into fu[@id='bar']
+    
+    (let [ ml (clojure.contrib.string/split #"\." part) ] 
+        (str    (first ml) 
+            "[@id='" 
+            (clojure.contrib.str-utils2/join "." (rest ml)) 
+            "']" ) 
+    ) 
+) 
+
+(defn xpath-from-epath 
+"We want to return a normal XPath chunk like so: 
+    group.webkell/user.root   ->  group[@id='webkell']/user[@id='root'] "
+    [epath]
+    
+    (let [rlist (clojure.contrib.string/split #"/" epath)]
+        ;;(debug/debug-repl)
+        (reduce 
+            (fn [a b] 
+                (str    a 
+                    (str "/" (string-xpath-part b))
+                )) 
+            (string-xpath-part (first rlist)) 
+            (rest rlist) )
+    )
+)
+
+
+
+
 
