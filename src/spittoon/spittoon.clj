@@ -33,16 +33,19 @@ A) /system.main.system/groups.main.groups/group.webkell/bookkeeping.main.bookkee
 B) /system.main.system/groups.main.groups/<group.webkell>
         doc & path ->   group.webkell/bookkeeping.main.bookkeeping/journals.main.journals/journal.generalledger/entries.main.entries/entry.qwertySTUB"
 
+  (:import java.io.ByteArrayInputStream) 
+  (:require helpers)
   (:require clojure.string)
   (:require clojure.contrib.logging)
   (:require clojure.contrib.str-utils2)
   (:require clojure.contrib.string)
+  (:require clojure.xml)
   (:require [clj-http.client :as client])
-  ;;(:require debug)
+  (:require debug)
 )
 
-(def configs (load-file "etc/config/config.clj"))
-(defn reconfigure 
+#_(def configs (load-file "etc/config/config.clj"))
+#_(defn reconfigure 
   "Give Spittoon a new configuration using the given config file"
   [config-file]
   
@@ -50,7 +53,7 @@ B) /system.main.system/groups.main.groups/<group.webkell>
 )
 
 
-(defn get-mapping 
+#_(defn get-mapping 
   "For the eXist path A), we should get a mapping vector B) 
   A) /system.main.system/aauthentication.main.aauthentication/groups.aauth.groups/group.webkell/user.root
   B) ['/system.main.system/aauthentication.main.aauthentication/groups.aauth.groups/group.webkell', 'group.webkell/user.root']"
@@ -68,14 +71,16 @@ B) /system.main.system/groups.main.groups/<group.webkell>
 )
 
 
-(defn string-xpath-part [part]  ;; convert "fu.bar" into fu[@id='bar']
+#_(defn string-xpath-part 
+  "Convert 'fu.bar' into fu[@id='bar']"
+  [part]  
     (let [ ml (clojure.contrib.string/split #"\." part) ] 
         (str    (first ml) 
             "[@id='" 
             (clojure.contrib.str-utils2/join "." (rest ml)) 
             "']" ) ) 
 ) 
-(defn xpath-from-epath 
+#_(defn xpath-from-epath 
   "We want to return a normal XPath chunk like so: 
     group.webkell/user.root   ->  group[@id='webkell']/user[@id='root'] "
     [epath]
@@ -83,27 +88,13 @@ B) /system.main.system/groups.main.groups/<group.webkell>
     (let [rlist (clojure.contrib.string/split #"/" epath)]
         (reduce 
             (fn [a b] 
-                (str    a 
-                    (str "/" (string-xpath-part b))
-                )) 
+                (str  a (str "/" (string-xpath-part b)))) 
             (string-xpath-part (first rlist)) 
             (rest rlist) )
     )
 )
-(defn xpath-derive-parent 
-  "For a given xpath, returns the parent. So, given A), we want B)
-  A) group[@id='webkell']/user[@id='root']
-  B) group[@id='webkell'] "
-  [xpath]
-  
-  (let [slist (clojure.contrib.string/split #"/" xpath )] ;; separate the list 
-    (let [rlist (take (- (count slist) 1) slist)]   ;; reduce the list
-      (clojure.string/join "/" rlist)     ;; join together the final product 
-    )
-  )
-)
 
-(defn execute-http 
+#_(defn execute-http 
 
   "this function assumes eXist-db is running with the following services available
   
@@ -138,20 +129,57 @@ B) /system.main.system/groups.main.groups/<group.webkell>
 	  (catch Exception e { :msg "Error" :dmsg (. e getMessage ) } )
     )
 )
-(defn create [exist-path xpath xdoc]
+
+
+(comment ****
+  "HELPER functions for CRUD operations")
+#_(defn xpath-derive-parent 
+  "For a given xpath, returns the parent. So, given A), we want B)
+  A) group[@id='webkell']/user[@id='root']
+  B) group[@id='webkell'] "
+  [xpath]
   
-  ;;(debug/debug-repl)
-  (let  [ base-url (str (:db-base-URL spittoon/configs) (:system-dir spittoon/configs)) ]
-    
-    (let [parent-path (xpath-derive-parent xpath)] 
-      (if (clojure.string/blank? parent-path)
-        (execute-http "PUT" (str base-url exist-path) { :body xdoc }) ;; direct PUT if xpath has no parent 
-        (execute-http "GET" (str base-url exist-path) { :body xdoc :query-params {}}) ;; insert into location if xpath HAS parent 
-      )
+  (let [slist (clojure.contrib.string/split #"/" xpath )] ;; separate the list 
+    (let [rlist (take (- (count slist) 1) slist)]   ;; reduce the list
+      (clojure.string/join "/" rlist)     ;; join together the final product 
+    )
+  )
+)
+#_(defn build-update-query 
+  "Builds a query that follows eXists XQuery Update Extensions: http://exist-db.org/update_ext.html
+  So an insert might look something like: 
+    update insert <email type='office'>andrew@gmail.com</email> into //address[fname='Andrew']"
+  [action xinput xpath]
+  
+  (let [apfn #(str "declare default element namespace '" (helpers/namespace-lookup %1) "'; "
+      "update " action " " xinput " into " xpath)]
+    (if (map? xinput) 
+      (let [token 
+            (clojure.contrib.string/as-str (:tag xinput)) ] ;; XML tagname returned as :keyword -> converting to string 
+        (apfn token))
+      (let [token 
+            (clojure.contrib.string/as-str (:tag (clojure.xml/parse (ByteArrayInputStream. (.getBytes xinput "UTF-8"))))) ]
+        (apfn token))
     )
   )
 )
 
-
-
+(comment ****
+  "CRUD operations)
+#_(defn create [exist-path xpath xdoc]
+  
+  (let  [ base-url (str (:db-base-URL spittoon/configs) (:system-dir spittoon/configs)) ]
+    
+    (let [parent-path (xpath-derive-parent xpath)] 
+      
+      (debug/debug-repl)
+      (if (clojure.string/blank? parent-path)
+        (execute-http "PUT" (str base-url exist-path) { :body xdoc }) ;; direct PUT if xpath has no parent 
+        (execute-http "GET" (str base-url exist-path) 
+          { :body xdoc 
+            :query-params { "_wrap" "no" "_query" (build-update-query "insert" xdoc xpath)}}) ;; insert into location if xpath HAS parent 
+      )
+    )
+  )
+)
 
