@@ -1,6 +1,7 @@
 
 {
-   :url-test    	"xmldb:exist:///db/exist/rest/"
+   ;;:db-base-URL    	"xmldb:exist:///db/exist/rest/"
+   :db-base-URL  "http://localhost:8080/exist/rest/"
    :system-dir      "testDB/"
    :passwdBase64    "" 
 
