@@ -1,0 +1,59 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<system xmlns='com/interrupt/bookkeeping' 
+		xmlns:users='com/interrupt/bookkeeping/users' 
+		xmlns:bkell='com/interrupt/bookkeeping/cc/bkell' 
+		xmlns:command='com/interrupt/bookkeeping/cc/bkell/command' 
+		xmlns:interpret='com/interrupt/bookkeeping/interpret' 
+		xmlns:aauth='com/interrupt/bookkeeping/cc/bkell/aauth' 
+		id='main.system' > 
+	
+	
+	<aauth:aauthentication id='main.authentication' sessiontimeout="6000" >
+		
+		<users:groups id="aauth.groups" >
+			<users:group id="webkell" name="Webkell" owner="root" >
+				<users:user id="root" />
+			</users:group>
+		</users:groups>
+		
+		
+		<!-- actions that a user is allowed to do -->
+		<users:users id="aauth.users" >
+			
+			<!-- this user has a default 10 minute session timeout period (1000 * 60 * 10 = 600'000 milliseconds) --> 
+			<users:user id="root" username="root" password="password" logintimeout="600000" 
+			     accountLevel="FREE" defaultGroup='webkell' authenticated="" >
+				
+				<users:userSession id='' groupid='' userid='' >
+				    <aauth:aauthentication />
+				</users:userSession>
+				
+				<aauth:allowedActions id="root.allowedActions" >
+					<command:command id='command.create' name='create' />
+					<command:command id='command.add' name='add' />
+					<command:command id='command.remove' name='remove' />
+					<command:command id='command.reverse' name='reverse' />
+					<command:command id='command.find' name='find' />
+					<command:command id='command.load' name='load' />
+					<command:command id='command.list' name='list' />
+					<command:command id='command.print' name='print' />
+					<command:command id='command.commit' name='commit' />
+					<command:command id='command.login' name='login' />
+					<command:command id='command.logout' name='logout' />
+					<command:command id='command.exit' name='exit' />
+				</aauth:allowedActions>
+				
+				<users:profileDetails id='user.details' >
+					<users:profileDetail id='first.name' name='first.name' value='' />
+					<users:profileDetail id='last.name' name='last.name' value='' />
+					<users:profileDetail id='name' name='email' value='' />
+					<users:profileDetail id='country' name='country' value='' />
+				</users:profileDetails>
+				
+			</users:user>
+		</users:users>
+		
+	</aauth:aauthentication>
+	
+</system>
+

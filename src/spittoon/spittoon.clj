@@ -41,11 +41,11 @@ B) /system.main.system/groups.main.groups/<group.webkell>
   (:require clojure.contrib.string)
   (:require clojure.xml)
   (:require [clj-http.client :as client])
-  (:require debug)
+  ;;(:require debug)
 )
 
-#_(def configs (load-file "etc/config/config.clj"))
-#_(defn reconfigure 
+(def configs (load-file "etc/config/config.clj"))
+(defn reconfigure 
   "Give Spittoon a new configuration using the given config file"
   [config-file]
   
@@ -53,7 +53,7 @@ B) /system.main.system/groups.main.groups/<group.webkell>
 )
 
 
-#_(defn get-mapping 
+(defn get-mapping 
   "For the eXist path A), we should get a mapping vector B) 
   A) /system.main.system/aauthentication.main.aauthentication/groups.aauth.groups/group.webkell/user.root
   B) ['/system.main.system/aauthentication.main.aauthentication/groups.aauth.groups/group.webkell', 'group.webkell/user.root']"
@@ -71,7 +71,7 @@ B) /system.main.system/groups.main.groups/<group.webkell>
 )
 
 
-#_(defn string-xpath-part 
+(defn string-xpath-part 
   "Convert 'fu.bar' into fu[@id='bar']"
   [part]  
     (let [ ml (clojure.contrib.string/split #"\." part) ] 
@@ -80,7 +80,7 @@ B) /system.main.system/groups.main.groups/<group.webkell>
             (clojure.contrib.str-utils2/join "." (rest ml)) 
             "']" ) ) 
 ) 
-#_(defn xpath-from-epath 
+(defn xpath-from-epath 
   "We want to return a normal XPath chunk like so: 
     group.webkell/user.root   ->  group[@id='webkell']/user[@id='root'] "
     [epath]
@@ -94,7 +94,7 @@ B) /system.main.system/groups.main.groups/<group.webkell>
     )
 )
 
-#_(defn execute-http 
+(defn execute-http 
 
   "this function assumes eXist-db is running with the following services available
   
@@ -115,7 +115,7 @@ B) /system.main.system/groups.main.groups/<group.webkell>
     (try
 	  (cond 
 		(. "GET" equals http-method) 
-		  (client/get full-URL {:query-params {"q" "foo, bar"} } )
+		  (client/get full-URL {:query-params etal } )
         
 		(. "PUT" equals http-method)  ;; CREATE 
 		  (client/put full-URL {:body (:body etal)} )
@@ -132,8 +132,8 @@ B) /system.main.system/groups.main.groups/<group.webkell>
 
 
 (comment ****
-  "HELPER functions for CRUD operations")
-#_(defn xpath-derive-parent 
+  HELPER functions for CRUD operations)
+(defn xpath-derive-parent 
   "For a given xpath, returns the parent. So, given A), we want B)
   A) group[@id='webkell']/user[@id='root']
   B) group[@id='webkell'] "
@@ -145,7 +145,7 @@ B) /system.main.system/groups.main.groups/<group.webkell>
     )
   )
 )
-#_(defn build-update-query 
+(defn build-update-query 
   "Builds a query that follows eXists XQuery Update Extensions: http://exist-db.org/update_ext.html
   So an insert might look something like: 
     update insert <email type='office'>andrew@gmail.com</email> into //address[fname='Andrew']"
@@ -165,19 +165,22 @@ B) /system.main.system/groups.main.groups/<group.webkell>
 )
 
 (comment ****
-  "CRUD operations)
-#_(defn create [exist-path xpath xdoc]
+  CRUD operations)
+(defn create [exist-path xpath xdoc]
   
+  ;;(debug/debug-repl)
   (let  [ base-url (str (:db-base-URL spittoon/configs) (:system-dir spittoon/configs)) ]
     
-    (let [parent-path (xpath-derive-parent xpath)] 
+    (let [  filtered-path (if (= "/" (clojure.contrib.string/take 1 exist-path)) ;; removing / prefix if exists 
+                            (clojure.contrib.str-utils2/drop exist-path 1)
+                            exist-path)
+            parent-path (xpath-derive-parent xpath) ] 
       
-      (debug/debug-repl)
       (if (clojure.string/blank? parent-path)
-        (execute-http "PUT" (str base-url exist-path) { :body xdoc }) ;; direct PUT if xpath has no parent 
-        (execute-http "GET" (str base-url exist-path) 
+        (execute-http "PUT" (str base-url filtered-path) { :body xdoc }) ;; direct PUT if xpath has no parent 
+        (execute-http "GET" (str base-url filtered-path) 
           { :body xdoc 
-            :query-params { "_wrap" "no" "_query" (build-update-query "insert" xdoc xpath)}}) ;; insert into location if xpath HAS parent 
+            :query-params { "_wrap" "no" "_query" (build-update-query "insert" xdoc parent-path)}}) ;; insert into location if xpath HAS parent 
       )
     )
   )
