@@ -20,7 +20,7 @@
   (:require commands.authenticate)
 
   (:require clojure.contrib.logging)
-  (:require debug)
+  ;;(:require debug)
   
 )
 

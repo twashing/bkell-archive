@@ -4,7 +4,7 @@
 
 (import 'java.io.ByteArrayInputStream) 
 (require 'clojure.xml)
-(require 'debug)
+;;(require 'debug)
 
 
 #_(defmulti xml_handler   (fn [input handler] 

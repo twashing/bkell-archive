@@ -50,7 +50,7 @@
 				<users:profileDetails id='user.details' >
 					<users:profileDetail id='first.name' name='first.name' value='' />
 					<users:profileDetail id='last.name' name='last.name' value='' />
-					<users:profileDetail id='name' name='email' value='' />
+					<users:profileDetail id='email' name='email' value='' />
 					<users:profileDetail id='country' name='country' value='' />
 				</users:profileDetails>
 				

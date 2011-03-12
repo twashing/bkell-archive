@@ -12,6 +12,7 @@
                         [clojure-http-client "1.1.0-SNAPSHOT"]
                         [com.interrupt/bookkeeping "0.0.0-prealpha"]
                         [com.interrupt/bob "0.0.0-prealpha"]
+                        [congomongo "0.1.3-SNAPSHOT"]
 				  ]
 
   :dev-dependencies  [ [org.exist/exist "1.4.1"]
