@@ -6,8 +6,25 @@
 )
 
 
-(def configs (load-file "test/etc/config/config.clj"))
-(somnium.congomongo/mongo! :db "bkell")
+(defn test-fixture-db
+    "test to clear out shell memory before a test is run"
+    [test]
+
+    (clojure.contrib.logging/info "test-fixture-db CALLED")
+
+    (destroy! :users {});; destroying all users
+
+    ;; ** execute the TEST function
+    (test)
+    
+    (clojure.contrib.logging/info "test-fixture-db EXIT")
+
+)
+(use-fixtures :each login-test/test-fixture-db )
+
+
+(def configs (load-file "test/etc/config/config.clj")) ;; load config file 
+(somnium.congomongo/mongo! :db "bkell") ;; connect to mongodb
 
 
 
@@ -45,7 +62,15 @@
 )
 
 ;; test that associated group is getting added as well 
-(deftest test-add-associated-group )
+(deftest test-add-associated-group 
+  
+  (let [user (load-file "test/etc/data/stubu-two.clj")]
+    
+    (commands/add-user user) 
+    (let [gr (:owner (first (fetch "groups" :where { :owner (:owner group) })))]
+      (is (not (nil? gr)) "There SHOULD be an associated group with the added user"))
+  )
+)
 
 ;; test that associated bookkeeping is getting added as well 
 (deftest test-add-associated-bookkeeping )

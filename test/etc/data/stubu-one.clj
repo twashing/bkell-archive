@@ -1,6 +1,4 @@
-{:tag :group,
- :attrs
- {:id "stub",
+{ :tag :group,
   :name "stub",
-  :owner "stub"},
- :content nil}
+  :owner "stub",
+  :content nil}
