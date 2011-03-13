@@ -2,6 +2,7 @@
 	
 	(:use [clojure.test])
     (:use somnium.congomongo)
+    (:require commands.add)
 )
 
 
@@ -12,23 +13,36 @@
 
 (comment *** 
   USER tests)
-
-;; test adding a new user 
-(deftest test-add-new-user 
+(deftest test-add-new-user  ;; test adding a new user 
   
   ;; assert basic add
   (let [user (load-file "test/etc/data/stubu-two.clj")]
-    (insert! :users user)
+    (commands/add-user user)
     (let [ru (fetch "users" :where { :username (:username user) })]
+      
       (is (not (nil? ru)) "There SHOULD be a user with the username 'stub'")
+      
+      ;; assert that there are some associated profileDetails: [ last.name first.name email country ]
+      (let [pd (:tag (nth (:content (nth ru 0)) 0))]
+        (is (= "profileDetails" pd) "There SHOULD be a profileDetail element in the user")
+      )
     )
   )
 
-  ;; assert that there are some associated profileDetails: [ last.name first.name email country ]
 )
 
 ;; test adding against an existing user
-(deftest test-add-existing-user )
+(deftest test-add-existing-user 
+  
+  (let [user (load-file "test/etc/data/stubu-two.clj")]
+    
+    (commands/add-user user) 
+    (let [result (commands/add-user user)] 
+      
+      (is (= "error" (:tag result)) "There SHOULD be an error when adding a duplicate user")
+    )
+  )
+)
 
 ;; test that associated group is getting added as well 
 (deftest test-add-associated-group )
@@ -40,6 +54,8 @@
 (deftest test-encrypted-password )
 
 
+(comment *** 
+  BOOKKEEPING tests)
 (deftest test-add-currency
   ;; assert that currency was added
   ;; assert that there is no duplicate currency
@@ -53,3 +69,5 @@
   ;; assert that entry is balanced
   ;; assert that accounts correspond with existing accounts
 )
+
+
