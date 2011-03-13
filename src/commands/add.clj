@@ -6,12 +6,17 @@
 
 
 
+
 (defn add-user [user] 
   
   ;; check that there is not a duplicate user 
   (if (not (= (:username user) 
               (:username (first (fetch "users" :where { :username (:username user) })))))
-    (insert! :users user)
+    (do 
+      (insert! :users user) ;; insert the user 
+      (let [gr (load-file "etc/data/default.group.clj")]  ;; insert the associated group
+        (insert! :groups (assoc gr :name (:username user) :owner (:username user))))
+    )
     { :tag "error" :msg "There is a duplicate user" }
   )
 )

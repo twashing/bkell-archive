@@ -1,5 +1,4 @@
 (ns add-test
-	
 	(:use [clojure.test])
     (:use somnium.congomongo)
     (:require commands.add)
@@ -12,7 +11,8 @@
 
     (clojure.contrib.logging/info "test-fixture-db CALLED")
 
-    (destroy! :users {});; destroying all users
+    (destroy! :users {})  ;; destroying all users
+    (destroy! :groups {}) ;; destroying all groups
 
     ;; ** execute the TEST function
     (test)
@@ -20,7 +20,7 @@
     (clojure.contrib.logging/info "test-fixture-db EXIT")
 
 )
-(use-fixtures :each login-test/test-fixture-db )
+(use-fixtures :each add-test/test-fixture-db )
 
 
 (def configs (load-file "test/etc/config/config.clj")) ;; load config file 
@@ -65,32 +65,34 @@
 (deftest test-add-associated-group 
   
   (let [user (load-file "test/etc/data/stubu-two.clj")]
-    
-    (commands/add-user user) 
-    (let [gr (:owner (first (fetch "groups" :where { :owner (:owner group) })))]
-      (is (not (nil? gr)) "There SHOULD be an associated group with the added user"))
+    (let [  result (commands/add-user user) 
+            gr (:owner (first (fetch "groups" :where { :owner (:username user) })))]
+      
+      (is (not (nil? gr)) "There SHOULD be an associated group with the added user")
+      (is (= 1 (fetch-count "groups" :where { :owner (:username user) })) "There should NOT be any duplicate groups" )
+    )
   )
 )
 
 ;; test that associated bookkeeping is getting added as well 
-(deftest test-add-associated-bookkeeping )
+#_(deftest test-add-associated-bookkeeping )
 
 ;; test that password is encrypted - MD5 checksum 
-(deftest test-encrypted-password )
+#_(deftest test-encrypted-password )
 
 
 (comment *** 
   BOOKKEEPING tests)
-(deftest test-add-currency
+#_(deftest test-add-currency
   ;; assert that currency was added
   ;; assert that there is no duplicate currency
 )
-(deftest test-add-account 
+#_(deftest test-add-account 
   ;; assert that account was added
   ;; assert that there is no duplicate account
   ;; assert that account has an associated currency 
 )
-(deftest test-add-entry
+#_(deftest test-add-entry
   ;; assert that entry is balanced
   ;; assert that accounts correspond with existing accounts
 )
