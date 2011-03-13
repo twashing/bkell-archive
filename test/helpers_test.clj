@@ -7,9 +7,8 @@
 )
 
 
-(def configs (load-file "etc/config/config.test.clj"))
-
-(defn test-fixture-db [test]
+#_(def configs (load-file "etc/config/config.test.clj"))
+#_(defn test-fixture-db [test]
    
   ;; delete DB content before and after running a test
   (execute-embedded-db (:url-test configs) "DELETE" {} nil) 
@@ -17,14 +16,23 @@
   (execute-embedded-db (:url-test configs) "DELETE" {} nil) 
    
 )
-(use-fixtures :each helpers-test/test-fixture-db )
+#_(use-fixtures :each helpers-test/test-fixture-db )
+
+
+;; Basic test for MD5 Encryption 
+(deftest test-md5sum 
+  
+  (let [rs (helpers/md5-sum "fubar")] 
+    (is (= "5185e8b8fd8a71fc80545e144f91faf2" rs)))
+)
+
 
 
 ;; ==============
 ;;  BEGIN TESTs
 ;; ==============
 
-(deftest test-execute-embedded-db-1
+#_(deftest test-execute-embedded-db-1
   
   ;; try GET on an empty DB 
   (let [  result-GET (execute-embedded-db (:url-test-helper configs) "GET" {} nil) ]
@@ -38,7 +46,7 @@
   )
 )
 
-(deftest test-execute-embedded-db-2
+#_(deftest test-execute-embedded-db-2
   
   ;; PUT, then try to GET 
   (execute-embedded-db (:url-test-helper configs) "PUT" {"Content-Type" "text/xml"} "<testContent/>") 

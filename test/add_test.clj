@@ -10,13 +10,12 @@
     [test]
 
     (clojure.contrib.logging/info "test-fixture-db CALLED")
-
     (destroy! :users {})  ;; destroying all users
     (destroy! :groups {}) ;; destroying all groups
+    (destroy! :bookkeeping {}) ;; destroying all bookkeeping
 
     ;; ** execute the TEST function
     (test)
-    
     (clojure.contrib.logging/info "test-fixture-db EXIT")
 
 )

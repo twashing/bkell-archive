@@ -4,7 +4,7 @@
   :content
     [{  :tag :currencies,
         :id "main.currencies", 
-        :default "CDN"},
+        :default "CDN",
    :content
    [{:tag :currency,
      :id "CDN", 
@@ -25,7 +25,7 @@
     {:tag :currency,
      :id "JPN", 
      :name "Japanese Yen",
-     :content nil}]
+     :content nil}]}
   {:tag :accounts, :id "main.accounts", :content nil}
   {:tag :journals,
    :id "main.journals",
