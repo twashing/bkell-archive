@@ -75,7 +75,18 @@
 )
 
 ;; test that associated bookkeeping is getting added as well 
-#_(deftest test-add-associated-bookkeeping )
+(deftest test-add-associated-bookkeeping 
+  
+  (let [user (load-file "test/etc/data/stubu-two.clj")]
+    (let [  result (commands/add-user user) 
+            bk (:owner (first (fetch "bookkeeping" :where { :owner (:username user) })))]
+      
+      (is (not (nil? bk)) "There SHOULD be an associated bookkeeping with the added user")
+      (is (= 1 (fetch-count "bookkeeping" :where { :owner (:username user) })) "There should NOT be any duplicate bookkeeping(s)" )
+    )
+  )
+
+)
 
 ;; test that password is encrypted - MD5 checksum 
 #_(deftest test-encrypted-password )
