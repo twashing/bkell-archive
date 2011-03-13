@@ -1,5 +1,6 @@
 { :tag :user
   :username "stub" 
+  :password "fubar"
   :content 
     [{  :tag :profileDetails,
         :content

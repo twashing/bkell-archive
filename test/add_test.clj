@@ -88,7 +88,17 @@
 )
 
 ;; test that password is encrypted - MD5 checksum 
-#_(deftest test-encrypted-password )
+(deftest test-encrypted-password 
+    
+  (let [user (load-file "test/etc/data/stubu-two.clj")]
+    (let [  result (commands/add-user user) 
+            ru (first (fetch "users" :where { :username (:username user) }))]
+      
+      (is (not (nil? ru)) "There SHOULD be a user after creation")
+      (is (= "5185e8b8fd8a71fc80545e144f91faf2" (:password ru) ) "The password SHOULD be MD5 checksumed" )
+    )
+  )
+)
 
 
 (comment *** 
