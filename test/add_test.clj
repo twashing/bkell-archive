@@ -103,8 +103,45 @@
 
 (comment *** 
   BOOKKEEPING tests)
-#_(deftest test-add-currency
-  ;; assert that currency was added
+(deftest test-add-currency
+  
+  (let [user (load-file "test/etc/data/stubu-two.clj")]
+    (let  [ result (commands/add-user user) 
+            currency (load-file "test/etc/data/test-currency.clj")]
+          
+      
+      ;; there SHOULD be an error if 'uname' is not set 
+      (let [ae  (try (commands/add-currency nil currency false)
+                  (catch java.lang.AssertionError ae ae))]
+        
+        (is (not (nil? ae)) "there SHOULD be an error if 'uname' is not set ")
+        (is (= java.lang.AssertionError (type ae)) "return type is NOT an assertion error")
+      )
+
+      ;; there SHOULD be an error if adding currency without a 'name' or 'id' 
+      (let [aee  (try (commands/add-currency "stub" { :tag :currency } false)
+                  (catch java.lang.AssertionError ae ae))]
+        
+        (is (not (nil? aee)) "there SHOULD be an error if 'name' or 'id' is not set ")
+        (is (= java.lang.AssertionError (type aee)) "return type is NOT an assertion error")
+      )
+      
+      
+      (commands/add-currency "stub" currency true)
+      
+      ;; assert that currency was added
+      (let  [ bk (first (fetch "bookkeeping" :where { :owner (:username user) })) ]
+        
+        (let [ clist (:content (first (:content bk))) ]
+          (println clist)
+          (is (= 1 (count (filter #(= "AUD" (:id %1)) clist))) "the AUD currency was NOT found in the DB")
+        )
+      )
+      
+      ;; assert that it is now the default currency 
+
+    )
+  )
   ;; assert that there is no duplicate currency
 )
 #_(deftest test-add-account 
