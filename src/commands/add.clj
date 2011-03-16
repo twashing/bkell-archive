@@ -6,7 +6,7 @@
   (:require helpers)
   
   (:use somnium.congomongo)
-  (:require clojure.contrib.debug)
+  (:require debug)
 )
 
 
@@ -32,9 +32,10 @@
 (defn traverse-tree 
   "Traverse through tree until we find a tag with the given :id, then insert 'insertion'"
   [original id insertion]
+  { :pre  [ (map? original) ] } ;; ensure that our root node is a map 
+
   (loop [loc (zip/zipper map? #(:content %1) #(assoc %1 :content %2 ) original)]
     
-    (debug/debug-repl)
     (if (zip/end? loc)
       (zip/root loc)
       (recur (zip/next
@@ -53,10 +54,13 @@
   
   ;; creating a zipper function. Good reference points are: 
   ;;  1. http://tech.puredanger.com/2010/10/22/zippers-with-records-in-clojure ; http://tech.puredanger.com/2010/10/23/pattern-matching-and-tree-mutation
-  (let [ru (fetch "users" :where { :username (:username uname) })]
-    (traverse-tree ru "main.currencies" currency))
+  (let [ru (fetch-one "bookkeeping" :where { :owner uname })]
+    (let [ utree (traverse-tree ru "main.currencies" currency)] ;; function to insert 'currency' map into 'main.currencies'
+      (debug/debug-repl)
+      (update! "bookkeeping" ru utree)
+    ))
 )
 
 
-(commands/add-currency "stub" { :tag "currency" :id "AUD" :name "Aussie"} false)
+;;(commands/add-currency "stub" { :tag "currency" :id "AUD" :name "Aussie"} false)
 

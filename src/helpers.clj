@@ -1,4 +1,10 @@
 
+(defn pst 
+  "Simple wrapper to print previous stacktrace error"
+  []
+  (. *e printStackTrace)
+)
+
 (ns helpers 
 	(:use clj-stacktrace.repl)
 	(:require clojure.string)

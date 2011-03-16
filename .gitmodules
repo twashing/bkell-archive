@@ -13,3 +13,6 @@
 [submodule "vendor/254110"]
 	path = vendor/254110
 	url = git://gist.github.com/254110.git
+[submodule "vendor/252421"]
+	path = vendor/252421
+	url = git://gist.github.com/252421.git
