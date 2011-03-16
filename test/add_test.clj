@@ -133,7 +133,6 @@
       (let  [ bk (first (fetch "bookkeeping" :where { :owner (:username user) })) ]
         
         (let [ clist (:content (first (:content bk))) ]
-          (println clist)
           (is (= 1 (count (filter #(= "AUD" (:id %1)) clist))) "the AUD currency was NOT found in the DB")
         )
       )

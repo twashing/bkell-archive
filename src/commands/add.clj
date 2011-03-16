@@ -6,7 +6,6 @@
   (:require helpers)
   
   (:use somnium.congomongo)
-  (:require debug)
 )
 
 
@@ -56,8 +55,7 @@
   ;;  1. http://tech.puredanger.com/2010/10/22/zippers-with-records-in-clojure ; http://tech.puredanger.com/2010/10/23/pattern-matching-and-tree-mutation
   (let [ru (fetch-one "bookkeeping" :where { :owner uname })]
     (let [ utree (traverse-tree ru "main.currencies" currency)] ;; function to insert 'currency' map into 'main.currencies'
-      (debug/debug-repl)
-      (update! "bookkeeping" ru utree)
+      (update! :bookkeeping { :_id (:_id ru) }  utree)
     ))
 )
 
