@@ -42,7 +42,9 @@
     
     (if (zip/end? loc)
       (zip/root loc)
-      (recur (zip/next
+      (if (and (= :get action) (= vl (ky (zip/node loc)))) ;; break if this is a :get and have found node 
+          (zip/node loc)
+          (recur (zip/next
                 (cond (= vl (ky (zip/node loc))) ;; going to next, if ky@loc = vl, the do 'action' 
                       (cond
                         (= :insert action)
@@ -51,6 +53,7 @@
                           (zip/edit loc merge obj)
                       )
                       :else loc) ))))
+    )
   )
 )
 
@@ -77,5 +80,24 @@
                         ru (filter #(not (nil? %1)) alist)))  ;; filter out nils from action list 
   )
 )
+
+(defn add-account [uname account] 
+  
+  { :pre  [ (not (nil? uname))
+            (not (clojure.string/blank? (:name account)))
+            (not (clojure.string/blank? (:id account)))
+            (not (clojure.string/blank? (:type account)))
+            (not (clojure.string/blank? (:counterWeight account)))
+            (= 0 (count (fetch "bookkeeping" :where { "content.content.id" (:id account) }))) ;; ensure no duplicates 
+          ] }
+  
+  (let  [ ru (fetch-one "bookkeeping" :where { :owner uname }) ]
+    
+    (update! :bookkeeping { :_id (:_id ru) }  ;; passing in had w/ ObjecId, NOT original object
+      (traverse-tree ru :insert { :id "main.accounts" } account))
+  )
+)
+
+
 
 

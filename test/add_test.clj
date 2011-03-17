@@ -177,10 +177,52 @@
     )
   )
 )
-#_(deftest test-add-account 
-  ;; assert that account was added
-  ;; assert that there is no duplicate account
-  ;; assert that account has an associated currency 
+(deftest test-add-account-1
+  
+  (let [user (load-file "test/etc/data/stubu-two.clj")
+        ru (commands/add-user user)
+        account (load-file "test/etc/data/test-account-one.clj")]
+    
+    (let [ae  (try (commands/add-account "stub" { :tag :account :type "asset" :id "cash" :name nil :counterWeight "debit" })
+                (catch java.lang.AssertionError ae ae))]
+      
+      ;; assert that we can't add a bad account 
+      (is (not (nil? ae)) "there SHOULD be an error if account with no name is added")
+      (is (= java.lang.AssertionError (type ae)) "return type is NOT an assertion error")
+    )
+     
+    (let [ra (commands/add-account "stub" { :tag :account :type "asset" :id "cash" :name "cash" :counterWeight "debit" }) ]
+      
+      (let  [ bk (first (fetch "bookkeeping" :where { :owner (:username user) })) ]
+        
+        ;; assert that account was added
+        (let [ ac (commands/traverse-tree bk :get { :id (:id account) } {}) ]
+          
+          (is (not (nil? ac)) "we do NOT have a 'cash' account - 1")
+          (is (= "cash" (:id ac)) "we do NOT have a 'cash' account - 2")
+        )
+      )
+    )
+  )
+)
+    
+(deftest test-add-account-2
+  
+  (let [user (load-file "test/etc/data/stubu-two.clj")
+        ru (commands/add-user user)
+        account (load-file "test/etc/data/test-account-one.clj")]
+    
+    (commands/add-account "stub" account)
+    (let [ae  (try (commands/add-account "stub" account)
+                (catch java.lang.AssertionError ae ae))]
+      
+      ;; assert that there is no duplicate account
+      (is (not (nil? ae)) "there SHOULD be an error if account if we try adding a duplicate")
+      (is (= java.lang.AssertionError (type ae)) "return type is NOT an assertion error")
+    )
+     
+  )
+  
 )
 #_(deftest test-add-entry
   ;; assert that entry is balanced
