@@ -43,7 +43,7 @@
     (if (zip/end? loc)
       (zip/root loc)
       (recur (zip/next
-                (cond (= vl (ky (zip/node loc))) ;; going to next, if ky @ loc = vl, the do 'action' 
+                (cond (= vl (ky (zip/node loc))) ;; going to next, if ky@loc = vl, the do 'action' 
                       (cond
                         (= :insert action)
                           (zip/insert-child loc obj)
@@ -60,6 +60,7 @@
   { :pre  [ (not (nil? uname)) 
             (not (clojure.string/blank? (:name currency)))
             (not (clojure.string/blank? (:id currency)))
+            (= 0 (count (fetch "bookkeeping" :where { "content.content.id" (:id currency) }))) ;; ensure no duplicates 
           ] }
   
   ;; creating a zipper function. Good reference points are: 

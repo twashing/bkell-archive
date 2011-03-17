@@ -103,12 +103,10 @@
 
 (comment *** 
   BOOKKEEPING tests)
-(deftest test-add-currency
-  
+(deftest test-add-currency-1
   (let [user (load-file "test/etc/data/stubu-two.clj")]
     (let  [ result (commands/add-user user) 
             currency (load-file "test/etc/data/test-currency.clj")]
-          
       
       ;; there SHOULD be an error if 'uname' is not set 
       (let [ae  (try (commands/add-currency nil currency false)
@@ -117,7 +115,14 @@
         (is (not (nil? ae)) "there SHOULD be an error if 'uname' is not set ")
         (is (= java.lang.AssertionError (type ae)) "return type is NOT an assertion error")
       )
-
+      )
+  )
+)
+(deftest test-add-currency-2
+  (let [user (load-file "test/etc/data/stubu-two.clj")]
+    (let  [ result (commands/add-user user) 
+            currency (load-file "test/etc/data/test-currency.clj")]
+      
       ;; there SHOULD be an error if adding currency without a 'name' or 'id' 
       (let [aee  (try (commands/add-currency "stub" { :tag :currency } false)
                   (catch java.lang.AssertionError ae ae))]
@@ -125,10 +130,15 @@
         (is (not (nil? aee)) "there SHOULD be an error if 'name' or 'id' is not set ")
         (is (= java.lang.AssertionError (type aee)) "return type is NOT an assertion error")
       )
-      
+    )
+  )
+)
+(deftest test-add-currency-3
+  (let [user (load-file "test/etc/data/stubu-two.clj")]
+    (let  [ result (commands/add-user user) 
+            currency (load-file "test/etc/data/test-currency.clj")]
       
       (commands/add-currency "stub" currency true)
-      
       (let  [ bk (first (fetch "bookkeeping" :where { :owner (:username user) })) ]
         
         ;; assert that currency was added
@@ -140,7 +150,30 @@
           (is (= "AUD" dc) "the default currency was NOT 'AUD'"))
         
       )
-
+    )
+  )
+)
+(deftest test-add-currency-4
+  (let [user (load-file "test/etc/data/stubu-two.clj")]
+    (let  [ result (commands/add-user user) 
+            currency (load-file "test/etc/data/test-currency.clj")]
+      
+      ;; ensure that we cannot add a duplicate currency 
+      (commands/add-currency "stub" currency false)
+      (let [ae  (try (commands/add-currency "stub" currency false)
+                  (catch java.lang.AssertionError ae ae))]
+        
+        (is (not (nil? ae)) "there SHOULD be an error if a duplicate currency is added")
+        (is (= java.lang.AssertionError (type ae)) "return type is NOT an assertion error")
+      )
+      
+      ;; add Swiss Franc (CHF) and ensure that it is NOT default 
+      (let  [ bk (first (fetch "bookkeeping" :where { :owner (:username user) })) ]
+        
+        ;; assert that it is NOT the default currency 
+        (let [ dc (:default (first (:content bk))) ]
+          (is (not (= "AUD" dc)) "the default currency was NOT 'AUD'"))
+      )
     )
   )
   ;; assert that there is no duplicate currency
