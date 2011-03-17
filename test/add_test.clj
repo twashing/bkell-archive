@@ -129,15 +129,17 @@
       
       (commands/add-currency "stub" currency true)
       
-      ;; assert that currency was added
       (let  [ bk (first (fetch "bookkeeping" :where { :owner (:username user) })) ]
         
+        ;; assert that currency was added
         (let [ clist (:content (first (:content bk))) ]
-          (is (= 1 (count (filter #(= "AUD" (:id %1)) clist))) "the AUD currency was NOT found in the DB")
-        )
+          (is (= 1 (count (filter #(= "AUD" (:id %1)) clist))) "the AUD currency was NOT found in the DB"))
+        
+        ;; assert that it is now the default currency 
+        (let [ dc (:default (first (:content bk))) ]
+          (is (= "AUD" dc) "the default currency was NOT 'AUD'"))
+        
       )
-      
-      ;; assert that it is now the default currency 
 
     )
   )

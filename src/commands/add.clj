@@ -6,6 +6,7 @@
   (:require helpers)
   
   (:use somnium.congomongo)
+  ;;(:use debug)
 )
 
 
@@ -29,18 +30,28 @@
 
 
 (defn traverse-tree 
-  "Traverse through tree until we find a tag with the given :id, then insert 'insertion'"
-  [original id insertion]
-  { :pre  [ (map? original) ] } ;; ensure that our root node is a map 
-
+  "Traverse through tree until we find a tag with the given :id, then on 'original' perform 'action' with 'obj'. 
+  Right now, the 'criteria-map' only takes 1 key/value pair"
+  [original action criteria-map obj]
+  { :pre  [ (map? original) 
+            (keyword? action) ] } ;; ensure that our root node is a map 
+  
+  (let [  ky (-> criteria-map keys first) 
+          vl (ky criteria-map)]
   (loop [loc (zip/zipper map? #(:content %1) #(assoc %1 :content %2 ) original)]
     
     (if (zip/end? loc)
       (zip/root loc)
       (recur (zip/next
-                (cond (= id (:id (zip/node loc)))
-                      (zip/insert-child loc insertion)
+                (cond (= vl (ky (zip/node loc))) ;; going to next, if ky @ loc = vl, the do 'action' 
+                      (cond
+                        (= :insert action)
+                          (zip/insert-child loc obj)
+                        (= :update action)
+                          (zip/edit loc merge obj)
+                      )
                       :else loc) ))))
+  )
 )
 
 
@@ -54,11 +65,13 @@
   ;; creating a zipper function. Good reference points are: 
   ;;  1. http://tech.puredanger.com/2010/10/22/zippers-with-records-in-clojure ; http://tech.puredanger.com/2010/10/23/pattern-matching-and-tree-mutation
   (let [ru (fetch-one "bookkeeping" :where { :owner uname })]
-    (let [ utree (traverse-tree ru "main.currencies" currency)] ;; function to insert 'currency' map into 'main.currencies'
-      (update! :bookkeeping { :_id (:_id ru) }  utree)
+    (let [ utree (traverse-tree ru :insert {:id "main.currencies"} currency)] ;; function to insert 'currency' map into 'main.currencies'
+      
+      ;;(debug-repl)
+      (let [utree2 (traverse-tree utree :update {:id "main.currencies"} { :default (:id currency)})]
+        (update! :bookkeeping { :_id (:_id ru) }  utree2)
+      )
     ))
 )
 
-
-;;(commands/add-currency "stub" { :tag "currency" :id "AUD" :name "Aussie"} false)
 
