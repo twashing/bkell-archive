@@ -176,7 +176,6 @@
       )
     )
   )
-  ;; assert that there is no duplicate currency
 )
 #_(deftest test-add-account 
   ;; assert that account was added
