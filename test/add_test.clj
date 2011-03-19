@@ -236,17 +236,20 @@
   )
 )
   
+(defn populate-accounts
+  "create 4 test accounts "
+  []
+  (commands/add-account "stub" (load-file "test/etc/data/test-account-asset.clj"))
+  (commands/add-account "stub" (load-file "test/etc/data/test-account-expense.clj"))
+  (commands/add-account "stub" (load-file "test/etc/data/test-account-liability.clj"))
+  (commands/add-account "stub" (load-file "test/etc/data/test-account-revenue.clj"))
+)
 (deftest test-add-entry-2
   (let [user (load-file "test/etc/data/stubu-two.clj")
         ru (commands/add-user user)
         entry (load-file "test/etc/data/test-entry-bal.clj")]
     
-    ;; create 4 test accounts 
-    (commands/add-account "stub" (load-file "test/etc/data/test-account-asset.clj"))
-    (commands/add-account "stub" (load-file "test/etc/data/test-account-expense.clj"))
-    (commands/add-account "stub" (load-file "test/etc/data/test-account-liability.clj"))
-    (commands/add-account "stub" (load-file "test/etc/data/test-account-revenue.clj"))
-    
+    (populate-accounts)
     
     ;; make entry have dt / ct associated with those accounts
     (let [ae  (try  (commands/add-entry "stub" 
@@ -255,24 +258,33 @@
                                     {:tag :credit :id "crS" :amount 120.00 :accountid "accounts payable" }]}))
                     (catch java.lang.AssertionError ae ae))]
     
+      ;; assert that accounts correspond with existing accounts
       (is (not (nil? ae)) "there SHOULD be an error if a dt / ct has a bad accountid reference")
       (is (= java.lang.AssertionError (type ae)) "return type is NOT an assertion error")
     )
   )
-  
-  ;; assert that accounts correspond with existing accounts
-  
-  ;; assert that entry is balanced
-  (comment let [entry (load-file "test/etc/data/test-entry-unbal.clj")
-        ae  (try (commands/add-entry "stub" entry)
-              (catch java.lang.AssertionError ae ae))]
-     
-    (is (not (nil? ae)) "there SHOULD be an error if entry iis not balanced")
-    (is (= java.lang.AssertionError (type ae)) "return type is NOT an assertion error")
+)
+(deftest test-add-entry-3
+  (let [user (load-file "test/etc/data/stubu-two.clj")
+        ru (commands/add-user user)
+        entry (load-file "test/etc/data/test-entry-bal.clj")]
+    
+    (populate-accounts)
+    
+    ;; make entry have dt / ct associated with those accounts
+    (let [ae  (try  (commands/add-entry "stub" 
+                      (merge  (merge entry { :id "testid" :date "03/22/2011" }) 
+                        {:content [ {:tag :debit :id "dtS" :amount 130.00 :accountid "cash" } 
+                                    {:tag :credit :id "crS" :amount 120.00 :accountid "accounts payable" }]}))
+                    (catch java.lang.AssertionError ae ae))]
+    
+      ;; assert that entry is balanced
+      (is (not (nil? ae)) "there SHOULD be an error if entry is not balanced")
+      (is (= java.lang.AssertionError (type ae)) "return type is NOT an assertion error")
+    )
   )
+)
   
   ;; ensure that entry was added 
-  
-)
 
 
