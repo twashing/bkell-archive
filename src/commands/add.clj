@@ -112,7 +112,24 @@
 (defn entry-balances?
   []
 )
- 
+
+
+;; TODO - memoize 
+(defn get-accounts [uname] 
+  (:content (traverse-tree (first (fetch "bookkeeping" :where { :owner uname })) ;; original result -> main.account contents from DB 
+    :get { :id "main.accounts" } nil))
+)
+(defn find-linked-account [uname dtct]
+  (let [alist (get-accounts uname)] 
+          (loop [x dtct y alist ] ;; given main.account list, loop through dt / ct in entrys and see if accountid matches 
+            (if (= (:accountid x) (:id (first y)))
+              (first y)
+              (if (< 1 (count y)) 
+                (recur x (rest y)))
+            )
+          )
+  )
+)
 (defn add-entry [uname entry]
   
   { :pre  [ (not (nil? uname))
@@ -120,10 +137,8 @@
             (not (clojure.string/blank? (:id entry)))
             (not (clojure.string/blank? (:date entry)))
             
-            ;; assert that accounts correspond with existing accounts
-            (empty? (let [ alist (:content (traverse-tree (first (fetch "bookkeeping" :where { :owner uname })) ;; original result -> main.account contents from DB 
-                          :get { :id "main.accounts" } nil))]
-                            ;;(debug-repl)
+            ;; ASSERT that accounts correspond with existing accounts
+            (empty? (let [ alist (get-accounts uname)]
                       (filter (fn [a] (loop [x a y alist ] ;; given main.account list, loop through dt / ct in entrys and see if accountid matches 
                             (if (= (:accountid x) (:id (first y)))
                               false
@@ -137,10 +152,25 @@
                         (:content entry)
                       )
             ))
+            
+            ;; ASSERT that entry is balanced 
+            ;; :lhs -> dt/dt == ct/ct
+            ;; :rhs -> dt/cr == ct/dt 
+            (let [result  (reduce (fn [a b] 
+                                    (let [acct (commands/find-linked-account uname b)]
+                                    (if (or (and (= "debit" (:counterWeight acct)) (= :debit (keyword (:tag b))) ) 
+                                            (and (= "credit" (:counterWeight acct)) (= :credit (keyword (:tag b)))))
+                                      (merge a { :lhs (+ (:lhs a) (:amount b)) } )     ;; increase :lhs if debit(ing) a debit account OR credit(ing) a credit account 
+                                      (merge a { :rhs (+ (:rhs a) (:amount b)) } ))))
+                            { :lhs 0.0 :rhs 0.0 }   ;; beginning tally 
+                            (:content entry))]       ;; list of debits and credits 
+
+              (= (:lhs result) (:rhs result))
+            )
             ]
   }
+  "aaa"
 
-  (clojure.pprint/pprint entry)
 )
 
 
