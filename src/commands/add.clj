@@ -81,9 +81,19 @@
   )
 )
 
-(defn add-account [uname account] 
+(defn add-account 
+  " 1. account types are: asset, liability, expense, revenue
+    2. each account has a given counter weight
+   
+    type='asset'       counterWeight='debit'
+    type='expense'     counterWeight='debit'
+    type='liability'   counterWeight='credit'
+    type='revenue'     counterWeight='credit'
+  "
+  [uname account] 
   
   { :pre  [ (not (nil? uname))
+            (not (nil? account))
             (not (clojure.string/blank? (:name account)))
             (not (clojure.string/blank? (:id account)))
             (not (clojure.string/blank? (:type account)))
@@ -98,6 +108,48 @@
   )
 )
 
+(defn entry-balances?
+  []
+)
+ 
+(defn add-entry [uname entry]
+  
+  { :pre  [ (not (nil? uname))
+            (not (nil? entry))
+            (not (clojure.string/blank? (:id entry)))
+            (not (clojure.string/blank? (:date entry)))]
+  }
+  "aaa"
+)
 
+{:tag :entry
+      :id "qwertySTUB"
+      :date "03/22/2011"
+      :content
+      [{:tag :debit
+        :id "dtS"
+        :amount 130.00
+        :entryid "qwertySTUB"
+        :accountid "05" }
+       {:tag :credit
+        :id "crS"
+        :amount 120.00
+        :entryid "qwertySTUB"
+        :accountid "06" }]}
+
+{:tag :entry
+      :id "qwertySTUB"
+      :date "03/22/2011"
+      :content
+      [{:tag :debit
+        :id "dtS"
+        :amount 120.00
+        :entryid "qwertySTUB"
+        :accountid "05" }
+       {:tag :credit
+        :id "crS"
+        :amount 120.00
+        :entryid "qwertySTUB"
+        :accountid "06" }]}
 
 

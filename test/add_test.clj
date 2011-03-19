@@ -181,7 +181,7 @@
   
   (let [user (load-file "test/etc/data/stubu-two.clj")
         ru (commands/add-user user)
-        account (load-file "test/etc/data/test-account-one.clj")]
+        account (load-file "test/etc/data/test-account-asset.clj")]
     
     (let [ae  (try (commands/add-account "stub" { :tag :account :type "asset" :id "cash" :name nil :counterWeight "debit" })
                 (catch java.lang.AssertionError ae ae))]
@@ -210,7 +210,7 @@
   
   (let [user (load-file "test/etc/data/stubu-two.clj")
         ru (commands/add-user user)
-        account (load-file "test/etc/data/test-account-one.clj")]
+        account (load-file "test/etc/data/test-account-asset.clj")]
     
     (commands/add-account "stub" account)
     (let [ae  (try (commands/add-account "stub" account)
@@ -224,9 +224,32 @@
   )
   
 )
-#_(deftest test-add-entry
-  ;; assert that entry is balanced
+(deftest test-add-entry
+  
+  ;; ensure that entry has date & id 
+  (let [entry (load-file "test/etc/data/test-entry-bal.clj")
+        ae  (try (commands/add-entry "stub" entry)
+              (catch java.lang.AssertionError ae ae))]
+  
+    (is (not (nil? ae)) "there SHOULD be an error if entry doesn't have 'date' and / or 'id'")
+    (is (= java.lang.AssertionError (type ae)) "return type is NOT an assertion error")
+  )
+  
+    ;; create 4 test accounts 
+    ;; make entry have dt / ct associated with those accounts 
   ;; assert that accounts correspond with existing accounts
+  
+  ;; assert that entry is balanced
+  (comment let [entry (load-file "test/etc/data/test-entry-unbal.clj")
+        ae  (try (commands/add-entry "stub" entry)
+              (catch java.lang.AssertionError ae ae))]
+     
+    (is (not (nil? ae)) "there SHOULD be an error if entry iis not balanced")
+    (is (= java.lang.AssertionError (type ae)) "return type is NOT an assertion error")
+  )
+  
+  ;; ensure that entry was added 
+  
 )
 
 

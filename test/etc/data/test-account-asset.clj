@@ -1,7 +1,7 @@
 { :tag :account
-  :type "asset"
+  :type :asset
   :id "cash"
   :name "cash"
-  :counterWeight "debit" 
+  :counterWeight :debit
 }
 

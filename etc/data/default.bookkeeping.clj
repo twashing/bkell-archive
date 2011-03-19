@@ -40,4 +40,4 @@
      :content
      [{:tag :entries
        :id "main.entries"
-       :content nil}]}]}]}
+       :content []}]}]}]}
