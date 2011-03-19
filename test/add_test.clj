@@ -249,10 +249,15 @@
     
     
     ;; make entry have dt / ct associated with those accounts
-    (commands/add-entry "stub" 
-      (merge  (merge entry { :id "testid" :date "03/22/2011" }) 
-              {:content [{:tag :debit :id "dtS" :amount 120.00 :accountid "fubar" } {:tag :credit :id "crS" :amount 120.00 :accountid "accounts payable" }]}))
+    (let [ae  (try  (commands/add-entry "stub" 
+                      (merge  (merge entry { :id "testid" :date "03/22/2011" }) 
+                        {:content [ {:tag :debit :id "dtS" :amount 120.00 :accountid "fubar" } 
+                                    {:tag :credit :id "crS" :amount 120.00 :accountid "accounts payable" }]}))
+                    (catch java.lang.AssertionError ae ae))]
     
+      (is (not (nil? ae)) "there SHOULD be an error if a dt / ct has a bad accountid reference")
+      (is (= java.lang.AssertionError (type ae)) "return type is NOT an assertion error")
+    )
   )
   
   ;; assert that accounts correspond with existing accounts

@@ -118,16 +118,29 @@
   { :pre  [ (not (nil? uname))
             (not (nil? entry))
             (not (clojure.string/blank? (:id entry)))
-            (not (clojure.string/blank? (:date entry)))]
+            (not (clojure.string/blank? (:date entry)))
+            
             ;; assert that accounts correspond with existing accounts
-            (some #() 
-              (:content (traverse-tree (first (fetch "bookkeeping" :where { :owner uname })) ;; original result
-                :get { :id "main.accounts" } nil))
-            )
-                      (:content entry)  ;; list to iterate 
+            (empty? (let [ alist (:content (traverse-tree (first (fetch "bookkeeping" :where { :owner uname })) ;; original result -> main.account contents from DB 
+                          :get { :id "main.accounts" } nil))]
+                            ;;(debug-repl)
+                      (filter (fn [a] (loop [x a y alist ] ;; given main.account list, loop through dt / ct in entrys and see if accountid matches 
+                            (if (= (:accountid x) (:id (first y)))
+                              false
+                              (if (< 1 (count y)) 
+                                (recur x (rest y))
+                                true                ;; entry added to filter if there was no accountid(s) that matched its reference
+                              )
+                            )
+                          )
+                        )
+                        (:content entry)
+                      )
+            ))
+            ]
   }
+
   (clojure.pprint/pprint entry)
-  "aaa"
 )
 
 
