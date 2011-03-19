@@ -75,7 +75,7 @@
                   (if default [:update {:id "main.currencies"} { :default (:id currency)}]) ] ;; give 'update' vector if we want to set as default currency
         ]
     
-    (update! :bookkeeping { :_id (:_id ru) }  ;; passing in had w/ ObjecId, NOT original object 
+    (update! :bookkeeping { :_id (:_id ru) }  ;; passing in hash w/ ObjecId, NOT original object 
       (reduce (fn [a b] (apply traverse-tree    ;; before calling update!, iterate through action list and apply on tree
                           (into [a] b)))        ;; give a vector of args to apply fn 'traverse-tree'
                         ru (filter #(not (nil? %1)) alist)))  ;; filter out nils from action list 
@@ -107,10 +107,6 @@
     (update! :bookkeeping { :_id (:_id ru) }  ;; passing in had w/ ObjecId, NOT original object
       (traverse-tree ru :insert { :id "main.accounts" } account))
   )
-)
-
-(defn entry-balances?
-  []
 )
 
 
@@ -169,7 +165,12 @@
             )
             ]
   }
-  "aaa"
+  
+  (let  [ ru (fetch-one "bookkeeping" :where { :owner uname }) ]
+    
+    (update! :bookkeeping { :_id (:_id ru) }  ;; passing in hash w/ ObjecId, NOT original object
+      (traverse-tree ru :insert { :id "main.entries" } entry))
+  )
 
 )
 

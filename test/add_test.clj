@@ -284,9 +284,30 @@
     )
   )
 )
-  
-  ;; ensure that entry was added 
-
+(deftest test-add-entry-4
+  (let [user (load-file "test/etc/data/stubu-two.clj")
+        ru (commands/add-user user)
+        entry (load-file "test/etc/data/test-entry-bal.clj")]
+    
+    (populate-accounts)
+    
+    ;; add the entry
+    (commands/add-entry "stub" 
+      (merge  (merge entry { :id "testid" :date "03/22/2011" }) 
+        {:content [ {:tag :debit :id "dtS" :amount 120.00 :accountid "cash" } 
+                    {:tag :credit :id "crS" :amount 120.00 :accountid "accounts payable" }]}))
+    
+    (let  [ bk (first (fetch "bookkeeping" :where { :owner (:username user) })) ]
+      
+      ;; assert that entry was added
+      (let [ en (commands/traverse-tree bk :get { :id "testid" } {}) ]
+        
+        (is (not (nil? en)) "we do NOT have an entry with id 'testid'")
+      )
+    )
+    
+  )
+)
 
 
 
