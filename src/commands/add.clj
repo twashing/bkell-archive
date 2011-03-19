@@ -2,6 +2,7 @@
 
   (:require clojure.contrib.logging)
   (:require clojure.string)
+  (:require clojure.pprint)
   (:require [clojure.zip :as zip])
   (:require helpers)
   
@@ -96,8 +97,8 @@
             (not (nil? account))
             (not (clojure.string/blank? (:name account)))
             (not (clojure.string/blank? (:id account)))
-            (not (clojure.string/blank? (:type account)))
-            (not (clojure.string/blank? (:counterWeight account)))
+            (not (nil? (:type account)))
+            (not (nil? (:counterWeight account)))
             (= 0 (count (fetch "bookkeeping" :where { "content.content.id" (:id account) }))) ;; ensure no duplicates 
           ] }
   
@@ -118,38 +119,16 @@
             (not (nil? entry))
             (not (clojure.string/blank? (:id entry)))
             (not (clojure.string/blank? (:date entry)))]
+            ;; assert that accounts correspond with existing accounts
+            (some #() 
+              (:content (traverse-tree (first (fetch "bookkeeping" :where { :owner uname })) ;; original result
+                :get { :id "main.accounts" } nil))
+            )
+                      (:content entry)  ;; list to iterate 
   }
+  (clojure.pprint/pprint entry)
   "aaa"
 )
 
-{:tag :entry
-      :id "qwertySTUB"
-      :date "03/22/2011"
-      :content
-      [{:tag :debit
-        :id "dtS"
-        :amount 130.00
-        :entryid "qwertySTUB"
-        :accountid "05" }
-       {:tag :credit
-        :id "crS"
-        :amount 120.00
-        :entryid "qwertySTUB"
-        :accountid "06" }]}
-
-{:tag :entry
-      :id "qwertySTUB"
-      :date "03/22/2011"
-      :content
-      [{:tag :debit
-        :id "dtS"
-        :amount 120.00
-        :entryid "qwertySTUB"
-        :accountid "05" }
-       {:tag :credit
-        :id "crS"
-        :amount 120.00
-        :entryid "qwertySTUB"
-        :accountid "06" }]}
 
 

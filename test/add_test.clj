@@ -224,7 +224,7 @@
   )
   
 )
-(deftest test-add-entry
+(deftest test-add-entry-1
   
   ;; ensure that entry has date & id 
   (let [entry (load-file "test/etc/data/test-entry-bal.clj")
@@ -234,9 +234,27 @@
     (is (not (nil? ae)) "there SHOULD be an error if entry doesn't have 'date' and / or 'id'")
     (is (= java.lang.AssertionError (type ae)) "return type is NOT an assertion error")
   )
+)
   
+(deftest test-add-entry-2
+  (let [user (load-file "test/etc/data/stubu-two.clj")
+        ru (commands/add-user user)
+        entry (load-file "test/etc/data/test-entry-bal.clj")]
+    
     ;; create 4 test accounts 
-    ;; make entry have dt / ct associated with those accounts 
+    (commands/add-account "stub" (load-file "test/etc/data/test-account-asset.clj"))
+    (commands/add-account "stub" (load-file "test/etc/data/test-account-expense.clj"))
+    (commands/add-account "stub" (load-file "test/etc/data/test-account-liability.clj"))
+    (commands/add-account "stub" (load-file "test/etc/data/test-account-revenue.clj"))
+    
+    
+    ;; make entry have dt / ct associated with those accounts
+    (commands/add-entry "stub" 
+      (merge  (merge entry { :id "testid" :date "03/22/2011" }) 
+              {:content [{:tag :debit :id "dtS" :amount 120.00 :accountid "fubar" } {:tag :credit :id "crS" :amount 120.00 :accountid "accounts payable" }]}))
+    
+  )
+  
   ;; assert that accounts correspond with existing accounts
   
   ;; assert that entry is balanced
