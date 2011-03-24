@@ -10,8 +10,6 @@
    
 )
 
-(defn pst [] (. *e printStackTrace))
-
 (defn get-parser [] 
 	(Parser. (Lexer. (PushbackReader. (InputStreamReader. java.lang.System/in) 1024)))
 )

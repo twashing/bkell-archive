@@ -1,5 +1,5 @@
 (ns commands
-
+	
   (:require clojure.contrib.logging)
   (:require clojure.string)
   (:require clojure.pprint)
@@ -9,8 +9,6 @@
   (:use somnium.congomongo)
   ;;(:use debug)
 )
-
-
 
 
 (defn add-user [user] 

@@ -1,28 +1,12 @@
 (ns add-test
 	(:use [clojure.test])
     (:use somnium.congomongo)
+    (:require test-utils)
     (:require commands.add)
 )
 
 
-(defn test-fixture-db
-    "test to clear out shell memory before a test is run"
-    [test]
-
-    (clojure.contrib.logging/info "test-fixture-db CALLED")
-    (destroy! :users {})  ;; destroying all users
-    (destroy! :groups {}) ;; destroying all groups
-    (destroy! :bookkeeping {}) ;; destroying all bookkeeping
-
-    ;; ** execute the TEST function
-    (test)
-    (clojure.contrib.logging/info "test-fixture-db EXIT")
-
-)
-(use-fixtures :each add-test/test-fixture-db )
-
-
-(def configs (load-file "test/etc/config/config.clj")) ;; load config file 
+(use-fixtures :each test-utils/test-fixture-db )
 (somnium.congomongo/mongo! :db "bkell") ;; connect to mongodb
 
 
@@ -249,7 +233,7 @@
         ru (commands/add-user user)
         entry (load-file "test/etc/data/test-entry-bal.clj")]
     
-    (populate-accounts)
+    (add-test/populate-accounts)
     
     ;; make entry have dt / ct associated with those accounts
     (let [ae  (try  (commands/add-entry "stub" 
@@ -269,7 +253,7 @@
         ru (commands/add-user user)
         entry (load-file "test/etc/data/test-entry-bal.clj")]
     
-    (populate-accounts)
+    (add-test/populate-accounts)
     
     ;; make entry have dt / ct associated with those accounts
     (let [ae  (try  (commands/add-entry "stub" 
@@ -289,7 +273,7 @@
         ru (commands/add-user user)
         entry (load-file "test/etc/data/test-entry-bal.clj")]
     
-    (populate-accounts)
+    (add-test/populate-accounts)
     
     ;; add the entry
     (commands/add-entry "stub" 
@@ -308,6 +292,10 @@
     
   )
 )
+
+
+;; ensure no DUPLICATE entry IDs 
+
 
 
 

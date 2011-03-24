@@ -16,3 +16,6 @@
 [submodule "vendor/252421"]
 	path = vendor/252421
 	url = git://gist.github.com/252421.git
+[submodule "vendor/congomongo"]
+	path = vendor/congomongo
+	url = https://github.com/somnium/congomongo.git
