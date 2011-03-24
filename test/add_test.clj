@@ -1,8 +1,8 @@
 (ns add-test
-	(:use [clojure.test])
-    (:use somnium.congomongo)
-    (:require test-utils)
-    (:require commands.add)
+  (:use [clojure.test])
+  (:use somnium.congomongo)
+  (:require test-utils)
+  (:require commands.add)
 )
 
 
@@ -16,9 +16,9 @@
 (deftest test-add-new-user  ;; test adding a new user 
   
   ;; assert basic add
-  (let [user (load-file "test/etc/data/stubu-two.clj")]
-    (commands/add-user user)
-    (let [ru (fetch "users" :where { :username (:username user) })]
+  (let [user (load-file "test/etc/data/stubu-two.clj")
+        result (commands/add-user user)
+        ru (fetch "users" :where { :username (:username user) })]
       
       (is (not (nil? ru)) "There SHOULD be a user with the username 'stub'")
       
@@ -26,7 +26,6 @@
       (let [pd (:tag (nth (:content (nth ru 0)) 0))]
         (is (= "profileDetails" pd) "There SHOULD be a profileDetail element in the user")
       )
-    )
   )
 
 )
@@ -220,20 +219,12 @@
   )
 )
   
-(defn populate-accounts
-  "create 4 test accounts "
-  []
-  (commands/add-account "stub" (load-file "test/etc/data/test-account-asset.clj"))
-  (commands/add-account "stub" (load-file "test/etc/data/test-account-expense.clj"))
-  (commands/add-account "stub" (load-file "test/etc/data/test-account-liability.clj"))
-  (commands/add-account "stub" (load-file "test/etc/data/test-account-revenue.clj"))
-)
 (deftest test-add-entry-2
   (let [user (load-file "test/etc/data/stubu-two.clj")
         ru (commands/add-user user)
         entry (load-file "test/etc/data/test-entry-bal.clj")]
     
-    (add-test/populate-accounts)
+    (test-utils/populate-accounts)
     
     ;; make entry have dt / ct associated with those accounts
     (let [ae  (try  (commands/add-entry "stub" 
@@ -253,7 +244,7 @@
         ru (commands/add-user user)
         entry (load-file "test/etc/data/test-entry-bal.clj")]
     
-    (add-test/populate-accounts)
+    (test-utils/populate-accounts)
     
     ;; make entry have dt / ct associated with those accounts
     (let [ae  (try  (commands/add-entry "stub" 
@@ -273,7 +264,7 @@
         ru (commands/add-user user)
         entry (load-file "test/etc/data/test-entry-bal.clj")]
     
-    (add-test/populate-accounts)
+    (test-utils/populate-accounts)
     
     ;; add the entry
     (commands/add-entry "stub" 
