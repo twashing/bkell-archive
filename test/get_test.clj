@@ -26,6 +26,7 @@
   )
 )
 
+
 ;; get currency 
 (deftest test-get-currency 
 
@@ -45,7 +46,6 @@
     (is (not (empty? rc)) "result SHOULD be list with content")
   )
 )
-
 
     
 ;; get account 
@@ -71,9 +71,30 @@
 )
 
 
-
 ;; get entry 
-;;(commands/get-entry "stub" "cash")
+(deftest test-get-entry
+
+  (let [result (test-utils/add-user nil)
+        xx (test-utils/populate-accounts)
+        yy (test-utils/populate-entries)
+        re (commands/get-entry "stub" "testid")]
+    
+    (is (not (nil? re)) "entry result should NOT be nil")
+    (is (= "testid" (:id re)) "There SHOULD be a 'testid' entry with the username 'stub'")
+  )
+)
+(deftest test-get-entries
+
+  (let [result (test-utils/add-user nil)
+        xx (test-utils/populate-accounts)
+        yy (test-utils/populate-entries)
+        re (commands/get-entries "stub")]
+    
+    (is (not (nil? re)) "result entries list should NOT be nil")
+    (is (not (empty? re)) "result SHOULD be list with content")
+  )
+)
+
 
 
 

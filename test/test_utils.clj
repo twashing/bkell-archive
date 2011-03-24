@@ -35,4 +35,22 @@
   (commands/add-account "stub" (load-file "test/etc/data/test-account-revenue.clj"))
 )
 
+(defn populate-entries 
+  "create 2 test entries"
+  [] 
+
+  (let [entry (load-file "test/etc/data/test-entry-bal.clj") ]
+    
+    (commands/add-entry "stub" 
+      (merge  (merge entry { :id "testid" :date "03/22/2011" }) 
+        {:content [ {:tag :debit :id "dtS" :amount 120.00 :accountid "cash" } 
+                    {:tag :credit :id "crS" :amount 120.00 :accountid "accounts payable" }]})) 
+    
+    (commands/add-entry "stub" 
+      (merge  (merge entry { :id "testid2" :date "03/22/2011" }) 
+        {:content [ {:tag :debit :id "dtS" :amount 3000.00 :accountid "cash" } 
+                    {:tag :credit :id "crS" :amount 3000.00 :accountid "accounts payable" }]})) 
+  )
+)
+
 

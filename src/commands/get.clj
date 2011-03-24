@@ -95,17 +95,45 @@
 
 
 ;; get entry 
+(defn get-entries [uname] 
 
-;;m = function(){ 
-;;  if( this.owner == 'stub' ) { 
-;;    emit( this.owner , this.content[2].content[0].content[0] ); 
-;;  }
-;;};
-;;r = function(k,vals) { return { result : vals } ; }
+  (let [m (str "function(){ 
+			  if( this.owner == '"uname"' ) { 
+                this.content[2].content[0].content[0].content.forEach(
+			      
+                  function(x) { 
+                    emit( this.owner , x ); 
+                  }
+                );
+			  }
+			};" )
+        r   "function(k,vals) { return { result : vals } ; }"
+        result (map-reduce :bookkeeping m r :out :result-collection)]
+    
+    (-> result first :value :result first :result) ;; dig in and get the account list 
+    
+  )
+)
+(defn get-entry [uname entry]
 
+  (let [m (str "function(){ 
+			  if( this.owner == '"uname"' ) { 
+			    this.content[2].content[0].content[0].content.forEach(
+			        
+                    function(x) { 
+			          if( x.id == '"entry"' ) { 
+			            emit( this.owner , x ); 
+			          }
+			        }
+                );
+			  }
+			};")
+        r   "function(k,vals) { return { result : vals } ; }"
+        result (map-reduce :bookkeeping m r :out :result-collection)]
 
-;;(map-reduce :bookkeeping m r :out :result-collection) 
-;;(-> <result> first :value :result first :content)
+    (-> result first :value :result first)  ;; dig in and get the account
+  )
+)
 
 
 
