@@ -179,7 +179,7 @@
       (let  [ bk (first (fetch "bookkeeping" :where { :owner (:username user) })) ]
         
         ;; assert that account was added
-        (let [ ac (commands/traverse-tree bk :get { :id (:id account) } {}) ]
+        (let [ ac (domain/traverse-tree bk :get { :id (:id account) } {}) ]
           
           (is (not (nil? ac)) "we do NOT have a 'cash' account - 1")
           (is (= "cash" (:id ac)) "we do NOT have a 'cash' account - 2")
@@ -275,7 +275,7 @@
     (let  [ bk (first (fetch "bookkeeping" :where { :owner (:username user) })) ]
       
       ;; assert that entry was added
-      (let [ en (commands/traverse-tree bk :get { :id "testid" } {}) ]
+      (let [ en (domain/traverse-tree bk :get { :id "testid" } {}) ]
         
         (is (not (nil? en)) "we do NOT have an entry with id 'testid'")
       )
