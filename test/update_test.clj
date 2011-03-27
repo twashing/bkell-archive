@@ -37,11 +37,29 @@
 
 
 ;; update currency 
-#_(deftest test-update-currency
+#_(deftest test-update-currency-1
   
   ;; insert if currency doesn't exist 
-  ;; assert that currency was updated 
+  (let [user (commands/add-user (load-file "test/etc/data/stubu-two.clj"))
+        currency (load-file "test/etc/data/test-currency.clj")
+        rc0 (commands/update-currency "stub" currency false)
+        rc1 (commands/get-currency "stub" "AUD")]
+    (is (not (nil? rc1)) "1. we SHOULD have the 'AUD' currency")
+    (is (= "AUD" (:id rc1)) "2. we SHOULD have the 'AUD' currency")
+  )
+)
+(deftest test-update-currency-2
   
+  ;; assert that currency was updated 
+  (let [user (commands/add-user (load-file "test/etc/data/stubu-two.clj"))
+        currency (load-file "test/etc/data/test-currency-CAD.clj")
+        rc0 (commands/update-currency "stub" currency false)
+        rc1 (commands/get-currency "stub" "CDN")]
+
+    (is (not (nil? rc1)) "we SHOULD have the 'CDN' currency")
+    (is (= "CDN" (:id rc1)) "1. 'CDN' currency SHOULD have been updated")
+    (is (= "Some content" (:content rc1)) "2. 'CDN' currency SHOULD have been updated with 'Some content'")
+  )
 )
 
 

@@ -1,5 +1,10 @@
 (ns commands 
   (:use somnium.congomongo)
+  (:require clojure.string)
+  (:require commands.get)
+  (:require commands.add)
+  (:require domain)
+  ;;(:require debug)
 )
 
 
@@ -18,6 +23,24 @@
 
 ;; update currency 
 (defn update-currency [uname currency default]
+  
+  { :pre  [ (not (nil? uname)) 
+            (not (clojure.string/blank? (:name currency)))
+            (not (clojure.string/blank? (:id currency)))
+          ] }
+  (let [ru (fetch-one "bookkeeping" :where { :owner uname })
+        rc (commands/get-currency uname (:id currency))]
+    ;;(debug/debug-repl)
+    (if rc 
+      (update! :bookkeeping { :_id (:_id ru) }  ;; passing in hash w/ ObjecId, NOT original object 
+        (domain/modify-currency                       ;; update the currency if existing  
+          (domain/traverse-tree ru :update { :id (:id rc) } currency)
+          :update
+          currency 
+          default))
+      (commands/add-currency uname currency default)  ;; insert the currency otherwise 
+    )
+  )
 )
 
 
