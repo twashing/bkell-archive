@@ -37,7 +37,7 @@
 
 
 ;; update currency 
-#_(deftest test-update-currency-1
+(deftest test-update-currency-1
   
   ;; insert if currency doesn't exist 
   (let [user (commands/add-user (load-file "test/etc/data/stubu-two.clj"))
@@ -68,11 +68,36 @@
 
 
 ;; update entry 
-#_(deftest test-update-entry 
+(deftest test-update-entry-1
   
   ;; insert if entry doesn't exist 
+  (let [user (commands/add-user (load-file "test/etc/data/stubu-two.clj"))
+        ra (test-utils/populate-accounts)
+        entry (load-file "test/etc/data/test-entry-FULL.clj")
+        re0 (commands/update-entry "stub" entry)
+        re1 (commands/get-entry "stub" (:id entry))]
+    (is (not (nil? re1)) "1. result entry should NOT be nil")
+    (is (= "testid" (:id re1)) "2. entry SHOULD have the :id 'testid'")
+  )
+)
+(deftest test-update-entry-2
+  
   ;; assert that entry was updated 
+  (let [user (commands/add-user (load-file "test/etc/data/stubu-two.clj"))
+        ra (test-utils/populate-accounts)
+        entry (load-file "test/etc/data/test-entry-FULL.clj")
+        re0 (commands/add-entry "stub" entry)
+        re1 (commands/update-entry "stub" (merge entry { :date "06/30/2011" }) )
+        re2 (commands/get-entry "stub" (:id entry))]
+    
+    (is (not (nil? re2)) "1. result entry should NOT be nil")
+    (is (= "testid" (:id re2)) "2. entry SHOULD have the :id 'testid'")
+    (is (= "06/30/2011" (:date re2)) "3. entry SHOULD have update date of '06/30/2011'")
+  )
   
 )
+
+
+
 
 

@@ -34,7 +34,7 @@
     (if rc 
       (update! :bookkeeping { :_id (:_id ru) }  ;; passing in hash w/ ObjecId, NOT original object 
         (domain/modify-currency                       ;; update the currency if existing  
-          (domain/traverse-tree ru :update { :id (:id rc) } currency)
+          ru
           :update
           currency 
           default))
@@ -50,6 +50,33 @@
 
 ;; update entry 
 (defn update-entry [uname entry]
+  
+  { :pre  [ (not (nil? uname))
+            (not (nil? entry))
+            (not (clojure.string/blank? (:id entry)))
+            (not (clojure.string/blank? (:date entry)))
+            
+            ;; ASSERT that accounts correspond with existing accounts
+            (domain/account-for-entry? uname entry)
+            
+            
+            ;; ASSERT that entry is balanced 
+            ;; :lhs -> dt/dt == ct/ct
+            ;; :rhs -> dt/cr == ct/dt 
+            (domain/entry-balanced? uname entry)
+            ]
+  }
+  
+  (let [ru (fetch-one "bookkeeping" :where { :owner uname })
+        re (commands/get-entry uname (:id entry))]
+    ;;(debug/debug-repl)
+    (if re 
+      (update! :bookkeeping { :_id (:_id ru) }  ;; passing in hash w/ ObjecId, NOT original object
+        (domain/traverse-tree ru :update { :id (:id entry) } entry))
+      (commands/add-entry uname entry)  ;; insert the currency otherwise 
+    )
+  )
+  
 )
 
 
