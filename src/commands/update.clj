@@ -73,7 +73,7 @@
     (if re 
       (update! :bookkeeping { :_id (:_id ru) }  ;; passing in hash w/ ObjecId, NOT original object
         (domain/traverse-tree ru :update { :id (:id entry) } entry))
-      (commands/add-entry uname entry)  ;; insert the currency otherwise 
+      (commands/add-entry uname entry)  ;; insert the entry otherwise 
     )
   )
   

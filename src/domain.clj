@@ -55,7 +55,10 @@
   ;; creating a zipper function. Good reference points are: 
   ;;  1. http://tech.puredanger.com/2010/10/22/zippers-with-records-in-clojure 
   ;;  2. http://tech.puredanger.com/2010/10/23/pattern-matching-and-tree-mutation
-  (let  [ alist [ [action {:id (:id currency)} currency] 
+  (let  [ alist [ [action 
+                          {:id (if  (= :update action)  ;; if :update, set the action target to currency node, 
+                                    (:id currency)      ;; main.currencies otherwise 
+                                    "main.currencies")} currency] 
                   (if default [:update {:id "main.currencies"} { :default (:id currency)}]) ] ;; give 'update' vector if we want to set as default currency
         ]
     

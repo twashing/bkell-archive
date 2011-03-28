@@ -41,15 +41,14 @@
   ;; creating a zipper function. Good reference points are: 
   ;;  1. http://tech.puredanger.com/2010/10/22/zippers-with-records-in-clojure 
   ;;  2. http://tech.puredanger.com/2010/10/23/pattern-matching-and-tree-mutation
-  (let  [ ru (fetch-one "bookkeeping" :where { :owner uname })
-          alist [ [:insert {:id "main.currencies"} currency] 
-                  (if default [:update {:id "main.currencies"} { :default (:id currency)}]) ] ;; give 'update' vector if we want to set as default currency
-        ]
+  (let  [ ru (fetch-one "bookkeeping" :where { :owner uname }) ]
     
     (update! :bookkeeping { :_id (:_id ru) }  ;; passing in hash w/ ObjecId, NOT original object 
-      (reduce (fn [a b] (apply domain/traverse-tree    ;; before calling update!, iterate through action list and apply on tree
-                          (into [a] b)))        ;; give a vector of args to apply fn 'traverse-tree'
-                        ru (filter #(not (nil? %1)) alist)))  ;; filter out nils from action list 
+      (domain/modify-currency                       ;; update the currency if existing  
+          ru
+          :insert
+          currency 
+          default))
   )
 )
 
