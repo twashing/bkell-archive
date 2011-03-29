@@ -85,11 +85,10 @@
         ;; login the '2nd_user' 
         (def nd_error nil)
         (try  (commands/login-user nd_user bkell/shell)
-              (catch Exception e (def nd_error e)))
-
+          (catch java.lang.AssertionError e e))
+          
         ;; check that there are no errors 
-        (is (nil? nd_error)
-            (str "There should be NO errors when logging in nd_user" ))
+        (is (nil? nd_error) "There should be NO errors when logging in nd_user" )
       )
     )
     
@@ -98,11 +97,10 @@
       
       (def new_error nil)
       (try  (commands/login-user new_user bkell/shell)
-            (catch Exception e (def new_error e)))
+        (catch java.lang.AssertionError e (def new_error e)))
       
       ;; There SHOULD be errors when trying to login a new user without logging out the old 
-      (is (not (nil? new_error))
-        (str "There SHOULD be errors when logging in new_user (existing user still logged in)" ))
+      (is (not (nil? new_error)) "There SHOULD be errors when logging in new_user (existing user still logged in)" )
     )
 )
 
@@ -121,40 +119,33 @@
 
 
 ;; test logging out
-#_(deftest test-logout-1 []
+(deftest test-logout-1 []
 
-    (let [ user_seq (helpers/get-user   (:url-test configs) (:system-dir configs) 
-                      { :tag "user" :attrs { :id "test.user"} :content {:tag "stub"} } ) ]
+    (let [ user_seq (commands/get-user "stub") ]
       
-      (login-user user_seq bkell/shell)
-      (is (not (nil? (bkell/shell :logged-in-user)))
-          "test-logout > User should be in a 'logged-in-user' state")
+      (commands/login-user user_seq bkell/shell)
+      (is (not (nil? (@bkell/shell :logged-in-user))) "test-logout > User should be in a 'logged-in-user' state")
          
-      (logout-user user_seq bkell/shell)
+      (commands/logout-user user_seq bkell/shell)
       (is (nil? (@bkell/shell :logged-in-user)) "there SHOULD NOT be a logged-in-user" )
       
     )
 )
 
 ;; ensure that user being logged out is indeed logged in 
-#_(deftest test-logout-2 []
+(deftest test-logout-2 []
   
-  (let [ user_seq (helpers/get-user   (:url-test configs) (:system-dir configs) 
-                    { :tag "user" :attrs { :id "test.user"} :content {:tag "stub"} } ) ]
+  (let [ user_seq (commands/get-user "stub") ]
     
-    (login-user user_seq bkell/shell)
-    (is (not (nil? (bkell/shell :logged-in-user)))
-        "test-logout > User should be in a 'logged-in-user' state")
+    (commands/login-user user_seq bkell/shell)
+    (is (not (nil? (@bkell/shell :logged-in-user))) "test-logout > User should be in a 'logged-in-user' state")
     
     (def logout_error nil)
-    (try  (logout-user { :tag "user" :attrs { :id "new.user" } })
+    (try  (commands/logout-user { :tag "user" :username "new.user" })
           (catch Exception e (def logout_error e)))
 
-    (is (not (nil? logout_error))
-      (str "There SHOULD be an error when trying to logout different user from existing logged in user" ))
-    
+    (is (not (nil? logout_error)) "There SHOULD be an error when trying to logout different user from existing logged in user" )
   )
-  
 )
 
 

@@ -10,13 +10,14 @@
 	(and 
       (not (nil? (:logged-in-user @shell)))
       (not (= 
-        (:id (:attrs (:logged-in-user @shell)))
-        (:id (:attrs user_seq))))
-      (throw (Exception. "A different user is logged in")))
+        (:username (:logged-in-user @shell))
+        (:username user_seq))))
+      ;;(throw (Exception. "A different user is logged in")))
 )
 (defn login-user [user_seq shell]
     
-    (same-user-check user_seq shell)
+    { :pre  [(not (same-user-check user_seq shell))]
+    }
     (dosync 
 	  (alter shell conj 
 		{ :logged-in-user user_seq } )
