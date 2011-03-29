@@ -1,5 +1,4 @@
-;;(require 'bkell) 
-;;(require 'debug)
+(ns commands)
 
 (defn same-user-check [user_seq shell]
 

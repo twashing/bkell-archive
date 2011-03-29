@@ -6,7 +6,6 @@
    (:import java.io.InputStreamReader) 
    
    (:use clojure.core)
-   (:require depth_adapter)
    
 )
 
@@ -37,6 +36,5 @@
 (defn bkell []
 
   (init-shell)
-  (run (depth_adapter/get-depth-adapter bkell/shell))
 )
 
