@@ -1,8 +1,25 @@
 (ns domain
+  
   (:require [clojure.zip :as zip])
   (:use somnium.congomongo)
+  
+  (:import
+   (java.security NoSuchAlgorithmException MessageDigest)
+   (java.math BigInteger))
+    
 )
 
+
+(defn md5-sum
+  "Compute the hex MD5 sum of a string. Pilfered from 'http://www.holygoat.co.uk/blog/entry/2009-03-26-1'"
+  [#^String str]
+  (let [alg (doto (MessageDigest/getInstance "MD5")
+              (.reset)
+              (.update (.getBytes str)))]
+    (try
+      (.toString (new BigInteger 1 (.digest alg)) 16)
+      (catch NoSuchAlgorithmException e
+        (throw (new RuntimeException e))))))
 
 (defn traverse-tree 
   "Traverse through tree until we find a tag with the given :id, then on 'original' perform 'action' with 'obj'. 
