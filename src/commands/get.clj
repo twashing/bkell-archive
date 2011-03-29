@@ -9,6 +9,12 @@
 (defn get-user [uname]
   (fetch "users" :where { :username uname })
 )
+(defn get-group [uname]
+  (fetch "groups" :where { :owner uname })
+)
+(defn get-bookkeeping [uname] 
+  (fetch "bookkeeping" :where { :owner uname })
+)
 
 
 ;; get currency 

@@ -26,6 +26,8 @@
                           (zip/insert-child loc obj)
                         (= :update action)
                           (zip/edit loc merge obj)
+                        (= :remove action)
+                          (zip/remove loc)
                       )
                       :else loc) ))))
     )

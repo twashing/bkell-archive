@@ -74,7 +74,7 @@
   
   (let  [ ru (fetch-one "bookkeeping" :where { :owner uname }) ]
     
-    (update! :bookkeeping { :_id (:_id ru) }  ;; passing in had w/ ObjecId, NOT original object
+    (update! :bookkeeping { :_id (:_id ru) }  ;; passing in hash w/ ObjecId, NOT original object
       (domain/traverse-tree ru :insert { :id "main.accounts" } account))
   )
 )
