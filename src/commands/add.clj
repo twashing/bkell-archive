@@ -13,23 +13,20 @@
 
 (defn add-user [user] 
   
-  ;; check that there is not a duplicate user 
-  (if (not (= (:username user) 
-              (:username (first (fetch "users" :where { :username (:username user) })))))
-    (do 
-      (insert! :users (assoc user :password (domain/md5-sum (:password user)))) ;; insert the user, after MD5 encrypting the password 
-      (let [gr (load-file "etc/data/default.group.clj")]  ;; insert the associated group
-        (insert! :groups (assoc gr :name (:username user) :owner (:username user))))
-      (let [bk (load-file "etc/data/default.bookkeeping.clj")]  ;; insert the associated bookkeeping
-        (insert! :bookkeeping (assoc bk :owner (:username user))))
-    )
-    { :tag "error" :msg "There is a duplicate user" }
-  )
+  { :pre  [(not (=  (:username user) ;; check that there is not a duplicate user 
+                    (:username (first (fetch "users" :where { :username (:username user) })))))
+          ]}
+  
+  (insert! :users (assoc user :password (domain/md5-sum (:password user)))) ;; insert the user, after MD5 encrypting the password 
+  (let [gr (load-file "etc/data/default.group.clj")]  ;; insert the associated group
+    (insert! :groups (assoc gr :name (:username user) :owner (:username user))))
+  (let [bk (load-file "etc/data/default.bookkeeping.clj")]  ;; insert the associated bookkeeping
+    (insert! :bookkeeping (assoc bk :owner (:username user))))
 )
 
 
 
-(defn add-currency [uname currency default]
+(defn add-currency [currency uname default]
   
   { :pre  [ (not (nil? uname)) 
             (not (clojure.string/blank? (:name currency)))
@@ -60,7 +57,7 @@
     type='liability'   counterWeight='credit'
     type='revenue'     counterWeight='credit'
   "
-  [uname account] 
+  [account uname] 
   
   { :pre  [ (not (nil? uname))
             (not (nil? account))
@@ -79,7 +76,7 @@
 )
 
 
-(defn add-entry [uname entry]
+(defn add-entry [entry uname]
   
   { :pre  [ (not (nil? uname))
             (not (nil? entry))
@@ -105,5 +102,11 @@
 
 )
 
+
+(defmulti add (fn [obj & etal] (:tag obj)))
+(defmethod add :user [user] (add-user user))
+(defmethod add :currency [uname currency default] (add-currency uname currency default))
+(defmethod add :account [uname account] (add-account uname account))
+(defmethod add :entry [uname entry] (add-entry uname entry))
 
 

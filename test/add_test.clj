@@ -36,9 +36,11 @@
   (let [user (load-file "test/etc/data/stubu-two.clj")]
     
     (commands/add-user user) 
-    (let [result (commands/add-user user)] 
+    (let [ae  (try (commands/add-user user)
+                (catch java.lang.AssertionError ae ae))]
       
-      (is (= "error" (:tag result)) "There SHOULD be an error when adding a duplicate user")
+      (is (not (nil? ae)) "There SHOULD be an error when adding a duplicate user")
+      (is (= java.lang.AssertionError (type ae)) "return type is NOT an assertion error")
     )
   )
 )
@@ -92,7 +94,7 @@
             currency (load-file "test/etc/data/test-currency.clj")]
       
       ;; there SHOULD be an error if 'uname' is not set 
-      (let [ae  (try (commands/add-currency nil currency false)
+      (let [ae  (try (commands/add-currency currency nil false)
                   (catch java.lang.AssertionError ae ae))]
         
         (is (not (nil? ae)) "there SHOULD be an error if 'uname' is not set ")
@@ -107,7 +109,7 @@
             currency (load-file "test/etc/data/test-currency.clj")]
       
       ;; there SHOULD be an error if adding currency without a 'name' or 'id' 
-      (let [aee  (try (commands/add-currency "stub" { :tag :currency } false)
+      (let [aee  (try (commands/add-currency { :tag :currency } "stub" false)
                   (catch java.lang.AssertionError ae ae))]
         
         (is (not (nil? aee)) "there SHOULD be an error if 'name' or 'id' is not set ")
@@ -121,7 +123,7 @@
     (let  [ result (commands/add-user user) 
             currency (load-file "test/etc/data/test-currency.clj")]
       
-      (commands/add-currency "stub" currency true)
+      (commands/add-currency currency "stub" true)
       (let  [ bk (first (fetch "bookkeeping" :where { :owner (:username user) })) ]
         
         ;; assert that currency was added
@@ -142,8 +144,8 @@
             currency (load-file "test/etc/data/test-currency.clj")]
       
       ;; ensure that we cannot add a duplicate currency 
-      (commands/add-currency "stub" currency false)
-      (let [ae  (try (commands/add-currency "stub" currency false)
+      (commands/add-currency currency "stub" false)
+      (let [ae  (try (commands/add-currency currency "stub" false)
                   (catch java.lang.AssertionError ae ae))]
         
         (is (not (nil? ae)) "there SHOULD be an error if a duplicate currency is added")
@@ -166,7 +168,7 @@
         ru (commands/add-user user)
         account (load-file "test/etc/data/test-account-asset.clj")]
     
-    (let [ae  (try (commands/add-account "stub" { :tag :account :type "asset" :id "cash" :name nil :counterWeight "debit" })
+    (let [ae  (try (commands/add-account { :tag :account :type "asset" :id "cash" :name nil :counterWeight "debit" } "stub" )
                 (catch java.lang.AssertionError ae ae))]
       
       ;; assert that we can't add a bad account 
@@ -174,7 +176,7 @@
       (is (= java.lang.AssertionError (type ae)) "return type is NOT an assertion error")
     )
      
-    (let [ra (commands/add-account "stub" { :tag :account :type "asset" :id "cash" :name "cash" :counterWeight "debit" }) ]
+    (let [ra (commands/add-account { :tag :account :type "asset" :id "cash" :name "cash" :counterWeight "debit" } "stub") ]
       
       (let  [ bk (first (fetch "bookkeeping" :where { :owner (:username user) })) ]
         
@@ -195,8 +197,8 @@
         ru (commands/add-user user)
         account (load-file "test/etc/data/test-account-asset.clj")]
     
-    (commands/add-account "stub" account)
-    (let [ae  (try (commands/add-account "stub" account)
+    (commands/add-account account "stub")
+    (let [ae  (try (commands/add-account account "stub")
                 (catch java.lang.AssertionError ae ae))]
       
       ;; assert that there is no duplicate account
@@ -211,7 +213,7 @@
   
   ;; ensure that entry has date & id 
   (let [entry (load-file "test/etc/data/test-entry-bal.clj")
-        ae  (try (commands/add-entry "stub" entry)
+        ae  (try (commands/add-entry entry "stub")
               (catch java.lang.AssertionError ae ae))]
   
     (is (not (nil? ae)) "there SHOULD be an error if entry doesn't have 'date' and / or 'id'")
@@ -227,10 +229,11 @@
     (test-utils/populate-accounts)
     
     ;; make entry have dt / ct associated with those accounts
-    (let [ae  (try  (commands/add-entry "stub" 
+    (let [ae  (try  (commands/add-entry 
                       (merge  (merge entry { :id "testid" :date "03/22/2011" }) 
                         {:content [ {:tag :debit :id "dtS" :amount 120.00 :accountid "fubar" } 
-                                    {:tag :credit :id "crS" :amount 120.00 :accountid "accounts payable" }]}))
+                                    {:tag :credit :id "crS" :amount 120.00 :accountid "accounts payable" }]})
+                      "stub")
                     (catch java.lang.AssertionError ae ae))]
     
       ;; assert that accounts correspond with existing accounts
@@ -247,10 +250,11 @@
     (test-utils/populate-accounts)
     
     ;; make entry have dt / ct associated with those accounts
-    (let [ae  (try  (commands/add-entry "stub" 
+    (let [ae  (try  (commands/add-entry 
                       (merge  (merge entry { :id "testid" :date "03/22/2011" }) 
                         {:content [ {:tag :debit :id "dtS" :amount 130.00 :accountid "cash" } 
-                                    {:tag :credit :id "crS" :amount 120.00 :accountid "accounts payable" }]}))
+                                    {:tag :credit :id "crS" :amount 120.00 :accountid "accounts payable" }]})
+                      "stub")
                     (catch java.lang.AssertionError ae ae))]
     
       ;; assert that entry is balanced
@@ -267,10 +271,11 @@
     (test-utils/populate-accounts)
     
     ;; add the entry
-    (commands/add-entry "stub" 
+    (commands/add-entry 
       (merge  (merge entry { :id "testid" :date "03/22/2011" }) 
         {:content [ {:tag :debit :id "dtS" :amount 120.00 :accountid "cash" } 
-                    {:tag :credit :id "crS" :amount 120.00 :accountid "accounts payable" }]}))
+                    {:tag :credit :id "crS" :amount 120.00 :accountid "accounts payable" }]})
+      "stub")
     
     (let  [ bk (first (fetch "bookkeeping" :where { :owner (:username user) })) ]
       

@@ -29,10 +29,10 @@
 (defn populate-accounts
   "create 4 test accounts "
   []
-  (commands/add-account "stub" (load-file "test/etc/data/test-account-asset.clj"))
-  (commands/add-account "stub" (load-file "test/etc/data/test-account-expense.clj"))
-  (commands/add-account "stub" (load-file "test/etc/data/test-account-liability.clj"))
-  (commands/add-account "stub" (load-file "test/etc/data/test-account-revenue.clj"))
+  (commands/add-account (load-file "test/etc/data/test-account-asset.clj") "stub")
+  (commands/add-account (load-file "test/etc/data/test-account-expense.clj") "stub")
+  (commands/add-account (load-file "test/etc/data/test-account-liability.clj") "stub")
+  (commands/add-account (load-file "test/etc/data/test-account-revenue.clj") "stub")
 )
 
 (defn populate-entries 
@@ -41,15 +41,17 @@
 
   (let [entry (load-file "test/etc/data/test-entry-bal.clj") ]
     
-    (commands/add-entry "stub" 
+    (commands/add-entry 
       (merge  (merge entry { :id "testid" :date "03/22/2011" }) 
         {:content [ {:tag :debit :id "dtS" :amount 120.00 :accountid "cash" } 
-                    {:tag :credit :id "crS" :amount 120.00 :accountid "accounts payable" }]})) 
+                    {:tag :credit :id "crS" :amount 120.00 :accountid "accounts payable" }]}) 
+      "stub") 
     
-    (commands/add-entry "stub" 
+    (commands/add-entry 
       (merge  (merge entry { :id "testid2" :date "03/22/2011" }) 
         {:content [ {:tag :debit :id "dtS" :amount 3000.00 :accountid "cash" } 
-                    {:tag :credit :id "crS" :amount 3000.00 :accountid "accounts payable" }]})) 
+                    {:tag :credit :id "crS" :amount 3000.00 :accountid "accounts payable" }]})
+      "stub") 
   )
 )
 
