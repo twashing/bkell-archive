@@ -265,16 +265,14 @@
 )
 (deftest test-add-entry-4
   (let [user (load-file "test/etc/data/stubu-two.clj")
-        ru (commands/add-user user)
-        entry (load-file "test/etc/data/test-entry-bal.clj")]
+        ru (commands/add-user user)]
+        ;;entry (load-file "test/etc/data/test-entry-bal.clj")]
     
     (test-utils/populate-accounts)
     
     ;; add the entry
     (commands/add-entry 
-      (merge  (merge entry { :id "testid" :date "03/22/2011" }) 
-        {:content [ {:tag :debit :id "dtS" :amount 120.00 :accountid "cash" } 
-                    {:tag :credit :id "crS" :amount 120.00 :accountid "accounts payable" }]})
+      (test-utils/create-balanced-test-entry)
       "stub")
     
     (let  [ bk (first (fetch "bookkeeping" :where { :owner (:username user) })) ]
@@ -289,6 +287,35 @@
   )
 )
 
+;; Testing multimethods 
+(deftest test-addU
+  (let [user (load-file "test/etc/data/stubu-two.clj")]
+    (commands/add user)
+  )
+)
+(deftest test-addC
+  (let [user (load-file "test/etc/data/stubu-two.clj")
+        ru (commands/add-user user)
+        currency (load-file "test/etc/data/test-currency.clj")]
+    (commands/add currency "stub" false)
+  )
+)
+(deftest test-addA
+  (let [user (load-file "test/etc/data/stubu-two.clj")
+        ru (commands/add-user user)
+        account (load-file "test/etc/data/test-account-asset.clj")]
+    (commands/add account "stub")
+  )
+)
+(deftest test-addE
+  (let  [user (load-file "test/etc/data/stubu-two.clj")
+         ru (commands/add-user user)
+         xx (test-utils/populate-accounts)
+         entry (test-utils/create-balanced-test-entry)
+         ]
+    (commands/add entry "stub")
+  )
+)
 
 
 

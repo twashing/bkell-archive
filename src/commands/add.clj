@@ -91,7 +91,7 @@
             ;; :lhs -> dt/dt == ct/ct
             ;; :rhs -> dt/cr == ct/dt 
             (domain/entry-balanced? uname entry)
-            ]
+          ]
   }
   
   (let  [ ru (fetch-one "bookkeeping" :where { :owner uname }) ]
@@ -105,8 +105,8 @@
 
 (defmulti add (fn [obj & etal] (:tag obj)))
 (defmethod add :user [user] (add-user user))
-(defmethod add :currency [uname currency default] (add-currency uname currency default))
-(defmethod add :account [uname account] (add-account uname account))
-(defmethod add :entry [uname entry] (add-entry uname entry))
+(defmethod add :currency [currency & etal] (add-currency currency (first etal) (second etal)))   ;; input arguments are: currency uname default
+(defmethod add :account [account & etal] (add-account account (first etal)))  ;; input arguments are: account uname 
+(defmethod add :entry [entry & etal] (add-entry entry (first etal)))  ;; input arguments are: entry uname 
 
 
