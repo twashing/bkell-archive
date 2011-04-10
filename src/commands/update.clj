@@ -22,7 +22,7 @@
 
 
 ;; update currency 
-(defn update-currency [uname currency default]
+(defn update-currency [currency uname default]
   
   { :pre  [ (not (nil? uname)) 
             (not (clojure.string/blank? (:name currency)))
@@ -38,7 +38,7 @@
           :update
           currency 
           default))
-      (commands/add-currency uname currency default)  ;; insert the currency otherwise 
+      (commands/add-currency currency uname default)  ;; insert the currency otherwise 
     )
   )
 )
@@ -49,7 +49,7 @@
 
 
 ;; update entry 
-(defn update-entry [uname entry]
+(defn update-entry [entry uname]
   
   { :pre  [ (not (nil? uname))
             (not (nil? entry))
@@ -73,10 +73,16 @@
     (if re 
       (update! :bookkeeping { :_id (:_id ru) }  ;; passing in hash w/ ObjecId, NOT original object
         (domain/traverse-tree ru :update { :id (:id entry) } entry))
-      (commands/add-entry uname entry)  ;; insert the entry otherwise 
+      (commands/add-entry entry uname)  ;; insert the entry otherwise 
     )
   )
   
 )
+
+
+(defmulti update (fn [obj & etal] (:tag obj)))
+(defmethod update :user [user] (update-user user))
+(defmethod update :currency [currency & etal] (update-currency currency (first etal) (second etal)))   ;; input arguments are: currency uname default
+(defmethod update :entry [entry & etal] (update-entry entry (first etal)))  ;; input arguments are: entry uname 
 
 
