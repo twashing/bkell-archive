@@ -45,3 +45,10 @@
 )
 
 
+(defmulti remove (fn [tagk & etal] tagk)) 
+(defmethod remove :user [tagk & etal] (remove-user (first etal))) 
+(defmethod remove :currency [currency & etal] (remove-currency (first etal) (second etal)))   ;; input arguments are: uname currency 
+(defmethod remove :account [account & etal] (remove-account (first etal) (second etal)))  ;; input arguments are: uname account
+(defmethod remove :entry [entry & etal] (remove-entry (first etal) (second etal)))  ;; input arguments are: uname entry 
+
+
