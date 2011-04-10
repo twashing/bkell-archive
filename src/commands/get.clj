@@ -143,3 +143,19 @@
 
 
 
+(defmulti get (fn [tagk & etal] tagk))
+
+(defmethod get :user [tagk & etal] (get-user (first etal)))
+(defmethod get :group [tagk & etal] (get-group (first etal)))
+(defmethod get :bookkeeping [tagk & etal] (get-bookkeeping (first etal)))
+
+(defmethod get :currencies [tagk & etal] (get-currencies (first etal)))
+(defmethod get :currency [tagk & etal] (get-currency (first etal) (second etal)))  ;; arguments are: 'uname' 'currency' 
+
+(defmethod get :accounts [tagk & etal] (get-accounts (first etal)))
+(defmethod get :account [tagk & etal] (get-account (first etal) (second etal)))  ;; arguments are: 'uname' 'account' 
+
+(defmethod get :entries [tagk & etal] (get-entries (first etal)))
+(defmethod get :entry [tagk & etal] (get-entry (first etal) (second etal)))  ;; arguments are: 'uname' 'entry' 
+
+
