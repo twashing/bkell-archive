@@ -1,6 +1,5 @@
 (ns login-test
   
-	(:use [helpers] :reload-all)
 	(:require [bkell])
       
     (:use somnium.congomongo)
@@ -41,8 +40,12 @@
     ;; make the shell active
     ;; create a basic user in the DB
 	(dosync (alter bkell/shell conj { :active true }))
-    (commands/add-user (load-file "test/etc/data/stubu-two.clj"))
-
+    
+    (destroy! :users {})  ;; destroying all users
+    (destroy! :groups {}) ;; destroying all groups
+    (destroy! :bookkeeping {}) ;; destroying all bookkeeping
+    (test-utils/add-user nil)
+    
     ;; ** execute the TEST function
     (test)
     
@@ -50,7 +53,6 @@
     
     ;; make the shell inactive
 	(dosync (alter bkell/shell conj { :active false }))
-    (commands/remove-user "stub")
 
 )
 
@@ -60,11 +62,11 @@
 ;; test basic login
 (deftest test-login []
     
-    (let [ user_seq (commands/get-user "stub") ]
+    (let [ user (commands/get-user "stub") ]
       
-      (commands/login-user user_seq bkell/shell)
+      (commands/login-user user bkell/shell)
       
-      (is (not (nil? user_seq)) "User should NOT be nil")
+      (is (not (nil? user)) "User should NOT be nil")
       (is (not (nil? (bkell/shell :logged-in-user))) "User should be in a 'logged-in-user' state")
     )
 )
@@ -73,9 +75,9 @@
 ;; test result when already logged in
 (deftest test-existing-login []
     
-    (let [ user_seq (commands/get-user "stub") ]
+    (let [ user (commands/get-user "stub") ]
       
-      (commands/login-user user_seq bkell/shell)
+      (commands/login-user user bkell/shell)
       
       (let [ nd_user (commands/get-user "stub") ]
         
@@ -106,14 +108,12 @@
 
 ;; TODO - this function doesn't hold water; login just puts the user into the shell; need an 'authenticate' function 
 ;; test a login with a bad password
-#_(deftest test-bad-password []
+(deftest test-bad-password []
     
-    (let [  logged-in-user  
-            (login-user 
-              (helpers/get-user 
-                (:url-test configs) (:system-dir configs) { :tag "user" :attrs { :id "test.user" :password "fubar" } :content {:tag "stub"} } ) 
-                bkell/shell)]
-        (is (not (nil? nd_user)) "2nd_user SHOULD NOT be nil") 
+    (let [  auth-error
+            (try  (commands/login-user { :tag :user :username "stub" :password "xxxxxx" } bkell/shell)
+                  (catch java.lang.AssertionError e e))]
+        (is (not (nil? auth-error)) "There SHOULD be an error when givin a bad password") 
     )
 )
 
@@ -121,12 +121,12 @@
 ;; test logging out
 (deftest test-logout-1 []
 
-    (let [ user_seq (commands/get-user "stub") ]
+    (let [ user (commands/get-user "stub") ]
       
-      (commands/login-user user_seq bkell/shell)
+      (commands/login-user user bkell/shell)
       (is (not (nil? (@bkell/shell :logged-in-user))) "test-logout > User should be in a 'logged-in-user' state")
          
-      (commands/logout-user user_seq bkell/shell)
+      (commands/logout-user user bkell/shell)
       (is (nil? (@bkell/shell :logged-in-user)) "there SHOULD NOT be a logged-in-user" )
       
     )
@@ -135,9 +135,9 @@
 ;; ensure that user being logged out is indeed logged in 
 (deftest test-logout-2 []
   
-  (let [ user_seq (commands/get-user "stub") ]
+  (let [ user (commands/get-user "stub") ]
     
-    (commands/login-user user_seq bkell/shell)
+    (commands/login-user user bkell/shell)
     (is (not (nil? (@bkell/shell :logged-in-user))) "test-logout > User should be in a 'logged-in-user' state")
     
     (def logout_error nil)
