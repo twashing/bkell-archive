@@ -64,7 +64,7 @@
     
     (let [ user (commands/get-user "stub") ]
       
-      (commands/login-user user bkell/shell)
+      (commands/login-user user)
       
       (is (not (nil? user)) "User should NOT be nil")
       (is (not (nil? (bkell/shell :logged-in-user))) "User should be in a 'logged-in-user' state")
@@ -77,7 +77,7 @@
     
     (let [ user (commands/get-user "stub") ]
       
-      (commands/login-user user bkell/shell)
+      (commands/login-user user)
       
       (let [ nd_user (commands/get-user "stub") ]
         
@@ -86,7 +86,7 @@
 
         ;; login the '2nd_user' 
         (def nd_error nil)
-        (try  (commands/login-user nd_user bkell/shell)
+        (try  (commands/login-user nd_user)
           (catch java.lang.AssertionError e e))
           
         ;; check that there are no errors 
@@ -98,7 +98,7 @@
     (let [ new_user (merge (load-file "test/etc/data/stubu-one.clj") { :username "two" } ) ]
       
       (def new_error nil)
-      (try  (commands/login-user new_user bkell/shell)
+      (try  (commands/login-user new_user)
         (catch java.lang.AssertionError e (def new_error e)))
       
       ;; There SHOULD be errors when trying to login a new user without logging out the old 
@@ -111,7 +111,7 @@
 (deftest test-bad-password []
     
     (let [  auth-error
-            (try  (commands/login-user { :tag :user :username "stub" :password "xxxxxx" } bkell/shell)
+            (try  (commands/login-user { :tag :user :username "stub" :password "xxxxxx" })
                   (catch java.lang.AssertionError e e))]
         (is (not (nil? auth-error)) "There SHOULD be an error when givin a bad password") 
     )
@@ -123,10 +123,10 @@
 
     (let [ user (commands/get-user "stub") ]
       
-      (commands/login-user user bkell/shell)
+      (commands/login-user user)
       (is (not (nil? (@bkell/shell :logged-in-user))) "test-logout > User should be in a 'logged-in-user' state")
          
-      (commands/logout-user user bkell/shell)
+      (commands/logout-user user)
       (is (nil? (@bkell/shell :logged-in-user)) "there SHOULD NOT be a logged-in-user" )
       
     )
@@ -137,14 +137,14 @@
   
   (let [ user (commands/get-user "stub") ]
     
-    (commands/login-user user bkell/shell)
+    (commands/login-user user)
     (is (not (nil? (@bkell/shell :logged-in-user))) "test-logout > User should be in a 'logged-in-user' state")
     
-    (def logout_error nil)
-    (try  (commands/logout-user { :tag "user" :username "new.user" })
-          (catch Exception e (def logout_error e)))
+    (let  [ err (try  (commands/logout-user { :tag "user" :username "new.user" })
+                      (catch java.lang.AssertionError e e))]
 
-    (is (not (nil? logout_error)) "There SHOULD be an error when trying to logout different user from existing logged in user" )
+      (is (not (nil? err)) "There SHOULD be an error when trying to logout different user from existing logged in user" )
+    )
   )
 )
 

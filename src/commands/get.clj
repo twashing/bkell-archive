@@ -7,13 +7,19 @@
 
 ;; get user 
 (defn get-user [uname]
-  (fetch "users" :where { :username uname })
+  
+  (first (fetch "users" :where { :username uname }))
+  #_(let  [ u (first (fetch "users" :where { :username uname }))]
+    
+    (traverse-tree 
+      u :update { :tag (fn [a] (not (nil? a))) } obj)
+  )
 )
 (defn get-group [uname]
-  (fetch "groups" :where { :owner uname })
+  (first (fetch "groups" :where { :owner uname }))
 )
 (defn get-bookkeeping [uname] 
-  (fetch "bookkeeping" :where { :owner uname })
+  (first (fetch "bookkeeping" :where { :owner uname }))
 )
 
 

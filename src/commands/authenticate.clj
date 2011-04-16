@@ -1,9 +1,12 @@
 (ns commands
   (:require get)
   (:require clojure.string)
+  (:require bkell)
+  (:require domain)
+  ;;(:require debug)
 )
 
-(defn same-user-check [user shell]
+(defn same-user-check [user]
 
     ;; check if 
     ;;  i) there is a logged-in-user 
@@ -11,34 +14,33 @@
     ;;  iii) incoming user & logged-in-user are different (ERROR)
     ;;(debug/debug-repl)
 	(and 
-      (not (nil? (:logged-in-user @shell)))
-      (not (= 
-        (:username (:logged-in-user @shell))
-        (:username user))))
-      ;;(throw (Exception. "A different user is logged in")))
+      (not (nil? (:logged-in-user @bkell/shell)))
+      (= 
+        (:username (:logged-in-user @bkell/shell))
+        (:username user)))
 )
-(defn login-user [user shell]
+(defn login-user [user]
     
-    { :pre  [ (not (same-user-check user shell))
-              ;;(nil? (println (seq (commands/get :user (:username user))))) ;; TODO - figure out a way to make 1 DB call 
+    { :pre  [ (not (same-user-check user))
               ;;(not (nil? (seq (commands/get :user (:username user))))) ;; TODO - figure out a way to make 1 DB call 
-              (= (:password user) (:password (commands/get :user (:username user))))
+              (= (:password user) (->> user :username (get :user) :password))
             ]
     }
     (dosync 
-	  (alter shell conj 
+	  (alter bkell/shell conj 
 		{ :logged-in-user user } )
-	  (alter shell conj 
+	  (alter bkell/shell conj 
 		{ :previous user })) 
     
 )
 
-(defn logout-user [user shell] 
-
-    (same-user-check user shell)
+(defn logout-user [user] 
+    
+    { :pre  [(same-user-check user)] }
+    
     (dosync 
-        (alter shell dissoc :logged-in-user )
-		(alter shell conj { :previous user } )
+        (alter bkell/shell dissoc :logged-in-user )
+		(alter bkell/shell conj { :previous user } )
     )
 )
 
