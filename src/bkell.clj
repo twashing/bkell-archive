@@ -1,40 +1,30 @@
-
 (ns bkell
-   (:import com.interrupt.bookkeeping.cc.parser.Parser) 
-   (:import com.interrupt.bookkeeping.cc.lexer.Lexer) 
-   (:import java.io.PushbackReader) 
-   (:import java.io.InputStreamReader) 
-   
-   (:use clojure.core)
-   
+
+  (:import java.io.FileReader)
+  (:require commands.add)
+  ;;(:require commands.get)
+  ;;(:require commands.update)
+  ;;(:require commands.remove)
+  (:require debug)
 )
 
-(defn get-parser [] 
-	(Parser. (Lexer. (PushbackReader. (InputStreamReader. java.lang.System/in) 1024)))
-)
 
 (defn init-shell [] 
-	(def shell (ref { :active true })) 	;; the shell and memory 
+  (def shell (ref { :active true })) 	;; the shell and memory 
 )
 
-(defn run [handler] 
-	
-	(init-shell)
-	
-	(loop [ dfadapter handler ] 	;; binds 'handler' to 'dfadapter' 
-		
-		(def tree (.parse (get-parser))) 
-		(. tree apply dfadapter )
-		
-		(if (true? (:active (deref bkell/shell)))				;; loop unless exit 
-		   (recur dfadapter)
-		)
-	)
-	
+(defn add [artifact & etal]
+  
+  (let  [json (clojure.contrib.json/read-json (FileReader. "user.js"))]
+
+    (debug/debug-repl)
+    ;; TODO - turn tag strings into :keywords 
+    (eval `(commands/add ~json ~@etal))
+  )
 )
 
-(defn bkell []
-
-  (init-shell)
-)
+;;(defmethod add :user [user] (add-user user))
+;;(defmethod add :currency [currency & etal] (add-currency currency (first etal) (second etal)))   ;; input arguments are: currency uname default
+;;(defmethod add :account [account & etal] (add-account account (first etal)))  ;; input arguments are: account uname 
+;;(defmethod add :entry [entry & etal] (add-entry entry (first etal)))  ;; input arguments are: entry uname 
 

@@ -2,13 +2,22 @@
   
   (:require [clojure.zip :as zip])
   (:use somnium.congomongo)
+  (:require bkell)
   
   (:import
    (java.security NoSuchAlgorithmException MessageDigest)
    (java.math BigInteger))
     
+  ;;(:require debug)
 )
 
+#_(bkell/init-shell)
+#_(defn authenticated? [uname]
+
+  { :pre  [(not (nil? (@bkell/shell :logged-in-user)))]
+  }
+  (= uname (@bkell/shell :logged-in-user))
+)
 
 (defn md5-sum
   "Compute the hex MD5 sum of a string. Pilfered from 'http://www.holygoat.co.uk/blog/entry/2009-03-26-1'"
@@ -20,6 +29,31 @@
       (.toString (new BigInteger 1 (.digest alg)) 16)
       (catch NoSuchAlgorithmException e
         (throw (new RuntimeException e))))))
+
+(defn keywordize-tags
+  "Traverse tree and turn A) into B) 
+  A) { :tag \"user\" }
+  B) { :tag :user }"
+  [tree]
+  { :pre  [ (map? tree) ] } 
+  
+  (loop [loc (zip/zipper map? #(:content %1) #(assoc %1 :content %2 ) tree)]
+    
+    ;;(debug/debug-repl)
+    (if (zip/end? loc)
+      (zip/root loc)
+      (if (contains? (zip/node loc) :tag) ;; break if this is a :get and have found node 
+          (recur  (zip/next
+                    (zip/edit loc merge 
+                      { :tag 
+                        (keyword (get (zip/node loc) :tag)) ;; gets the value and makes it a keyword 
+                      }
+                      )))
+          (recur (zip/next loc))
+      )
+    )
+  )
+)
 
 (defn traverse-tree 
   "Traverse through tree until we find a tag with the given :id, then on 'original' perform 'action' with 'obj'. 
