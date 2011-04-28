@@ -5,7 +5,7 @@
   ;;(:require commands.get)
   ;;(:require commands.update)
   ;;(:require commands.remove)
-  (:require debug)
+  (:require domain)
 )
 
 
@@ -13,13 +13,11 @@
   (def shell (ref { :active true })) 	;; the shell and memory 
 )
 
-(defn add [artifact & etal]
+(defmacro add [artifact & etal]
   
-  (let  [json (clojure.contrib.json/read-json (FileReader. "user.js"))]
-
-    (debug/debug-repl)
-    ;; TODO - turn tag strings into :keywords 
-    (eval `(commands/add ~json ~@etal))
+  (let  [processed (domain/keywordize-tags (clojure.contrib.json/read-json (FileReader. "user.js")))]
+    
+    (eval `(commands/add ~processed ~@etal))
   )
 )
 

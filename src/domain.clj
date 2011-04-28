@@ -37,7 +37,7 @@
   [tree]
   { :pre  [ (map? tree) ] } 
   
-  (loop [loc (zip/zipper map? #(:content %1) #(assoc %1 :content %2 ) tree)]
+  (loop [loc (zip/zipper map? #(:content %1) #(assoc %1 :content (into [] %2)) tree)] ;; for '(into [] %2)', putting :content list into a vector
     
     ;;(debug/debug-repl)
     (if (zip/end? loc)
