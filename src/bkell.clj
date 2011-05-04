@@ -13,16 +13,29 @@
   (def shell (ref { :active true })) 	;; the shell and memory 
 )
 
-(defmacro add [artifact & etal]
+
+(defn add [artifact & etal]
   
-  (let  [processed (domain/keywordize-tags (clojure.contrib.json/read-json (FileReader. "user.js")))]
-    
-    (eval `(commands/add ~processed ~@etal))
+  ;;(let  [processed (domain/keywordize-tags (clojure.contrib.json/read-json (FileReader. "user.js")))]
+  (let  [ artifact-p (domain/keywordize-tags (clojure.contrib.json/read-json artifact))]
+    (eval `(commands/add ~artifact-p ~@etal))
   )
 )
 
-;;(defmethod add :user [user] (add-user user))
-;;(defmethod add :currency [currency & etal] (add-currency currency (first etal) (second etal)))   ;; input arguments are: currency uname default
-;;(defmethod add :account [account & etal] (add-account account (first etal)))  ;; input arguments are: account uname 
-;;(defmethod add :entry [entry & etal] (add-entry entry (first etal)))  ;; input arguments are: entry uname 
+(defn get [akey & etal]
+  (eval `(commands/get akey ~@etal))
+)
+
+(defn update [artifact & etal]
+  
+  (let  [ artifact-p (domain/keywordize-tags (clojure.contrib.json/read-json artifact))]
+    (eval `(commands/update ~artifact-p ~@etal))
+  )
+)
+
+(defn remove [akey & etal]
+  (eval `(commands/remove akey ~@etal))
+)
+
+
 
