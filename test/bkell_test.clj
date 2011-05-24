@@ -18,21 +18,21 @@
     (bkell/add user)
   )
 )
-(deftest test-addC
+#_(deftest test-addC
   (let [user (load-file "test/etc/data/stubu-two.clj")
         ru (commands/add-user user)
         currency (load-file "test/etc/data/test-currency.clj")]
     (bkell/add currency "stub" false)
   )
 )
-(deftest test-addA
+#_(deftest test-addA
   (let [user (load-file "test/etc/data/stubu-two.clj")
         ru (commands/add-user user)
         account (load-file "test/etc/data/test-account-asset.clj")]
     (bkell/add account "stub")
   )
 )
-(deftest test-addE
+#_(deftest test-addE
   (let  [user (load-file "test/etc/data/stubu-two.clj")
          ru (commands/add-user user)
          xx (test-utils/populate-accounts)
