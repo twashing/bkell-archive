@@ -4,14 +4,15 @@
    
    :dependencies  [  	[org.clojure/clojure "1.2.0"]
 						[org.clojure/clojure-contrib "1.2.0"]
-                        [compojure "0.5.2"]
+                        [compojure "0.6.3"]
+                        [enlive "1.0.0"]
                         [ring/ring-jetty-adapter "0.3.3"]
                         [log4j/log4j "1.2.7"]
                         [sablecc "3.2"]
                         [clj-stacktrace "0.1.2"]
-                        [clojure-http-client "1.1.0-SNAPSHOT"]
-                        [com.interrupt/bookkeeping "0.0.0-prealpha"]
-                        [com.interrupt/bob "0.0.0-prealpha"]
+                        ;;[clojure-http-client "1.1.0-SNAPSHOT"]
+                        ;;[com.interrupt/bookkeeping "0.0.0-prealpha"]
+                        ;;[com.interrupt/bob "0.0.0-prealpha"]
                         ;;[congomongo "0.1.3-SNAPSHOT"]
 				  ]
 
@@ -38,5 +39,10 @@
                     ] 
 	
   :resources-path ".:build/gen/:build/src/:src/:test/:src/commands/:src/spittoon/:vendor/252421/:vendor/congomongo/src/:vendor/congomongo/lib/mongo-java-driver-2.3.jar:vendor/congomongo/lib/clojure-1.2.0.jar:vendor/congomongo/lib/clojure-contrib-1.2.0.jar"
+
+  :repositories { "snapshots" { :url "http://blueant.com/archiva/snapshots"
+                                :username "milgrim" :password "locative.1"}
+                  "releases" "http://blueant.com/archiva/internal"}
+  
 )
 
