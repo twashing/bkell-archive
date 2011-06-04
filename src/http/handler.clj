@@ -1,13 +1,27 @@
 (ns http.handler
-    (:use compojure.core)
-    (:require [compojure.route :as route])
-    (:use ring.adapter.jetty)
-    )
+  (:use compojure.core)
+  (:use net.cgrand.enlive-html)
+  (:require [compojure.route :as route]
+            [compojure.handler :as handler]))
 
-(defroutes core
-  (GET "/" [] "<h1>Hello World Wide Web!</h1>")
-  (route/not-found "Page not found")
+(deftemplate index "public/index.html"
+  
+  []
+  [:input#fuid] (do-> 
+                  (content "Tim")
+                  (set-attr :value "XXxxx"))
+  [:input#barid] (do->
+                  (content "Washington") 
+                  (set-attr :value "ZZzzz"))
 )
 
-(run-jetty core {:port 8080})
+
+(defroutes main
+  (GET "/" [] (index))
+  (route/resources "/")
+  (route/not-found "Page not found")
+)
+(def app
+  (handler/site main))
+
 
