@@ -40,9 +40,9 @@
 	
   :resources-path ".:build/gen/:build/src/:src/:test/:src/commands/:src/spittoon/:vendor/252421/:vendor/congomongo/src/:vendor/congomongo/lib/mongo-java-driver-2.3.jar:vendor/congomongo/lib/clojure-1.2.0.jar:vendor/congomongo/lib/clojure-contrib-1.2.0.jar"
 
-  :repositories { "snapshots" { :url "http://blueant.com/archiva/snapshots"
-                                :username "milgrim" :password "locative.1"}
-                  "releases" "http://blueant.com/archiva/internal"}
+  ;;:repositories { "snapshots" { :url "http://blueant.com/archiva/snapshots"
+  ;;                              :username "milgrim" :password "locative.1"}
+  ;;                "releases" "http://blueant.com/archiva/internal"}
   
 )
 
