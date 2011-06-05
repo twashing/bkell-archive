@@ -1,17 +1,14 @@
-(ns bkell
+(ns bjell
 
-  (comment
   (:import java.io.FileReader)
   (:require commands.add)
   ;;(:require commands.get)
   ;;(:require commands.update)
   ;;(:require commands.remove)
   (:require domain)
-  )
 )
 
 
-(comment
 (defn init-shell [] 
   (def shell (ref { :active true })) 	;; the shell and memory 
 )
@@ -40,6 +37,5 @@
   (eval `(commands/remove akey ~@etal))
 )
 
-)
 
 

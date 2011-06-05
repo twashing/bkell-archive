@@ -13,7 +13,7 @@
 		    ] 
   
   :ring {:handler http.handler/app}
-  :resources-path ".:build/gen/:build/src/:src/:test/:src/commands/:src/spittoon/"
+  :resources-path ".:src/:test/:src/commands/:src/spittoon/:vendor/debug/"
   ;;:resources-path ".:build/gen/:build/src/:src/:test/:src/commands/:src/spittoon/:vendor/252421/:vendor/congomongo/src/:vendor/congomongo/lib/mongo-java-driver-2.3.jar:vendor/congomongo/lib/clojure-1.2.0.jar:vendor/congomongo/lib/clojure-contrib-1.2.0.jar"
   
 )
