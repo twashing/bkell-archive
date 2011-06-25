@@ -16,11 +16,11 @@
 
 
 (defn add [artifact & etal]
+  "artifact input can be JSON String or Reader"
   
   ;;(let  [processed (domain/keywordize-tags (clojure.contrib.json/read-json (FileReader. "user.js")))]
-  (let  [ artifact-p (domain/keywordize-tags artifact)]
+  (let  [ artifact-p (domain/keywordize-tags (clojure.contrib.json/read-json artifact))]
 
-    (println (str "Rock With You... " artifact-p))
     (eval `(commands/add ~artifact-p ~@etal))
   )
 )

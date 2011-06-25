@@ -1,6 +1,7 @@
 (ns bjell-test 
   (:use [bjell] :reload-all)
   (:use [clojure.test])
+  (:use somnium.congomongo)
   (:require test-utils)
   (:require clojure.contrib.logging)
   (:require clojure.contrib.json)
@@ -16,9 +17,20 @@
 ;; 'ADD' tests
 ;; ==================
 (deftest test-addU
-  (let [user (clojure.contrib.json/read-json (FileReader. "test/etc/data/stubu-two.js"))]
+  (let [user (FileReader. "test/etc/data/stubu-two.js")]
     
     (bjell/add user)
+
+    (let [ru (fetch "users" :where { :username "stub" })]
+      
+      (is (not (nil? (nth ru 0))) "There SHOULD be a user with the username 'stub'")
+      
+      ;; assert that there are some associated profileDetails: [ last.name first.name email country ]
+      (let [pd (:tag (nth (:content (nth ru 0)) 0))]
+        (is (= "profileDetails" pd) "There SHOULD be a profileDetail element in the user")
+      )
+  )
+
   )
 )
 #_(deftest test-addC
