@@ -1,6 +1,6 @@
 (ns commands
 	
-  (:require clojure.contrib.logging)
+  ;;(:require clojure.contrib.logging)
   (:require clojure.string)
   (:require clojure.pprint)
   (:require [clojure.zip :as zip])

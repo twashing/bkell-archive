@@ -3,6 +3,8 @@
   (:use [clojure.test])
   (:require test-utils)
   (:require clojure.contrib.logging)
+  (:require clojure.contrib.json)
+  (:import java.io.FileReader)
 )
 
 
@@ -14,7 +16,8 @@
 ;; 'ADD' tests
 ;; ==================
 (deftest test-addU
-  (let [user (load-file "test/etc/data/stubu-two.clj")]
+  (let [user (clojure.contrib.json/read-json (FileReader. "test/etc/data/stubu-two.js"))]
+    
     (bjell/add user)
   )
 )

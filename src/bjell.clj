@@ -5,6 +5,7 @@
   ;;(:require commands.get)
   ;;(:require commands.update)
   ;;(:require commands.remove)
+  (:require clojure.contrib.json)
   (:require domain)
 )
 
@@ -17,7 +18,9 @@
 (defn add [artifact & etal]
   
   ;;(let  [processed (domain/keywordize-tags (clojure.contrib.json/read-json (FileReader. "user.js")))]
-  (let  [ artifact-p (domain/keywordize-tags (clojure.contrib.json/read-json artifact))]
+  (let  [ artifact-p (domain/keywordize-tags artifact)]
+
+    (println (str "Rock With You... " artifact-p))
     (eval `(commands/add ~artifact-p ~@etal))
   )
 )
