@@ -7,7 +7,7 @@
                     [compojure "0.6.2"]
 		            [enlive "1.0.0-SNAPSHOT"]
                     ;;[log4j/log4j "1.2.7"]
-                    [congomongo "0.1.3-SNAPSHOT"]
+                    [congomongo "0.1.5-SNAPSHOT"]
 		          ]
   
   :dev-dependencies [ [lein-ring "0.4.0"]

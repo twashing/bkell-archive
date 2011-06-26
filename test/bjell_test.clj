@@ -58,3 +58,37 @@
 )
 
 
+;; ==================
+;; 'GET' tests
+;; ==================
+(deftest test-getU 
+
+  (let [result (test-utils/add-user nil)
+        ru (bjell/get :user "stub")]
+      
+      (println ru)
+      (is (not (nil? ru )) "There SHOULD be a user with the username 'stub'")
+      
+      ;; assert that there are some associated profileDetails: [ last.name first.name email country ]
+      (let [pd (:tag (nth (:content ru ) 0))]
+        (is (= "profileDetails" pd) "There SHOULD be a profileDetail element in the user")
+      )
+  )
+)
+
+
+
+;; ==================
+;; 'UPDATE' tests
+;; ==================
+
+
+;; ==================
+;; 'REMOVE' tests
+;; ==================
+
+
+
+
+
+
