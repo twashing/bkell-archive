@@ -5,6 +5,7 @@
   (:require test-utils)
   ;;(:require clojure.contrib.logging)
   (:require clojure.data.json)
+  (:require clojure.contrib.str-utils2)
   (:import java.io.FileReader)
 )
 
@@ -66,13 +67,11 @@
   (let [result (test-utils/add-user nil)
         ru (bjell/get :user "stub")]
       
-      (println ru)
+      ;;(println ru)
       (is (not (nil? ru )) "There SHOULD be a user with the username 'stub'")
       
-      ;; assert that there are some associated profileDetails: [ last.name first.name email country ]
-      (let [pd (:tag (nth (:content ru ) 0))]
-        (is (= "profileDetails" pd) "There SHOULD be a profileDetail element in the user")
-      )
+      (is (string? ru)  "The result SHOULD be a JSON String")
+      ;;(is (clojure.contrib.str-utils2/contains ru ...))
   )
 )
 
