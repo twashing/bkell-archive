@@ -6,7 +6,8 @@
   
   (:import
    (java.security NoSuchAlgorithmException MessageDigest)
-   (java.math BigInteger))
+   (java.math BigInteger)
+   (org.bson.types.ObjectId))
     
   ;;(:require debug)
 )
@@ -30,6 +31,56 @@
       (catch NoSuchAlgorithmException e
         (throw (new RuntimeException e))))))
 
+(defn bsonid-to-id
+  "Traverse tree and turn A) org.bson.types.ObjectId into B) String
+  A) :_id #<ObjectId 4e0b3417d36df61fd82a5bd7>
+  B) :_id \"4e0b3417d36df61fd82a5bd7\""
+  [tree]
+  { :pre  [ (map? tree) ] } 
+  
+  (loop [loc (zip/zipper map? #(:content %1) #(assoc %1 :content (into [] %2)) tree)] ;; for '(into [] %2)', putting :content list into a vector
+    
+    ;;(debug/debug-repl)
+    (if (zip/end? loc)
+      (zip/root loc)
+      (if (contains? (zip/node loc) :_id) 
+          (recur  (zip/next
+                    (zip/edit loc merge 
+                      { :_id
+                        (.toString (get (zip/node loc) :_id)) ;; gets the org.bson.types.ObjectId, and extract ID String
+                      }
+                      )))
+          (recur (zip/next loc))
+      )
+    )
+  )
+)
+(defn id-to-bsonid
+  "Traverse tree and turn B) String into A) org.bson.types.ObjectId 
+  A) :_id #<ObjectId 4e0b3417d36df61fd82a5bd7>
+  B) :_id \"4e0b3417d36df61fd82a5bd7\""
+  [tree]
+  { :pre  [ (map? tree) ] } 
+  
+  (loop [loc (zip/zipper map? #(:content %1) #(assoc %1 :content (into [] %2)) tree)] ;; for '(into [] %2)', putting :content list into a vector
+    
+    ;;(debug/debug-repl)
+    (if (zip/end? loc)
+      (zip/root loc)
+      (if (contains? (zip/node loc) :_id) 
+          (recur  (zip/next
+                    (zip/edit loc merge 
+                      { :_id
+                        (org.bson.types.ObjectId. (get (zip/node loc) :_id)) ;; get the String and construct an org.bson.types.ObjectId
+                      }
+                      )))
+          (recur (zip/next loc))
+      )
+    )
+  )
+)
+
+
 (defn keywordize-tags
   "Traverse tree and turn A) into B) 
   A) { :tag \"user\" }
@@ -42,7 +93,7 @@
     ;;(debug/debug-repl)
     (if (zip/end? loc)
       (zip/root loc)
-      (if (contains? (zip/node loc) :tag) ;; break if this is a :get and have found node 
+      (if (contains? (zip/node loc) :tag) 
           (recur  (zip/next
                     (zip/edit loc merge 
                       { :tag 

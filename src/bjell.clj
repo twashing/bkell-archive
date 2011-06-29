@@ -5,10 +5,10 @@
   (:require commands.get)
   ;;(:require commands.update)
   ;;(:require commands.remove)
-  (:require clojure.contrib.json)
+  (:require clojure.data.json)
   (:require domain)
 
-  ;;(:use clojure.contrib.debug)
+  (:use clojure.contrib.debug)
 )
 
 
@@ -20,7 +20,7 @@
 (defn add [artifact & etal]
   "artifact - input can be JSON String or Reader"
   
-  (let  [ artifact-p (domain/keywordize-tags (clojure.contrib.json/read-json artifact))]
+  (let  [ artifact-p (domain/keywordize-tags (clojure.data.json/read-json artifact))]
 
     (eval `(commands/add ~artifact-p ~@etal))
   )
@@ -28,15 +28,17 @@
 
 (defn get [akey & etal]
   "akey - input is a String"
-  
-  ;;(debug-repl)
-  (eval `(commands/get ~akey ~@etal))
+    
+    (clojure.data.json/json-str 
+      (domain/bsonid-to-id
+        (eval `(commands/get ~akey ~@etal))))
+    
 )
 
 (defn update [artifact & etal]
   "artifact - input can be JSON String or Reader"
   
-  (let  [ artifact-p (domain/keywordize-tags (clojure.contrib.json/read-json artifact))]
+  (let  [ artifact-p (domain/keywordize-tags (clojure.data.json/read-json artifact))]
     (eval `(commands/update ~artifact-p ~@etal))
   )
 )

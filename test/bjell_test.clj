@@ -3,8 +3,8 @@
   (:use [clojure.test])
   (:use somnium.congomongo)
   (:require test-utils)
-  (:require clojure.contrib.logging)
-  (:require clojure.contrib.json)
+  ;;(:require clojure.contrib.logging)
+  (:require clojure.data.json)
   (:import java.io.FileReader)
 )
 
