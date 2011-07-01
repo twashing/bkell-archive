@@ -1,24 +1,193 @@
-<!DOCTYPE html>
 
-<html lang="en">
-
+<html style="width: 97%;" >
   <head>
-    
-    <meta charset="utf-8" />
-    <link rel="stylesheet" type="text/css" href="css/html5reset-1.6.1.css" />
-    <script src="js/modernizr-1.6.min.js"></script>
-    
-    <!-- 'HTML5 enabling script' for IE8 and below (http://remysharp.com/2009/01/07/html5-enabling-script/) -->
-    <!--[if lt IE 9]>
-    <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
-    <![endif]-->
+  		
+  		<link type="text/css" href="css/site.css" rel="stylesheet" />
+    	<link type="text/css" href="css/main.css" rel="stylesheet" />
+    	
+		<script type="text/javascript" src="javascript/jquery-1.3.2.js"></script>
+		
+		<script type="text/javascript" src="javascript/jquery-ui-1.7.2.custom.min.js"></script>
+		<script type="text/javascript" src="javascript/bkeeping.js"></script>
+		
+		
+		<!-- fancybox stuff -->
+		<script type="text/javascript" src="fancybox/jquery.fancybox-1.3.1.pack.js"></script>
+		<script type="text/javascript" src="fancybox/jquery.easing-1.3.pack.js"></script>
+		<script type="text/javascript" src="fancybox/jquery.mousewheel-3.0.2.pack.js"></script>
+		
+		<link rel="stylesheet" href="fancybox/jquery.fancybox-1.3.1.css" type="text/css" media="screen" />
+		
+		
+		<script>
+					
+			$(document).ready(function() {
+			
+				$("a#bs1").fancybox({
+					
+					'hideOnContentClick': true, 
+					'autoDimensions': true, 
+					'titlePosition'	:	'over',
+					'onComplete'	:	function() {
+						$("#fancybox-wrap").hover(function() {
+							$("#fancybox-title").show();
+						}, function() {
+							$("#fancybox-title").hide();
+						});
+					}
+					
+				});
+				
+				$("a#bs3").fancybox({
+					'hideOnContentClick': true, 
+					'autoDimensions': true, 
+					'titlePosition'	:	'over',
+					'onComplete'	:	function() {
+						$("#fancybox-wrap").hover(function() {
+							$("#fancybox-title").show();
+						}, function() {
+							$("#fancybox-title").hide();
+						});
+					}
+					
+				});
+				
+				$("a#bs4").fancybox({
+					'hideOnContentClick': true, 
+					'autoDimensions': true, 
+					'titlePosition'	:	'over',
+					'onComplete'	:	function() {
+						$("#fancybox-wrap").hover(function() {
+							$("#fancybox-title").show();
+						}, function() {
+							$("#fancybox-title").hide();
+						});
+					}
+					
+				});
+				
+			});
+			
+		</script>
+		
+    	
   </head>
-
-  <body>
-    <form>
-      <input type="text" name="fu" id="fuid" label="Fu: "/>
-      <input type="text" name="bar" id="barid" label="Bar: " />
-    </form>
+  <body >
+  		
+  		<div class="header" >
+  		</div> 
+  		
+  		<div 
+  			id="loading-msg" 
+   			style="
+   				display: block; 
+   				color: #113366; 
+   				padding: 2px; 
+   				width: 60px; 
+   				background-color: #C0C0C0; 
+   				text-align: center; 
+   				left: -100; 
+   				" >
+   			Loading...
+		</div>
+		
+		
+		<!-- onclick="$('#loading-msg').animate({ left: -100 }, { duration: 750, easing: 'swing', queue: false });" > -->
+		<!-- onclick="$('#loading-msg').animate({ left: 100 }, { duration: 750, easing: 'swing', queue: false });" > --> 
+		
+		<!-- $("#left-nav").animate({ left: newleft }, { duration: 750, easing: "swing", complete: adjustJournals, queue: false }); --> 
+		
+		
+  		<div class="content" >
+  			
+  			
+  			<div id="title" class="title" style=" position:relative; top:15px; left:30px; width:70%; height: 35px;" >
+				
+				bkeeping
+				<xx class='subheader'>Your solution to simple 
+					<xx style="color:#000000">online bookkeeping</xx> 
+				</xx>
+				
+				<div class="loginholder">
+				<div class="leftgrid" id="leftcol">
+					
+					<input type="text" size="18" id="u" name="u"/>
+				</div>
+				<div class="leftgrid" id="rightcol">
+					
+					<input type="password" size="18" id="p" name="p"/>
+				</div>
+				<div class="leftgrid" id="gocol">
+					
+					<button class="buttons" style="font-size: 13.2px;" onclick="bkeeping.processLogin();" >LOGIN</button>
+					
+				</div>
+				</div>
+				
+			</div>			
+			
+			
+			<div class="signup" style="color: #686868" >
+				
+				<p class="signuptitle">Not a member yet?</p>
+				<p>It takes less than 5 minutes to sign up.</p>
+				<p>Fast, easy to use bookkeeping.</p>
+				<p>The best way to manage your bookkeeping needs.</p>
+				<p style="margin-top: 20px;">
+					<a href="register.html" style="text-decoration: none;" >
+						
+						<button class="buttons" style="font-size: 13.2px;" >SIGN UP</button>
+						
+					</a>
+				</p>
+			</div>
+			
+			<div class="fastandeasy">
+				The <span class="huge">fastest</span> and <span class="huge">easiest</span><br/>
+				<p class="pushright">way to</p>
+				manage your bookkeeping.
+			</div>
+			
+			
+			
+			<div id="screenshots" style="float:left; margin-top: 60px;" >
+				
+				<a id="bs1" href="images/bkeeping_screenshot_1.png" >
+					<img 
+						src="images/bkeeping_screenshot_1.png" 
+						style="height: 24%; width: 12%; float:left; border: 0px;" 
+						alt="Landing Screen with Accounts & Journals" />
+						
+				</a>
+				<a id="bs3" href="images/bkeeping_screenshot_3.png" >
+					<img 
+						src="images/bkeeping_screenshot_3.png" 
+						style="height: 24%; width: 12%; float:left; border: 0px;" 
+						alt="Listing out both sides of an Entry" />
+				</a>
+				<a id="bs4" href="images/bkeeping_screenshot_4.png" >
+					<img 
+						src="images/bkeeping_screenshot_4.png" 
+						style="height: 24%; width: 12%; float:left; border: 0px;" 
+						alt="Editing one side of an Entry" />
+				</a>
+			</div>
+			
+  			
+		</div>
+		
+		<div id="modal_screen" class="modal screen">
+			&nbsp;
+		</div>
+		
+  		<div class="footer" >
+  			<p class="legal">2008-2009 bkeeping Software, Inc. | All Rights Reserved
+			</p>
+  		</div>
+  		
+		
   </body>
 </html>
+
+
 

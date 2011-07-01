@@ -12,8 +12,8 @@
 		          ]
   
   :dev-dependencies [ [lein-ring "0.4.0"]
-                      [org.apache/commons-logging "1.1.1"]
-                      [log4j/log4j "1.2.15"]
+                      ;;[org.apache/commons-logging "1.1.1"]
+                      ;;[log4j/log4j "1.2.15"]
 		            ] 
   
   :ring {:handler http.handler/app}
