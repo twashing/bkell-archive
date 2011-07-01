@@ -1,0 +1,221 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html 
+     PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+  <head>
+	
+    <title>WebKell: Your solution to simple online bookkeeping</title>
+	
+	<style type="text/css">
+	    
+	    #title {
+	    	/* font-family: Andale Mono, monospace;  */ 
+	    	font-family: cursive, monospace; 
+	    	font-size: 2.8em;
+			font-style: italic; 
+		}
+		.coolk { 
+			font-family: Palatino, serif;
+			/*font-style: normal; */
+			font-size: 1.8em;
+			font-weight: bold; 
+			visibility: 50%;
+		}
+		.subheader { 
+			
+			font-family: Palatino, sans-serif;
+			/*font-style: normal; */
+			font-size: 0.45em;
+			font-weight: normal; 
+			visibility: 100%;
+			color:#686868;
+		}
+		#outline { 
+			border-width: thin; 
+			border-style: solid;
+			border-color: #CCCCCC;
+			padding-top:5px; 
+			padding-bottom:5px; 
+			padding-left:5px; 
+			padding-right:5px; 
+		}
+		
+	</style>
+	
+	<script type="text/javascript" > 
+	<![CDATA[
+		
+		
+		function testXMLHttpSubmit() { 
+			
+			var accXML = "create ( <account xmlns='com/interrupt/bookkeeping/account' type='asset' id='create' name='modified expeses' counterWeight='debit'/> );"; 
+			var dbtXML = "create ( <debit xmlns='com/interrupt/bookkeeping/account' id='abc' amount='10.00' entryid='e1' accountid='1' currency='CDN' /> );"; 
+			
+			var bproxy = new BkellProxy(); 
+			var ahandler = function() { 
+				
+				if( (this.xmlhttp.readyState == 4) && (this.xmlhttp.status == 200) ) {
+					
+					var rxml = this.xmlhttp.responseXML;
+					var fc = rxml.firstChild;
+					
+					var rpane = document.getElementById("resultPane"); 
+					rpane.value = this.xmlhttp.responseText; 
+					
+				}
+			}
+			var dhandler = function() { 
+				
+				//alert("dhandler CALLED");
+                		if(this.readyState == 4) {
+				    
+					if(this.status == 200) {
+						alert("debit handled"); 
+						this.responseXML;
+						this.toString();
+					}
+				}
+			}
+			
+			bproxy.parse(accXML,ahandler); 
+			//bproxy.parse(dbtXML,dhandler); 
+			
+            		
+		}
+		
+		function xmlHttpSubmit() { 
+			
+			var bkexprObj = document.getElementById("bkexpr"); 
+			//alert(bkexprObj.value); 
+			
+			var bproxy = new BkellProxy(); 
+			var bkhandler = function() { 
+				
+				
+				if( (this.xmlhttp.readyState == 4) && (this.xmlhttp.status == 200) ) {
+					
+					var rxml = this.xmlhttp.responseXML;
+					var fc = rxml.firstChild;
+					
+					//alert( document.getElementById("resultPane") ); 
+					
+					var rpane = document.getElementById("resultPane"); 
+					rpane.value = this.xmlhttp.responseText; 
+					
+				}
+			}
+			
+			bproxy.parse(bkexprObj.value,bkhandler); 
+		}
+		
+		function xmlHttpSubmitAuthenticate() { 
+			
+			var bkexprObj = document.getElementById("bkexpr"); 
+			
+			var bproxy = new BkellProxy(); 
+			var bkhandler = function() { 
+				
+				
+				if( (this.xmlhttp.readyState == 4) && (this.xmlhttp.status == 200) ) {
+					
+					var rxml = this.xmlhttp.responseXML;
+					var fc = rxml.firstChild;
+					
+					var rpane = document.getElementById("resultPane"); 
+					rpane.value = this.xmlhttp.responseText; 
+				}
+			}
+			
+			bproxy.addUser(bkexprObj.value,bkhandler); 
+		}
+		
+		BkellProxy = function() {} 
+		BkellProxy.prototype.parse = function(bkexpr, handler) { 
+			
+			this.xmlhttp = new XMLHttpRequest(); 
+			handler.xmlhttp = this.xmlhttp; 
+			
+			this.xmlhttp.open("POST", "/webkell/webkell",true); 
+			this.xmlhttp.setRequestHeader("Content-Type", 
+				"application/x-www-form-urlencoded");
+			this.xmlhttp.onreadystatechange = handler; 
+			
+			this.xmlhttp.send("bkexpr="+ bkexpr ); 
+			
+		}
+		BkellProxy.prototype.addUser = function(bkexpr, handler) { 
+			
+			this.xmlhttp = new XMLHttpRequest(); 
+			handler.xmlhttp = this.xmlhttp; 
+			
+			this.xmlhttp.open("POST", "/webkell/authenticate",true); 
+			this.xmlhttp.setRequestHeader("Content-Type", 
+				"application/x-www-form-urlencoded");
+			this.xmlhttp.onreadystatechange = handler; 
+			
+			this.xmlhttp.send("bkexpr="+ bkexpr ); 
+			
+		}
+		
+		
+	]]>
+	</script>
+	
+
+</head>
+  <body>
+    
+	
+	<!-- Header Row --> 
+	<div>
+		<div id="title" style=" position:relative; top:15px; left:30px; width:70%; " >
+			web<xx class='coolk'>K</xx>ell
+			<xx class='subheader'>Your solution to simple <xx style="color:#000000">online bookkeeping</xx> </xx>
+		</div>
+		<div class="subheader" style="width: 30%;">
+			register
+		</div>
+	</div>
+	
+	
+	<form name="mainform" id="mainform" action="/webkell/webkell" method="POST" >
+		
+		
+		<div id="resultsPane" > 
+			<textarea id="resultPane" name="result" cols="90" rows="6" />
+		</div>
+		<div id="outline" >
+			
+			<!-- textfield -->
+			<textarea id="bkexpr" name="bkexpr" cols="90" rows="10" />
+			
+		</div>
+		
+		<div id="buttons" > 
+			
+			<!-- buttons to send / clear --> 
+			<input type="button" value="send" onclick="javascript:xmlHttpSubmit();" />
+			<input type="button" value="send authenticated" onclick="javascript:xmlHttpSubmitAuthenticate();" />
+			<input type="reset" value="clear" />
+			
+		</div>
+		
+		
+	</form>
+	
+	
+	<!-- Footer Row --> 
+	<div> 
+		
+		<!-- solid line --> 
+		WebKell (2007)	<a href="http://frye.blogs.com" >Timothy Washington</a>
+	</div>
+	
+  </body>
+</html>
+
+
+
+
