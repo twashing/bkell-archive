@@ -44,123 +44,32 @@
 		
 	</style>
 	
+    
+	<script type="text/javascript" src="javascript/jquery-1.3.2.js"></script>
+	<script type="text/javascript" src="javascript/jquery-ui-1.7.2.custom.min.js"></script>
+    <script type="text/javascript" src="javascript/json2.js"></script>
+    <script type="text/javascript" src="javascript/underscore-min.js"></script>
+	<script type="text/javascript" src="javascript/backbone-min.js"></script>
+    
 	<script type="text/javascript" > 
-	<![CDATA[
 		
-		
-		function testXMLHttpSubmit() { 
-			
-			var accXML = "create ( <account xmlns='com/interrupt/bookkeeping/account' type='asset' id='create' name='modified expeses' counterWeight='debit'/> );"; 
-			var dbtXML = "create ( <debit xmlns='com/interrupt/bookkeeping/account' id='abc' amount='10.00' entryid='e1' accountid='1' currency='CDN' /> );"; 
-			
-			var bproxy = new BkellProxy(); 
-			var ahandler = function() { 
-				
-				if( (this.xmlhttp.readyState == 4) && (this.xmlhttp.status == 200) ) {
-					
-					var rxml = this.xmlhttp.responseXML;
-					var fc = rxml.firstChild;
-					
-					var rpane = document.getElementById("resultPane"); 
-					rpane.value = this.xmlhttp.responseText; 
-					
-				}
-			}
-			var dhandler = function() { 
-				
-				//alert("dhandler CALLED");
-                		if(this.readyState == 4) {
-				    
-					if(this.status == 200) {
-						alert("debit handled"); 
-						this.responseXML;
-						this.toString();
-					}
-				}
-			}
-			
-			bproxy.parse(accXML,ahandler); 
-			//bproxy.parse(dbtXML,dhandler); 
-			
-            		
-		}
-		
-		function xmlHttpSubmit() { 
-			
-			var bkexprObj = document.getElementById("bkexpr"); 
-			//alert(bkexprObj.value); 
-			
-			var bproxy = new BkellProxy(); 
-			var bkhandler = function() { 
-				
-				
-				if( (this.xmlhttp.readyState == 4) && (this.xmlhttp.status == 200) ) {
-					
-					var rxml = this.xmlhttp.responseXML;
-					var fc = rxml.firstChild;
-					
-					//alert( document.getElementById("resultPane") ); 
-					
-					var rpane = document.getElementById("resultPane"); 
-					rpane.value = this.xmlhttp.responseText; 
-					
-				}
-			}
-			
-			bproxy.parse(bkexprObj.value,bkhandler); 
-		}
-		
-		function xmlHttpSubmitAuthenticate() { 
-			
-			var bkexprObj = document.getElementById("bkexpr"); 
-			
-			var bproxy = new BkellProxy(); 
-			var bkhandler = function() { 
-				
-				
-				if( (this.xmlhttp.readyState == 4) && (this.xmlhttp.status == 200) ) {
-					
-					var rxml = this.xmlhttp.responseXML;
-					var fc = rxml.firstChild;
-					
-					var rpane = document.getElementById("resultPane"); 
-					rpane.value = this.xmlhttp.responseText; 
-				}
-			}
-			
-			bproxy.addUser(bkexprObj.value,bkhandler); 
-		}
-		
-		BkellProxy = function() {} 
-		BkellProxy.prototype.parse = function(bkexpr, handler) { 
-			
-			this.xmlhttp = new XMLHttpRequest(); 
-			handler.xmlhttp = this.xmlhttp; 
-			
-			this.xmlhttp.open("POST", "/webkell/webkell",true); 
-			this.xmlhttp.setRequestHeader("Content-Type", 
-				"application/x-www-form-urlencoded");
-			this.xmlhttp.onreadystatechange = handler; 
-			
-			this.xmlhttp.send("bkexpr="+ bkexpr ); 
-			
-		}
-		BkellProxy.prototype.addUser = function(bkexpr, handler) { 
-			
-			this.xmlhttp = new XMLHttpRequest(); 
-			handler.xmlhttp = this.xmlhttp; 
-			
-			this.xmlhttp.open("POST", "/webkell/authenticate",true); 
-			this.xmlhttp.setRequestHeader("Content-Type", 
-				"application/x-www-form-urlencoded");
-			this.xmlhttp.onreadystatechange = handler; 
-			
-			this.xmlhttp.send("bkexpr="+ bkexpr ); 
-			
-		}
-		
-		
-	]]>
+        function testSave() { 
+          
+          window.Account = Backbone.Model.extend({
+            url : "/account"
+          });
+
+          window.account = new Account;
+          window.account.set(
+              { "tag":"account",
+			    "type":"asset",
+			    //"id":"cash",
+			    "name":"cash",
+			    "counterWeight":"debit" }
+          )
+
+          window.account.save();
+	    }
 	</script>
 	
 
@@ -198,7 +107,7 @@
 		<div id="buttons" > 
 			
 			<!-- buttons to send / clear --> 
-			<input type="button" value="send" onclick="javascript:xmlHttpSubmit();" />
+			<input type="button" value="send" onclick="javascript:testSave();" />
 			<input type="button" value="send authenticated" onclick="javascript:xmlHttpSubmitAuthenticate();" />
 			<input type="reset" value="clear" />
 			

@@ -25,17 +25,18 @@
     (commands/get :bookkeeping \"stub\")  ->  /bookkeeping  -> /bookkeeping/:id 
     (commands/get :entries \"stub\")      ->  /entries      -> /entry/:id 
   "
-  (GET "/" [] (index))
+  ;;(GET "/" [] (index))
 
   ;; ======
   ;; CRUD on Accounts
   (POST "/account" [body] 
     
+    (println (str "POST ; /account ; " body))
     (bjell/add body "stub") ;; TODO - stubbing in 'stub' user for now
   )
   (GET "/accounts" [] (str "{}"))
   (GET "/account/:id" [id] (str "{}"))
-  (UPDATE "/account/:id" [id] (str "{}"))
+  (PUT "/account/:id" [id] (str "{}"))
   (DELETE "/account/:id" [id] (str "{}"))
   
   
