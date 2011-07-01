@@ -36,7 +36,7 @@
 			  }
 			};")
         r   "function(k,vals) { return { result : vals } ; }"
-        result (map-reduce :bookkeeping m r :out :result-collection)]
+        result (map-reduce :bookkeeping m r :result-collection)]
     
     (-> result first :value :result first :result)  ;; dig in and get the currency list 
     
@@ -57,7 +57,7 @@
 			  }
 			};")
         r   "function(k,vals) { return { result : vals } ; }"
-        result (map-reduce :bookkeeping m r :out :result-collection)]
+        result (map-reduce :bookkeeping m r :result-collection)]
 
     (-> result first :value :result first) ;; dig in and get the currency
   )
@@ -77,7 +77,7 @@
 			  }
 			};")
         r   "function(k,vals) { return { result : vals } ; }"
-        result (map-reduce :bookkeeping m r :out :result-collection)]
+        result (map-reduce :bookkeeping m r :result-collection)]
     
     (-> result first :value :result first :result)  ;; dig in and get the currency list 
     
@@ -98,7 +98,7 @@
 			  }
 			};")
         r   "function(k,vals) { return { result : vals } ; }"
-        result (map-reduce :bookkeeping m r :out :result-collection)]
+        result (map-reduce :bookkeeping m r :result-collection)]
 
     (-> result first :value :result first) ;; dig in and get the currency
   )
@@ -120,7 +120,7 @@
 			  }
 			};" )
         r   "function(k,vals) { return { result : vals } ; }"
-        result (map-reduce :bookkeeping m r :out :result-collection)]
+        result (map-reduce :bookkeeping m r :result-collection)]
     
     (-> result first :value :result first :result) ;; dig in and get the account list 
     
@@ -141,7 +141,7 @@
 			  }
 			};")
         r   "function(k,vals) { return { result : vals } ; }"
-        result (map-reduce :bookkeeping m r :out :result-collection)]
+        result (map-reduce :bookkeeping m r :result-collection)]
 
     (-> result first :value :result first)  ;; dig in and get the account
   )
