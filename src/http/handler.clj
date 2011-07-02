@@ -3,7 +3,9 @@
   ;;(:use net.cgrand.enlive-html)
   (:require [compojure.route :as route]
             [compojure.handler :as handler]
-            [bjell])
+            [bjell]
+            [clojure.contrib.duck-streams]
+            )
 )
 
 #_(deftemplate index "public/index.html"
@@ -29,18 +31,20 @@
 
   ;; ======
   ;; CRUD on Accounts
-  (POST "/account" [body :as req] 
+  (POST "/account" [:as req] 
     
     (println (str "POST ; /account ; " req))
-    (bjell/add body "stub") ;; TODO - stubbing in 'stub' user for now
+    (bjell/add nil "stub") ;; TODO - stubbing in 'stub' user for now
   )
   (GET "/accounts" [] (str "{}"))
   (GET "/account/:id" [id] (str "{}"))
-  (PUT "/account/:id" [id body :as req] 
+  (PUT "/account/:id" [id :as req]
     
     (println (str "PUT ; /account/:id ; " req))
-    (println (str "Body... " body))
-    (bjell/update body "stub") ;; TODO - stubbing in 'stub' user for now
+    (if-let [body (clojure.contrib.duck-streams/slurp* (:body req))]
+      (bjell/update body "stub") ;; TODO - stubbing in 'stub' user for now
+      (println "ERROR - PUT body is nil")
+    )
   )
   (DELETE "/account/:id" [id] (str "{}"))
   
