@@ -49,27 +49,33 @@
 	<script type="text/javascript" src="javascript/jquery-ui-1.7.2.custom.min.js"></script>
     <script type="text/javascript" src="javascript/json2.js"></script>
     <script type="text/javascript" src="javascript/underscore-min.js"></script>
-	<script type="text/javascript" src="javascript/backbone-min.js"></script>
+	<!-- <script type="text/javascript" src="javascript/backbone-min.js"></script> -->
+	<script type="text/javascript" src="http://documentcloud.github.com/backbone/backbone.js"></script>
     
 	<script type="text/javascript" > 
 		
         function testSave() { 
           
           window.Account = Backbone.Model.extend({
-            url : "/account"
+            urlRoot : "/account"
           });
 
-          window.account = new Account;
-          window.account.set(
+          window.account = new Account(
               { "tag":"account",
 			    "type":"asset",
-			    //"id":"cash",
+			    "id":"cash",
 			    "name":"cash",
 			    "counterWeight":"debit" }
           )
 
           window.account.save();
+
 	    }
+
+        //Backbone.sync = function(method, model) {
+        //  alert(method + ": " + JSON.stringify(model));
+        //};
+        
 	</script>
 	
 
@@ -80,7 +86,7 @@
 	<!-- Header Row --> 
 	<div>
 		<div id="title" style=" position:relative; top:15px; left:30px; width:70%; " >
-			web<xx class='coolk'>K</xx>ell
+			webkell
 			<xx class='subheader'>Your solution to simple <xx style="color:#000000">online bookkeeping</xx> </xx>
 		</div>
 		<div class="subheader" style="width: 30%;">
@@ -126,7 +132,5 @@
 	
   </body>
 </html>
-
-
 
 

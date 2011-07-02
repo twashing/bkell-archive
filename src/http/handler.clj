@@ -29,14 +29,19 @@
 
   ;; ======
   ;; CRUD on Accounts
-  (POST "/account" [body] 
+  (POST "/account" [body :as req] 
     
-    (println (str "POST ; /account ; " body))
+    (println (str "POST ; /account ; " req))
     (bjell/add body "stub") ;; TODO - stubbing in 'stub' user for now
   )
   (GET "/accounts" [] (str "{}"))
   (GET "/account/:id" [id] (str "{}"))
-  (PUT "/account/:id" [id] (str "{}"))
+  (PUT "/account/:id" [id body :as req] 
+    
+    (println (str "PUT ; /account/:id ; " req))
+    (println (str "Body... " body))
+    (bjell/update body "stub") ;; TODO - stubbing in 'stub' user for now
+  )
   (DELETE "/account/:id" [id] (str "{}"))
   
   
