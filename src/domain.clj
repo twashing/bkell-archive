@@ -2,7 +2,7 @@
   
   (:require [clojure.zip :as zip])
   (:use somnium.congomongo)
-  (:require bkell)
+  ;;(:require bkell)
   
   (:import
    (java.security NoSuchAlgorithmException MessageDigest)

@@ -45,7 +45,24 @@
 
 
 ;; CAN'T update accounts, only destroy and re-add them 
-(comment defn update-account [uname account])
+(defn update-account [account uname]
+  
+  { :pre  [ (not (nil? uname)) 
+            (not (clojure.string/blank? (:id account)))
+            (not (clojure.string/blank? (:name account)))
+            (not (nil? (:type account)))
+            (not (nil? (:counterWeight account)))
+          ] }
+  (let [ru (fetch-one "bookkeeping" :where { :owner uname })
+        ra (commands/get-account uname (:id account))]
+    
+    (if ra 
+      (update! :bookkeeping { :_id (:_id ra) }  ;; passing in hash w/ ObjecId, NOT original object
+        (domain/traverse-tree ru :update { :id (:id account) } account))
+      (commands/add account uname )
+    )
+  )
+)
 
 
 ;; update entry 
@@ -82,6 +99,7 @@
 
 (defmulti update (fn [obj & etal] (:tag obj)))
 (defmethod update :user [user] (update-user user))
+(defmethod update :account [account & etal] (update-account account (first etal)))  ;; input arguments are: account uname 
 (defmethod update :currency [currency & etal] (update-currency currency (first etal) (second etal)))   ;; input arguments are: currency uname default
 (defmethod update :entry [entry & etal] (update-entry entry (first etal)))  ;; input arguments are: entry uname 
 

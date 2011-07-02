@@ -27,8 +27,12 @@
     (commands/get :bookkeeping \"stub\")  ->  /bookkeeping  -> /bookkeeping/:id 
     (commands/get :entries \"stub\")      ->  /entries      -> /entry/:id 
   "
-  ;;(GET "/" [] (index))
-
+  
+  ;; ======
+  ;; initialize the shell incl. DB connection 
+  (bjell/init-shell)
+  
+  
   ;; ======
   ;; CRUD on Accounts
   (POST "/account" [:as req] 
@@ -42,7 +46,8 @@
     
     (println (str "PUT ; /account/:id ; " req))
     (if-let [body (clojure.contrib.duck-streams/slurp* (:body req))]
-      (bjell/update body "stub") ;; TODO - stubbing in 'stub' user for now
+      (.toString      ;; JSON of MongoDB WriteResult; TODO - make a proper JSON string for client 
+        (bjell/update body "stub")) ;; TODO - stubbing in 'stub' user for now
       (println "ERROR - PUT body is nil")
     )
   )

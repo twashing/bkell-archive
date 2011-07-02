@@ -1,45 +1,36 @@
 (ns bkell
 
-  (comment
   (:import java.io.FileReader)
   (:require commands.add)
-  ;;(:require commands.get)
-  ;;(:require commands.update)
-  ;;(:require commands.remove)
+  (:require commands.get)
+  (:require commands.update)
+  (:require commands.remove)
   (:require domain)
-  )
 )
 
 
-(comment
 (defn init-shell [] 
   (def shell (ref { :active true })) 	;; the shell and memory 
 )
 
 
-(defn add [artifact & etal]
+(defn add [artifact-p & etal]
   
-  ;;(let  [processed (domain/keywordize-tags (clojure.contrib.json/read-json (FileReader. "user.js")))]
-  (let  [ artifact-p (domain/keywordize-tags (clojure.contrib.json/read-json artifact))]
-    (eval `(commands/add ~artifact-p ~@etal))
-  )
+  (eval `(commands/add (domain/keywordize-tags ~artifact-p) ~@etal))
 )
 
 (defn get [akey & etal]
   (eval `(commands/get akey ~@etal))
 )
 
-(defn update [artifact & etal]
+(defn update [artifact-p & etal]
   
-  (let  [ artifact-p (domain/keywordize-tags (clojure.contrib.json/read-json artifact))]
-    (eval `(commands/update ~artifact-p ~@etal))
-  )
+  (eval `(commands/update (domain/keywordize-tags ~artifact-p) ~@etal))
 )
 
 (defn remove [akey & etal]
   (eval `(commands/remove akey ~@etal))
 )
 
-)
 
 
