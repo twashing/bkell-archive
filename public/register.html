@@ -1,13 +1,60 @@
 
 <html>
   <head>
-  		
-    	<link type="text/css" href="css/main.css" rel="stylesheet" />
-    	
-		<script type="text/javascript" src="javascript/jquery-1.3.2.min.js"></script>
-		<script type="text/javascript" src="javascript/jquery-ui-1.7.2.custom.min.js"></script>
-		<script type="text/javascript" src="javascript/bkeeping.js"></script>
-    	
+  	
+    <link type="text/css" href="css/main.css" rel="stylesheet" />
+    
+	<script type="text/javascript" src="http://code.jquery.com/jquery-1.6.2.js"></script>
+	<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.8.14/jquery-ui.js"></script>
+    <!-- script language="javascript" type="text/javascript">
+      $j = jQuery.noConflict();
+    </script -->
+	<script type="text/javascript" src="javascript/bkeeping.js"></script>
+    
+    <script type="text/javascript" src="javascript/json2.js"></script>
+    <script type="text/javascript" src="javascript/underscore-min.js"></script>
+	<!-- <script type="text/javascript" src="javascript/backbone-min.js"></script> -->
+	<script type="text/javascript" src="http://documentcloud.github.com/backbone/backbone.js"></script>
+    
+	<script type="text/javascript" > 
+		
+        
+      $(document).ready(function() {
+          
+          window.Register = Backbone.Model.extend({}); 
+          
+          window.RegisterView = Backbone.View.extend({
+            
+            tagName : "div",
+            className: "register",
+            el: $('#register'),
+
+            initialize: function(){
+              _.bindAll(this, 'render'); // fixes loss of context for 'this' within methods
+              this.render(); // not all views are self-rendering. This one is.
+            },
+            
+            render: function() {},
+            
+            events: {
+              'click button#registerbtn': 'handleClick', 
+              //'click a' : 'handleClick'
+            },
+            
+            handleClick: function() {
+              alert("In the name of science... you monster");
+            }
+            /**/
+          });
+          
+          register = new Register
+          registerView = new RegisterView; 
+          
+	  });
+			
+        
+	</script>
+	
   </head>
   <body>
   		
@@ -55,7 +102,10 @@
 				<div class="leftgrid" id="gocol">
 					
 					
-					<button class="buttons" style="font-size: 13.2px;" onclick="bkeeping.processLogin();" >LOGIN</button>
+					<button class="buttons" 
+                            style="font-size: 13.2px;" onclick="bkeeping.processLogin();" >
+                      LOGIN
+                    </button>
 					
 				</div>
 				</div>
@@ -67,7 +117,7 @@
 			<div class="mainwindow lborder contentwindow" id="contentbox">
 
 	
-		<div class="register" >
+		<div class="register" id="register" >
 				<p class="signuptitle">
 					Sign up for bkeeping
 				</p>
@@ -109,7 +159,11 @@
 						<td/>
 						<td>
 							
-							<button class="buttons" style="font-size: 13.2px;" onclick="bkeeping.processRegister();" >SIGP UP</button>
+							<button id="registerbtn" 
+                                    class="buttons" 
+                                    style="font-size: 13.2px;" >
+                              SIGP UP
+                            </button>
 							<a href="index.html" style="text-decoration: none;" >
 								<button class="buttons" style="font-size: 13.2px;" >CANCEL</button>
 							</a>
