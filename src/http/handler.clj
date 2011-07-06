@@ -34,6 +34,18 @@
   
   
   ;; ======
+  ;; CRUD on User
+  (POST "/user" [:as req]
+    
+    (println (str "POST ; /user/:id ; " req))
+    (if-let [user (clojure.contrib.duck-streams/slurp* (:body req))]
+      (.toString      ;; JSON of MongoDB WriteResult; TODO - make a proper JSON string for client 
+        (bjell/add user)) ;; TODO - stubbing in 'stub' user for now
+      (println "ERROR - POST body is nil")
+    )
+  )
+  
+  ;; ======
   ;; CRUD on Accounts
   (POST "/account" [:as req] 
     

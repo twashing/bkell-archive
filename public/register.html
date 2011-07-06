@@ -21,7 +21,9 @@
         
       $(document).ready(function() {
           
-          window.Register = Backbone.Model.extend({}); 
+          window.Register = Backbone.Model.extend({
+            urlRoot : "/user"
+          }); 
           
           window.RegisterView = Backbone.View.extend({
             
@@ -37,22 +39,54 @@
             render: function() {},
             
             events: {
-              'click button#registerbtn': 'handleClick', 
-              //'click a' : 'handleClick'
+              'click button#registerbtn': 'registerUser', 
+              //'click a' : 'registerUser'
             },
             
-            handleClick: function() {
-              alert("In the name of science... you monster");
+            registerUser: function() {
+              
+              //alert("In the name of science... you monster");
+              
+			  registerModel.set( 
+                {"tag":"user",
+				 "username":this.$("#username").val(), 
+				 "password":this.$("#password").val(), 
+				 "content":
+				 [{"tag":"profileDetails",
+				   "content":
+				   [{"tag":"profileDetail",
+				     "name":"first.name",
+				     "value": this.$("#firstname").val(), 
+				     "content":null},
+				    {"tag":"profileDetail",
+				     "name":"last.name",
+				     "value": this.$("#lastname").val(), 
+				     "content":null},
+				    {"tag":"profileDetail",
+				     "name":"email",
+				     "value": this.$("#email").val(), 
+				     "content":null},
+				    {"tag":"profileDetail",
+				     "name":"country",
+				     "value": this.$("#country").val(), 
+				     "content":null},
+				    {"tag":"profileDetail",
+				     "name":"currency",
+				     "value": this.$("#currency").val(), 
+				     "content":null}
+                    
+                    ]}]},
+                {silent: true});
+              registerModel.save(); 
             }
-            /**/
           });
           
-          register = new Register
+          registerModel = new Register
           registerView = new RegisterView; 
           
 	  });
-			
-        
+      
+      
 	</script>
 	
   </head>
