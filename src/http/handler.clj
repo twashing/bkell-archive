@@ -1,14 +1,14 @@
 (ns http.handler
 
   (:use [compojure.core]
-        [ring.middleware.file :as ring-file]
-  
   )
   ;;(:use net.cgrand.enlive-html)
   (:require [compojure.route :as route]
             [compojure.handler :as handler]
             [bjell]
-            [clojure.contrib.duck-streams]
+            [clojure.contrib.duck-streams :as duck-streams]
+            [ring.middleware.file :as ring-file]
+            [ring.util.response :as response]
   )
 )
 
@@ -37,16 +37,17 @@
   (bjell/init-shell)
   
   
-  
   (GET "/" []   ;; index is the default page of the application 
-    (ring-file/wrap-file "index" "public"))
+    (ring-file/wrap-file "index.html" "public"))
+  (GET "/register" []   ;; return static register.html page 
+    (response/file-response "register.html" { :root "public" }))
   
   ;; ======
   ;; CRUD on User
   (POST "/user" [:as req]
     
     (println (str "POST ; /user/:id ; " req))
-    (if-let [user (clojure.contrib.duck-streams/slurp* (:body req))]
+    (if-let [user (duck-streams/slurp* (:body req))]
       (.toString      ;; JSON of MongoDB WriteResult; TODO - make a proper JSON string for client 
         (bjell/add user)) ;; TODO - stubbing in 'stub' user for now
       (println "ERROR - POST body is nil")
@@ -58,7 +59,7 @@
   (POST "/account" [:as req] 
     
     (println (str "POST ; /account ; " req))
-    (if-let [body (clojure.contrib.duck-streams/slurp* (:body req))]
+    (if-let [body (duck-streams/slurp* (:body req))]
       (.toString      ;; JSON of MongoDB WriteResult; TODO - make a proper JSON string for client 
         (bjell/add body "stub")) ;; TODO - stubbing in 'stub' user for now
       (println "ERROR - POST body is nil")
@@ -69,7 +70,7 @@
   (PUT "/account/:id" [id :as req]
     
     (println (str "PUT ; /account/:id ; " req))
-    (if-let [body (clojure.contrib.duck-streams/slurp* (:body req))]
+    (if-let [body (duck-streams/slurp* (:body req))]
       (.toString      ;; JSON of MongoDB WriteResult; TODO - make a proper JSON string for client 
         (bjell/update body "stub")) ;; TODO - stubbing in 'stub' user for now
       (println "ERROR - PUT body is nil")
@@ -92,11 +93,18 @@
     (str "{}"))
   
   
+  (route/files "/")
   (route/resources "/")
   (route/not-found "Page not found")
+  ;;(ANY "/*" [path]    ;; for any other route or page that compojure cannot find 
+    ;;(redirect "/"))
 )
 
 
+#_(def app
+  (-> #'handler/site
+      (ring-file/wrap-file "public")
+      main))
 (def app
   (handler/site main))
 
