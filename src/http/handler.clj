@@ -1,11 +1,15 @@
 (ns http.handler
-  (:use compojure.core)
+
+  (:use [compojure.core]
+        [ring.middleware.file :as ring-file]
+  
+  )
   ;;(:use net.cgrand.enlive-html)
   (:require [compojure.route :as route]
             [compojure.handler :as handler]
             [bjell]
             [clojure.contrib.duck-streams]
-            )
+  )
 )
 
 #_(deftemplate index "public/index.html"
@@ -33,6 +37,10 @@
   (bjell/init-shell)
   
   
+  
+  (GET "/" []   ;; index is the default page of the application 
+    (ring-file/wrap-file "index" "public"))
+  
   ;; ======
   ;; CRUD on User
   (POST "/user" [:as req]
@@ -50,7 +58,11 @@
   (POST "/account" [:as req] 
     
     (println (str "POST ; /account ; " req))
-    (bjell/add nil "stub") ;; TODO - stubbing in 'stub' user for now
+    (if-let [body (clojure.contrib.duck-streams/slurp* (:body req))]
+      (.toString      ;; JSON of MongoDB WriteResult; TODO - make a proper JSON string for client 
+        (bjell/add body "stub")) ;; TODO - stubbing in 'stub' user for now
+      (println "ERROR - POST body is nil")
+    )
   )
   (GET "/accounts" [] (str "{}"))
   (GET "/account/:id" [id] (str "{}"))
