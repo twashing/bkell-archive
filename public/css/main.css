@@ -19,7 +19,8 @@ body{
 	-moz-background-clip:border; 
 	-moz-background-inline-policy:continuous; 
 	-moz-background-origin:padding; 
-	background:#E6E6E6 url(images/ui-bg_glass_75_e6e6e6_1x400.png) repeat-x scroll 50% 50%; 
+	/*background:#E6E6E6 url(images/ui-bg_glass_75_e6e6e6_1x400.png) repeat-x scroll 50% 50%; */
+	background:#E6E6E6 repeat-x scroll 50% 50%; 
 	border:1px solid #D3D3D3; 
 	color:#555555; 
 	font-weight:normal; 

@@ -17,9 +17,21 @@
 	<script type="text/javascript" src="http://documentcloud.github.com/backbone/backbone.js"></script>
     
 	<script type="text/javascript" > 
-		
-        
+	  
+      
       $(document).ready(function() {
+          
+          /*window.Error = Backbone.Model.extend({
+            urlRoot : "/error",
+            tag : "error",
+            message : ""
+          });
+          window.Errors = Backbone.Collection.extend({
+            tag : "errors",
+            model: Error,
+            content : []
+          });
+          */
           
           window.Register = Backbone.Model.extend({
             urlRoot : "/user"
@@ -77,15 +89,27 @@
                     
                     ]}]},
                 {silent: true});
-              registerModel.save(); /*({ 
-                                    success : function(model, response) {},   // handle a application error
-                                    error : function(model, response) {}    // handle a 500 error 
-                                }); */
+              registerModel.save( registerModel,
+                                  {
+                                    success : function(model, response) {
+                                      console.log("SUCCESS model: " + model.toJSON());
+                                      console.log("SUCCESS response: " + response.toJSON());
+                                    },   // handle a application error
+                                    error : function(model, response) {
+                                      console.log("ERROR model: " + model.toJSON());
+                                      console.log("ERROR response: " + response.toJSON());
+                                    }    // handle a 500 error 
+                                  });
               }
           });
           
           registerModel = new Register
           registerView = new RegisterView; 
+
+          //e1 = new Error({ "message" : "Error 1" });
+          //e2 = new Error({ "message" : "Error 2" });
+          //errs = new Errors( [e1, e2] );
+          //errs.save();
           
 	  });
       
