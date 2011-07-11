@@ -5,6 +5,7 @@
   (:require clojure.pprint)
   (:require [clojure.zip :as zip])
   (:require domain)
+  (:require util)
   
   (:use somnium.congomongo)
   ;;(:use debug)
@@ -13,8 +14,11 @@
 
 (defn add-user [user] 
   
-  { :pre  [(not (=  (:username user) ;; check that there is not a duplicate user 
-                    (:username (first (fetch "users" :where { :username (:username user) })))))
+  { :pre  [ (util/verify-arg 
+              (not (=  (:username user) ;; check that there is not a duplicate user 
+                (:username (first (fetch "users" :where { :username (:username user) })))))
+              "This is a duplicate User"
+            )
           ]}
   
   (insert! :users (assoc user :password (domain/md5-sum (:password user)))) ;; insert the user, after MD5 encrypting the password 

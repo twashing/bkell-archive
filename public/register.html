@@ -77,8 +77,11 @@
                     
                     ]}]},
                 {silent: true});
-              registerModel.save(); 
-            }
+              registerModel.save(); /*({ 
+                                    success : function(model, response) {},   // handle a application error
+                                    error : function(model, response) {}    // handle a 500 error 
+                                }); */
+              }
           });
           
           registerModel = new Register
