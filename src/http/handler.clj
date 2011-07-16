@@ -3,10 +3,12 @@
   (:use [compojure.core]
   )
   ;;(:use net.cgrand.enlive-html)
+  (:import java.io.FileReader)
   (:require [compojure.route :as route]
             [compojure.handler :as handler]
             [bjell]
             [clojure.contrib.duck-streams :as duck-streams]
+            [clojure.data.json :as json]
             [ring.middleware.file :as ring-file]
             [ring.util.response :as response]
   )
@@ -23,6 +25,15 @@
                   (set-attr :value "ZZzzz"))
 )
 
+
+(defn- generate-error-response [ msg ]
+  (merge { :tag :error } { :message msg }))
+(defn- generate-error-responses [ & msgs ]
+  { :tag :errors 
+    :content  (reduce #(conj %1 (generate-error-response %2))
+                [] msgs)
+  }
+)
 
 (defroutes main
   "Some core functions and thier URL mappings 
@@ -48,9 +59,10 @@
     
     (println (str "POST ; /user/:id ; " req))
     (if-let [user (duck-streams/slurp* (:body req))]
-      (.toString      ;; JSON of MongoDB WriteResult; TODO - make a proper JSON string for client 
-        (bjell/add user)) ;; TODO - stubbing in 'stub' user for now
-      (println "ERROR - POST body is nil")
+      (try
+        (.toString (bjell/add user)) 
+        (catch Exception e (generate-error-responses (.getMessage e))))
+      (generate-error-responses "POST body is nil")
     )
   )
   
