@@ -61,8 +61,8 @@
     (if-let [user (duck-streams/slurp* (:body req))]
       (try
         (.toString (bjell/add user)) 
-        (catch Exception e (generate-error-responses (.getMessage e))))
-      (generate-error-responses "POST body is nil")
+        (catch Exception e (clojure.data.json/json-str (generate-error-responses (.getMessage e)))))
+      (clojure.data.json/json-str (generate-error-responses "POST body is nil"))
     )
   )
   
