@@ -1,13 +1,13 @@
 
 
-describe("bk.user", function() { 
+describe("bkeeping.user", function() { 
   
   // 1. test for existance
   it("should be present in the global namespace", function () {
-    expect(bk.user).toBeDefined();
+    expect(bkeeping.user).toBeDefined();
   });
-  it("should be a 'backbone' Model", function () {
-    expect(bk.user).toBeDefined();
+  it("'backbone' Model should contain a 'urlRoot'", function () {
+    expect(bkeeping.user.get("urlRoot")).toEqual("/user");
   });
 
 });

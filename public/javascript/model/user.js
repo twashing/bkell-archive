@@ -1,10 +1,10 @@
 
   
-window.Register = Backbone.Model.extend({
+var User = Backbone.Model.extend({
   urlRoot : "/user"
 }); 
 
-window.RegisterView = Backbone.View.extend({
+/*window.RegisterView = Backbone.View.extend({
   
   tagName : "div",
   className: "register",
@@ -79,5 +79,6 @@ window.RegisterView = Backbone.View.extend({
 
 registerModel = new Register
 registerView = new RegisterView; 
+*/
 
 

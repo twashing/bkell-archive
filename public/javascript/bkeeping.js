@@ -1,8 +1,8 @@
 
-require("/javascript/model/user.js", true);
+//require("/javascript/model/user.js", true);
 
 var bkeeping = {} ;
 
-//bkeeping.user = new User;
+bkeeping.user = new User();
 
 
