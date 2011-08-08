@@ -1,3 +1,6 @@
 [submodule "vendor/debug"]
 	path = vendor/debug
 	url = git://gist.github.com/838147.git
+[submodule "vendor/clojurescript"]
+	path = vendor/clojurescript
+	url = https://github.com/clojure/clojurescript.git
