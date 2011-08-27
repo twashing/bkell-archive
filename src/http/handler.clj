@@ -14,17 +14,6 @@
   )
 )
 
-#_(deftemplate index "public/index.html"
-  
-  []
-  [:input#fuid] (do-> 
-                  (content "Tim")
-                  (set-attr :value "XXxxx"))
-  [:input#barid] (do->
-                  (content "Washington") 
-                  (set-attr :value "ZZzzz"))
-)
-
 
 (defn- generate-error-response [ msg ]
   (merge { :tag :error } { :message msg }))
