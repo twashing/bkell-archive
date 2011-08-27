@@ -18,16 +18,14 @@
   (request "/" handler/main :get {})
 )
 
+(deftest test-index 
+
+  (is (= 200 (:status (request "/" handler/main :get {}))))  ;; assert that i. status is 200, the index page has ii. a link to register page iii. inputs for login 
+  
+)
+
 #_(defroutes main
-  "Some core functions and thier URL mappings 
   
-    (commands/get :accounts \"stub\")     ->  /accounts     -> /account/:id 
-    (commands/get :bookkeeping \"stub\")  ->  /bookkeeping  -> /bookkeeping/:id 
-    (commands/get :entries \"stub\")      ->  /entries      -> /entry/:id 
-  "
-  
-  
-  (GET "/" [])  ;; assert that i. status is 200, the index page has ii. a link to register page iii. inputs for login 
   (GET "/register" [])  ;; return static register.html page; assert that i. status is 200, register page has ii. inputs for registering
   
 
