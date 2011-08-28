@@ -1,15 +1,12 @@
 
 (ns bkell-test 
-(comment
   (:use [bkell] :reload-all)
   (:use [clojure.test])
   (:require test-utils)
   (:require clojure.contrib.logging)
 )
-)
 
 
-(comment
 (use-fixtures :each test-utils/test-fixture-db )
 (somnium.congomongo/mongo! :db "bkell") ;; connect to mongodb
 
@@ -18,15 +15,21 @@
 ;; 'ADD' tests
 ;; ==================
 (deftest test-addU
-  (let [user (load-file "test/etc/data/stubu-two.clj")]
-    (bkell/add user)
+  (let [  user (load-file "test/etc/data/stubu-two.clj")
+          ruser (bkell/add user)]
+    (is (= :user (:tag user)))  ;; ensure that a :user tag is coming back 
   )
 )
-#_(deftest test-addC
+(deftest test-addC
   (let [user (load-file "test/etc/data/stubu-two.clj")
         ru (commands/add-user user)
+        
+        bk (bkell/init-shell)      ;; initialize the bkell 
         currency (load-file "test/etc/data/test-currency.clj")]
-    (bkell/add currency "stub" false)
+    
+    (let [ eresult (bkell/add currency "stub" false)]
+      (is (-> nil? eresult not))
+    )
   )
 )
 #_(deftest test-addA
@@ -44,7 +47,5 @@
          ]
     (bkell/add entry "stub")
   )
-)
-
 )
 

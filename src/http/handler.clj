@@ -11,18 +11,10 @@
             [clojure.data.json :as json]
             [ring.middleware.file :as ring-file]
             [ring.util.response :as response]
+            [util]
   )
 )
 
-
-(defn- generate-error-response [ msg ]
-  (merge { :tag :error } { :message msg }))
-(defn- generate-error-responses [ & msgs ]
-  { :tag :errors 
-    :content  (reduce #(conj %1 (generate-error-response %2))
-                [] msgs)
-  }
-)
 
 (defroutes main
   "Some core functions and thier URL mappings 
@@ -50,8 +42,8 @@
     (if-let [user (duck-streams/slurp* (:body req))]
       (try
         (.toString (bjell/add user)) 
-        (catch Exception e (clojure.data.json/json-str (generate-error-responses (.getMessage e)))))
-      (clojure.data.json/json-str (generate-error-responses "POST body is nil"))
+        (catch Exception e (clojure.data.json/json-str (util/generate-error-responses (.getMessage e)))))
+      (clojure.data.json/json-str (util/generate-error-responses "POST body is nil"))
     )
   )
   

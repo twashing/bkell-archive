@@ -1,23 +1,31 @@
 (ns commands
-  (:require get)
-  (:require clojure.string)
-  (:require bkell)
-  (:require domain)
-  ;;(:require debug)
+  (:require [get]
+            [clojure.string]
+            [domain]
+            [util]
+  )
 )
 
+
+
+(defn logged-in-user []
+  (if-let [bk (util/get-bkell)] 
+    (-> nil? (:logged-in-user @bk)))
+)
+(defn authenticated? [user]
+  (= (:username (:logged-in-user @(util/get-bkell)))
+     (:username user))
+)
 (defn same-user-check [user]
 
     ;; check if 
-    ;;  i) there is a logged-in-user 
-    ;;  ii) incoming user & logged-in-user are same (OK)
-    ;;  iii) incoming user & logged-in-user are different (ERROR)
+    ;;  i. there is a logged-in-user 
+    ;;  ii. incoming user & logged-in-user are same (OK)
+    ;;  iii. incoming user & logged-in-user are different (ERROR)
     ;;(debug/debug-repl)
 	(and 
-      (not (nil? (:logged-in-user @bkell/shell)))
-      (= 
-        (:username (:logged-in-user @bkell/shell))
-        (:username user)))
+      (not (nil? (:logged-in-user @(util/get-bkell))))
+      (authenticated? user))
 )
 (defn login-user [user]
     
@@ -27,9 +35,9 @@
             ]
     }
     (dosync 
-	  (alter bkell/shell conj 
+	  (alter (util/get-bkell) conj 
 		{ :logged-in-user user } )
-	  (alter bkell/shell conj 
+	  (alter (util/get-bkell) conj 
 		{ :previous user })) 
     
 )
@@ -39,8 +47,8 @@
     { :pre  [(same-user-check user)] }
     
     (dosync 
-        (alter bkell/shell dissoc :logged-in-user )
-		(alter bkell/shell conj { :previous user } )
+        (alter (util/get-bkell) dissoc :logged-in-user )
+		(alter (util/get-bkell) conj { :previous user } )
     )
 )
 

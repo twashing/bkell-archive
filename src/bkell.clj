@@ -1,11 +1,13 @@
 (ns bkell
 
   (:import java.io.FileReader)
-  (:require commands.add)
-  (:require commands.get)
-  (:require commands.update)
-  (:require commands.remove)
-  (:require domain)
+  (:require [commands.add]
+            [commands.get]
+            [commands.update]
+            [commands.remove]
+            [commands.authenticate]
+            [domain]
+            [util])
 )
 
 
@@ -16,7 +18,15 @@
 
 (defn add [artifact-p & etal]
   
-  (eval `(commands/add (domain/keywordize-tags ~artifact-p) ~@etal))
+  (let [  logged-in-user (commands/logged-in-user)]
+    (if (and  (-> logged-in-user nil? not)
+              (-> logged-in-user :tag (= :user) not) ;; you do not have to be authenticated to add a user 
+              (-> logged-in-user commands/authenticated? not))
+      
+      (util/generate-error-response "User is not authenticated")
+      (eval `(commands/add (domain/keywordize-tags ~artifact-p) ~@etal))
+    )
+  )
 )
 
 (defn get [akey & etal]

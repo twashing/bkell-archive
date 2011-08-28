@@ -21,3 +21,19 @@
 ;;(verify-arg false "fubar")
 
 
+;; doing this to avoid a 'Cyclic load dependency' Exception 
+(defn get-bkell[]
+  (-> "shell" symbol resolve)
+)
+
+
+(defn generate-error-response [ msg ]
+  (merge { :tag :error } { :message msg }))
+(defn generate-error-responses [ & msgs ]
+  { :tag :errors 
+    :content  (reduce #(conj %1 (generate-error-response %2))
+                [] msgs)
+  }
+)
+
+
