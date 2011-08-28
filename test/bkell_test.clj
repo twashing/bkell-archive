@@ -28,7 +28,7 @@
         currency (load-file "test/etc/data/test-currency.clj")]
     
     (let [ eresult (bkell/add currency "stub" false)]
-      (is (-> nil? eresult not))
+      (is (-> eresult nil? not))
     )
   )
 )
