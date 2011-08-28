@@ -27,9 +27,23 @@
         bk (bkell/init-shell)      ;; initialize the bkell 
         currency (load-file "test/etc/data/test-currency.clj")]
     
+    
+    ;; ensure that an error is returned if we try to add a currency without logging in 
     (let [ eresult (bkell/add currency "stub" false)]
+      (println "..." eresult)
       (is (-> eresult nil? not))
+      (is (-> eresult :tag (= :error)))
     )
+    
+    
+    ;; noe log-in a user
+    #_(commands/login-user ru) 
+    
+    #_(let [ fresult (bkell/add currency "stub" false)]
+      (is (-> fresult nil? not))
+      (is (-> fresult :tag (= :user)))
+    )
+
   )
 )
 #_(deftest test-addA
