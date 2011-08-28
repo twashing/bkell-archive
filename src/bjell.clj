@@ -25,7 +25,9 @@
   
   (let  [ artifact-p (domain/keywordize-tags (clojure.data.json/read-json artifact))]
 
-    (eval `(commands/add ~artifact-p ~@etal))
+    (clojure.data.json/json-str 
+      (domain/bsonid-to-id
+        (eval `(commands/add ~artifact-p ~@etal)) ))
   )
 )
 

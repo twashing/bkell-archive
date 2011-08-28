@@ -21,11 +21,11 @@
             )
           ]}
   
-  (insert! :users (assoc user :password (domain/md5-sum (:password user)))) ;; insert the user, after MD5 encrypting the password 
   (let [gr (load-file "etc/data/default.group.clj")]  ;; insert the associated group
     (insert! :groups (assoc gr :name (:username user) :owner (:username user))))
   (let [bk (load-file "etc/data/default.bookkeeping.clj")]  ;; insert the associated bookkeeping
     (insert! :bookkeeping (assoc bk :owner (:username user))))
+  (insert! :users (assoc user :password (domain/md5-sum (:password user)))) ;; insert the user, after MD5 encrypting the password 
 )
 
 
