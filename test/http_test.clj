@@ -14,21 +14,26 @@
   (defroutes-fn {:request-method method :uri resource :params (first params)})
 )
 
-#_(
-  (request "/" handler/main :get {})
-)
 
 (deftest test-index 
 
-  (is (= 200 (:status (request "/" handler/main :get {}))))  ;; assert that i. status is 200, the index page has ii. a link to register page iii. inputs for login 
-  
+    (let [result (request "/" handler/main :get {})]  
+      (is (= 200 (:status result)))  ;; assert that i. status is 200, the index page has ii. a link to register page iii. inputs for login 
+      (is (= "index.html" (->> :body result .getName)))
+    )
 )
+
+(deftest test-register-get
+
+    (let [result (request "/register" handler/main :get {})]  
+      (is (= 200 (:status result)))  ;; return static register.html page; assert that i. status is 200, register page has ii. inputs for registering
+      (is (= "register.html" (->> :body result .getName)))
+    )
+)
+
 
 #_(defroutes main
   
-  (GET "/register" [])  ;; return static register.html page; assert that i. status is 200, register page has ii. inputs for registering
-  
-
 
   ;; *** These functions have to work after someone has authenticated 
   ;;... create authentication function 
