@@ -43,13 +43,14 @@
         bk (bkell/init-shell)      ;; initialize the bkell 
         currency (load-file "test/etc/data/test-currency.clj")]
     
-    
     ;; now log-in a user
     (commands/login-user ru) 
     
-    #_(let [ fresult (bkell/add currency "stub" false)]
+    (let [ fresult (bkell/add currency "stub" false)]
+
+      (println "... " fresult)
       (is (-> fresult nil? not))
-      (is (-> fresult :tag (= :user)))
+      (is (-> fresult :tag (= :currency)))
     )
 
   )

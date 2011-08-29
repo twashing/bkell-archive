@@ -44,12 +44,18 @@
   (let  [ ru (fetch-one "bookkeeping" :where { :owner uname }) ]
     
     ;;(debug/debug-repl)
-    (update! :bookkeeping { :_id (:_id ru) }  ;; passing in hash w/ ObjecId, NOT original object 
-      (domain/modify-currency                       ;; update the currency if existing  
+    (if-let [result     ;; result will be a 'com.mongodb.CommandResult'
+      (update! :bookkeeping { :_id (:_id ru) }  ;; passing in hash w/ ObjecId, NOT original object 
+        (domain/modify-currency                       ;; update the currency if existing  
           ru
           :insert
           currency 
-          default))
+          default))]
+      
+      (if (-> result .getLastError .ok)
+        currency
+        (util/generate-error-response (.getErrorMessage result)))
+    )
   )
 )
 

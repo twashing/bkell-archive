@@ -10,7 +10,7 @@
 
 (defn logged-in-user []
   (if-let [bk (util/get-bkell)] 
-    (-> @bk :logged-in-user)))
+    (-> @bk deref :logged-in-user)))
 
 (defn authenticated? [user]
   (= (:username (:logged-in-user @(util/get-bkell)))
