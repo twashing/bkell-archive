@@ -19,10 +19,9 @@
 (defn add [artifact-p & etal]
   
   (let [  logged-in-user (commands/logged-in-user)]
-    (if (and  (-> logged-in-user nil? not)
-              (-> logged-in-user :tag (= :user) not) ;; you do not have to be authenticated to add a user 
-              (-> logged-in-user commands/authenticated? not))
-      
+    (if (and  (-> logged-in-user nil?)  ;; we want to see a logged-in-user 
+              (-> artifact-p :tag (= :user) not) ;; you do not have to be authenticated to add a user 
+        )
       (util/generate-error-response "User is not authenticated")
       (eval `(commands/add (domain/keywordize-tags ~artifact-p) ~@etal))
     )

@@ -43,7 +43,7 @@
   ;;  2. http://tech.puredanger.com/2010/10/23/pattern-matching-and-tree-mutation
   (let  [ ru (fetch-one "bookkeeping" :where { :owner uname }) ]
     
-    (debug/debug-repl)
+    ;;(debug/debug-repl)
     (update! :bookkeeping { :_id (:_id ru) }  ;; passing in hash w/ ObjecId, NOT original object 
       (domain/modify-currency                       ;; update the currency if existing  
           ru
