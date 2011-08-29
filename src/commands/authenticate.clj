@@ -10,8 +10,8 @@
 
 (defn logged-in-user []
   (if-let [bk (util/get-bkell)] 
-    (-> nil? (:logged-in-user @bk)))
-)
+    (-> @bk :logged-in-user)))
+
 (defn authenticated? [user]
   (= (:username (:logged-in-user @(util/get-bkell)))
      (:username user))
@@ -23,9 +23,11 @@
     ;;  ii. incoming user & logged-in-user are same (OK)
     ;;  iii. incoming user & logged-in-user are different (ERROR)
     ;;(debug/debug-repl)
-	(and 
-      (not (nil? (:logged-in-user @(util/get-bkell))))
-      (authenticated? user))
+      (if-let [bk (util/get-bkell)]
+	    (and 
+          (-> @bk :logged-in-user nil? not)
+          (authenticated? user))
+      )
 )
 (defn login-user [user]
     
@@ -35,9 +37,9 @@
             ]
     }
     (dosync 
-	  (alter (util/get-bkell) conj 
+	  (alter @(util/get-bkell) conj 
 		{ :logged-in-user user } )
-	  (alter (util/get-bkell) conj 
+	  (alter @(util/get-bkell) conj 
 		{ :previous user })) 
     
 )

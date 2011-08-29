@@ -7,7 +7,7 @@
 )
 
 
-(use-fixtures :each test-utils/test-fixture-db )
+(use-fixtures :each test-utils/test-fixture-db)
 (somnium.congomongo/mongo! :db "bkell") ;; connect to mongodb
 
 
@@ -16,6 +16,7 @@
 ;; ==================
 (deftest test-addU
   (let [  user (load-file "test/etc/data/stubu-two.clj")
+          bk (bkell/init-shell)      ;; initialize the bkell 
           ruser (bkell/add user)]
     (is (= :user (:tag user)))  ;; ensure that a :user tag is coming back 
   )
@@ -33,10 +34,18 @@
       (is (-> eresult nil? not))
       (is (-> eresult :tag (= :error)))
     )
+  )
+)
+(deftest test-addC1
+  (let [user (load-file "test/etc/data/stubu-two.clj")
+        ru (commands/add-user user)
+        
+        bk (bkell/init-shell)      ;; initialize the bkell 
+        currency (load-file "test/etc/data/test-currency.clj")]
     
     
     ;; now log-in a user
-    #_(commands/login-user ru) 
+    (commands/login-user ru) 
     
     #_(let [ fresult (bkell/add currency "stub" false)]
       (is (-> fresult nil? not))

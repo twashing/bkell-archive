@@ -23,7 +23,7 @@
 
 ;; doing this to avoid a 'Cyclic load dependency' Exception 
 (defn get-bkell[]
-  (-> "shell" symbol resolve)
+  (->> "shell" symbol (ns-resolve (symbol "bkell") ))
 )
 
 
