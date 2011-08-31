@@ -47,28 +47,47 @@
     (commands/login-user ru) 
     
     (let [ fresult (bkell/add currency "stub" false)]
-
-      (println "... " fresult)
+      
       (is (-> fresult nil? not))
       (is (-> fresult :tag (= :currency)))
     )
-
+    
   )
 )
-#_(deftest test-addA
+(deftest test-addA
   (let [user (load-file "test/etc/data/stubu-two.clj")
         ru (commands/add-user user)
+        
+        bk (bkell/init-shell)      ;; initialize the bkell 
         account (load-file "test/etc/data/test-account-asset.clj")]
-    (bkell/add account "stub")
+    
+    ;; now log-in a user
+    (commands/login-user ru) 
+    
+    (let [fresult (bkell/add account "stub")]
+      
+      (is (-> fresult nil? not))
+      (is (-> fresult :tag (= :account)))
+    )
   )
 )
-#_(deftest test-addE
-  (let  [user (load-file "test/etc/data/stubu-two.clj")
-         ru (commands/add-user user)
-         xx (test-utils/populate-accounts)
-         entry (test-utils/create-balanced-test-entry)
+(deftest test-addE
+  (let  [ user (load-file "test/etc/data/stubu-two.clj")
+          ru (commands/add-user user)
+          
+          bk (bkell/init-shell)      ;; initialize the bkell 
+          xx (test-utils/populate-accounts)
+          entry (test-utils/create-balanced-test-entry)
          ]
-    (bkell/add entry "stub")
+    
+    ;; now log-in a user
+    (commands/login-user ru) 
+    
+    (let [fresult (bkell/add entry "stub")]
+      
+      (is (-> fresult nil? not))
+      (is (-> fresult :tag (= :entry)))
+    )
   )
 )
 

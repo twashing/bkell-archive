@@ -44,7 +44,7 @@
   (let  [ ru (fetch-one "bookkeeping" :where { :owner uname }) ]
     
     ;;(debug/debug-repl)
-    (if-let [result     ;; result will be a 'com.mongodb.CommandResult'
+    (if-let [result     ;; result will be a 'com.mongodb.WriteResult'
       (update! :bookkeeping { :_id (:_id ru) }  ;; passing in hash w/ ObjecId, NOT original object 
         (domain/modify-currency                       ;; update the currency if existing  
           ru
@@ -81,8 +81,14 @@
   
   (let  [ ru (fetch-one "bookkeeping" :where { :owner uname }) ]
     
-    (update! :bookkeeping { :_id (:_id ru) }  ;; passing in hash w/ ObjecId, NOT original object
-      (domain/traverse-tree ru :insert { :id "main.accounts" } account))
+    (if-let [result ;; result will be a 'com.mongodb.WriteResult' 
+      (update! :bookkeeping { :_id (:_id ru) }  ;; passing in hash w/ ObjecId, NOT original object
+        (domain/traverse-tree ru :insert { :id "main.accounts" } account))]
+      
+      (if (-> result .getLastError .ok)
+        account
+        (util/generate-error-response (.getErrorMessage result)))
+    )
   )
 )
 
@@ -107,10 +113,15 @@
   
   (let  [ ru (fetch-one "bookkeeping" :where { :owner uname }) ]
     
-    (update! :bookkeeping { :_id (:_id ru) }  ;; passing in hash w/ ObjecId, NOT original object
-      (domain/traverse-tree ru :insert { :id "main.entries" } entry))
+    (if-let [result ;; result will be a 'com.mongodb.WriteResult' 
+      (update! :bookkeeping { :_id (:_id ru) }  ;; passing in hash w/ ObjecId, NOT original object
+        (domain/traverse-tree ru :insert { :id "main.entries" } entry))]
+      
+      (if (-> result .getLastError .ok)
+        entry
+        (util/generate-error-response (.getErrorMessage result)))
+    )
   )
-
 )
 
 
