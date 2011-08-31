@@ -61,6 +61,11 @@
         bk (bkell/init-shell)      ;; initialize the bkell 
         account (load-file "test/etc/data/test-account-asset.clj")]
     
+    ;; ensure that an error is returned if we try to add an account without logging in 
+    (let [ eresult (bkell/add account "stub" false)]
+      (is (-> eresult nil? not))
+      (is (-> eresult :tag (= :error)))
+    )
     ;; now log-in a user
     (commands/login-user ru) 
     
@@ -80,6 +85,11 @@
           entry (test-utils/create-balanced-test-entry)
          ]
     
+    ;; ensure that an error is returned if we try to add an entry without logging in 
+    (let [ eresult (bkell/add entry "stub" false)]
+      (is (-> eresult nil? not))
+      (is (-> eresult :tag (= :error)))
+    )
     ;; now log-in a user
     (commands/login-user ru) 
     
@@ -90,4 +100,21 @@
     )
   )
 )
+
+;; ==================
+;; 'GET' tests
+;; ==================
+
+
+;; ==================
+;; 'UPDATE' tests
+;; ==================
+
+
+;; ==================
+;; 'REMOVE' tests
+;; ==================
+
+
+
 
