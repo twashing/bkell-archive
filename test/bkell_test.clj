@@ -112,7 +112,6 @@
     
     (let [ fresult (bkell/get :user (:username ruser))]
       
-      (println "... " fresult)
       (is (-> fresult nil? not))
       (is (-> fresult :tag (= :user)))
     )
@@ -128,7 +127,7 @@
     
     
     ;; ensure that an error is returned if we try to add a currency without logging in 
-    (let [ eresult (bkell/add currency "stub" false)]
+    (let [ eresult (bkell/get :currency "stub" "USD")]
       (is (-> eresult nil? not))
       (is (-> eresult :tag (= :error)))
     )
@@ -136,12 +135,12 @@
     ;; now log-in a user
     (commands/login-user ru) 
     
-    (let [ fresult (bkell/add currency "stub" false)]
+    (let [ fresult (bkell/get :currency "stub" "USD")]
       
       (is (-> fresult nil? not))
       (is (-> fresult :tag (= :currency)))
+      (is (-> fresult :id (= "USD")))
     )
-    
   )
 )
 

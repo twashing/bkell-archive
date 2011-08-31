@@ -59,7 +59,13 @@
         r   "function(k,vals) { return { result : vals } ; }"
         result (map-reduce :bookkeeping m r :result-collection)]
 
-    (-> result first :value :result first) ;; dig in and get the currency
+    (-> result first :value) ;; dig in and get the currency
+    #_(let  [thing (-> result first :value) ;; this is here for debugging purposes
+          ]
+      (println "2 ... " result)
+      (println "3 ... " thing)
+      thing
+    )
   )
 )
 
