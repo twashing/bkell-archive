@@ -31,7 +31,14 @@
 )
 
 (defn get [akey & etal]
-  (eval `(commands/get akey ~@etal))
+  
+  (let [  logged-in-user (commands/logged-in-user)]
+    (if (-> logged-in-user nil?)  ;; we want to see a logged-in-user 
+      (util/generate-error-response "User is not authenticated")
+      (domain/keywordize-tags 
+        (eval `(commands/get ~akey ~@etal)))
+    )
+  )
 )
 
 (defn update [artifact-p & etal]
