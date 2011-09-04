@@ -488,38 +488,30 @@
 )
 
 ;; remove entry 
-#_(deftest test-removeE
+(deftest test-removeE
   (let [user (load-file "test/etc/data/stubu-two.clj")
         ru (commands/add-user user)
         
         bk (bkell/init-shell)      ;; initialize the bkell 
+        xx (test-utils/populate-accounts)
         entry (test-utils/create-balanced-test-entry)]
     
-    
-    ;; ensure that an error is returned if we try to get an account without logging in 
-    (let [ eresult (bkell/update entry)]
+    ;; ensure that an error is returned if we try to remove a currency without logging in 
+    (let [ eresult (bkell/remove entry (:username ru))]
       (is (-> eresult nil? not))
       (is (-> eresult :tag (= :error)))
     )
     
     ;; now log-in a user
     (commands/login-user ru) 
-    (test-utils/populate-accounts)
     
-    ;; ensure we are returning a :user map
-    (let [ fresult (bkell/update (merge entry {:date "01/01/2011"}) (:username ru))]
-      
-      (is (-> fresult nil? not))
-      (is (-> fresult :tag (= :entry)))
-    )
+    ;; ensure we are returning nil
+    (let [ fresult (bkell/remove entry (:username ru))]
+      (is (-> fresult nil? not)))
     
-    ;; ensure we have updated the value
+    ;; ensure we get a nil when trying to get an associated object 
     (let [gresult (bkell/get :entry (:username ru) (:id entry))]
-      
-      (is (-> gresult nil? not))
-      (is (-> gresult :tag (= :entry)))
-      (is (-> gresult :date (= "01/01/2011")))
-    )
+      (is (-> gresult nil?)))
     
   )
 )
