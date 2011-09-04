@@ -69,7 +69,7 @@
 (defn get-accounts [uname] 
 
   (let [m (str "function(){ 
-			  if( this.owner == '"uname"' ) { 
+			  if( (this.content[1].content != null) && (this.owner == '"uname"') ) { 
 			    this.content[1].content.forEach( 
 			      function(x) { 
 			        emit( this.owner , x ); 
@@ -88,7 +88,7 @@
 (defn get-account [uname account]
 
   (let [m (str "function(){ 
-			  if( this.owner == '"uname"' ) { 
+			  if( (this.content[1].content != null) && (this.owner == '"uname"') ) { 
 			    this.content[1].content.forEach( 
 			        
                     function(x) { 
@@ -101,7 +101,7 @@
 			};")
         r   "function(k,vals) { return { result : vals } ; }"
         result (map-reduce :bookkeeping m r :result-collection)]
-
+    
     (-> result first :value ) ;; dig in and get the currency
   )
 )

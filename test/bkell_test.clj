@@ -440,7 +440,7 @@
         currency (load-file "test/etc/data/test-currency.clj")
         rc (commands/add-currency currency (:username ru) false)]
     
-    ;; ensure that an error is returned if we try to get a currency without logging in 
+    ;; ensure that an error is returned if we try to remove a currency without logging in 
     (let [ eresult (bkell/remove currency (:username ru))]
       (is (-> eresult nil? not))
       (is (-> eresult :tag (= :error)))
@@ -449,7 +449,7 @@
     ;; now log-in a user
     (commands/login-user ru) 
     
-    ;; ensure we are returning a :currency map
+    ;; ensure we are returning nil
     (let [ fresult (bkell/remove currency (:username ru))]
       (is (-> fresult nil? not)))
     
@@ -465,11 +465,11 @@
         ru (commands/add-user user)
         
         bk (bkell/init-shell)      ;; initialize the bkell 
-        account (load-file "test/etc/data/test-account-asset.clj")]
+        account (load-file "test/etc/data/test-account-asset.clj")
+        ra (commands/add account (:username ru))]
     
-    
-    ;; ensure that an error is returned if we try to get an account without logging in 
-    (let [ eresult (bkell/update account)]
+    ;; ensure that an error is returned if we try to remove a currency without logging in 
+    (let [ eresult (bkell/remove account (:username ru))]
       (is (-> eresult nil? not))
       (is (-> eresult :tag (= :error)))
     )
@@ -477,21 +477,13 @@
     ;; now log-in a user
     (commands/login-user ru) 
     
-    ;; ensure we are returning a :user map
-    (let [ fresult (bkell/update (merge account {:name "thing"}) (:username ru))]
-      
-      (is (-> fresult nil? not))
-      (is (-> fresult :tag (= :account)))
-    )
+    ;; ensure we are returning nil
+    (let [ fresult (bkell/remove account (:username ru))]
+      (is (-> fresult nil? not)))
     
-    ;; ensure we have updated the value
+    ;; ensure we get a nil when trying to get an associated object 
     (let [gresult (bkell/get :account (:username ru) (:id account))]
-      
-      (is (-> gresult nil? not))
-      (is (-> gresult :tag (= :account)))
-      (is (-> gresult :name (= "thing")))
-    )
-    
+      (is (-> gresult nil?)))
   )
 )
 

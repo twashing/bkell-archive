@@ -24,7 +24,7 @@
 
   (let  [ ru (fetch-one "bookkeeping" :where { :owner uname }) ]
     (update! :bookkeeping { :_id (:_id ru) }  ;; passing in hash w/ ObjecId, NOT original object
-      (domain/traverse-tree ru :remove { :id currency } nil))
+      (domain/traverse-tree ru :remove { :id (:id currency) } nil))
   )
 )
 
@@ -34,7 +34,7 @@
 
   (let  [ ru (fetch-one "bookkeeping" :where { :owner uname }) ]
     (update! :bookkeeping { :_id (:_id ru) }  ;; passing in hash w/ ObjecId, NOT original object
-      (domain/traverse-tree ru :remove { :id account } nil))
+      (domain/traverse-tree ru :remove { :id (:id account) } nil))
   )
 )
 
@@ -44,7 +44,7 @@
 
   (let  [ ru (fetch-one "bookkeeping" :where { :owner uname }) ]
     (update! :bookkeeping { :_id (:_id ru) }  ;; passing in hash w/ ObjecId, NOT original object
-      (domain/traverse-tree ru :remove { :id entry } nil))
+      (domain/traverse-tree ru :remove { :id (:id entry) } nil))
   )
 )
 
