@@ -290,7 +290,7 @@
     
     
     ;; ensure that an error is returned if we try to get a currency without logging in 
-    (let [ eresult (bkell/update :currency currency)]
+    (let [ eresult (bkell/update currency)]
       (is (-> eresult nil? not))
       (is (-> eresult :tag (= :error)))
     )
@@ -312,13 +312,11 @@
       (is (-> gresult :tag (= :currency)))
       (is (-> gresult :content (= "some content")))
     )
-    
-    
   )
 )
 
-;; ... update account 
-#_(deftest test-getA
+;; update account 
+(deftest test-updateA
   (let [user (load-file "test/etc/data/stubu-two.clj")
         ru (commands/add-user user)
         
@@ -326,26 +324,35 @@
         account (load-file "test/etc/data/test-account-asset.clj")]
     
     
-    ;; ensure that an error is returned if we try to get a currency without logging in 
-    (let [ eresult (bkell/get :account "stub" "cash")]
+    ;; ensure that an error is returned if we try to get an account without logging in 
+    (let [ eresult (bkell/update account)]
       (is (-> eresult nil? not))
       (is (-> eresult :tag (= :error)))
     )
     
-    (commands/login-user ru) ;; now log-in a user
-    (bkell/add account "stub" false) ;; now add an account 
+    ;; now log-in a user
+    (commands/login-user ru) 
     
-    (let [ fresult (bkell/get :account "stub" "cash")]
+    ;; ensure we are returning a :user map
+    (let [ fresult (bkell/update (merge account {:name "thing"}) (:username ru))]
       
       (is (-> fresult nil? not))
       (is (-> fresult :tag (= :account)))
-      (is (-> fresult :id (= "cash")))
     )
+    
+    ;; ensure we have updated the value
+    (let [gresult (bkell/get :account (:username ru) (:id account))]
+      
+      (is (-> gresult nil? not))
+      (is (-> gresult :tag (= :account)))
+      (is (-> gresult :name (= "thing")))
+    )
+    
   )
 )
 
 ;; ... update entry 
-#_(deftest test-updateC
+#_(deftest test-updateE
   (let [user (load-file "test/etc/data/stubu-two.clj")
         ru (commands/add-user user)
         

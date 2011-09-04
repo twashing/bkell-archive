@@ -35,7 +35,7 @@
           ] }
   (let [ru (fetch-one "bookkeeping" :where { :owner uname })
         rc (commands/get-currency uname (:id currency))]
-    ;;(debug/debug-repl)
+    
     (if rc 
       (update! :bookkeeping { :_id (:_id ru) }  ;; passing in hash w/ ObjecId, NOT original object 
         (domain/modify-currency                       ;; update the currency if existing  
@@ -64,7 +64,7 @@
     (if ra 
       (update! :bookkeeping { :_id (:_id ra) }  ;; passing in hash w/ ObjecId, NOT original object
         (domain/traverse-tree ru :update { :id (:id account) } account))
-      (commands/add account uname )
+      (commands/add account uname)
     )
   )
 )
@@ -105,7 +105,7 @@
 (defmulti update (fn [obj & etal] (:tag obj)))
 (defmethod update :user [user & etal] (update-user user))
 (defmethod update :currency [currency & etal] (update-currency currency (first etal) (second etal)))   ;; input arguments are: currency uname default
-(defmethod update :account [account & etal] (update-account (first etal)))  ;; input arguments are: account uname 
-(defmethod update :entry [entry & etal] (update-entry (first etal)))  ;; input arguments are: entry uname 
+(defmethod update :account [account & etal] (update-account account (first etal)))  ;; input arguments are: account uname 
+(defmethod update :entry [entry & etal] (update-entry entry (first etal)))  ;; input arguments are: entry uname 
 
 
