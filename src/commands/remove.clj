@@ -51,8 +51,8 @@
 
 (defmulti removek (fn [tagk & etal] (:tag tagk))) 
 (defmethod removek :user [user & etal] (remove-user user)) 
-(defmethod removek :currency [currency & etal] (remove-currency currency (-> etal first :username) ))   ;; input arguments are: uname currency 
-(defmethod removek :account [account & etal] (remove-account account (-> etal first :username) ))  ;; input arguments are: uname account
-(defmethod removek :entry [entry & etal] (remove-entry entry (-> etal first :username) ))  ;; input arguments are: uname entry 
+(defmethod removek :currency [currency & etal] (remove-currency currency (-> etal first) ))   ;; input arguments are: uname currency 
+(defmethod removek :account [account & etal] (remove-account account (-> etal first) ))  ;; input arguments are: uname account
+(defmethod removek :entry [entry & etal] (remove-entry entry (-> etal first) ))  ;; input arguments are: uname entry 
 
 

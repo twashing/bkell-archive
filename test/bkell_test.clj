@@ -402,7 +402,7 @@
 ;; 'REMOVE' tests
 ;; ==================
 
-;; ... remove user 
+;; remove user 
 (deftest test-removeU
   (let [  user (load-file "test/etc/data/stubu-two.clj")
           bk (bkell/init-shell)      ;; initialize the bkell 
@@ -431,17 +431,17 @@
   )
 )
 
-;; ... remove currency 
-#_(deftest test-removeC
+;; remove currency 
+(deftest test-removeC
   (let [user (load-file "test/etc/data/stubu-two.clj")
         ru (commands/add-user user)
         
         bk (bkell/init-shell)      ;; initialize the bkell 
-        currency (load-file "test/etc/data/test-currency.clj")]
-    
+        currency (load-file "test/etc/data/test-currency.clj")
+        rc (commands/add-currency currency (:username ru) false)]
     
     ;; ensure that an error is returned if we try to get a currency without logging in 
-    (let [ eresult (bkell/update currency)]
+    (let [ eresult (bkell/remove currency (:username ru))]
       (is (-> eresult nil? not))
       (is (-> eresult :tag (= :error)))
     )
@@ -449,20 +449,13 @@
     ;; now log-in a user
     (commands/login-user ru) 
     
-    ;; ensure we are returning a :user map
-    (let [ fresult (bkell/update (merge currency {:content "some content"}) (:username ru) false)]
-      
-      (is (-> fresult nil? not))
-      (is (-> fresult :tag (= :currency)))
-    )
+    ;; ensure we are returning a :currency map
+    (let [ fresult (bkell/remove currency (:username ru))]
+      (is (-> fresult nil? not)))
     
-    ;; ensure we have updated the value
+    ;; ensure we get a nil when trying to get an associated object 
     (let [gresult (bkell/get :currency (:username ru) (:id currency))]
-      
-      (is (-> gresult nil? not))
-      (is (-> gresult :tag (= :currency)))
-      (is (-> gresult :content (= "some content")))
-    )
+      (is (-> gresult nil?)))
   )
 )
 

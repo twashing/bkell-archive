@@ -1,14 +1,13 @@
 (ns bkell
 
   (:import java.io.FileReader)
-  (:require commands.command)
+  (:require domain)
+  (:require util)
   (:require commands.add)
   (:require commands.update)
   (:require commands.get)
   (:require commands.remove)
   (:require commands.authenticate)
-  (:require domain)
-  (:require util)
 )
 
 
@@ -31,7 +30,6 @@
   )
 )
 
-;;(require 'commands.get)
 (defn get [akey & etal]
   
   (let [  logged-in-user (commands/logged-in-user)]
@@ -54,7 +52,6 @@
   )
 )
 
-;;(require 'commands.remove)
 (defn remove [akey & etal]
   (let [  logged-in-user (commands/logged-in-user)]
     (if (-> logged-in-user nil?)  ;; we want to see a logged-in-user 
