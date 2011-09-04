@@ -1,14 +1,22 @@
 (ns bkell-test 
+  
   (:use [bkell] :reload-all)
   (:use [clojure.test])
-  (:require [test-utils]
-            [clojure.contrib.logging]
-            [domain])
+  
+  (:require test-utils)
+  (:require clojure.contrib.logging)
+  (:require commands.add)
+  (:require commands.get)
+  (:require commands.update)
+  (:require commands.remove)
+  (:require commands.authenticate)
+  (:require domain)
+  (:require util)
 )
 
 
 (use-fixtures :each test-utils/test-fixture-db)
-(somnium.congomongo/mongo! :db "bkell") ;; connect to mongodb
+(somnium.congomongo/mongo! :db "bkell-test") ;; connect to mongodb
 
 
 ;; ==================
@@ -410,9 +418,9 @@
     (commands/login-user ruser) 
     
     ;; ensure we are returning nil
-    (let [ fresult (bkell/remove ruser )]
+    (let [ fresult (bkell/remove ruser)]
       (is (-> fresult nil?)))
-
+    
     ;; ensure we get a nil
     (let [gresult (bkell/get :user (:username ruser))]
       (is (-> gresult nil?)))

@@ -1,13 +1,14 @@
 (ns bkell
 
   (:import java.io.FileReader)
-  (:require [commands.add]
-            [commands.get]
-            [commands.update]
-            [commands.authenticate]
-            [commands.remove]
-            [domain]
-            [util])
+  (:require commands.command)
+  (:require commands.add)
+  (:require commands.update)
+  (:require commands.get)
+  (:require commands.remove)
+  (:require commands.authenticate)
+  (:require domain)
+  (:require util)
 )
 
 
@@ -30,13 +31,14 @@
   )
 )
 
+;;(require 'commands.get)
 (defn get [akey & etal]
   
   (let [  logged-in-user (commands/logged-in-user)]
     (if (-> logged-in-user nil?)  ;; we want to see a logged-in-user 
       (util/generate-error-response "User is not authenticated")
-      (domain/keywordize-tags 
-        (eval `(commands/get ~akey ~@etal)))
+      (if-let [result (eval `(commands/get ~akey ~@etal))]  ;; ensure result is not nil before returning
+        (domain/keywordize-tags result))
     )
   )
 )
@@ -52,11 +54,12 @@
   )
 )
 
+;;(require 'commands.remove)
 (defn remove [akey & etal]
   (let [  logged-in-user (commands/logged-in-user)]
     (if (-> logged-in-user nil?)  ;; we want to see a logged-in-user 
       (util/generate-error-response "User is not authenticated")
-      (eval `(commands/remove ~akey ~@etal))
+      (eval `(commands/removek ~akey ~@etal))
     )
   )
 )

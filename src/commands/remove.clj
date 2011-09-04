@@ -6,14 +6,15 @@
 
 (defn remove-user 
   "Removes the 'user' and its related 'group' and 'bookkeeping'"
-  [uname] 
+  [user] 
   
-  { :pre  [ (not (nil? uname)) ]
+  { :pre  [ (not (nil? user)) 
+            (not (nil? (:username user))) ] 
   }
   
-  (destroy! :users { :username uname })
-  (destroy! :groups { :owner uname })
-  (destroy! :bookkeeping { :owner uname })
+  (destroy! :users { :username (:username user) })
+  (destroy! :groups { :owner (:username user) })
+  (destroy! :bookkeeping { :owner (:username user) })
   nil
 )
 
@@ -48,10 +49,10 @@
 )
 
 
-(defmulti remove (fn [tagk & etal] (:tag tagk))) 
-(defmethod remove :user [user & etal] (remove-user user)) 
-(defmethod remove :currency [currency & etal] (remove-currency currency (first etal) ))   ;; input arguments are: uname currency 
-(defmethod remove :account [account & etal] (remove-account account (first etal) ))  ;; input arguments are: uname account
-(defmethod remove :entry [entry & etal] (remove-entry entry (first etal) ))  ;; input arguments are: uname entry 
+(defmulti removek (fn [tagk & etal] (:tag tagk))) 
+(defmethod removek :user [user & etal] (remove-user user)) 
+(defmethod removek :currency [currency & etal] (remove-currency currency (-> etal first :username) ))   ;; input arguments are: uname currency 
+(defmethod removek :account [account & etal] (remove-account account (-> etal first :username) ))  ;; input arguments are: uname account
+(defmethod removek :entry [entry & etal] (remove-entry entry (-> etal first :username) ))  ;; input arguments are: uname entry 
 
 
