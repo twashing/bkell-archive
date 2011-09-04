@@ -172,7 +172,7 @@
 )
 
 ;; ENTRY 
-(deftest test-getC
+(deftest test-getE
   (let [user (load-file "test/etc/data/stubu-two.clj")
         ru (commands/add-user user)
         
@@ -200,6 +200,7 @@
   )
 )
 
+;; LISTs 
 (deftest test-get-lists
   
   ;; add the user 
@@ -246,10 +247,132 @@
 ;; 'UPDATE' tests
 ;; ==================
 
+;; update user 
+(deftest test-updateU
+  (let [  user (load-file "test/etc/data/stubu-two.clj")
+          bk (bkell/init-shell)      ;; initialize the bkell 
+          ruser (bkell/add user)]
+    
+    ;; ensure that an error is returned if we try to get a user without logging in 
+    (let [ eresult (bkell/update :user ruser)]
+      (is (-> eresult nil? not))
+      (is (-> eresult :tag (= :error)))
+    )
+    
+    ;; now log-in a user
+    (commands/login-user ruser) 
+    
+    ;; ensure we are returning a :user map
+    (let [ fresult (bkell/update :user (merge user {:password "asdf"}))]
+      
+      (is (-> fresult nil? not))
+      (is (-> fresult :tag (= :user)))
+    )
+
+    ;; ensure we have updated the value
+    (let [gresult (bkell/get :user (:username user))]
+      
+      (is (-> gresult nil? not))
+      (is (-> gresult :tag (= :user)))
+      (is (-> gresult :password (= "asdf")))
+    )
+    
+  )
+)
+
+;; ... update currency 
+#_(deftest test-updateC
+  (let [user (load-file "test/etc/data/stubu-two.clj")
+        ru (commands/add-user user)
+        
+        bk (bkell/init-shell)      ;; initialize the bkell 
+        ]
+    
+    
+    ;; ensure that an error is returned if we try to get a currency without logging in 
+    (let [ eresult (bkell/get :currency "stub" "USD")]
+      (is (-> eresult nil? not))
+      (is (-> eresult :tag (= :error)))
+    )
+    
+    ;; now log-in a user
+    (commands/login-user ru) 
+    
+    (let [ fresult (bkell/get :currency "stub" "USD")]
+      
+      (is (-> fresult nil? not))
+      (is (-> fresult :tag (= :currency)))
+      (is (-> fresult :id (= "USD")))
+    )
+  )
+)
+
+;; ... update account 
+#_(deftest test-getA
+  (let [user (load-file "test/etc/data/stubu-two.clj")
+        ru (commands/add-user user)
+        
+        bk (bkell/init-shell)      ;; initialize the bkell 
+        account (load-file "test/etc/data/test-account-asset.clj")]
+    
+    
+    ;; ensure that an error is returned if we try to get a currency without logging in 
+    (let [ eresult (bkell/get :account "stub" "cash")]
+      (is (-> eresult nil? not))
+      (is (-> eresult :tag (= :error)))
+    )
+    
+    (commands/login-user ru) ;; now log-in a user
+    (bkell/add account "stub" false) ;; now add an account 
+    
+    (let [ fresult (bkell/get :account "stub" "cash")]
+      
+      (is (-> fresult nil? not))
+      (is (-> fresult :tag (= :account)))
+      (is (-> fresult :id (= "cash")))
+    )
+  )
+)
+
+;; ... update entry 
+#_(deftest test-updateC
+  (let [user (load-file "test/etc/data/stubu-two.clj")
+        ru (commands/add-user user)
+        
+        bk (bkell/init-shell)      ;; initialize the bkell 
+        entry (test-utils/create-balanced-test-entry)]
+    
+    ;; ensure that an error is returned if we try to get a currency without logging in 
+    (let [ eresult (bkell/get :entry "stub" "testid")]
+      (is (-> eresult nil? not))
+      (is (-> eresult :tag (= :error)))
+    )
+    
+    
+    (commands/login-user ru) ;; now log-in a user
+    (test-utils/populate-accounts)
+    (test-utils/populate-entries)  ;; add a test entry before retreival
+    
+    
+    (let [ fresult (bkell/get :entry "stub" "testid")]
+      
+      (is (-> fresult nil? not))
+      (is (-> fresult :tag (= :entry)))
+      (is (-> fresult :id (= "testid")))
+    )
+  )
+)
+
+
 
 ;; ==================
 ;; 'REMOVE' tests
 ;; ==================
+
+;; ... remove user 
+;; ... remove currency 
+;; ... remove account 
+;; ... remove entry 
 
 
 

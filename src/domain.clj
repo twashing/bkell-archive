@@ -86,6 +86,8 @@
   A) { :tag \"user\" }
   B) { :tag :user }"
   [tree]
+  #_(println "... " tree)
+  #_(println "... " (-> tree map?))
   { :pre  [ (map? tree) ] } 
   
   (loop [loc (zip/zipper map? #(:content %1) #(assoc %1 :content (into [] %2)) tree)] ;; for '(into [] %2)', putting :content list into a vector

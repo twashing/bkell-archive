@@ -15,8 +15,13 @@
           ] }
    
   (let [ru  (first (fetch "users" :where { :username (:username user) }))]
-    (update!  :users { :_id (:_id ru) }  ;; passing in hash w/ ObjecId, NOT original object
-              user)
+    (if-let [ result ;; result will be a 'com.mongodb.WriteResult' 
+              (update!  :users { :_id (:_id ru) }  ;; passing in hash w/ ObjecId, NOT original object
+                user)]
+      (if (-> result .getLastError .ok)
+        user
+        (util/generate-error-response (.getErrorMessage result)))
+    )
   )
 )
 
@@ -97,10 +102,10 @@
 )
 
 
-(defmulti update (fn [obj & etal] (:tag obj)))
-(defmethod update :user [user] (update-user user))
-(defmethod update :account [account & etal] (update-account account (first etal)))  ;; input arguments are: account uname 
-(defmethod update :currency [currency & etal] (update-currency currency (first etal) (second etal)))   ;; input arguments are: currency uname default
-(defmethod update :entry [entry & etal] (update-entry entry (first etal)))  ;; input arguments are: entry uname 
+(defmulti update (fn [obj & etal] obj))
+(defmethod update :user [user & etal] (update-user (first etal)))
+(defmethod update :account [account & etal] (update-account (first etal)))  ;; input arguments are: account uname 
+(defmethod update :currency [currency & etal] (update-currency (first etal) (second etal)))   ;; input arguments are: currency uname default
+(defmethod update :entry [entry & etal] (update-entry (first etal)))  ;; input arguments are: entry uname 
 
 
