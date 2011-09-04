@@ -47,7 +47,7 @@
     (if (-> logged-in-user nil?)  ;; we want to see a logged-in-user 
       (util/generate-error-response "User is not authenticated")
       (domain/keywordize-tags 
-        (commands/update artifact-p (domain/keywordize-tags (first etal)) (rest etal)))
+        (eval `(commands/update (domain/keywordize-tags ~artifact-p) ~@etal)))
     )
   )
 )

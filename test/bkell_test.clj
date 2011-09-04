@@ -254,7 +254,7 @@
           ruser (bkell/add user)]
     
     ;; ensure that an error is returned if we try to get a user without logging in 
-    (let [ eresult (bkell/update :user ruser)]
+    (let [ eresult (bkell/update ruser)]
       (is (-> eresult nil? not))
       (is (-> eresult :tag (= :error)))
     )
@@ -263,7 +263,7 @@
     (commands/login-user ruser) 
     
     ;; ensure we are returning a :user map
-    (let [ fresult (bkell/update :user (merge user {:password "asdf"}))]
+    (let [ fresult (bkell/update (merge user {:password "asdf"}))]
       
       (is (-> fresult nil? not))
       (is (-> fresult :tag (= :user)))
@@ -280,17 +280,17 @@
   )
 )
 
-;; ... update currency 
-#_(deftest test-updateC
+;; update currency 
+(deftest test-updateC
   (let [user (load-file "test/etc/data/stubu-two.clj")
         ru (commands/add-user user)
         
         bk (bkell/init-shell)      ;; initialize the bkell 
-        ]
+        currency (load-file "test/etc/data/test-currency.clj")]
     
     
     ;; ensure that an error is returned if we try to get a currency without logging in 
-    (let [ eresult (bkell/get :currency "stub" "USD")]
+    (let [ eresult (bkell/update :currency currency)]
       (is (-> eresult nil? not))
       (is (-> eresult :tag (= :error)))
     )
@@ -298,12 +298,22 @@
     ;; now log-in a user
     (commands/login-user ru) 
     
-    (let [ fresult (bkell/get :currency "stub" "USD")]
+    ;; ensure we are returning a :user map
+    (let [ fresult (bkell/update (merge currency {:content "some content"}) (:username ru) false)]
       
       (is (-> fresult nil? not))
       (is (-> fresult :tag (= :currency)))
-      (is (-> fresult :id (= "USD")))
     )
+    
+    ;; ensure we have updated the value
+    (let [gresult (bkell/get :currency (:username ru) (:id currency))]
+      
+      (is (-> gresult nil? not))
+      (is (-> gresult :tag (= :currency)))
+      (is (-> gresult :content (= "some content")))
+    )
+    
+    
   )
 )
 
