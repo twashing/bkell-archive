@@ -352,31 +352,39 @@
 )
 
 ;; ... update entry 
-#_(deftest test-updateE
+(deftest test-updateE
   (let [user (load-file "test/etc/data/stubu-two.clj")
         ru (commands/add-user user)
         
         bk (bkell/init-shell)      ;; initialize the bkell 
         entry (test-utils/create-balanced-test-entry)]
     
-    ;; ensure that an error is returned if we try to get a currency without logging in 
-    (let [ eresult (bkell/get :entry "stub" "testid")]
+    
+    ;; ensure that an error is returned if we try to get an account without logging in 
+    (let [ eresult (bkell/update entry)]
       (is (-> eresult nil? not))
       (is (-> eresult :tag (= :error)))
     )
     
-    
-    (commands/login-user ru) ;; now log-in a user
+    ;; now log-in a user
+    (commands/login-user ru) 
     (test-utils/populate-accounts)
-    (test-utils/populate-entries)  ;; add a test entry before retreival
     
-    
-    (let [ fresult (bkell/get :entry "stub" "testid")]
+    ;; ensure we are returning a :user map
+    (let [ fresult (bkell/update (merge entry {:date "01/01/2011"}) (:username ru))]
       
       (is (-> fresult nil? not))
       (is (-> fresult :tag (= :entry)))
-      (is (-> fresult :id (= "testid")))
     )
+    
+    ;; ensure we have updated the value
+    (let [gresult (bkell/get :entry (:username ru) (:id entry))]
+      
+      (is (-> gresult nil? not))
+      (is (-> gresult :tag (= :entry)))
+      (is (-> gresult :date (= "01/01/2011")))
+    )
+    
   )
 )
 
