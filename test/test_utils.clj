@@ -26,6 +26,15 @@
   )
 )
 
+(defn populate-currencies
+  "populate with Canadian and Austrilian currencies"
+  [] 
+  
+  ;; Adding AUD to already existing list of CDN, USD, BP, EUR, JPN
+  (commands/add-currency (load-file "test/etc/data/test-currency.clj") "stub" false)
+   
+)
+
 (defn populate-accounts
   "create 4 test accounts "
   []

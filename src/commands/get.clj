@@ -2,6 +2,7 @@
 
   (:use somnium.congomongo)
   (:require debug)
+  (:require domain)
 )
 
 
@@ -38,8 +39,8 @@
         r   "function(k,vals) { return { result : vals } ; }"
         result (map-reduce :bookkeeping m r :result-collection)]
     
-    (-> result first :value :result first :result)  ;; dig in and get the currency list 
-    
+    (vec (map domain/keywordize-tags 
+      (-> result first :value :result)))  ;; dig in and get the currency list 
   )
 )
 (defn get-currency [uname currency]
@@ -60,12 +61,6 @@
         result (map-reduce :bookkeeping m r :result-collection)]
 
     (-> result first :value) ;; dig in and get the currency
-    #_(let  [thing (-> result first :value) ;; this is here for debugging purposes
-          ]
-      (println "2 ... " result)
-      (println "3 ... " thing)
-      thing
-    )
   )
 )
 
@@ -85,7 +80,8 @@
         r   "function(k,vals) { return { result : vals } ; }"
         result (map-reduce :bookkeeping m r :result-collection)]
     
-    (-> result first :value :result first :result)  ;; dig in and get the currency list 
+    (vec (map domain/keywordize-tags 
+      (-> result first :value :result)))  ;; dig in and get the currency list 
     
   )
 )
@@ -106,7 +102,7 @@
         r   "function(k,vals) { return { result : vals } ; }"
         result (map-reduce :bookkeeping m r :result-collection)]
 
-    (-> result first :value :result first) ;; dig in and get the currency
+    (-> result first :value ) ;; dig in and get the currency
   )
 )
 
@@ -128,7 +124,8 @@
         r   "function(k,vals) { return { result : vals } ; }"
         result (map-reduce :bookkeeping m r :result-collection)]
     
-    (-> result first :value :result first :result) ;; dig in and get the account list 
+    (vec (map domain/keywordize-tags 
+      (-> result first :value :result)))  ;; dig in and get the currency list 
     
   )
 )
@@ -149,7 +146,7 @@
         r   "function(k,vals) { return { result : vals } ; }"
         result (map-reduce :bookkeeping m r :result-collection)]
 
-    (-> result first :value :result first)  ;; dig in and get the account
+    (-> result first :value )  ;; dig in and get the account
   )
 )
 
