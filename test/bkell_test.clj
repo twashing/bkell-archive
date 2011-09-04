@@ -351,7 +351,7 @@
   )
 )
 
-;; ... update entry 
+;; update entry 
 (deftest test-updateE
   (let [user (load-file "test/etc/data/stubu-two.clj")
         ru (commands/add-user user)
@@ -395,9 +395,141 @@
 ;; ==================
 
 ;; ... remove user 
+(deftest test-removeU
+  (let [  user (load-file "test/etc/data/stubu-two.clj")
+          bk (bkell/init-shell)      ;; initialize the bkell 
+          ruser (bkell/add user)]
+    
+    ;; ensure that an error is returned if we try to get a user without logging in 
+    (let [ eresult (bkell/remove ruser)]
+      (is (-> eresult nil? not))
+      (is (-> eresult :tag (= :error)))
+    )
+    
+    ;; now log-in a user
+    (commands/login-user ruser) 
+    
+    ;; ensure we are returning nil
+    (let [ fresult (bkell/remove ruser )]
+      (is (-> fresult nil?)))
+
+    ;; ensure we get a nil
+    (let [gresult (bkell/get :user (:username ruser))]
+      (is (-> gresult nil?)))
+    
+    ;; ensure we get a nil when trying to get an associated object 
+    (let [gresult (bkell/get :currency (:username ruser) "USD")]
+      (is (-> gresult nil?)))
+  )
+)
+
 ;; ... remove currency 
-;; ... remove account 
-;; ... remove entry 
+#_(deftest test-removeC
+  (let [user (load-file "test/etc/data/stubu-two.clj")
+        ru (commands/add-user user)
+        
+        bk (bkell/init-shell)      ;; initialize the bkell 
+        currency (load-file "test/etc/data/test-currency.clj")]
+    
+    
+    ;; ensure that an error is returned if we try to get a currency without logging in 
+    (let [ eresult (bkell/update currency)]
+      (is (-> eresult nil? not))
+      (is (-> eresult :tag (= :error)))
+    )
+    
+    ;; now log-in a user
+    (commands/login-user ru) 
+    
+    ;; ensure we are returning a :user map
+    (let [ fresult (bkell/update (merge currency {:content "some content"}) (:username ru) false)]
+      
+      (is (-> fresult nil? not))
+      (is (-> fresult :tag (= :currency)))
+    )
+    
+    ;; ensure we have updated the value
+    (let [gresult (bkell/get :currency (:username ru) (:id currency))]
+      
+      (is (-> gresult nil? not))
+      (is (-> gresult :tag (= :currency)))
+      (is (-> gresult :content (= "some content")))
+    )
+  )
+)
+
+;; remove account 
+(deftest test-removeA
+  (let [user (load-file "test/etc/data/stubu-two.clj")
+        ru (commands/add-user user)
+        
+        bk (bkell/init-shell)      ;; initialize the bkell 
+        account (load-file "test/etc/data/test-account-asset.clj")]
+    
+    
+    ;; ensure that an error is returned if we try to get an account without logging in 
+    (let [ eresult (bkell/update account)]
+      (is (-> eresult nil? not))
+      (is (-> eresult :tag (= :error)))
+    )
+    
+    ;; now log-in a user
+    (commands/login-user ru) 
+    
+    ;; ensure we are returning a :user map
+    (let [ fresult (bkell/update (merge account {:name "thing"}) (:username ru))]
+      
+      (is (-> fresult nil? not))
+      (is (-> fresult :tag (= :account)))
+    )
+    
+    ;; ensure we have updated the value
+    (let [gresult (bkell/get :account (:username ru) (:id account))]
+      
+      (is (-> gresult nil? not))
+      (is (-> gresult :tag (= :account)))
+      (is (-> gresult :name (= "thing")))
+    )
+    
+  )
+)
+
+;; remove entry 
+#_(deftest test-removeE
+  (let [user (load-file "test/etc/data/stubu-two.clj")
+        ru (commands/add-user user)
+        
+        bk (bkell/init-shell)      ;; initialize the bkell 
+        entry (test-utils/create-balanced-test-entry)]
+    
+    
+    ;; ensure that an error is returned if we try to get an account without logging in 
+    (let [ eresult (bkell/update entry)]
+      (is (-> eresult nil? not))
+      (is (-> eresult :tag (= :error)))
+    )
+    
+    ;; now log-in a user
+    (commands/login-user ru) 
+    (test-utils/populate-accounts)
+    
+    ;; ensure we are returning a :user map
+    (let [ fresult (bkell/update (merge entry {:date "01/01/2011"}) (:username ru))]
+      
+      (is (-> fresult nil? not))
+      (is (-> fresult :tag (= :entry)))
+    )
+    
+    ;; ensure we have updated the value
+    (let [gresult (bkell/get :entry (:username ru) (:id entry))]
+      
+      (is (-> gresult nil? not))
+      (is (-> gresult :tag (= :entry)))
+      (is (-> gresult :date (= "01/01/2011")))
+    )
+    
+  )
+)
 
 
 

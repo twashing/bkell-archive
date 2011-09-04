@@ -1,4 +1,6 @@
 (ns commands 
+  (:use somnium.congomongo)
+  (:require domain)
 )
 
 
@@ -12,11 +14,12 @@
   (destroy! :users { :username uname })
   (destroy! :groups { :owner uname })
   (destroy! :bookkeeping { :owner uname })
+  nil
 )
 
 
 ;; remove currency 
-(defn remove-currency [uname currency]
+(defn remove-currency [currency uname]
 
   (let  [ ru (fetch-one "bookkeeping" :where { :owner uname }) ]
     (update! :bookkeeping { :_id (:_id ru) }  ;; passing in hash w/ ObjecId, NOT original object
@@ -26,7 +29,7 @@
 
 
 ;; remove account 
-(defn remove-account [uname account]
+(defn remove-account [account uname]
 
   (let  [ ru (fetch-one "bookkeeping" :where { :owner uname }) ]
     (update! :bookkeeping { :_id (:_id ru) }  ;; passing in hash w/ ObjecId, NOT original object
@@ -36,7 +39,7 @@
 
 
 ;; remove entry 
-(defn remove-entry [uname entry]
+(defn remove-entry [entry uname]
 
   (let  [ ru (fetch-one "bookkeeping" :where { :owner uname }) ]
     (update! :bookkeeping { :_id (:_id ru) }  ;; passing in hash w/ ObjecId, NOT original object
@@ -45,10 +48,10 @@
 )
 
 
-(defmulti remove (fn [tagk & etal] tagk)) 
-(defmethod remove :user [tagk & etal] (remove-user (first etal))) 
-(defmethod remove :currency [currency & etal] (remove-currency (first etal) (second etal)))   ;; input arguments are: uname currency 
-(defmethod remove :account [account & etal] (remove-account (first etal) (second etal)))  ;; input arguments are: uname account
-(defmethod remove :entry [entry & etal] (remove-entry (first etal) (second etal)))  ;; input arguments are: uname entry 
+(defmulti remove (fn [tagk & etal] (:tag tagk))) 
+(defmethod remove :user [user & etal] (remove-user user)) 
+(defmethod remove :currency [currency & etal] (remove-currency currency (first etal) ))   ;; input arguments are: uname currency 
+(defmethod remove :account [account & etal] (remove-account account (first etal) ))  ;; input arguments are: uname account
+(defmethod remove :entry [entry & etal] (remove-entry entry (first etal) ))  ;; input arguments are: uname entry 
 
 

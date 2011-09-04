@@ -4,8 +4,8 @@
   (:require [commands.add]
             [commands.get]
             [commands.update]
-            [commands.remove]
             [commands.authenticate]
+            [commands.remove]
             [domain]
             [util])
 )
@@ -53,7 +53,12 @@
 )
 
 (defn remove [akey & etal]
-  (eval `(commands/remove akey ~@etal))
+  (let [  logged-in-user (commands/logged-in-user)]
+    (if (-> logged-in-user nil?)  ;; we want to see a logged-in-user 
+      (util/generate-error-response "User is not authenticated")
+      (eval `(commands/remove ~akey ~@etal))
+    )
+  )
 )
 
 
