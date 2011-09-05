@@ -1,9 +1,10 @@
 (ns bjell
 
   (:import java.io.FileReader)
-  (:require commands.add)
-  (:require commands.get)
-  (:require commands.update)
+  (:require bkell)
+  ;;(:require commands.add)
+  ;;(:require commands.get)
+  ;;(:require commands.update)
   ;;(:require commands.remove)
   (:require clojure.data.json)
   (:require domain)
@@ -27,7 +28,7 @@
 
     (clojure.data.json/json-str 
       (domain/bsonid-to-id
-        (eval `(commands/add ~artifact-p ~@etal)) ))
+        (eval `(bkell/add ~artifact-p ~@etal)) ))
   )
 )
 
@@ -37,7 +38,7 @@
     
     (clojure.data.json/json-str 
       (domain/bsonid-to-id
-        (eval `(commands/get ~akey ~@etal))))
+        (eval `(bkell/get ~akey ~@etal))))
     
 )
 
@@ -45,15 +46,17 @@
   "artifact - input can be JSON String or Reader"
   
   (let  [ artifact-p (domain/keywordize-tags (clojure.data.json/read-json artifact))]
-    (eval `(commands/update ~artifact-p ~@etal))
+    (eval `(bkell/update ~artifact-p ~@etal))
   )
 )
 
 (defn remove [akey & etal]
   "akey - input is a String"
   
-  (eval `(commands/remove akey ~@etal))
+  (eval `(bkell/remove akey ~@etal))
 )
 
-
+(defn login [user]
+  (bkell/login user) 
+)
 
