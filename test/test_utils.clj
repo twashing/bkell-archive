@@ -14,6 +14,7 @@
     (destroy! :bookkeeping {}) ;; destroying all bookkeeping
 
     ;; ** execute the TEST function
+    (bkell/init-shell)      ;; initialize the bkell 
     (test)
     (clojure.contrib.logging/info "test-fixture-db EXIT")
 

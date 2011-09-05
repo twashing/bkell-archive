@@ -14,7 +14,7 @@
 )
 
 
-(defn init-shell [] 
+#_(defn init-shell [] 
   
   (somnium.congomongo/mongo! :db "bkell") ;; connect to mongodb
   (def shell (ref { :active true })) 	;; the shell and memory 
@@ -46,8 +46,7 @@
   "artifact - input can be JSON String or Reader"
   
   (let  [ artifact-p (domain/keywordize-tags (clojure.data.json/read-json artifact))]
-    (eval `(bkell/update ~artifact-p ~@etal))
-  )
+    (eval `(bkell/update ~artifact-p ~@etal)))
 )
 
 (defn remove [akey & etal]
@@ -57,6 +56,7 @@
 )
 
 (defn login [user]
-  (bkell/login user) 
+  (let  [ user-p (domain/keywordize-tags (clojure.data.json/read-json user))]
+    (bkell/login user-p)) 
 )
 

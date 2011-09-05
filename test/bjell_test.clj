@@ -7,6 +7,8 @@
   (:require clojure.data.json)
   (:require clojure.contrib.str-utils2)
   (:import java.io.FileReader)
+  (:require bkell)
+  (:require domain)
 )
 
 
@@ -18,7 +20,9 @@
 ;; 'ADD' tests
 ;; ==================
 (deftest test-addU
-  (let [user (FileReader. "test/etc/data/stubu-two.js")]
+  (let [user (FileReader. "test/etc/data/stubu-two.js")
+        bk (bkell/init-shell)      ;; initialize the bkell 
+        ]
     
     (bjell/add user)
 
@@ -30,15 +34,32 @@
       (let [pd (:tag (nth (:content (nth ru 0)) 0))]
         (is (= "profileDetails" pd) "There SHOULD be a profileDetail element in the user")
       )
-  )
-
+    )
   )
 )
-#_(deftest test-addC
-  (let [user (load-file "test/etc/data/stubu-two.clj")
-        ru (commands/add-user user)
-        currency (load-file "test/etc/data/test-currency.clj")]
-    (bjell/add currency "stub" false)
+(deftest test-addC
+  (let [user (FileReader. "test/etc/data/stubu-two.js")
+        ;;bk (bkell/init-shell)      ;; initialize the bkell 
+        ru (bjell/add user)
+        currency (FileReader.  "test/etc/data/test-currency.js")]
+    
+    
+    ;; ensure that an error is returned if we try to add a currency without logging in 
+    (let [ eresult (bjell/add currency "stub" false)]
+      
+      (is (-> eresult nil? not))
+      (is (-> eresult clojure.data.json/read-json domain/keywordize-tags :tag (= :error)))
+    )
+    
+    ;; now log-in a user
+    (bjell/login ru) 
+    
+    (let [  fresult 
+            (bjell/add (FileReader. "test/etc/data/test-currency.js") "stub" false)]  ;; have to reread the file b/c can't reset stram
+      
+      (is (-> fresult nil? not))
+      (is (-> fresult clojure.data.json/read-json domain/keywordize-tags :tag (= :currency)))
+    )
   )
 )
 #_(deftest test-addA
@@ -62,7 +83,7 @@
 ;; ==================
 ;; 'GET' tests
 ;; ==================
-(deftest test-getU 
+#_(deftest test-getU 
 
   (let [result (test-utils/add-user nil)
         ru (bjell/get :user "stub")]
