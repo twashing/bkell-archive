@@ -92,6 +92,31 @@
   )
 )
 
+(deftest test-getC
+
+  (let [user (FileReader. "test/etc/data/stubu-two.js")
+        ru (bjell/add user)]
+     
+    ;; ensure that an error is returned if we try to get a user without logging in 
+    (let [ eresult (bjell/get :currency "stub" "USD")]
+      
+      (is (-> eresult nil? not))
+      (is (-> eresult clojure.data.json/read-json domain/keywordize-tags :tag (= :error)))
+    )
+    
+    ;; now log-in a user
+    (bjell/login ru) 
+    
+    (let [ fresult (bjell/get :currency "stub" "USD")]
+      
+      (is (not (nil? fresult )) "There SHOULD be a user with the username 'stub'")
+      
+      (is (string? fresult)  "The result SHOULD be a JSON String")
+      (is (-> fresult clojure.data.json/read-json domain/keywordize-tags :tag (= :currency)))
+    )
+  )
+)
+
 
 
 ;; ==================
