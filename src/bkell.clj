@@ -61,5 +61,27 @@
   )
 )
 
+(defn login [user]
+  { :pre  [ (-> user nil? not)
+            (-> user :username nil? not)
+            (-> user :password nil? not)
+          ] }
+  
+  (commands/login-user user) 
+)
+
+
+(defn -main [& args]
+    
+  (ns bkell) 
+  (use 'bkell) 
+  (init-shell) 
+  (require 'somnium.congomongo) 
+  (somnium.congomongo/mongo! :db "bkell") 
+  
+  ;;(require 'clojure.main)
+  ;;(clojure.main/repl)
+  
+)
 
 

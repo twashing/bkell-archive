@@ -1,11 +1,7 @@
 
-(comment 
-(require 'bkell)
+(ns bkell) 
+(use 'bkell) 
+(init-shell) 
+(require 'somnium.congomongo) 
+(somnium.congomongo/mongo! :db "bkell") 
 
-(defn run []
-  (require 'bkell)
-  (bkell/bkell)
-)
-
-(run)
-)
