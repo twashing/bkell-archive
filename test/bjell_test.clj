@@ -62,37 +62,33 @@
     )
   )
 )
-#_(deftest test-addA
-  (let [user (load-file "test/etc/data/stubu-two.clj")
-        ru (commands/add-user user)
-        account (load-file "test/etc/data/test-account-asset.clj")]
-    (bjell/add account "stub")
-  )
-)
-#_(deftest test-addE
-  (let  [user (load-file "test/etc/data/stubu-two.clj")
-         ru (commands/add-user user)
-         xx (test-utils/populate-accounts)
-         entry (test-utils/create-balanced-test-entry)
-         ]
-    (bjell/add entry "stub")
-  )
-)
 
 
 ;; ==================
 ;; 'GET' tests
 ;; ==================
-#_(deftest test-getU 
+(deftest test-getU 
 
-  (let [result (test-utils/add-user nil)
-        ru (bjell/get :user "stub")]
+  (let [user (FileReader. "test/etc/data/stubu-two.js")
+        ru (bjell/add user)]
+     
+    ;; ensure that an error is returned if we try to get a user without logging in 
+    (let [ eresult (bjell/get :user "stub")]
       
-      ;;(println ru)
-      (is (not (nil? ru )) "There SHOULD be a user with the username 'stub'")
+      (is (-> eresult nil? not))
+      (is (-> eresult clojure.data.json/read-json domain/keywordize-tags :tag (= :error)))
+    )
+    
+    ;; now log-in a user
+    (bjell/login ru) 
+    
+    (let [ fresult (bjell/get :user "stub")]
       
-      (is (string? ru)  "The result SHOULD be a JSON String")
-      ;;(is (clojure.contrib.str-utils2/contains ru ...))
+      (is (not (nil? fresult )) "There SHOULD be a user with the username 'stub'")
+      
+      (is (string? fresult)  "The result SHOULD be a JSON String")
+      (is (-> fresult clojure.data.json/read-json domain/keywordize-tags :tag (= :user)))
+    )
   )
 )
 
