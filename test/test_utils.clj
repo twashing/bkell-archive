@@ -2,6 +2,7 @@
   (:require clojure.contrib.logging)
   (:use somnium.congomongo)
   (:require commands.add)
+  (:require bkell)
 )
 
 (defn test-fixture-db

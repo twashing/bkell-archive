@@ -26,7 +26,7 @@
   
   ;; ======
   ;; initialize the shell incl. DB connection 
-  (bjell/init-shell)
+  ;;(bjell/init-shell)
   
   
   (GET "/" []   ;; index is the default page of the application 
