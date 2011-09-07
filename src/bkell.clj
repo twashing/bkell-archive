@@ -1,6 +1,7 @@
 (ns bkell
 
   (:import java.io.FileReader)
+  (:import java.lang.AssertionError)
   (:require domain)
   (:require util)
   (:require commands.add)
@@ -67,7 +68,10 @@
             (-> user :password nil? not)
           ] }
   
-  (commands/login-user user) 
+  (try 
+    (commands/login-user user) 
+    (catch java.lang.AssertionError e (util/generate-error-responses "Error logging in"))
+  )
 )
 
 

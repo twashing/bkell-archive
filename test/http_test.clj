@@ -1,13 +1,13 @@
 (ns http-test
   
+  (:import java.io.StringBufferInputStream)
   (:use clojure.test)
   (:use somnium.congomongo)
-  (:require clojure.contrib.str-utils)
-  (:require clojure.contrib.logging)
-  (:require clojure.data.json)
-  ;;(:require debug)
-  (:require test-utils)
-  (:require [http.handler :as handler])
+  (:require [clojure.contrib.str-utils]
+            [clojure.contrib.logging]
+            [clojure.data.json]
+            [test-utils]
+            [http.handler :as handler])
 )
 
 
@@ -56,6 +56,55 @@
   )
 )
 
+(deftest test-login
+  
+  ;; ensure that an error is returned if we give a bad password 
+  (let  [ result (request "/login" handler/main :post 
+                          {:body (StringBufferInputStream. "{ \"tag\":\"user\", \"username\":\"stub\", \"password\":\"badpassword\" }") })
+        ] 
+    
+    (println "... " result)
+    (is (= 200 (:status result))) ;; ensure status is 200
+    (is (= :error (->  :body       ;; this ensures that the body is a JSON string and that the tag is an error
+                       result 
+                       clojure.data.json/read-json 
+                       domain/keywordize-tags
+                       :tag)))
+  )
+)
+
+(deftest test-account-add
+  
+  ;; ensure that an error is returned if we try to add an account without being logged in
+  (let [result (request "/account" handler/main :post {:body (java.io.File. "test/etc/data/test-account-asset.js")})] 
+    
+    (is (= 200 (:status result))) ;; ensure status is 200
+    (is (= :error (->  :body       ;; this ensures that the body is a JSON string and that the tag is an error
+                       result 
+                       clojure.data.json/read-json 
+                       domain/keywordize-tags
+                       :tag)))
+  )
+)
+#_(deftest test-account-get 
+  
+  ;; ensure that an error is returned if we try to get accounts without being logged in
+  #_(let [ eresult (bjell/add currency "stub" false)]
+    
+    (is (-> eresult nil? not))
+    (is (-> eresult clojure.data.json/read-json domain/keywordize-tags :tag (= :error)))
+  )
+    
+  (let [result (request "/accounts" handler/main :GET nil)]
+    
+    (is (= 200 (:status result))) ;; ensure status is 200
+    (is (= :error (->  :body       ;; this ensures that the body is a JSON string and that the tag is an error
+                       result 
+                       clojure.data.json/read-json 
+                       domain/keywordize-tags
+                       :tag)))
+  )
+)
 
 #_(defroutes main
   

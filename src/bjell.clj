@@ -57,6 +57,7 @@
 
 (defn login [user]
   (let  [ user-p (domain/keywordize-tags (clojure.data.json/read-json user))]
-    (bkell/login user-p)) 
+    (-> user-p bkell/login domain/bsonid-to-id clojure.data.json/json-str))
+
 )
 
