@@ -70,7 +70,7 @@
   
   (try 
     (commands/login-user user) 
-    (catch java.lang.AssertionError e (util/generate-error-responses "Error logging in"))
+    (catch java.lang.AssertionError e (util/generate-error-responses (str "Error logging in: " (.getMessage e))))
   )
 )
 

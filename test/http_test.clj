@@ -48,25 +48,44 @@
     ;;{:status 200, :headers {Content-Type text/html}, :body {"content":[{"content":[{"content":null,"name":"first.name","value":"xxx","tag":"profileDetail"},{"content":null,"name":"last.name","value":"xxx","tag":"profileDetail"},{"content":null,"name":"email","value":"xxx","tag":"profileDetail"},{"content":null,"name":"country","value":"xxx","tag":"profileDetail"}],"tag":"profileDetails"}],"username":"stub","password":"f561aaf6ef0bf14d4208bb46a4ccb3ad","tag":"user","_id":"4e59be91d36d2ff4076079dd"}}
     
     (is (= 200 (:status result))) ;; ensure status is 200
-    (is (= :user (->  :body       ;; this ensures that the body is a JSON string and that the tag is a user
-                       result 
+    (is (= :user (->   result      ;; this ensures that the body is a JSON string and that the tag is a user
+                       :body 
                        clojure.data.json/read-json 
                        domain/keywordize-tags
                        :tag)))
   )
 )
 
-(deftest test-login
+(deftest test-login-bad
   
   ;; ensure that an error is returned if we give a bad password 
   (let  [ result (request "/login" handler/main :post 
                           {:body (StringBufferInputStream. "{ \"tag\":\"user\", \"username\":\"stub\", \"password\":\"badpassword\" }") })
         ] 
     
+    (is (= 200 (:status result))) ;; ensure status is 200
+    (is (= :errors (-> result       ;; this ensures that the body is a JSON string and that the tag is an error
+                       :body 
+                       clojure.data.json/read-json 
+                       domain/keywordize-tags
+                       :tag)))
+  )
+)
+
+(deftest test-login-good
+  
+  ;; ensure that we can login
+  (let  [ 
+          ruser (request "/user" handler/main :post {:body (java.io.File. "test/etc/data/stubu-one.js")})
+          result (request "/login" handler/main :post 
+                  {:body (StringBufferInputStream. 
+                          "{ \"tag\":\"user\", \"username\":\"stub\", \"password\":\"5f4dcc3b5aa765d61d8327deb882cf99\" }") })
+        ] 
+    
     (println "... " result)
     (is (= 200 (:status result))) ;; ensure status is 200
-    (is (= :error (->  :body       ;; this ensures that the body is a JSON string and that the tag is an error
-                       result 
+    (is (= :user (->   result       ;; this ensures that the body is a JSON string and that the tag is an error
+                       :body 
                        clojure.data.json/read-json 
                        domain/keywordize-tags
                        :tag)))
