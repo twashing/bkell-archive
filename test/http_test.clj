@@ -88,13 +88,13 @@
     (is (= :user (->   result       ;; this ensures that the body is a JSON string and that the tag is an error
                        :body 
                        clojure.data.json/read-json 
+                       :logged-in-user  ;; have to dig into the entity before keywordizing
                        domain/keywordize-tags
-                       :logged-in-user
                        :tag)))
   )
 )
 
-(deftest test-account-add
+(deftest test-account-add1
   
   ;; ensure that an error is returned if we try to add an account without being logged in
   (let [result (request "/account" handler/main :post {:body (java.io.File. "test/etc/data/test-account-asset.js")})] 
@@ -105,6 +105,25 @@
                        clojure.data.json/read-json 
                        domain/keywordize-tags
                        :tag)))
+  )
+)
+(deftest test-account-add2
+  
+  (let  [ ruser (test-utils/add-user nil)
+          rlogin (request "/login" handler/main :post 
+                  {:body (StringBufferInputStream. 
+                          "{ \"tag\":\"user\", \"username\":\"stub\", \"password\":\"5185e8b8fd8a71fc80545e144f91faf2\" }") })
+          raccount (request "/account" handler/main :post {:body (java.io.File. "test/etc/data/test-account-asset.js")})
+        ] 
+    
+    ;; the result will look like: {:status 200, :headers {Content-Type text/html}, :body {"previous":{"tag":"user","username":"stub","password":"5185e8b8fd8a71fc80545e144f91faf2"},"logged-in-user":{"tag":"user","username":"stub","password
+    ;; ":"5185e8b8fd8a71fc80545e144f91faf2"},"active":true}}
+    (is (= 200 (:status raccount))) ;; ensure status is 200
+    (is (= :account (-> raccount       ;; this ensures that the body is a JSON string and that the tag is an error
+                        :body 
+                        clojure.data.json/read-json 
+                        domain/keywordize-tags
+                        :tag)))
   )
 )
 #_(deftest test-account-get 
