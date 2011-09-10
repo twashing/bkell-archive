@@ -131,10 +131,69 @@
   
   ;; ======
   ;; CRUD on Entries
-  (GET "/entries" []
-    (str "{}"))
-  (GET "/entry" [id]
-    (str "{}"))
+  (POST "/entry" [:as req] 
+    
+    (println (str "POST ; /entry ; " req))
+    (let [lin-user (commands/logged-in-user)]
+      (if-let [body (duck-streams/slurp* (:body req))]
+        (str      ;; JSON of MongoDB WriteResult; TODO - make a proper JSON string for client 
+          (bjell/add body (:username lin-user))) ;; TODO - stubbing in 'stub' user for now
+        (println "ERROR - POST body is nil")
+      )
+    )
+  )
+  (GET "/entries" [:as req] 
+    
+    (println (str "GET ; /entries ; " req))
+    (let [lin-user (commands/logged-in-user)]
+      
+      (str      ;; JSON of MongoDB WriteResult; TODO - make a proper JSON string for client 
+        (bjell/get :entries (:username lin-user))) ;; TODO - stubbing in 'stub' user for now
+    )
+  )
+  (GET "/entry/:id" [id] 
+    
+    (println (str "GET ; /entries/:id ; " id))
+    (let [lin-user (commands/logged-in-user)]
+      
+      (str      ;; JSON of MongoDB WriteResult; TODO - make a proper JSON string for client 
+        (bjell/get :entry (:username lin-user) id )) ;; TODO - stubbing in 'stub' user for now
+    )
+  )
+  (PUT "/entry/:id" [id :as req]
+    
+    (println (str "PUT ; /entry/:id ; " req))
+    (let [lin-user (commands/logged-in-user)]
+      (if-let [body (duck-streams/slurp* (:body req))]
+        (str      ;; JSON of MongoDB WriteResult; TODO - make a proper JSON string for client 
+          (bjell/update body (:username lin-user) )) ;; TODO - stubbing in 'stub' user for now
+        (println "ERROR - PUT body is nil")
+      )
+    )
+  )
+  (DELETE "/entry/:id" [id] 
+    
+    (println (str "DELETE ; /entry/:id ; " id))
+    (let [lin-user (commands/logged-in-user)]
+      
+      (str      ;; JSON of MongoDB WriteResult; TODO - make a proper JSON string for client 
+        (bjell/remove lin-user id )) ;; TODO - stubbing in 'stub' user for now
+    )
+  )
+  
+  
+  ;; ======
+  ;; CRUD on Bookkeeping
+  (GET "/bookkeeping/:id" [id]
+     
+    (println (str "GET ; /bookkeeping/:id ; " id))
+    (let [lin-user (commands/logged-in-user)]
+      
+      (str      ;; JSON of MongoDB WriteResult; TODO - make a proper JSON string for client 
+        (bjell/get :bookkeeping (:username lin-user) id )) ;; TODO - stubbing in 'stub' user for now
+    )
+  )
+  
   
   
   (route/files "/")
