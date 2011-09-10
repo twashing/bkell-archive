@@ -32,6 +32,9 @@
     (commands/get :entries \"stub\")      ->  /entries      -> /entry/:id 
   "
   
+
+  ;; ======
+  ;; REGISTER & LOGIN
   (GET "/" []   ;; index is the default page of the application 
     (ring-file/wrap-file "index.html" "public"))
   (GET "/register" []   ;; return static register.html page 
@@ -115,8 +118,15 @@
   
   ;; ======
   ;; CRUD on Bookkeeping
-  (GET "/bookkeeping:id" [id]
-    (str "{}"))
+  (GET "/bookkeeping/:id" [id]
+     
+    (println (str "GET ; /bookkeeping/:id ; " id))
+    (let [lin-user (commands/logged-in-user)]
+      
+      (str      ;; JSON of MongoDB WriteResult; TODO - make a proper JSON string for client 
+        (bjell/get :bookkeeping (:username lin-user) id )) ;; TODO - stubbing in 'stub' user for now
+    )
+  )
   
   
   ;; ======
