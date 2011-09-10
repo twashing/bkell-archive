@@ -62,8 +62,12 @@
         ra (commands/get-account uname (:id account))]
     
     (if ra 
-      (update! :bookkeeping { :_id (:_id ra) }  ;; passing in hash w/ ObjecId, NOT original object
-        (domain/traverse-tree ru :update { :id (:id account) } account))
+      (if-let [result (update! :bookkeeping { :_id (:_id ru) }  ;; passing in hash w/ ObjecId, NOT original object
+                        (domain/traverse-tree ru :update { :id (:id account) } account))]
+        (if (-> result .getLastError .ok)
+          account
+          (util/generate-error-response (.getErrorMessage result)))
+      )
       (commands/add account uname)
     )
   )

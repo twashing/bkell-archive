@@ -51,7 +51,10 @@
   "artifact - input can be JSON String or Reader"
   
   (let  [ artifact-p (domain/keywordize-tags (clojure.data.json/read-json artifact))]
-    (eval `(bkell/update ~artifact-p ~@etal)))
+    (clojure.data.json/json-str 
+      (domain/bsonid-to-id
+        (eval `(bkell/update ~artifact-p ~@etal))) )
+  )
 )
 
 (defn remove [akey & etal]

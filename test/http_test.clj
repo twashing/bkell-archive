@@ -209,7 +209,8 @@
           rlogin (request "/login" handler/main :post 
                   {:body (StringBufferInputStream. 
                           "{ \"tag\":\"user\", \"username\":\"stub\", \"password\":\"5185e8b8fd8a71fc80545e144f91faf2\" }") })
-          raccount (request "/account" handler/main :post {:body (java.io.File. "test/etc/data/test-account-asset.js")})
+          ;;raccount (request "/account" handler/main :post {:body (java.io.File. "test/etc/data/test-account-asset.js")})
+          pas (test-utils/populate-accounts)
           r1 (request "/account/cash" handler/main :get {})
         ] 
     
@@ -222,7 +223,7 @@
                         :tag)))
     
     ;; update account 
-    #_(let [r2 (request "/account" handler/main :post 
+    (let [r2 (request "/account/cash" handler/main :put
               {:body 
                 (StringBufferInputStream. 
                   "{\"tag\":\"account\", \"type\":\"asset\", \"id\":\"cash\", \"name\":\"fubar\", \"counterWeight\":\"debit\"}")
@@ -243,7 +244,7 @@
     )
     
     ;; get the update  
-    #_(let [r3 (request "/account/cash" handler/main :get {})]
+    (let [r3 (request "/account/cash" handler/main :get {})]
       (is (= 200 (:status r3))) ;; ensure status is 200
       (is (= :account (-> r3       ;; this ensures that the body is a JSON string and that the tag is an account
                           :body 
