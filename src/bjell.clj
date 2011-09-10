@@ -14,7 +14,7 @@
 )
 
 
-#_(defn init-shell [] 
+(defn init-shell [] 
   
   (somnium.congomongo/mongo! :db "bkell") ;; connect to mongodb
   (def shell (ref { :active true })) 	;; the shell and memory 
@@ -35,10 +35,15 @@
 
 (defn get [akey & etal]
   "akey - input is a String"
-    
-    (clojure.data.json/json-str 
-      (domain/bsonid-to-id
-        (eval `(bkell/get ~akey ~@etal))))
+    (let [result (eval `(bkell/get ~akey ~@etal))]
+
+      (if (or (vector? result)
+              (list? result))
+        (clojure.data.json/json-str result)
+        (clojure.data.json/json-str 
+          (domain/bsonid-to-id result))
+      )
+    )
     
 )
 

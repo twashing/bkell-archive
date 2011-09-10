@@ -126,6 +126,74 @@
                         :tag)))
   )
 )
+(deftest test-account-getlist1
+  
+  ;; ensure that an error is returned if we try to get an account list without being logged in
+  (let [rk (handler/init-handler)
+        result (request "/accounts" handler/main :get {})] 
+    
+    (is (= 200 (:status result))) ;; ensure status is 200
+    (is (= :error (->  :body       ;; this ensures that the body is a JSON string and that the tag is an error
+                       result 
+                       clojure.data.json/read-json 
+                       domain/keywordize-tags
+                       :tag)))
+  )
+)
+(deftest test-account-getlist2
+  
+  (let  [ ruser (test-utils/add-user nil)
+          rk (handler/init-handler)
+          rlogin (request "/login" handler/main :post 
+                  {:body (StringBufferInputStream. 
+                          "{ \"tag\":\"user\", \"username\":\"stub\", \"password\":\"5185e8b8fd8a71fc80545e144f91faf2\" }") })
+          result (request "/accounts" handler/main :get {})] 
+    
+    ;; ensure that we get even empty list of accounts
+    (is (= 200 (:status result))) ;; ensure status is 200
+    (is (= []      (->  result       ;; this ensures that the body is a JSON string and that the tag is an error
+                        :body 
+                        clojure.data.json/read-json )))
+  )
+)
+(deftest test-account-getlist3
+  
+  (let  [ ruser (test-utils/add-user nil)
+          rk (handler/init-handler)
+          rlogin (request "/login" handler/main :post 
+                  {:body (StringBufferInputStream. 
+                          "{ \"tag\":\"user\", \"username\":\"stub\", \"password\":\"5185e8b8fd8a71fc80545e144f91faf2\" }") })
+          pas (test-utils/populate-accounts)
+          result (request "/accounts" handler/main :get {})] 
+    
+    ;; result should look like the following...
+    ;; {:status 200, :headers {Content-Type text/html}, :body [{"counterWeight":"debit","name":"revenue","type":"revenue","id":"revenue","tag":"account"},{"counterWeight":"debit","name":"accounts payable","type":"liability","id":"accounts payable","tag":"account"},{"counterWeight":"debit","name":"expense","type":"expense","id":"expense","tag":"account"},{"counterWeight":"debit","name":"cash","type":"asset","id":"cash","tag":"account"}]}
+
+    ;; ensure that we get even empty list of accounts
+    (is (-> result :body nil? not))
+    (is (-> result :body empty? not))
+    (is (= 200 (:status result))) ;; ensure status is 200
+    (is (= :account  (-> result       ;; this ensures that the body is a JSON string and that the tag is an error
+                          :body 
+                          clojure.data.json/read-json 
+                          first
+                          domain/keywordize-tags
+                          :tag)))
+  )
+)
+#_(deftest test-account-get1
+  
+  ;; ensure that an error is returned if we try to get an account without being logged in
+  (let [result (request "/account" handler/main :post {:body (java.io.File. "test/etc/data/test-account-asset.js")})] 
+    
+    (is (= 200 (:status result))) ;; ensure status is 200
+    (is (= :error (->  :body       ;; this ensures that the body is a JSON string and that the tag is an error
+                       result 
+                       clojure.data.json/read-json 
+                       domain/keywordize-tags
+                       :tag)))
+  )
+)
 #_(deftest test-account-get 
   
   ;; ensure that an error is returned if we try to get accounts without being logged in

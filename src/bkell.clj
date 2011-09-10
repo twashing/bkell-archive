@@ -36,8 +36,7 @@
   (let [  logged-in-user (commands/logged-in-user)]
     (if (-> logged-in-user nil?)  ;; we want to see a logged-in-user 
       (util/generate-error-response "User is not authenticated")
-      (if-let [result (eval `(commands/get ~akey ~@etal))]  ;; ensure result is not nil before returning
-        (domain/keywordize-tags result))
+      (eval `(commands/get ~akey ~@etal))  ;; ensure result is not nil before returning
     )
   )
 )

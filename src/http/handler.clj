@@ -17,6 +17,13 @@
 )
 
 
+(defn init-handler []
+  
+  ;; initialize the shell incl. DB connection 
+  (bjell/init-shell)
+)
+  
+
 (defroutes main
   "Some core functions and thier URL mappings 
     
@@ -24,11 +31,6 @@
     (commands/get :bookkeeping \"stub\")  ->  /bookkeeping  -> /bookkeeping/:id 
     (commands/get :entries \"stub\")      ->  /entries      -> /entry/:id 
   "
-  
-  ;; ======
-  ;; initialize the shell incl. DB connection 
-  ;;(bjell/init-shell)
-  
   
   (GET "/" []   ;; index is the default page of the application 
     (ring-file/wrap-file "index.html" "public"))
@@ -44,7 +46,7 @@
       (clojure.data.json/json-str (util/generate-error-responses "POST body is nil"))
     )
   )
-
+  
   ;; ======
   ;; CRUD on User
   (POST "/user" [:as req]
@@ -71,8 +73,14 @@
       )
     )
   )
-  (GET "/accounts" [] (str "{}")
-  
+  (GET "/accounts" [:as req] 
+    
+    (println (str "GET ; /accounts ; " req))
+    (let [lin-user (commands/logged-in-user)]
+      
+      (.toString      ;; JSON of MongoDB WriteResult; TODO - make a proper JSON string for client 
+        (bjell/get :accounts (:username lin-user))) ;; TODO - stubbing in 'stub' user for now
+    )
   )
   (GET "/account/:id" [id] (str "{}"))
   (PUT "/account/:id" [id :as req]

@@ -21,6 +21,7 @@
                       ;;[log4j/log4j "1.2.15"]
 	            ] 
   
+  ;; lein test bkell-test bjell-test http-test
   ;;:repl-init "src/bkell.clj" 
   :ring {:handler http.handler/app}
   :resources-path ".:src/:test/:src/commands/:src/spittoon/:vendor/:vendor/debug/:vendor/clojure/contrib/:public/:etc/resources/"
