@@ -82,7 +82,15 @@
         (bjell/get :accounts (:username lin-user))) ;; TODO - stubbing in 'stub' user for now
     )
   )
-  (GET "/account/:id" [id] (str "{}"))
+  (GET "/account/:id" [id] 
+    
+    (println (str "GET ; /accounts/:id ; " id))
+    (let [lin-user (commands/logged-in-user)]
+      
+      (.toString      ;; JSON of MongoDB WriteResult; TODO - make a proper JSON string for client 
+        (bjell/get :account (:username lin-user) id )) ;; TODO - stubbing in 'stub' user for now
+    )
+  )
   (PUT "/account/:id" [id :as req]
     
     (println (str "PUT ; /account/:id ; " req))

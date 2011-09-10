@@ -181,20 +181,29 @@
                           :tag)))
   )
 )
-#_(deftest test-account-get1
+(deftest test-account-get
   
   ;; ensure that an error is returned if we try to get an account without being logged in
-  (let [result (request "/account" handler/main :post {:body (java.io.File. "test/etc/data/test-account-asset.js")})] 
+  (let  [ ruser (test-utils/add-user nil)
+          rk (handler/init-handler)
+          rlogin (request "/login" handler/main :post 
+                  {:body (StringBufferInputStream. 
+          "{ \"tag\":\"user\", \"username\":\"stub\", \"password\":\"5185e8b8fd8a71fc80545e144f91faf2\" }") })
+          pas (test-utils/populate-accounts)
+          result (request "/account/cash" handler/main :get {})] 
     
+    ;;(println "... " result)
+    (is (-> result :body nil? not))
+    (is (-> result :body empty? not))
     (is (= 200 (:status result))) ;; ensure status is 200
-    (is (= :error (->  :body       ;; this ensures that the body is a JSON string and that the tag is an error
+    (is (= :account (->  :body       ;; this ensures that the body is a JSON string and that the tag is an error
                        result 
                        clojure.data.json/read-json 
                        domain/keywordize-tags
                        :tag)))
   )
 )
-#_(deftest test-account-get 
+#_(deftest test-account-get2
   
   ;; ensure that an error is returned if we try to get accounts without being logged in
   #_(let [ eresult (bjell/add currency "stub" false)]
