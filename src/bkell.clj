@@ -52,11 +52,11 @@
   )
 )
 
-(defn remove [akey & etal]
+(defn remove [entity & etal]
   (let [  logged-in-user (commands/logged-in-user)]
     (if (-> logged-in-user nil?)  ;; we want to see a logged-in-user 
       (util/generate-error-response "User is not authenticated")
-      (eval `(commands/removek ~akey ~@etal))
+      (eval `(commands/removek ~entity ~@etal))
     )
   )
 )

@@ -192,7 +192,6 @@
           pas (test-utils/populate-accounts)
           result (request "/account/cash" handler/main :get {})] 
     
-    ;;(println "... " result)
     (is (-> result :body nil? not))
     (is (-> result :body empty? not))
     (is (= 200 (:status result))) ;; ensure status is 200
@@ -256,6 +255,37 @@
                          clojure.data.json/read-json 
                          domain/keywordize-tags
                          :name)))
+    )
+    
+  )
+)
+(deftest test-account-delete
+  
+  (let  [ ruser (test-utils/add-user nil)
+          ;;rlogin (request "/login" handler/main :post 
+          ;;        {:body (StringBufferInputStream. 
+          ;;                "{ \"tag\":\"user\", \"username\":\"stub\", \"password\":\"5185e8b8fd8a71fc80545e144f91faf2\" }") })
+          pas (test-utils/populate-accounts)
+          r1 (request "/account/cash" handler/main :get {})
+        ] 
+    
+    (let [  r2 (request "/account/cash" handler/main :delete {:body nil })]
+      (is (= 200 (:status r2))) ;; ensure status is 200
+      (is (= :error (-> :body       ;; this ensures that the body is a JSON string and that the tag is an error
+                        r2 
+                        clojure.data.json/read-json 
+                        domain/keywordize-tags
+                        :tag)))
+    )
+    
+    (let  [ rlogin (request "/login" handler/main :post 
+                    {:body (StringBufferInputStream. 
+                            "{ \"tag\":\"user\", \"username\":\"stub\", \"password\":\"5185e8b8fd8a71fc80545e144f91faf2\" }") })
+            r3 (request "/account/cash" handler/main :delete {:body nil })
+          ]
+        
+      (is (= 200 (:status r3))) ;; ensure status is 200
+      (is (empty? (:body r3)))
     )
     
   )

@@ -44,7 +44,6 @@
           (domain/bsonid-to-id result))
       )
     )
-    
 )
 
 (defn update [artifact & etal]
@@ -57,10 +56,16 @@
   )
 )
 
-(defn remove [akey & etal]
-  "akey - input is a String"
+(defn remove [entity & etal]
+  "entity - input is a String"
   
-  (eval `(bkell/remove akey ~@etal))
+    (let [result (eval `(bkell/remove ~entity ~@etal))]
+
+      (if (-> result nil? not)
+        (clojure.data.json/json-str result)
+        result
+      )
+    )
 )
 
 (defn login [user]
