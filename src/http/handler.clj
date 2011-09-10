@@ -94,10 +94,12 @@
   (PUT "/account/:id" [id :as req]
     
     (println (str "PUT ; /account/:id ; " req))
-    (if-let [body (duck-streams/slurp* (:body req))]
-      (.toString      ;; JSON of MongoDB WriteResult; TODO - make a proper JSON string for client 
-        (bjell/update body "stub")) ;; TODO - stubbing in 'stub' user for now
-      (println "ERROR - PUT body is nil")
+    (let [lin-user (commands/logged-in-user)]
+      (if-let [body (duck-streams/slurp* (:body req))]
+        (.toString      ;; JSON of MongoDB WriteResult; TODO - make a proper JSON string for client 
+          (bjell/update body (:username lin-user) )) ;; TODO - stubbing in 'stub' user for now
+        (println "ERROR - PUT body is nil")
+      )
     )
   )
   (DELETE "/account/:id" [id] (str "{}"))

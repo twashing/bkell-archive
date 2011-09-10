@@ -85,7 +85,7 @@
     ;; the result will look like: {:status 200, :headers {Content-Type text/html}, :body {"previous":{"tag":"user","username":"stub","password":"5185e8b8fd8a71fc80545e144f91faf2"},"logged-in-user":{"tag":"user","username":"stub","password
     ;; ":"5185e8b8fd8a71fc80545e144f91faf2"},"active":true}}
     (is (= 200 (:status result))) ;; ensure status is 200
-    (is (= :user (->   result       ;; this ensures that the body is a JSON string and that the tag is an error
+    (is (= :user (->   result       ;; this ensures that the body is a JSON string and that the tag is a user
                        :body 
                        clojure.data.json/read-json 
                        :logged-in-user  ;; have to dig into the entity before keywordizing
@@ -151,9 +151,9 @@
     
     ;; ensure that we get even empty list of accounts
     (is (= 200 (:status result))) ;; ensure status is 200
-    (is (= []      (->  result       ;; this ensures that the body is a JSON string and that the tag is an error
-                        :body 
-                        clojure.data.json/read-json )))
+    (is (= [] (-> result       ;; this ensures that the body is a JSON string and that the tag is an error
+                  :body 
+                  clojure.data.json/read-json )))
   )
 )
 (deftest test-account-getlist3
@@ -173,7 +173,7 @@
     (is (-> result :body nil? not))
     (is (-> result :body empty? not))
     (is (= 200 (:status result))) ;; ensure status is 200
-    (is (= :account  (-> result       ;; this ensures that the body is a JSON string and that the tag is an error
+    (is (= :account  (-> result       ;; this ensures that the body is a JSON string and that the tag is an account
                           :body 
                           clojure.data.json/read-json 
                           first
@@ -196,30 +196,67 @@
     (is (-> result :body nil? not))
     (is (-> result :body empty? not))
     (is (= 200 (:status result))) ;; ensure status is 200
-    (is (= :account (->  :body       ;; this ensures that the body is a JSON string and that the tag is an error
+    (is (= :account (->  :body       ;; this ensures that the body is a JSON string and that the tag is an account
                        result 
                        clojure.data.json/read-json 
                        domain/keywordize-tags
                        :tag)))
   )
 )
-#_(deftest test-account-get2
+(deftest test-account-update
   
-  ;; ensure that an error is returned if we try to get accounts without being logged in
-  #_(let [ eresult (bjell/add currency "stub" false)]
+  (let  [ ruser (test-utils/add-user nil)
+          rlogin (request "/login" handler/main :post 
+                  {:body (StringBufferInputStream. 
+                          "{ \"tag\":\"user\", \"username\":\"stub\", \"password\":\"5185e8b8fd8a71fc80545e144f91faf2\" }") })
+          raccount (request "/account" handler/main :post {:body (java.io.File. "test/etc/data/test-account-asset.js")})
+          r1 (request "/account/cash" handler/main :get {})
+        ] 
     
-    (is (-> eresult nil? not))
-    (is (-> eresult clojure.data.json/read-json domain/keywordize-tags :tag (= :error)))
-  )
+    ;; get the original 
+    (is (= 200 (:status r1))) ;; ensure status is 200
+    (is (= :account (-> r1       ;; this ensures that the body is a JSON string and that the tag is an account
+                        :body 
+                        clojure.data.json/read-json 
+                        domain/keywordize-tags
+                        :tag)))
     
-  (let [result (request "/accounts" handler/main :GET nil)]
+    ;; update account 
+    #_(let [r2 (request "/account" handler/main :post 
+              {:body 
+                (StringBufferInputStream. 
+                  "{\"tag\":\"account\", \"type\":\"asset\", \"id\":\"cash\", \"name\":\"fubar\", \"counterWeight\":\"debit\"}")
+              })]
+      
+      (is (= 200 (:status r2))) ;; ensure status is 200
+      (is (= :account (-> r2       ;; this ensures that the body is a JSON string and that the tag is an account
+                          :body 
+                          clojure.data.json/read-json 
+                          domain/keywordize-tags
+                          :tag)))
+      (is (= "fubar" (-> r2       ;; this ensures that the body is a JSON string and that the tag is an account
+                         :body 
+                         clojure.data.json/read-json 
+                         domain/keywordize-tags
+                         :name)))
     
-    (is (= 200 (:status result))) ;; ensure status is 200
-    (is (= :error (->  :body       ;; this ensures that the body is a JSON string and that the tag is an error
-                       result 
-                       clojure.data.json/read-json 
-                       domain/keywordize-tags
-                       :tag)))
+    )
+    
+    ;; get the update  
+    #_(let [r3 (request "/account/cash" handler/main :get {})]
+      (is (= 200 (:status r3))) ;; ensure status is 200
+      (is (= :account (-> r3       ;; this ensures that the body is a JSON string and that the tag is an account
+                          :body 
+                          clojure.data.json/read-json 
+                          domain/keywordize-tags
+                          :tag)))
+      (is (= "fubar" (-> r3       ;; this ensures that the body is a JSON string and that the tag is an account
+                         :body 
+                         clojure.data.json/read-json 
+                         domain/keywordize-tags
+                         :name)))
+    )
+    
   )
 )
 
