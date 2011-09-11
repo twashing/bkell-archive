@@ -9,11 +9,12 @@
 ;; get user 
 (defn get-user [uname]
   
-  (first (fetch "users" :where { :username uname }))
-  #_(let  [ u (first (fetch "users" :where { :username uname }))]
+  (let [result (first (fetch "users" :where { :username uname }))]
     
-    (traverse-tree 
-      u :update { :tag (fn [a] (not (nil? a))) } obj)
+    (if (-> result empty? not)
+      (domain/keywordize-tags result)
+      nil
+    )
   )
 )
 (defn get-group [uname]
@@ -60,7 +61,10 @@
         r   "function(k,vals) { return { result : vals } ; }"
         result (map-reduce :bookkeeping m r :result-collection)]
 
-    (-> result first :value) ;; dig in and get the currency
+    (if (-> result empty? not)
+      (-> result first :value domain/keywordize-tags) ;; dig in and get the currency
+      nil
+    )
   )
 )
 

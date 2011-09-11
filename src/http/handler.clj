@@ -25,7 +25,7 @@
   
 
 (defroutes main
-  "Some core functions and thier URL mappings 
+  "Some core functions and their URL mappings 
     
     (commands/get :accounts \"stub\")     ->  /accounts     -> /account/:id 
     (commands/get :bookkeeping \"stub\")  ->  /bookkeeping  -> /bookkeeping/:id 
