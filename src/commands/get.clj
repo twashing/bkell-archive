@@ -102,7 +102,10 @@
         r   "function(k,vals) { return { result : vals } ; }"
         result (map-reduce :bookkeeping m r :result-collection)]
     
-    (-> result first :value domain/keywordize-tags) ;; dig in and get the currency
+    (if (-> result empty? not)
+      (-> result first :value domain/keywordize-tags) ;; dig in and get the currency
+      nil
+    )
   )
 )
 
@@ -146,7 +149,10 @@
         r   "function(k,vals) { return { result : vals } ; }"
         result (map-reduce :bookkeeping m r :result-collection)]
 
-    (-> result first :value )  ;; dig in and get the account
+    (if (-> result empty? not)
+      (-> result first :value domain/keywordize-tags)  ;; dig in and get the account
+      nil
+    )
   )
 )
 

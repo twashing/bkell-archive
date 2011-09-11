@@ -95,10 +95,16 @@
   
   (let [ru (fetch-one "bookkeeping" :where { :owner uname })
         re (commands/get-entry uname (:id entry))]
-    ;;(debug/debug-repl)
+    
     (if re 
-      (update! :bookkeeping { :_id (:_id ru) }  ;; passing in hash w/ ObjecId, NOT original object
-        (domain/traverse-tree ru :update { :id (:id entry) } entry))
+      (if-let [result 
+                (update! :bookkeeping { :_id (:_id ru) }  ;; passing in hash w/ ObjecId, NOT original object
+                  (domain/traverse-tree ru :update { :id (:id entry) } entry))]
+        
+        (if (-> result .getLastError .ok)
+          entry
+          (util/generate-error-response (.getErrorMessage result)))
+      )
       (commands/add-entry entry uname)  ;; insert the entry otherwise 
     )
   )

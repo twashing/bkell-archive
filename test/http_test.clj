@@ -278,7 +278,6 @@
           ;;        {:body (StringBufferInputStream. 
           ;;                "{ \"tag\":\"user\", \"username\":\"stub\", \"password\":\"5185e8b8fd8a71fc80545e144f91faf2\" }") })
           pas (test-utils/populate-accounts)
-          r1 (request "/account/cash" handler/main :get {})
         ] 
     
     (let [  r2 (request "/account/cash" handler/main :delete {:body nil })]
@@ -428,95 +427,95 @@
                           :tag)))
   )
 )
-(comment deftest test-account-get
+(deftest test-entry-get
   
-  ;; ensure that an error is returned if we try to get an account without being logged in
+  ;; ensure that an error is returned if we try to get an entry without being logged in
   (let  [ ruser (test-utils/add-user nil)
           rk (handler/init-handler)
           rlogin (request "/login" handler/main :post 
                   {:body (StringBufferInputStream. 
           "{ \"tag\":\"user\", \"username\":\"stub\", \"password\":\"5185e8b8fd8a71fc80545e144f91faf2\" }") })
           pas (test-utils/populate-accounts)
-          result (request "/account/cash" handler/main :get {})] 
+          r1 (request "/entry" handler/main :post {:body (java.io.File. "test/etc/data/test-entry-bal.js")})
+          result (request "/entry/entryid" handler/main :get {})] 
     
     (is (-> result :body nil? not))
     (is (-> result :body empty? not))
     (is (= 200 (:status result))) ;; ensure status is 200
-    (is (= :account (->  :body       ;; this ensures that the body is a JSON string and that the tag is an account
+    (is (= :entry (->  :body       ;; this ensures that the body is a JSON string and that the tag is an entry
                        result 
                        clojure.data.json/read-json 
                        domain/keywordize-tags
                        :tag)))
   )
 )
-(comment deftest test-account-update
+(deftest test-entry-update
   
   (let  [ ruser (test-utils/add-user nil)
           rlogin (request "/login" handler/main :post 
                   {:body (StringBufferInputStream. 
                           "{ \"tag\":\"user\", \"username\":\"stub\", \"password\":\"5185e8b8fd8a71fc80545e144f91faf2\" }") })
-          ;;raccount (request "/account" handler/main :post {:body (java.io.File. "test/etc/data/test-account-asset.js")})
           pas (test-utils/populate-accounts)
-          r1 (request "/account/cash" handler/main :get {})
+          rentry (request "/entry" handler/main :post {:body (java.io.File. "test/etc/data/test-entry-bal.js")})
+          r1 (request "/entry/entryid" handler/main :get {})
         ] 
     
     ;; get the original 
     (is (= 200 (:status r1))) ;; ensure status is 200
-    (is (= :account (-> r1       ;; this ensures that the body is a JSON string and that the tag is an account
+    (is (= :entry (-> r1       ;; this ensures that the body is a JSON string and that the tag is an entry
                         :body 
                         clojure.data.json/read-json 
                         domain/keywordize-tags
                         :tag)))
     
-    ;; update account 
-    (let [r2 (request "/account/cash" handler/main :put
+    ;; update entry 
+    (let [r2 (request "/entry/entryid" handler/main :put
               {:body 
                 (StringBufferInputStream. 
-                  "{\"tag\":\"account\", \"type\":\"asset\", \"id\":\"cash\", \"name\":\"fubar\", \"counterWeight\":\"debit\"}")
+                  "{\"tag\":\"entry\", \"id\":\"entryid\", \"date\":\"01/01/2012\", \"content\": [{\"tag\":\"debit\", \"id\":\"dtS\", \"amount\":120.0, \"accountid\":\"cash\"}, {\"tag\":\"credit\", \"id\":\"crS\", \"amount\":120.0, \"accountid\":\"accounts payable\"}]}")
               })]
       
       (is (= 200 (:status r2))) ;; ensure status is 200
-      (is (= :account (-> r2       ;; this ensures that the body is a JSON string and that the tag is an account
+      (is (= :entry (-> r2       ;; this ensures that the body is a JSON string and that the tag is an entry
                           :body 
                           clojure.data.json/read-json 
                           domain/keywordize-tags
                           :tag)))
-      (is (= "fubar" (-> r2       ;; this ensures that the body is a JSON string and that the tag is an account
+      (is (= "01/01/2012" (-> r2       ;; this ensures that the body is a JSON string and that the tag is an entry
                          :body 
                          clojure.data.json/read-json 
                          domain/keywordize-tags
-                         :name)))
+                         :date)))
     
     )
     
     ;; get the update  
-    (let [r3 (request "/account/cash" handler/main :get {})]
+    (let [r3 (request "/entry/entryid" handler/main :get {})]
       (is (= 200 (:status r3))) ;; ensure status is 200
-      (is (= :account (-> r3       ;; this ensures that the body is a JSON string and that the tag is an account
+      (is (= :entry (-> r3       ;; this ensures that the body is a JSON string and that the tag is an entry
                           :body 
                           clojure.data.json/read-json 
                           domain/keywordize-tags
                           :tag)))
-      (is (= "fubar" (-> r3       ;; this ensures that the body is a JSON string and that the tag is an account
+      (is (= "01/01/2012" (-> r3       ;; this ensures that the body is a JSON string and that the tag is an entry
                          :body 
                          clojure.data.json/read-json 
                          domain/keywordize-tags
-                         :name)))
+                         :date)))
     )
     
   )
 )
-(comment deftest test-account-delete
+(deftest test-entry-delete
   
   (let  [ ruser (test-utils/add-user nil)
           ;;rlogin (request "/login" handler/main :post 
           ;;        {:body (StringBufferInputStream. 
           ;;                "{ \"tag\":\"user\", \"username\":\"stub\", \"password\":\"5185e8b8fd8a71fc80545e144f91faf2\" }") })
           pas (test-utils/populate-accounts)
-          r1 (request "/account/cash" handler/main :get {})
         ] 
     
-    (let [  r2 (request "/account/cash" handler/main :delete {:body nil })]
+    (let [  r2 (request "/entry/entryid" handler/main :delete {:body nil })]
       (is (= 200 (:status r2))) ;; ensure status is 200
       (is (= :error (-> :body       ;; this ensures that the body is a JSON string and that the tag is an error
                         r2 
@@ -528,13 +527,18 @@
     (let  [ rlogin (request "/login" handler/main :post 
                     {:body (StringBufferInputStream. 
                             "{ \"tag\":\"user\", \"username\":\"stub\", \"password\":\"5185e8b8fd8a71fc80545e144f91faf2\" }") })
-            r3 (request "/account/cash" handler/main :delete {:body nil })
+            r3 (request "/entry/entryid" handler/main :delete {:body nil })
           ]
         
       (is (= 200 (:status r3))) ;; ensure status is 200
       (is (empty? (:body r3)))
     )
     
+    ;; ensure that there is no more entry
+    (let [r4 (request "/entry/entryid" handler/main :get {})]
+      (is (= 200 (:status r4))) ;; ensure status is 200
+      (is (= "null" (:body r4)))  ;; TODO - not crazy about this, but don't know how to fix at the moment
+    )
   )
 )
 

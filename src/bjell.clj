@@ -38,7 +38,8 @@
     (let [result (eval `(bkell/get ~akey ~@etal))]
 
       (if (or (vector? result)
-              (list? result))
+              (list? result)
+              (empty? result))
         (clojure.data.json/json-str result)
         (clojure.data.json/json-str 
           (domain/bsonid-to-id result))
