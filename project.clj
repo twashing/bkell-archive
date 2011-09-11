@@ -28,7 +28,7 @@
   ;; lein test bkell-test bjell-test http-test
   
   ;; Running TESTs for client
-  ;; ... using phantomjs to invoke jasmine-bdd 
+  ;; DISPLAY=:0 phantomjs public/test/run_tests.js  - basic test wrapper that pulls jasmine, bkeeping and test specs
 
   ;;:repl-init "src/bkell.clj" 
   :ring {:handler http.handler/app}
