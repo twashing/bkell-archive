@@ -21,7 +21,15 @@
                       ;;[log4j/log4j "1.2.15"]
 	            ] 
   
+  ;; Running SHELL bkell 
+  ;; ... 
+
+  ;; Running TESTs for server 
   ;; lein test bkell-test bjell-test http-test
+  
+  ;; Running TESTs for client
+  ;; ... using phantomjs to invoke jasmine-bdd 
+
   ;;:repl-init "src/bkell.clj" 
   :ring {:handler http.handler/app}
   :resources-path ".:src/:test/:src/commands/:src/spittoon/:vendor/:vendor/debug/:vendor/clojure/contrib/:public/:etc/resources/"
