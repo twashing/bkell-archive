@@ -31,7 +31,9 @@
   
   ;; Running TESTs for client
   ;; DISPLAY=:0 phantomjs public/test/run_tests.js  - basic test wrapper that pulls jasmine, bkeeping and test specs
-  ;; ./public/test/bin/jasmine-node public/test/test_register.js - trying with jasmine-node: https://github.com/mhevery/jasmine-node 
+
+  ;; trying with i) jasmine-node: https://github.com/mhevery/jasmine-node ii) downgraded nodejs to a stable version (v0.4.12)
+  ;; ./public/test/bin/jasmine-node -i . -i public/javascript/ public/test/test_register.js 
 
   ;;:repl-init "src/bkell.clj" 
   :ring {:handler http.handler/app}

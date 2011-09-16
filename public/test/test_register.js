@@ -10,8 +10,7 @@
 
   // test with an empty email - should ERROR 
 
-
-//phantom.exit()
+require("public/test/test_core.js");
 
 describe('Register', function () {
   

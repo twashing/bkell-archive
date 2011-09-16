@@ -5,9 +5,8 @@ require("public/javascript/underscore.js", true)
 require("public/javascript/backbone.js", true)
 
 //window.bkeeping = "tim";
-window.bkeeping = {};
+bkeeping = {};
 
-console.log(window.bkeeping);
 //bkeeping.user = new User();
 
 
