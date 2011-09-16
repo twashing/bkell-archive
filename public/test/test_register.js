@@ -27,5 +27,13 @@ describe('Register', function () {
     counter = counter * 5;   // counter was 2 before
     expect(counter).toEqual(10);
   });
+
+});
+
+describe('Login', function() { 
+
+  it('this is a test', function() { 
+    expect(1).toEqual(1);
+  });
 });
 

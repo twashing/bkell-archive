@@ -15,12 +15,14 @@
                       [lein-search "0.3.4"]
                       [vimclojure/server "2.3.0-SNAPSHOT"]
                       [swank-clojure "1.4.0-SNAPSHOT"]
+                      [clojure-source "1.2.0"]
                       [slamhound "1.2.0"]
                       ;;[org.clojars.emh/vimclojure "2.2.0-SNAPSHOT"]
                       ;;[org.apache/commons-logging "1.1.1"]
                       ;;[log4j/log4j "1.2.15"]
 	            ] 
   
+  :jvm-opts ["-agentlib:jdwp=transport=dt_socket,server=y,suspend=n"]
   ;; Running SHELL bkell 
   ;; ... 
 
@@ -29,6 +31,7 @@
   
   ;; Running TESTs for client
   ;; DISPLAY=:0 phantomjs public/test/run_tests.js  - basic test wrapper that pulls jasmine, bkeeping and test specs
+  ;; ./public/test/bin/jasmine-node public/test/test_register.js - trying with jasmine-node: https://github.com/mhevery/jasmine-node 
 
   ;;:repl-init "src/bkell.clj" 
   :ring {:handler http.handler/app}
