@@ -1,12 +1,16 @@
 
 //require("/javascript/model/user.js", true);
-require("public/javascript/json2.js", true)
-require("public/javascript/underscore.js", true)
-require("public/javascript/backbone.js", true)
+//require("/javascript/json2.js", true)
+//require("/javascript/underscore.js", true)
+//require("/javascript/backbone.js", true)
 
-//window.bkeeping = "tim";
 bkeeping = {};
+bkeeping.models = {};
 
-//bkeeping.user = new User();
+bkeeping.models.Register = Backbone.Model.extend({
+
+  urlRoot : "/user"
+  
+}); 
 
 

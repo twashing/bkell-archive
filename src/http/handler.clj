@@ -23,6 +23,12 @@
   (bjell/init-shell)
 )
   
+(defn wrap-errors [msg]
+  [ 400 (util/generate-error-responses msg)])
+
+(defn wrap-error [msg]
+  [ 400 (util/generate-error-response msg)])
+
 
 (defroutes main
   "Some core functions and their URL mappings 
@@ -32,7 +38,7 @@
     (commands/get :entries \"stub\")      ->  /entries      -> /entry/:id 
   "
   
-
+  
   ;; ======
   ;; REGISTER & LOGIN
   (GET "/" []   ;; index is the default page of the application 

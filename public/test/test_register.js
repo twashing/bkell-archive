@@ -6,33 +6,89 @@
 // there will be a RegisterModel that contains the User we are trying to create; ** howto SYNC with callback ? ** 
   // password should be MD5 hash'd 
 
-  // test with an empty password - should ERROR 
-
-  // test with an empty email - should ERROR 
-
-require("public/test/test_core.js");
+//require("/test/test_core.js");
 
 describe('Register', function () {
   
-  var counter = 0
+  var register;
+  beforeEach(function () {
+    register = new bkeeping.models.Register;
+  });
   
   // test that a Register model exists
-  it('can add a number', function () {
-    counter = counter + 2;   // counter was 0 before
-    expect(counter).toEqual(2);
+  it('bkeeping namespace exists', function () {
+    expect(bkeeping).toBeDefined();
   });
-
-  it('can multiply some numbers', function () {
-    counter = counter * 5;   // counter was 2 before
-    expect(counter).toEqual(10);
+  
+  it('Register model should exist', function () {
+    expect(bkeeping.models.Register).toBeDefined();
   });
-
+  
+  it("'backbone' Model should contain a 'urlRoot'", function () {
+    expect(register.urlRoot).toEqual("/user"); 
+  });
+  
+  // test with an empty password - should ERROR 
+  it("empty password should return an error", function () { 
+   
+    register.set( 
+      { "tag": "user",
+        "username": "stub", 
+        "password": null, 
+      },
+      {silent: true});
+    
+    register.save ( {}, 
+                    { success : function(model, response) { 
+                        console.log("success CALLED > model["+ model +"] > response["+ response +"]"); 
+                      }},
+                    { error : function(model, response) { 
+                        console.log("error CALLED > model["+ model +"] > response["+ response +"]"); 
+                      }}
+                  ); 
+    
+  });
+  
+  /*register.set( 
+    {"tag":"user",
+    "username":this.$("#username").val(), 
+    "password":this.$("#password").val(), 
+    "content":
+    [{"tag":"profileDetails",
+      "content":
+      [{"tag":"profileDetail",
+        "name":"first.name",
+        "value": this.$("#firstname").val(), 
+        "content":null},
+       {"tag":"profileDetail",
+        "name":"last.name",
+        "value": this.$("#lastname").val(), 
+        "content":null},
+       {"tag":"profileDetail",
+        "name":"email",
+        "value": this.$("#email").val(), 
+        "content":null},
+       {"tag":"profileDetail",
+        "name":"country",
+        "value": this.$("#country").val(), 
+        "content":null},
+       {"tag":"profileDetail",
+        "name":"currency",
+        "value": this.$("#currency").val(), 
+        "content":null}
+          
+    ]}]},
+    {silent: true});
+    */
+  // test with an empty email - should ERROR 
+  
 });
 
 describe('Login', function() { 
 
-  it('this is a test', function() { 
+  /*it('this is a test', function() { 
     expect(1).toEqual(1);
   });
+  */
 });
 
