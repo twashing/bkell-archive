@@ -48,17 +48,17 @@
     (let [ eresult (bjell/add currency "stub" false)]
       
       (is (-> eresult nil? not))
-      (is (-> eresult clojure.data.json/read-json domain/keywordize-tags :tag (= :error)))
+      (is (-> eresult domain/keywordize-tags :tag (= :error)))
     )
     
     ;; now log-in a user
-    (bjell/login ru) 
+    (commands/login-user ru) 
     
     (let [  fresult 
             (bjell/add (FileReader. "test/etc/data/test-currency.js") "stub" false)]  ;; have to reread the file b/c can't reset stram
       
       (is (-> fresult nil? not))
-      (is (-> fresult clojure.data.json/read-json domain/keywordize-tags :tag (= :currency)))
+      (is (-> fresult domain/keywordize-tags :tag (= :currency)))
     )
   )
 )
@@ -76,18 +76,18 @@
     (let [ eresult (bjell/get :user "stub")]
       
       (is (-> eresult nil? not))
-      (is (-> eresult clojure.data.json/read-json domain/keywordize-tags :tag (= :error)))
+      (is (-> eresult domain/keywordize-tags :tag (= :error)))
     )
     
     ;; now log-in a user
-    (bjell/login ru) 
+    (commands/login-user ru) 
     
     (let [ fresult (bjell/get :user "stub")]
       
       (is (not (nil? fresult )) "There SHOULD be a user with the username 'stub'")
       
-      (is (string? fresult)  "The result SHOULD be a JSON String")
-      (is (-> fresult clojure.data.json/read-json domain/keywordize-tags :tag (= :user)))
+      ;;(is (string? fresult)  "The result SHOULD be a JSON String")
+      (is (-> fresult domain/keywordize-tags :tag (= :user)))
     )
   )
 )
@@ -101,18 +101,18 @@
     (let [ eresult (bjell/get :currency "stub" "USD")]
       
       (is (-> eresult nil? not))
-      (is (-> eresult clojure.data.json/read-json domain/keywordize-tags :tag (= :error)))
+      (is (-> eresult domain/keywordize-tags :tag (= :error)))
     )
     
     ;; now log-in a user
-    (bjell/login ru) 
+    (commands/login-user ru) 
     
     (let [ fresult (bjell/get :currency "stub" "USD")]
       
       (is (not (nil? fresult )) "There SHOULD be a user with the username 'stub'")
       
-      (is (string? fresult)  "The result SHOULD be a JSON String")
-      (is (-> fresult clojure.data.json/read-json domain/keywordize-tags :tag (= :currency)))
+      ;;(is (string? fresult)  "The result SHOULD be a JSON String")
+      (is (-> fresult domain/keywordize-tags :tag (= :currency)))
     )
   )
 )
