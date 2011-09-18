@@ -296,8 +296,9 @@
             r3 (request "/account/cash" handler/main :delete {:body nil })
           ]
         
+        
       (is (= 200 (:status r3))) ;; ensure status is 200
-      (is (empty? (:body r3)))
+      (is (= "null" (:body r3)))
     )
     
   )
@@ -532,7 +533,7 @@
           ]
         
       (is (= 200 (:status r3))) ;; ensure status is 200
-      (is (empty? (:body r3)))
+      (is (= "null" (:body r3)))
     )
     
     ;; ensure that there is no more entry
