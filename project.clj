@@ -16,10 +16,7 @@
                       [vimclojure/server "2.3.0-SNAPSHOT"]
                       [swank-clojure "1.4.0-SNAPSHOT"]
                       [clojure-source "1.2.0"]
-                      [slamhound "1.2.0"]
-                      ;;[org.clojars.emh/vimclojure "2.2.0-SNAPSHOT"]
-                      ;;[org.apache/commons-logging "1.1.1"]
-                      ;;[log4j/log4j "1.2.15"]
+                      [lein-fail-fast "1.0.0"]
 	            ] 
   
   :jvm-opts ["-agentlib:jdwp=transport=dt_socket,server=y,suspend=n"]

@@ -1,16 +1,14 @@
 (ns bjell
 
   (:import java.io.FileReader)
-  (:require bkell)
-  ;;(:require commands.add)
-  ;;(:require commands.get)
-  ;;(:require commands.update)
-  ;;(:require commands.remove)
-  (:require clojure.data.json)
-  (:require domain)
-
   (:use somnium.congomongo)
   (:use clojure.contrib.debug)
+  
+  (:require [bkell]
+            [clojure.data.json]
+            [domain]
+            [util])
+
 )
 
 
@@ -26,9 +24,9 @@
   
   (let  [ artifact-p (domain/keywordize-tags (clojure.data.json/read-json artifact))]
 
-    (clojure.data.json/json-str 
       (domain/bsonid-to-id
-        (eval `(bkell/add ~artifact-p ~@etal)) ))
+        (eval `(bkell/add ~artifact-p ~@etal)) )
+
   )
 )
 
@@ -40,9 +38,8 @@
       (if (or (vector? result)
               (list? result)
               (empty? result))
-        (clojure.data.json/json-str result)
-        (clojure.data.json/json-str 
-          (domain/bsonid-to-id result))
+        result
+        (domain/bsonid-to-id result)
       )
     )
 )
@@ -51,9 +48,8 @@
   "artifact - input can be JSON String or Reader"
   
   (let  [ artifact-p (domain/keywordize-tags (clojure.data.json/read-json artifact))]
-    (clojure.data.json/json-str 
-      (domain/bsonid-to-id
-        (eval `(bkell/update ~artifact-p ~@etal))) )
+    (domain/bsonid-to-id
+      (eval `(bkell/update ~artifact-p ~@etal)) )
   )
 )
 
@@ -61,8 +57,8 @@
   "entity - input is a String"
   
     (let [result (eval `(bkell/remove ~entity ~@etal))]
-
-      (if (-> result nil? not)
+      result
+      #_(if (-> result nil? not)
         (clojure.data.json/json-str result)
         result
       )
@@ -71,7 +67,7 @@
 
 (defn login [user]
   (let  [ user-p (domain/keywordize-tags (clojure.data.json/read-json user))]
-    (-> user-p bkell/login domain/bsonid-to-id clojure.data.json/json-str))
+    (-> user-p bkell/login domain/bsonid-to-id ))
 
 )
 

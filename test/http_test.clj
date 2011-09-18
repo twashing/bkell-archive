@@ -1,3 +1,4 @@
+
 (ns http-test
   
   (:import java.io.StringBufferInputStream)
@@ -72,7 +73,7 @@
                           {:body (StringBufferInputStream. "{ \"tag\":\"user\", \"username\":\"stub\", \"password\":\"badpassword\" }") })
         ] 
     
-    (is (= 200 (:status result))) ;; ensure status is 200
+    (is (= 400 (:status result))) ;; ensure status is 200
     (is (= :errors (-> result       ;; this ensures that the body is a JSON string and that the tag is an error
                        :body 
                        clojure.data.json/read-json 
@@ -111,7 +112,7 @@
   ;; ensure that an error is returned if we try to add an account without being logged in
   (let [result (request "/account" handler/main :post {:body (java.io.File. "test/etc/data/test-account-asset.js")})] 
     
-    (is (= 200 (:status result))) ;; ensure status is 200
+    (is (= 400 (:status result))) ;; ensure status is 200
     (is (= :error (->  :body       ;; this ensures that the body is a JSON string and that the tag is an error
                        result 
                        clojure.data.json/read-json 
@@ -144,7 +145,7 @@
   (let [rk (handler/init-handler)
         result (request "/accounts" handler/main :get {})] 
     
-    (is (= 200 (:status result))) ;; ensure status is 200
+    (is (= 400 (:status result))) ;; ensure status is 200
     (is (= :error (->  :body       ;; this ensures that the body is a JSON string and that the tag is an error
                        result 
                        clojure.data.json/read-json 
@@ -281,7 +282,7 @@
         ] 
     
     (let [  r2 (request "/account/cash" handler/main :delete {:body nil })]
-      (is (= 200 (:status r2))) ;; ensure status is 200
+      (is (= 400 (:status r2))) ;; ensure status is 200
       (is (= :error (-> :body       ;; this ensures that the body is a JSON string and that the tag is an error
                         r2 
                         clojure.data.json/read-json 
@@ -310,7 +311,7 @@
   (let [rk (handler/init-handler)
         result (request "/bookkeeping/main-bookkeeping" handler/main :get {})] 
     
-    (is (= 200 (:status result))) ;; ensure status is 200
+    (is (= 400 (:status result))) ;; ensure status is 200
     (is (= :error (->  :body       ;; this ensures that the body is a JSON string and that the tag is an error
                        result 
                        clojure.data.json/read-json 
@@ -347,7 +348,7 @@
   ;; ensure that an error is returned if we try to add an entry without being logged in
   (let [result (request "/entry" handler/main :post {:body (java.io.File. "test/etc/data/test-entry-FULL.js")})] 
     
-    (is (= 200 (:status result))) ;; ensure status is 200
+    (is (= 400 (:status result))) ;; ensure status is 200
     (is (= :error (->  :body       ;; this ensures that the body is a JSON string and that the tag is an error
                        result 
                        clojure.data.json/read-json 
@@ -379,7 +380,7 @@
   (let [rk (handler/init-handler)
         result (request "/entries" handler/main :get {})] 
     
-    (is (= 200 (:status result))) ;; ensure status is 200
+    (is (= 400 (:status result))) ;; ensure status is 200
     (is (= :error (->  :body       ;; this ensures that the body is a JSON string and that the tag is an error
                        result 
                        clojure.data.json/read-json 
@@ -516,7 +517,7 @@
         ] 
     
     (let [  r2 (request "/entry/entryid" handler/main :delete {:body nil })]
-      (is (= 200 (:status r2))) ;; ensure status is 200
+      (is (= 400 (:status r2))) ;; ensure status is 200
       (is (= :error (-> :body       ;; this ensures that the body is a JSON string and that the tag is an error
                         r2 
                         clojure.data.json/read-json 

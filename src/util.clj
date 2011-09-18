@@ -36,4 +36,9 @@
   }
 )
 
+(defn wrap-error [err]
+  { :status 400 :body err })
+(defn wrap-error-msg [msg]
+  (wrap-error (generate-error-response msg) ))
+
 
