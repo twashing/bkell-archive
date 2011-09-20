@@ -24,11 +24,11 @@
 )
  
 
-(defn handle-errors [result]
+(defn handle-errors [result status]
   
   (if (or (= :error (:tag result))
           (= :errors (:tag result)))
-    (util/wrap-error result)
+    (util/wrap-error result status)
     result
   )
 )
@@ -63,9 +63,9 @@
     (if-let [user (duck-streams/slurp* (:body req))]
       
       (try
-        (-> user bjell/login handle-errors substitute-body )
-        (catch Exception e (clojure.data.json/json-str (util/wrap-error-msg (.getMessage e)))))
-      (clojure.data.json/json-str (util/wrap-error-msg "POST body is nil"))
+        (-> user bjell/login (handle-errors 400) substitute-body )
+        (catch Exception e (clojure.data.json/json-str (util/wrap-error-msg (.getMessage e) 500))))
+      (clojure.data.json/json-str (util/wrap-error-msg "POST body is nil" 400))
     )
   )
   
@@ -76,9 +76,9 @@
     (println (str "POST ; /user/ ; " req))
     (if-let [user (duck-streams/slurp* (:body req))]
       (try
-        (-> user bjell/add handle-errors substitute-body ) 
-        (catch Exception e (clojure.data.json/json-str (util/wrap-error-msg (.getMessage e)))))
-      (clojure.data.json/json-str (util/wrap-error-msg "POST body is nil"))
+        (-> user bjell/add (handle-errors 400) substitute-body )
+        (catch Exception e (-> e .getMessage (util/wrap-error-msg 500) substitute-body )))
+      (-> "POST body is nil" (util/wrap-error-msg 400) substitute-body)
     )
   )
   
@@ -90,7 +90,7 @@
     (let [lin-user (commands/logged-in-user)]
       (if-let [body (duck-streams/slurp* (:body req))]
         (->      ;; JSON of MongoDB WriteResult; TODO - make a proper JSON string for client 
-          body (bjell/add (:username lin-user)) handle-errors substitute-body) ;; TODO - stubbing in 'stub' user for now
+          body (bjell/add (:username lin-user)) (handle-errors 400) substitute-body) ;; TODO - stubbing in 'stub' user for now
         (println "ERROR - POST body is nil")
       )
     )
@@ -101,7 +101,7 @@
     (let [lin-user (commands/logged-in-user)]
       
       (->      ;; JSON of MongoDB WriteResult; TODO - make a proper JSON string for client 
-        (bjell/get :accounts (:username lin-user)) handle-errors substitute-body) ;; TODO - stubbing in 'stub' user for now
+        (bjell/get :accounts (:username lin-user)) (handle-errors 400) substitute-body) ;; TODO - stubbing in 'stub' user for now
     )
   )
   (GET "/account/:id" [id] 
@@ -110,7 +110,7 @@
     (let [lin-user (commands/logged-in-user)]
       
       (->      ;; JSON of MongoDB WriteResult; TODO - make a proper JSON string for client 
-        (bjell/get :account (:username lin-user) id ) handle-errors substitute-body) ;; TODO - stubbing in 'stub' user for now
+        (bjell/get :account (:username lin-user) id ) (handle-errors 400) substitute-body) ;; TODO - stubbing in 'stub' user for now
     )
   )
   (PUT "/account/:id" [id :as req]
@@ -119,7 +119,7 @@
     (let [lin-user (commands/logged-in-user)]
       (if-let [body (duck-streams/slurp* (:body req))]
         (->      ;; JSON of MongoDB WriteResult; TODO - make a proper JSON string for client 
-          (bjell/update body (:username lin-user) ) handle-errors substitute-body) ;; TODO - stubbing in 'stub' user for now
+          (bjell/update body (:username lin-user) ) (handle-errors 400) substitute-body) ;; TODO - stubbing in 'stub' user for now
         (println "ERROR - PUT body is nil")
       )
     )
@@ -130,7 +130,7 @@
     (let [lin-user (commands/logged-in-user)]
       
       (->      ;; JSON of MongoDB WriteResult; TODO - make a proper JSON string for client 
-        lin-user (bjell/remove id) handle-errors substitute-body) ;; TODO - stubbing in 'stub' user for now
+        lin-user (bjell/remove id) (handle-errors 400) substitute-body) ;; TODO - stubbing in 'stub' user for now
     )
   )
   
@@ -143,7 +143,7 @@
     (let [lin-user (commands/logged-in-user)]
       
       (->      ;; JSON of MongoDB WriteResult; TODO - make a proper JSON string for client 
-        (bjell/get :bookkeeping (:username lin-user) id ) handle-errors substitute-body) ;; TODO - stubbing in 'stub' user for now
+        (bjell/get :bookkeeping (:username lin-user) id ) (handle-errors 400) substitute-body) ;; TODO - stubbing in 'stub' user for now
     )
   )
   
@@ -156,7 +156,7 @@
     (let [lin-user (commands/logged-in-user)]
       (if-let [body (duck-streams/slurp* (:body req))]
         (->      ;; JSON of MongoDB WriteResult; TODO - make a proper JSON string for client 
-          body (bjell/add (:username lin-user)) handle-errors substitute-body) ;; TODO - stubbing in 'stub' user for now
+          body (bjell/add (:username lin-user)) (handle-errors 400) substitute-body) ;; TODO - stubbing in 'stub' user for now
         (println "ERROR - POST body is nil")
       )
     )
@@ -167,7 +167,7 @@
     (let [lin-user (commands/logged-in-user)]
       
       (->      ;; JSON of MongoDB WriteResult; TODO - make a proper JSON string for client 
-        (bjell/get :entries (:username lin-user)) handle-errors substitute-body) ;; TODO - stubbing in 'stub' user for now
+        (bjell/get :entries (:username lin-user)) (handle-errors 400) substitute-body) ;; TODO - stubbing in 'stub' user for now
     )
   )
   (GET "/entry/:id" [id] 
@@ -176,7 +176,7 @@
     (let [lin-user (commands/logged-in-user)]
       
       (->      ;; JSON of MongoDB WriteResult; TODO - make a proper JSON string for client 
-        (bjell/get :entry (:username lin-user) id ) handle-errors substitute-body) ;; TODO - stubbing in 'stub' user for now
+        (bjell/get :entry (:username lin-user) id ) (handle-errors 400) substitute-body) ;; TODO - stubbing in 'stub' user for now
     )
   )
   (PUT "/entry/:id" [id :as req]
@@ -185,7 +185,7 @@
     (let [lin-user (commands/logged-in-user)]
       (if-let [body (duck-streams/slurp* (:body req))]
         (->      ;; JSON of MongoDB WriteResult; TODO - make a proper JSON string for client 
-          body (bjell/update (:username lin-user) ) handle-errors substitute-body) ;; TODO - stubbing in 'stub' user for now
+          body (bjell/update (:username lin-user) ) (handle-errors 400) substitute-body) ;; TODO - stubbing in 'stub' user for now
         (println "ERROR - PUT body is nil")
       )
     )
@@ -196,7 +196,7 @@
     (let [lin-user (commands/logged-in-user)]
       
       (->      ;; JSON of MongoDB WriteResult; TODO - make a proper JSON string for client 
-        lin-user (bjell/remove id ) handle-errors substitute-body) ;; TODO - stubbing in 'stub' user for now
+        lin-user (bjell/remove id ) (handle-errors 400) substitute-body) ;; TODO - stubbing in 'stub' user for now
     )
   )
   
@@ -209,7 +209,7 @@
     (let [lin-user (commands/logged-in-user)]
       
       (->      ;; JSON of MongoDB WriteResult; TODO - make a proper JSON string for client 
-        (bjell/get :bookkeeping (:username lin-user) id ) handle-errors substitute-body) ;; TODO - stubbing in 'stub' user for now
+        (bjell/get :bookkeeping (:username lin-user) id ) (handle-errors 400) substitute-body) ;; TODO - stubbing in 'stub' user for now
     )
   )
   

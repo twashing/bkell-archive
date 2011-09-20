@@ -15,8 +15,8 @@
 (defn add-user [user] 
   
   { :pre  [ (util/verify-arg 
-              (not (=  (:username user) ;; check that there is not a duplicate user 
-                (:username (first (fetch "users" :where { :username (:username user) })))))
+              (not (= (:username user) ;; check that there is not a duplicate user 
+                      (:username (first (fetch "users" :where { :username (:username user) })))))
               "This is a duplicate User"
             )
           ]}

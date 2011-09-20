@@ -36,9 +36,12 @@
   }
 )
 
-(defn wrap-error [err]
-  { :status 400 :body err })
-(defn wrap-error-msg [msg]
-  (wrap-error (generate-error-response msg) ))
+(defn wrap-error [err status]
+  
+  (let [stat (if (-> status nil? not) status 400)]
+    { :status stat :headers { "Content-Type" "application/json" } :body err })
+)
+(defn wrap-error-msg [msg status]
+  (wrap-error (generate-error-response msg) status))
 
 
