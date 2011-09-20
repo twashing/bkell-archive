@@ -12,8 +12,7 @@
             [clojure.data.json :as json]
             [ring.middleware.file :as ring-file]
             [ring.util.response :as response]
-            [util]
-  )
+            [util])
 )
 
 
@@ -50,6 +49,7 @@
     (commands/get :entries \"stub\")      ->  /entries      -> /entry/:id 
   "
   
+  (init-handler)
   
   ;; ======
   ;; REGISTER & LOGIN
@@ -75,9 +75,12 @@
     
     (println (str "POST ; /user/ ; " req))
     (if-let [user (duck-streams/slurp* (:body req))]
+      (do (println "... user > " user)
+      (println "... type > " (type user))
       (try
         (-> user bjell/add (handle-errors 400) substitute-body )
-        (catch Exception e (-> e .getMessage (util/wrap-error-msg 400) substitute-body )))
+        (catch Exception e (-> e .getMessage (util/wrap-error-msg 500) substitute-body )))
+      )
       (-> "POST body is nil" (util/wrap-error-msg 400) substitute-body)
     )
   )

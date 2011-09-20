@@ -2,17 +2,18 @@
 
   (:import java.io.FileReader)
   (:import java.lang.AssertionError)
-  (:require domain)
-  (:require util)
-  (:require commands.add)
-  (:require commands.update)
-  (:require commands.get)
-  (:require commands.remove)
-  (:require commands.authenticate)
+  (:require [domain]
+            [util]
+            [commands.add]
+            [commands.update]
+            [commands.get]
+            [commands.remove]
+            [commands.authenticate])
 )
 
 
 (defn init-shell [] 
+  (somnium.congomongo/mongo! :db "bkell") ;; connect to mongodb
   (def shell (ref { :active true })) 	;; the shell and memory 
 )
 
@@ -79,8 +80,8 @@
   (ns bkell) 
   (use 'bkell) 
   (init-shell) 
-  (require 'somnium.congomongo) 
-  (somnium.congomongo/mongo! :db "bkell") 
+  ;;(require 'somnium.congomongo) 
+  ;;(somnium.congomongo/mongo! :db "bkell") 
   
   ;;(require 'clojure.main)
   ;;(clojure.main/repl)

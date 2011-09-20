@@ -34,7 +34,7 @@ describe('Register', function () {
     register.set( 
       { "tag": "user",
         "username": "stub", 
-        //"password": null, 
+        "password": "stub", 
       },
       {silent: true});
     
@@ -45,7 +45,7 @@ describe('Register', function () {
                       error : function(model, response) { 
                         //var thing = 1
                         //console.log("Error CALLED")
-                        console.log("error CALLED > model["+ model +"] > response["+ response +"]"); 
+                        console.log("error CALLED > model["+ model +"] > response["+ response.responseText +"]"); 
                       }
                     }
                   ); 
