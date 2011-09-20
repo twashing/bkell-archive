@@ -77,7 +77,7 @@
     (if-let [user (duck-streams/slurp* (:body req))]
       (try
         (-> user bjell/add (handle-errors 400) substitute-body )
-        (catch Exception e (-> e .getMessage (util/wrap-error-msg 500) substitute-body )))
+        (catch Exception e (-> e .getMessage (util/wrap-error-msg 400) substitute-body )))
       (-> "POST body is nil" (util/wrap-error-msg 400) substitute-body)
     )
   )

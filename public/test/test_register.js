@@ -34,17 +34,20 @@ describe('Register', function () {
     register.set( 
       { "tag": "user",
         "username": "stub", 
-        "password": null, 
+        //"password": null, 
       },
       {silent: true});
     
     register.save ( {}, 
                     { success : function(model, response) { 
                         console.log("success CALLED > model["+ model +"] > response["+ response +"]"); 
-                      }},
-                    { error : function(model, response) { 
+                      },
+                      error : function(model, response) { 
+                        //var thing = 1
+                        //console.log("Error CALLED")
                         console.log("error CALLED > model["+ model +"] > response["+ response +"]"); 
-                      }}
+                      }
+                    }
                   ); 
     
   });
