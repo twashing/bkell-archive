@@ -8,7 +8,7 @@
 
 //require("/test/test_core.js");
 
-describe('Register', function () {
+/*describe('Register', function () {
   
   
   var register;
@@ -29,24 +29,40 @@ describe('Register', function () {
     expect(register.urlRoot).toEqual("/user"); 
   });
 });
-
+*/
  
 describe('Register w/ server interaction', function () {
   
   var register;
+  
+  /**** 
+   * BEFORE 
+   */
   beforeEach(function() {
+    
     register = new bkeeping.models.Register;
+    login = new bkeeping.models.Login;
   });
-  afterEach(function() {  
-      
-    // ** delete the user created on the DB 
-    //register.login();
-    register.destroy();
-  });
+
+
+  // defining AFTER here so it can be put into a callback handler 
+  var afterRun = function() {  
+     
+    // delete the user created on the DB 
+    login.savek({ "tag": "user",
+                  "username": "stub", 
+                  "password": "e8f65fd8d973f9985dc7ea3cf1614ae1", 
+                }, 
+                function(model, response) { 
+                  register.destroy();
+                }, 
+                function(model, response) { 
+                });
+  };
   
   // test creating a user 
   it("do a basic save, and error on duplication attempt", function () { 
-   
+    
     register.set( 
       { "tag": "user",
         "username": "stub", 
@@ -54,13 +70,27 @@ describe('Register w/ server interaction', function () {
       },
       { silent: true });
     
-    register.savek();
+    register.savek({}, function(model, response) { 
+             
+             console.log("success [bkeeping.models.Register] CALLED > model["+ model +"] > response["+ response +"]"); 
+             
+             register["_id"] = response._id;
+             register["id"] = response.username;
+
+             expect(response).toBeDefined();
+             expect(response.tag).toEqual("user");
+             
+             // now login & delete the user
+             afterRun(); 
+
+           }, null);
     
     // ** test adding a duplicate user 
-    register.savek();
+    //register.savek();
     
   });
   
+  /*
   // ** test with an empty password - should ERROR 
   it("empty password should return an error", function () { 
   });
@@ -80,12 +110,14 @@ describe('Register w/ server interaction', function () {
   // ** test deleting a user 
   it("delete the correct user", function () { 
   });
-  
+  */
   
 });
 
-describe('Login', function() { 
+/*describe('Login', function() { 
 
 });
+*/
+
 
 
