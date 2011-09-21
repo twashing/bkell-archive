@@ -75,15 +75,22 @@
     
     (println (str "POST ; /user/ ; " req))
     (if-let [user (duck-streams/slurp* (:body req))]
-      (do (println "... user > " user)
-      (println "... type > " (type user))
       (try
         (-> user bjell/add (handle-errors 400) substitute-body )
         (catch Exception e (-> e .getMessage (util/wrap-error-msg 500) substitute-body )))
-      )
       (-> "POST body is nil" (util/wrap-error-msg 400) substitute-body)
     )
   )
+  (DELETE "/user/:id" [id] 
+    
+    (println (str "DELETE ; /user/:id ; " id))
+    (let [lin-user (commands/logged-in-user)]
+      
+      (->      ;; JSON of MongoDB WriteResult; TODO - make a proper JSON string for client 
+        lin-user (bjell/remove id) (handle-errors 400) substitute-body) ;; TODO - stubbing in 'stub' user for now
+    )
+  )
+  
   
   ;; ======
   ;; CRUD on Accounts

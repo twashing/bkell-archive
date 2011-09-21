@@ -44,7 +44,7 @@
 )
 
 ;; ======
-;; REGISTER a User
+;; CRUD on Users
 
 (deftest test-user-create
   
@@ -61,6 +61,31 @@
                        domain/keywordize-tags
                        :tag)))
   )
+)
+
+(deftest test-user-delete 
+  
+
+  (let  [ result (request "/user" handler/main :post {:body (java.io.File. "test/etc/data/stubu-two.js")})] 
+    
+    ;; creating a user 
+    (is (= 200 (:status result))) ;; ensure status is 200
+    (is (= :user (->   result      ;; this ensures that the body is a JSON string and that the tag is a user
+                       :body 
+                       clojure.data.json/read-json 
+                       domain/keywordize-tags
+                       :tag)))
+  )
+  
+  (let  [ rlogin (request "/login" handler/main :post 
+                    { :body (StringBufferInputStream. 
+                              "{ \"tag\":\"user\", \"username\":\"stub\", \"password\":\"5185e8b8fd8a71fc80545e144f91faf2\" }") })
+          result (request "/user/stub" handler/main :delete {:body nil})] 
+    
+    (is (= 200 (:status result))) ;; ensure status is 200
+    (is (= "null" (:body result)))
+  )
+  
 )
 
 ;; ======
@@ -282,7 +307,7 @@
         ] 
     
     (let [  r2 (request "/account/cash" handler/main :delete {:body nil })]
-      (is (= 400 (:status r2))) ;; ensure status is 200
+      (is (= 400 (:status r2))) ;; ensure status is 400
       (is (= :error (-> :body       ;; this ensures that the body is a JSON string and that the tag is an error
                         r2 
                         clojure.data.json/read-json 
