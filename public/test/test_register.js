@@ -39,7 +39,9 @@ describe('Register w/ server interaction', function () {
   });
   afterEach(function() {  
       
-      // ** delete the user created on the DB 
+    // ** delete the user created on the DB 
+    //register.login();
+    register.destroy();
   });
   
   // test creating a user 
@@ -52,43 +54,10 @@ describe('Register w/ server interaction', function () {
       },
       { silent: true });
     
-    register.save ( {}, 
-                    { success : function(model, response) { 
-                        
-                        console.log("success CALLED > model["+ model +"] > response["+ response.responseText +"]"); 
-                        
-                        // assert that the success is getting called 
-                        expect(response.responseText).toBeDefined();
-
-                        // assert that the user is getting returned 
-                        var ruser = eval(response.responseText);
-                        expect(ruser.tag).toEqual("user");
-                        
-                        // ** assert that we got a 300 redirect to the landing page 
-                        
-                      },
-                      error : function(model, response) { 
-                        console.log("error CALLED > model["+ model +"] > response["+ response.responseText +"]"); 
-                      }
-                    }
-                  );
+    register.savek();
     
     // ** test adding a duplicate user 
-    register.save ( {}, 
-                    { success : function(model, response) { 
-                        
-                        console.log("success CALLED > model["+ model +"] > response["+ response.responseText +"]"); 
-                        
-                      },
-                      error : function(model, response) { 
-                        console.log("error CALLED > model["+ model +"] > response["+ response.responseText +"]"); 
-                        
-                        // ** assert that error is getting called
-                        expect(response.responseText).toBeDefined();
-
-                      }
-                    }
-                  );
+    register.savek();
     
   });
   
