@@ -36,7 +36,7 @@ describe('Register w/ server interaction', function () {
   var register;
   
   /**** 
-   * BEFORE 
+   * BEFORE and AFTER 
    */
   beforeEach(function() {
     
@@ -70,7 +70,8 @@ describe('Register w/ server interaction', function () {
       },
       { silent: true });
     
-    register.savek({}, function(model, response) { 
+    register.savek({}, 
+          function(model, response) { 
              
              console.log("success [bkeeping.models.Register] CALLED > model["+ model +"] > response["+ response +"]"); 
              
@@ -80,21 +81,37 @@ describe('Register w/ server interaction', function () {
              expect(response).toBeDefined();
              expect(response.tag).toEqual("user");
              
-             // now login & delete the user
+             // now delete the user (after logging in)
              afterRun(); 
 
-           }, null);
+           }, 
+          function(model, response) { 
+             expect(response).toBeNull(); // there should be no errors
+          });
     
-    // ** test adding a duplicate user 
-    //register.savek();
+    // test adding a duplicate user 
+    register.savek( {},
+         function(model, response) { 
+            expect(response).toBeNull(); // there should not be a success on duplicate user add 
+         },
+         function(model, response) { 
+            console.log("ERROR success [bkeeping.models.Register] CALLED > model["+ model +"] > response["+ response +"]"); 
+            
+            expect(response).toBeDefined();
+            expect(response.tag).toEqual("error");
+
+            // now delete the user (after logging in)
+            afterRun(); 
+            
+         });
     
   });
   
-  /*
   // ** test with an empty password - should ERROR 
   it("empty password should return an error", function () { 
   });
   
+  /*
   // ** test with an empty email - should ERROR 
   it("empty email should return an error", function () { 
   });
