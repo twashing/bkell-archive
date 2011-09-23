@@ -119,7 +119,7 @@
     
     ;; the result will look like: {:status 200, :headers {Content-Type text/html}, :body {"previous":{"tag":"user","username":"stub","password":"5185e8b8fd8a71fc80545e144f91faf2"},"logged-in-user":{"tag":"user","username":"stub","password
     ;; ":"5185e8b8fd8a71fc80545e144f91faf2"},"active":true}}
-    (is (= 200 (:status result))) ;; ensure status is 200
+    (is (= 302 (:status result))) ;; ensure status is 200
     (is (= :user (->   result       ;; this ensures that the body is a JSON string and that the tag is a user
                        :body 
                        clojure.data.json/read-json 

@@ -32,7 +32,7 @@ describe('Register', function () {
  
 describe('Register w/ server interaction', function () {
   
-  var register;
+  var register, login;
   
   /**** 
    * BEFORE and AFTER 
@@ -142,13 +142,9 @@ describe('Register w/ server interaction', function () {
     
   });
   
-  */
 
-  // ** we want to see a 302 redirect code after successful registration
+  // we want to see a 302 redirect code after successful registration
   it("a 302 redirect should be returned after successful registration", function () { 
-    
-    // ** maybe backbone History needs to be engaged for redirect to work 
-    // http://stackoverflow.com/questions/6831110/backbone-js-global-error-handling
     
     register.set( 
       { "tag": "user",
@@ -187,15 +183,53 @@ describe('Register w/ server interaction', function () {
           }
           );
     
-    
   }); 
+  */
   
 });
 
-/*describe('Login', function() { 
-
+describe('Login', function() { 
+  
+  var register, login;
+  
+  /**** 
+   * BEFORE and AFTER 
+   */
+  beforeEach(function() {
+    
+    register = new bkeeping.models.Register;
+    login = new bkeeping.models.Login;
+  });
+  
+  
+  it("login successfully and get a 302 redirect", function () { 
+    
+    register.set( { "tag": "user", "username": "stub", "password": "fubar", }, { silent: true });
+    register.savek( {} , 
+    {
+      //statusCode : { 
+      //  302 : function(model, response) {
+	  success : function(model, response) {
+	    login.set( 
+	      { "tag": "user",
+	        "username": "stub", 
+	        "password": "5185e8b8fd8a71fc80545e144f91faf2", 
+	      },
+	      { silent: true });
+	    login.savek({}, {
+	              statusCode : {
+	                302 : function(model, response) {
+	                  console.log("302 CALLED from test_register.login");
+	                  afterRun(); 
+	                } 
+	              }
+	            });
+        }
+      //}
+    });
+  }); 
+  
 });
-*/
 
 
 

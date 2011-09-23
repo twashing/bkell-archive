@@ -62,7 +62,12 @@
     (if-let [user (duck-streams/slurp* (:body req))]
       
       (try
-        (-> user bjell/login (handle-errors 400) substitute-body )
+        (let  [ result (-> user bjell/login (handle-errors 400) substitute-body )]
+              
+          (if (:status result)  ;; if there's already a status, that means there's been an error somewhere 
+              result 
+              { :status 302 :headers { "Location" "/bookkeeping/main-bookkeeping" } :body result })
+        )
         (catch Exception e (clojure.data.json/json-str (util/wrap-error-msg (.getMessage e) 500))))
       (clojure.data.json/json-str (util/wrap-error-msg "POST body is nil" 400))
     )
