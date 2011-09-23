@@ -60,7 +60,6 @@ describe('Register w/ server interaction', function () {
                 });
   };
   
-  /* 
   // test creating a user 
   it("do a basic save, and error on duplication attempt", function () { 
     
@@ -184,7 +183,6 @@ describe('Register w/ server interaction', function () {
           );
     
   }); 
-  */
   
 });
 
