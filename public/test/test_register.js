@@ -60,6 +60,7 @@ describe('Register w/ server interaction', function () {
                 });
   };
   
+  /* 
   // test creating a user 
   it("do a basic save, and error on duplication attempt", function () { 
     
@@ -141,6 +142,8 @@ describe('Register w/ server interaction', function () {
     
   });
   
+  */
+
   // ** we want to see a 302 redirect code after successful registration
   it("a 302 redirect should be returned after successful registration", function () { 
     
@@ -156,24 +159,30 @@ describe('Register w/ server interaction', function () {
       { silent: true });
     
     register.savek({}, 
-          function(model, response) { 
+          {
+            success : function(model, response) { 
              
-             console.log("success [on 302 register] CALLED > model["+ model +"] > response["+ response +"]"); 
-             
-             register["_id"] = response._id;
-             register["id"] = response.username;
-
-             expect(response).toBeDefined();
-             expect(response.tag).toEqual("user");
-             
-             // now delete the user (after logging in)
-             afterRun(); 
-
-           }, 
-          function(model, response) { 
-            expect(response).toBeNull(); // there should be no errors
-            afterRun(); 
-          });
+              console.log("success [on 302 register] CALLED > model["+ model +"] > response["+ response +"]"); 
+              
+              register["_id"] = response._id;
+              register["id"] = response.username;
+              
+              expect(response).toBeDefined();
+              expect(response.tag).toEqual("user");
+              
+              // now delete the user (after logging in)
+              afterRun(); 
+              
+            }, 
+            error : function(model, response) { 
+              expect(response).toBeNull(); // there should be no errors
+              afterRun(); 
+            },
+            statusCode : {
+              302 : function() { console.log("302 CALLED from test_register") } 
+            }
+          }
+          );
     
     
   }); 
