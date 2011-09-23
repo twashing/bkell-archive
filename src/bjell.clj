@@ -22,9 +22,13 @@
   
   (let  [ artifact-p (domain/keywordize-tags (clojure.data.json/read-json artifact))]
 
+(let [thing 
       (domain/bsonid-to-id
         (eval `(bkell/add ~artifact-p ~@etal)) )
-
+      ]
+(println "add result: " thing)
+thing
+) 
   )
 )
 

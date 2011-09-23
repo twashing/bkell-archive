@@ -8,7 +8,7 @@
 
 //require("/test/test_core.js");
 
-/*describe('Register', function () {
+describe('Register', function () {
   
   
   var register;
@@ -29,7 +29,6 @@
     expect(register.urlRoot).toEqual("/user"); 
   });
 });
-*/
  
 describe('Register w/ server interaction', function () {
   
@@ -52,6 +51,7 @@ describe('Register w/ server interaction', function () {
     login.savek({ "tag": "user",
                   "username": "stub", 
                   "password": "e8f65fd8d973f9985dc7ea3cf1614ae1", 
+                  "email": "tim@interrupt.com",
                 }, 
                 function(model, response) { 
                   register.destroy();
@@ -67,6 +67,7 @@ describe('Register w/ server interaction', function () {
       { "tag": "user",
         "username": "stub", 
         "password": "stub", 
+        "email": "tim@interrupt.com",
       },
       { silent: true });
     
@@ -86,13 +87,15 @@ describe('Register w/ server interaction', function () {
 
            }, 
           function(model, response) { 
-             expect(response).toBeNull(); // there should be no errors
+            expect(response).toBeNull(); // there should be no errors
+            afterRun(); 
           });
     
     // test adding a duplicate user 
     register.savek( {},
          function(model, response) { 
             expect(response).toBeNull(); // there should not be a success on duplicate user add 
+            afterRun(); 
          },
          function(model, response) { 
             console.log("ERROR success [bkeeping.models.Register] CALLED > model["+ model +"] > response["+ response +"]"); 
@@ -107,27 +110,73 @@ describe('Register w/ server interaction', function () {
     
   });
   
-  // ** test with an empty password - should ERROR 
+  // test with an empty password - should ERROR 
   it("empty password should return an error", function () { 
+    
+    register.set( 
+      { "tag": "user",
+        "username": "stub", 
+        "password": null, 
+        "email": "tim@interrupt.com",
+      },
+      { silent: true });
+    
+    register.savek({}, 
+          function(model, response) { 
+            
+            expect(response).toBeNull(); // this should not be successful 
+            afterRun(); 
+           }, 
+          function(model, response) { 
+            
+            console.log("ERROR success [empty password] CALLED > model["+ model +"] > response["+ response.responseText +"]"); 
+            
+            register["id"] = model.attributes["username"];
+            
+            expect(response).toBeDefined();
+            expect(response.tag).toEqual("error");
+            
+            afterRun(); 
+          });
+    
   });
   
-  /*
-  // ** test with an empty email - should ERROR 
-  it("empty email should return an error", function () { 
-  });
-  
-  // ** test retrieving a user 
-  it("get the correct user", function () { 
-  });
-  
-  // ** test updating a user 
-  it("update the correct user", function () { 
-  });
-  
-  // ** test deleting a user 
-  it("delete the correct user", function () { 
-  });
-  */
+  // ** we want to see a 302 redirect code after successful registration
+  it("a 302 redirect should be returned after successful registration", function () { 
+    
+    // ** maybe backbone History needs to be engaged for redirect to work 
+    // http://stackoverflow.com/questions/6831110/backbone-js-global-error-handling
+    
+    register.set( 
+      { "tag": "user",
+        "username": "stub", 
+        "password": "stub", 
+        "email": "tim@interrupt.com",
+      },
+      { silent: true });
+    
+    register.savek({}, 
+          function(model, response) { 
+             
+             console.log("success [on 302 register] CALLED > model["+ model +"] > response["+ response +"]"); 
+             
+             register["_id"] = response._id;
+             register["id"] = response.username;
+
+             expect(response).toBeDefined();
+             expect(response.tag).toEqual("user");
+             
+             // now delete the user (after logging in)
+             afterRun(); 
+
+           }, 
+          function(model, response) { 
+            expect(response).toBeNull(); // there should be no errors
+            afterRun(); 
+          });
+    
+    
+  }); 
   
 });
 

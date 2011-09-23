@@ -7,6 +7,7 @@
   (:require [compojure.route :as route]
             [compojure.handler :as handler]
             [bjell]
+            [bkell]
             [commands.authenticate]
             [clojure.contrib.duck-streams :as duck-streams]
             [clojure.data.json :as json]
@@ -33,11 +34,9 @@
 )
 (defn substitute-body [input]
   
-  (if (:body input)
-    (let [body (:body input)]
-      (merge input { :body (clojure.data.json/json-str body) }))
-    (clojure.data.json/json-str input)
-  )
+  (if-let [body (:body input)]
+    (merge input { :body (clojure.data.json/json-str body) })
+    (clojure.data.json/json-str input))
 )
 
 
@@ -69,6 +68,7 @@
     )
   )
   
+  
   ;; ======
   ;; CRUD on User
   (POST "/user" [:as req]
@@ -76,7 +76,9 @@
     (println (str "POST ; /user/ ; " req))
     (if-let [user (duck-streams/slurp* (:body req))]
       (try
-        (-> user bjell/add (handle-errors 400) substitute-body )
+        (let  [result (-> user bjell/add bkell/login :logged-in-user (handle-errors 400) substitute-body ) ]
+          { :status 302 :location "/bookkeeping/main-bookkeeping" :body result }
+        )
         (catch Exception e (-> e .getMessage (util/wrap-error-msg 500) substitute-body )))
       (-> "POST body is nil" (util/wrap-error-msg 400) substitute-body)
     )

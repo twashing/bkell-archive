@@ -54,7 +54,7 @@
       
     ;;{:status 200, :headers {Content-Type text/html}, :body {"content":[{"content":[{"content":null,"name":"first.name","value":"xxx","tag":"profileDetail"},{"content":null,"name":"last.name","value":"xxx","tag":"profileDetail"},{"content":null,"name":"email","value":"xxx","tag":"profileDetail"},{"content":null,"name":"country","value":"xxx","tag":"profileDetail"}],"tag":"profileDetails"}],"username":"stub","password":"f561aaf6ef0bf14d4208bb46a4ccb3ad","tag":"user","_id":"4e59be91d36d2ff4076079dd"}}
     
-    (is (= 200 (:status result))) ;; ensure status is 200
+    (is (= 302 (:status result))) ;; ensure status is 200
     (is (= :user (->   result      ;; this ensures that the body is a JSON string and that the tag is a user
                        :body 
                        clojure.data.json/read-json 
@@ -69,7 +69,7 @@
   (let  [ result (request "/user" handler/main :post {:body (java.io.File. "test/etc/data/stubu-two.js")})] 
     
     ;; creating a user 
-    (is (= 200 (:status result))) ;; ensure status is 200
+    (is (= 302 (:status result))) ;; ensure status is 200
     (is (= :user (->   result      ;; this ensures that the body is a JSON string and that the tag is a user
                        :body 
                        clojure.data.json/read-json 
