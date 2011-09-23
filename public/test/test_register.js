@@ -159,7 +159,7 @@ describe('Register w/ server interaction', function () {
       { silent: true });
     
     register.savek({}, 
-          {
+            {
             success : function(model, response) { 
              
               console.log("success [on 302 register] CALLED > model["+ model +"] > response["+ response +"]"); 
@@ -179,7 +179,10 @@ describe('Register w/ server interaction', function () {
               afterRun(); 
             },
             statusCode : {
-              302 : function() { console.log("302 CALLED from test_register") } 
+              302 : function(model, response) { 
+                console.log("302 CALLED from test_register") 
+                afterRun(); 
+              } 
             }
           }
           );

@@ -9,10 +9,10 @@ bkeeping.models = {};
 
 bkeeping.models.AbstractK = Backbone.Model.extend({
 
-  savek : function(valueMap, successCallb, errorCallb) { 
+  savek : function(valueMap, options) { 
         
-        // assigning default success and error callbacks unless user passes one in
-        var successC = (successCallb) ? successCallb : function(model, response) { 
+        // assigning default success, error and options unless user passes one in
+        var successC = (options.successCallb) ? options.successCallb : function(model, response) { 
              
              console.log("success [bkeeping.models.Abstract] CALLED > model["+ model +"] > response["+ response +"]"); 
              
@@ -20,22 +20,21 @@ bkeeping.models.AbstractK = Backbone.Model.extend({
              this["id"] = response.username;
              
            }; 
-        var errorC = (errorCallb) ? errorCallb : function(model, response) { 
+        var errorC = (options.errorCallb) ? options.errorCallb : function(model, response) { 
              console.log("error CALLED > model["+ model +"] > response["+ response.responseText +"]"); 
            }; 
+        var statusC = (options.statusCode) ? options.statusCode : { 302 : function() { console.log("... 302 called"); } }
         
         this.save(  (valueMap) ? valueMap : {}, 
                               { success : successC,
                                 error : errorC,
-                                statusCode: {
-                                  302 : function() { console.log("... 302 called"); }
-                                }
+                                statusCode: statusC
                               }
        );}
 });
 
 bkeeping.models.Register = bkeeping.models.AbstractK.extend({
-
+  
   urlRoot : "/user",
   
 }); 

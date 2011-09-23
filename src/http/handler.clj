@@ -77,7 +77,10 @@
     (if-let [user (duck-streams/slurp* (:body req))]
       (try
         (let  [result (-> user bjell/add bkell/login :logged-in-user (handle-errors 400) substitute-body ) ]
-          { :status 302 :location "/bookkeeping/main-bookkeeping" :body result })
+          (if (:status result)  ;; if there's already a status, that means there's been an error somewhere 
+              result 
+              { :status 302 :headers { "Location" "/bookkeeping/main-bookkeeping" } :body result })
+        )
         (catch Exception e (-> e .getMessage (util/wrap-error-msg 500) substitute-body )))
       (-> "POST body is nil" (util/wrap-error-msg 400) substitute-body)
     )
