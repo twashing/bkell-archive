@@ -28,7 +28,6 @@ describe('Account w/ server interaction', function () {
   
   var accountAsset = {  "tag":"account",
                         "type":"asset",
-                        "id":"cash",
                         "name":"cash",
                         "counterWeight":"debit" }
   
@@ -43,15 +42,17 @@ describe('Account w/ server interaction', function () {
      
     var inputUser = { "tag": "user",
                   "username": "stub", 
-                  "password": "e8f65fd8d973f9985dc7ea3cf1614ae1", 
+                  "password": "stub", 
                   "email": "tim@interrupt.com",
                 }; 
 
     // delete the user created on the DB 
-    register.savek( inputUser,
-                    function(model, response) { 
-                      login.savek(inputUser);
-                    });
+    register.savek( inputUser,  { success : 
+                                    function(model, response) { 
+                                      inputUser["password"] = "e8f65fd8d973f9985dc7ea3cf1614ae1";
+                                      login.savek(inputUser);
+                                    }
+                                });
     
   });
    

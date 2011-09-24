@@ -17,8 +17,10 @@
 )
 
 (defn generate-id [entity]
-  ;; traverse tree 
-  entity
+
+  (if (-> entity :id nil? not) 
+    entity
+    (merge entity { :id (:name entity) }) ) ;; give the entity, an id of it's name 
 )
 
 (defn add [artifact & etal]
