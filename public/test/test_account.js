@@ -53,6 +53,10 @@ describe('Account w/ server interaction', function () {
                                       login.savek(inputUser);
                                     }
                                 });
+
+
+    // ** timer to wait for a second, for callbacks to finish 
+    // ... 
     
   });
    
@@ -77,10 +81,10 @@ describe('Account w/ server interaction', function () {
                     }
                   });
         }
-      });
+      })
   });
   
-  // ** test ERROR on creating w/out loggin in
+  // ** test ERROR on creating w/out logging in
   // ** test creating an account 
   
   // ** test retrieving an account 
@@ -89,8 +93,6 @@ describe('Account w/ server interaction', function () {
   // ** test updating an account 
   
   // ** test deleting an account 
-  
-  // test creating a user 
   
 });
 
