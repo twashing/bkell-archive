@@ -15,8 +15,13 @@
           ] }
    
   (let [ru  (first (fetch "users" :where { :username (:username user) }))]
-    (update!  :users { :_id (:_id ru) }  ;; passing in hash w/ ObjecId, NOT original object
-              user)
+    (if-let [ result ;; result will be a 'com.mongodb.WriteResult' 
+              (update!  :users { :_id (:_id ru) }  ;; passing in hash w/ ObjecId, NOT original object
+                user)]
+      (if (-> result .getLastError .ok)
+        user
+        (util/generate-error-response (.getErrorMessage result)))
+    )
   )
 )
 
@@ -30,7 +35,7 @@
           ] }
   (let [ru (fetch-one "bookkeeping" :where { :owner uname })
         rc (commands/get-currency uname (:id currency))]
-    ;;(debug/debug-repl)
+    
     (if rc 
       (update! :bookkeeping { :_id (:_id ru) }  ;; passing in hash w/ ObjecId, NOT original object 
         (domain/modify-currency                       ;; update the currency if existing  
@@ -57,9 +62,13 @@
         ra (commands/get-account uname (:id account))]
     
     (if ra 
-      (update! :bookkeeping { :_id (:_id ra) }  ;; passing in hash w/ ObjecId, NOT original object
-        (domain/traverse-tree ru :update { :id (:id account) } account))
-      (commands/add account uname )
+      (if-let [result (update! :bookkeeping { :_id (:_id ru) }  ;; passing in hash w/ ObjecId, NOT original object
+                        (domain/traverse-tree ru :update { :id (:id account) } account))]
+        (if (-> result .getLastError .ok)
+          account
+          (util/generate-error-response (.getErrorMessage result)))
+      )
+      (commands/add account uname)
     )
   )
 )
@@ -86,10 +95,16 @@
   
   (let [ru (fetch-one "bookkeeping" :where { :owner uname })
         re (commands/get-entry uname (:id entry))]
-    ;;(debug/debug-repl)
+    
     (if re 
-      (update! :bookkeeping { :_id (:_id ru) }  ;; passing in hash w/ ObjecId, NOT original object
-        (domain/traverse-tree ru :update { :id (:id entry) } entry))
+      (if-let [result 
+                (update! :bookkeeping { :_id (:_id ru) }  ;; passing in hash w/ ObjecId, NOT original object
+                  (domain/traverse-tree ru :update { :id (:id entry) } entry))]
+        
+        (if (-> result .getLastError .ok)
+          entry
+          (util/generate-error-response (.getErrorMessage result)))
+      )
       (commands/add-entry entry uname)  ;; insert the entry otherwise 
     )
   )
@@ -98,9 +113,9 @@
 
 
 (defmulti update (fn [obj & etal] (:tag obj)))
-(defmethod update :user [user] (update-user user))
-(defmethod update :account [account & etal] (update-account account (first etal)))  ;; input arguments are: account uname 
+(defmethod update :user [user & etal] (update-user user))
 (defmethod update :currency [currency & etal] (update-currency currency (first etal) (second etal)))   ;; input arguments are: currency uname default
+(defmethod update :account [account & etal] (update-account account (first etal)))  ;; input arguments are: account uname 
 (defmethod update :entry [entry & etal] (update-entry entry (first etal)))  ;; input arguments are: entry uname 
 
 

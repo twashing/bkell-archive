@@ -7,6 +7,8 @@
   (:require clojure.data.json)
   (:require clojure.contrib.str-utils2)
   (:import java.io.FileReader)
+  (:require bkell)
+  (:require domain)
 )
 
 
@@ -18,7 +20,9 @@
 ;; 'ADD' tests
 ;; ==================
 (deftest test-addU
-  (let [user (FileReader. "test/etc/data/stubu-two.js")]
+  (let [user (FileReader. "test/etc/data/stubu-two.js")
+        bk (bkell/init-shell)      ;; initialize the bkell 
+        ]
     
     (bjell/add user)
 
@@ -30,31 +34,32 @@
       (let [pd (:tag (nth (:content (nth ru 0)) 0))]
         (is (= "profileDetails" pd) "There SHOULD be a profileDetail element in the user")
       )
-  )
-
-  )
-)
-#_(deftest test-addC
-  (let [user (load-file "test/etc/data/stubu-two.clj")
-        ru (commands/add-user user)
-        currency (load-file "test/etc/data/test-currency.clj")]
-    (bjell/add currency "stub" false)
+    )
   )
 )
-#_(deftest test-addA
-  (let [user (load-file "test/etc/data/stubu-two.clj")
-        ru (commands/add-user user)
-        account (load-file "test/etc/data/test-account-asset.clj")]
-    (bjell/add account "stub")
-  )
-)
-#_(deftest test-addE
-  (let  [user (load-file "test/etc/data/stubu-two.clj")
-         ru (commands/add-user user)
-         xx (test-utils/populate-accounts)
-         entry (test-utils/create-balanced-test-entry)
-         ]
-    (bjell/add entry "stub")
+(deftest test-addC
+  (let [user (FileReader. "test/etc/data/stubu-two.js")
+        ;;bk (bkell/init-shell)      ;; initialize the bkell 
+        ru (bjell/add user)
+        currency (FileReader.  "test/etc/data/test-currency.js")]
+    
+    
+    ;; ensure that an error is returned if we try to add a currency without logging in 
+    (let [ eresult (bjell/add currency "stub" false)]
+      
+      (is (-> eresult nil? not))
+      (is (-> eresult domain/keywordize-tags :tag (= :error)))
+    )
+    
+    ;; now log-in a user
+    (commands/login-user ru) 
+    
+    (let [  fresult 
+            (bjell/add (FileReader. "test/etc/data/test-currency.js") "stub" false)]  ;; have to reread the file b/c can't reset stram
+      
+      (is (-> fresult nil? not))
+      (is (-> fresult domain/keywordize-tags :tag (= :currency)))
+    )
   )
 )
 
@@ -64,17 +69,53 @@
 ;; ==================
 (deftest test-getU 
 
-  (let [result (test-utils/add-user nil)
-        ru (bjell/get :user "stub")]
+  (let [user (FileReader. "test/etc/data/stubu-two.js")
+        ru (bjell/add user)]
+     
+    ;; ensure that an error is returned if we try to get a user without logging in 
+    (let [ eresult (bjell/get :user "stub")]
       
-      ;;(println ru)
-      (is (not (nil? ru )) "There SHOULD be a user with the username 'stub'")
+      (is (-> eresult nil? not))
+      (is (-> eresult domain/keywordize-tags :tag (= :error)))
+    )
+    
+    ;; now log-in a user
+    (commands/login-user ru) 
+    
+    (let [ fresult (bjell/get :user "stub")]
       
-      (is (string? ru)  "The result SHOULD be a JSON String")
-      ;;(is (clojure.contrib.str-utils2/contains ru ...))
+      (is (not (nil? fresult )) "There SHOULD be a user with the username 'stub'")
+      
+      ;;(is (string? fresult)  "The result SHOULD be a JSON String")
+      (is (-> fresult domain/keywordize-tags :tag (= :user)))
+    )
   )
 )
 
+(deftest test-getC
+
+  (let [user (FileReader. "test/etc/data/stubu-two.js")
+        ru (bjell/add user)]
+     
+    ;; ensure that an error is returned if we try to get a user without logging in 
+    (let [ eresult (bjell/get :currency "stub" "USD")]
+      
+      (is (-> eresult nil? not))
+      (is (-> eresult domain/keywordize-tags :tag (= :error)))
+    )
+    
+    ;; now log-in a user
+    (commands/login-user ru) 
+    
+    (let [ fresult (bjell/get :currency "stub" "USD")]
+      
+      (is (not (nil? fresult )) "There SHOULD be a user with the username 'stub'")
+      
+      ;;(is (string? fresult)  "The result SHOULD be a JSON String")
+      (is (-> fresult domain/keywordize-tags :tag (= :currency)))
+    )
+  )
+)
 
 
 ;; ==================
@@ -82,11 +123,10 @@
 ;; ==================
 
 
+
 ;; ==================
 ;; 'REMOVE' tests
 ;; ==================
-
-
 
 
 

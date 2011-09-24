@@ -108,7 +108,7 @@
         :xmlns:account "com/interrupt/bookkeeping/account",
         :xmlns:journal "com/interrupt/bookkeeping/journal",
         :xmlns:currency "com/interrupt/bookkeeping/currency",
-        :id "main.bookkeeping"},
+        :id "main-bookkeeping"},
        :content
        [{:tag :currency:currencies,
          :attrs {:id "main.currencies", :default "CDN"},

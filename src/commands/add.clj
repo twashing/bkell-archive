@@ -8,24 +8,25 @@
   (:require util)
   
   (:use somnium.congomongo)
-  ;;(:use debug)
+  (:require debug)
 )
 
 
 (defn add-user [user] 
   
   { :pre  [ (util/verify-arg 
-              (not (=  (:username user) ;; check that there is not a duplicate user 
-                (:username (first (fetch "users" :where { :username (:username user) })))))
+              (not (= (:username user) ;; check that there is not a duplicate user 
+                      (:username (first (fetch "users" :where { :username (:username user) })))))
               "This is a duplicate User"
             )
           ]}
   
-  (insert! :users (assoc user :password (domain/md5-sum (:password user)))) ;; insert the user, after MD5 encrypting the password 
   (let [gr (load-file "etc/data/default.group.clj")]  ;; insert the associated group
     (insert! :groups (assoc gr :name (:username user) :owner (:username user))))
   (let [bk (load-file "etc/data/default.bookkeeping.clj")]  ;; insert the associated bookkeeping
     (insert! :bookkeeping (assoc bk :owner (:username user))))
+  (domain/keywordize-tags 
+    (insert! :users (assoc user :password (domain/md5-sum (:password user))))) ;; insert the user, after MD5 encrypting the password 
 )
 
 
@@ -43,14 +44,22 @@
   ;;  2. http://tech.puredanger.com/2010/10/23/pattern-matching-and-tree-mutation
   (let  [ ru (fetch-one "bookkeeping" :where { :owner uname }) ]
     
-    (update! :bookkeeping { :_id (:_id ru) }  ;; passing in hash w/ ObjecId, NOT original object 
-      (domain/modify-currency                       ;; update the currency if existing  
+    ;;(debug/debug-repl)
+    (if-let [result     ;; result will be a 'com.mongodb.WriteResult'
+      (update! :bookkeeping { :_id (:_id ru) }  ;; passing in hash w/ ObjecId, NOT original object 
+        (domain/modify-currency                       ;; update the currency if existing  
           ru
           :insert
           currency 
-          default))
+          default))]
+      
+      (if (-> result .getLastError .ok)
+        currency
+        (util/generate-error-response (.getErrorMessage result)))
+    )
   )
 )
+
 
 (defn add-account 
   " 1. account types are: asset, liability, expense, revenue
@@ -74,8 +83,14 @@
   
   (let  [ ru (fetch-one "bookkeeping" :where { :owner uname }) ]
     
-    (update! :bookkeeping { :_id (:_id ru) }  ;; passing in hash w/ ObjecId, NOT original object
-      (domain/traverse-tree ru :insert { :id "main.accounts" } account))
+    (if-let [result ;; result will be a 'com.mongodb.WriteResult' 
+      (update! :bookkeeping { :_id (:_id ru) }  ;; passing in hash w/ ObjecId, NOT original object
+        (domain/traverse-tree ru :insert { :id "main.accounts" } account))]
+      
+      (if (-> result .getLastError .ok)
+        account
+        (util/generate-error-response (.getErrorMessage result)))
+    )
   )
 )
 
@@ -100,10 +115,15 @@
   
   (let  [ ru (fetch-one "bookkeeping" :where { :owner uname }) ]
     
-    (update! :bookkeeping { :_id (:_id ru) }  ;; passing in hash w/ ObjecId, NOT original object
-      (domain/traverse-tree ru :insert { :id "main.entries" } entry))
+    (if-let [result ;; result will be a 'com.mongodb.WriteResult' 
+      (update! :bookkeeping { :_id (:_id ru) }  ;; passing in hash w/ ObjecId, NOT original object
+        (domain/traverse-tree ru :insert { :id "main.entries" } entry))]
+      
+      (if (-> result .getLastError .ok)
+        entry
+        (util/generate-error-response (.getErrorMessage result)))
+    )
   )
-
 )
 
 

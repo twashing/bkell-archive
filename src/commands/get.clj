@@ -2,17 +2,19 @@
 
   (:use somnium.congomongo)
   (:require debug)
+  (:require domain)
 )
 
 
 ;; get user 
 (defn get-user [uname]
   
-  (first (fetch "users" :where { :username uname }))
-  #_(let  [ u (first (fetch "users" :where { :username uname }))]
+  (let [result (first (fetch "users" :where { :username uname }))]
     
-    (traverse-tree 
-      u :update { :tag (fn [a] (not (nil? a))) } obj)
+    (if (-> result empty? not)
+      (domain/keywordize-tags result)
+      nil
+    )
   )
 )
 (defn get-group [uname]
@@ -38,8 +40,8 @@
         r   "function(k,vals) { return { result : vals } ; }"
         result (map-reduce :bookkeeping m r :result-collection)]
     
-    (-> result first :value :result first :result)  ;; dig in and get the currency list 
-    
+    (vec (map domain/keywordize-tags 
+      (-> result first :value :result)))  ;; dig in and get the currency list 
   )
 )
 (defn get-currency [uname currency]
@@ -59,7 +61,10 @@
         r   "function(k,vals) { return { result : vals } ; }"
         result (map-reduce :bookkeeping m r :result-collection)]
 
-    (-> result first :value :result first) ;; dig in and get the currency
+    (if (-> result empty? not)
+      (-> result first :value domain/keywordize-tags) ;; dig in and get the currency
+      nil
+    )
   )
 )
 
@@ -68,7 +73,7 @@
 (defn get-accounts [uname] 
 
   (let [m (str "function(){ 
-			  if( this.owner == '"uname"' ) { 
+			  if( (this.content[1].content != null) && (this.owner == '"uname"') ) { 
 			    this.content[1].content.forEach( 
 			      function(x) { 
 			        emit( this.owner , x ); 
@@ -79,14 +84,15 @@
         r   "function(k,vals) { return { result : vals } ; }"
         result (map-reduce :bookkeeping m r :result-collection)]
     
-    (-> result first :value :result first :result)  ;; dig in and get the currency list 
+    (vec (map domain/keywordize-tags 
+      (-> result first :value :result)))  ;; dig in and get the currency list 
     
   )
 )
 (defn get-account [uname account]
 
   (let [m (str "function(){ 
-			  if( this.owner == '"uname"' ) { 
+			  if( (this.content[1].content != null) && (this.owner == '"uname"') ) { 
 			    this.content[1].content.forEach( 
 			        
                     function(x) { 
@@ -99,8 +105,11 @@
 			};")
         r   "function(k,vals) { return { result : vals } ; }"
         result (map-reduce :bookkeeping m r :result-collection)]
-
-    (-> result first :value :result first) ;; dig in and get the currency
+    
+    (if (-> result empty? not)
+      (-> result first :value domain/keywordize-tags) ;; dig in and get the currency
+      nil
+    )
   )
 )
 
@@ -110,7 +119,7 @@
 (defn get-entries [uname] 
 
   (let [m (str "function(){ 
-			  if( this.owner == '"uname"' ) { 
+			  if( (this.content[2].content[0].content[0].content != null) && (this.owner == '"uname"') ) { 
                 this.content[2].content[0].content[0].content.forEach(
 			      
                   function(x) { 
@@ -122,14 +131,15 @@
         r   "function(k,vals) { return { result : vals } ; }"
         result (map-reduce :bookkeeping m r :result-collection)]
     
-    (-> result first :value :result first :result) ;; dig in and get the account list 
+    (vec (map domain/keywordize-tags 
+      (-> result first :value :result)))  ;; dig in and get the currency list 
     
   )
 )
 (defn get-entry [uname entry]
 
   (let [m (str "function(){ 
-			  if( this.owner == '"uname"' ) { 
+			  if( (this.content[2].content[0].content[0].content != null) && (this.owner == '"uname"') ) { 
 			    this.content[2].content[0].content[0].content.forEach(
 			        
                     function(x) { 
@@ -143,7 +153,10 @@
         r   "function(k,vals) { return { result : vals } ; }"
         result (map-reduce :bookkeeping m r :result-collection)]
 
-    (-> result first :value :result first)  ;; dig in and get the account
+    (if (-> result empty? not)
+      (-> result first :value domain/keywordize-tags)  ;; dig in and get the account
+      nil
+    )
   )
 )
 

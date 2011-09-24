@@ -1,5 +1,5 @@
 { :tag :bookkeeping
-  :id "main.bookkeeping"
+  :id "main-bookkeeping"
   :owner "" 
   :content
     [{  :tag :currencies

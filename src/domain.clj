@@ -2,14 +2,13 @@
   
   (:require [clojure.zip :as zip])
   (:use somnium.congomongo)
-  ;;(:require bkell)
   
   (:import
    (java.security NoSuchAlgorithmException MessageDigest)
    (java.math BigInteger)
    (org.bson.types.ObjectId))
     
-  ;;(:require debug)
+  (:require debug)
 )
 
 #_(bkell/init-shell)
@@ -19,6 +18,12 @@
   }
   (= uname (@bkell/shell :logged-in-user))
 )
+
+#_(def swank-con swank.core.connection/*current-connection*)
+#_(defmacro break []
+  `(binding [swank.core.connection/*current-connection* swank-con]
+    (swank.core/break)))
+
 
 (defn md5-sum
   "Compute the hex MD5 sum of a string. Pilfered from 'http://www.holygoat.co.uk/blog/entry/2009-03-26-1'"

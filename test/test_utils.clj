@@ -2,6 +2,7 @@
   (:require clojure.contrib.logging)
   (:use somnium.congomongo)
   (:require commands.add)
+  (:require bkell)
 )
 
 (defn test-fixture-db
@@ -14,6 +15,7 @@
     (destroy! :bookkeeping {}) ;; destroying all bookkeeping
 
     ;; ** execute the TEST function
+    (bkell/init-shell)      ;; initialize the bkell 
     (test)
     (clojure.contrib.logging/info "test-fixture-db EXIT")
 
@@ -24,6 +26,15 @@
   (let [user (load-file (if (not (nil? uloc)) uloc "test/etc/data/stubu-two.clj"))]
     (commands/add-user user)
   )
+)
+
+(defn populate-currencies
+  "populate with Canadian and Austrilian currencies"
+  [] 
+  
+  ;; Adding AUD to already existing list of CDN, USD, BP, EUR, JPN
+  (commands/add-currency (load-file "test/etc/data/test-currency.clj") "stub" false)
+   
 )
 
 (defn populate-accounts
