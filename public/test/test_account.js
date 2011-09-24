@@ -17,14 +17,20 @@ describe('Account', function () {
   });
   
   it("'backbone' Model should contain a 'urlRoot'", function () {
-    expect(account.urlRoot).toEqual("/user"); 
+    expect(account.urlRoot).toEqual("/account"); 
   });
 });
  
 
 describe('Account w/ server interaction', function () {
   
-  var account, login;
+  var account, register, login;
+  
+  var accountAsset = {  "tag":"account",
+                        "type":"asset",
+                        "id":"cash",
+                        "name":"cash",
+                        "counterWeight":"debit" }
   
   /**** 
    * BEFORE and AFTER 
@@ -32,30 +38,50 @@ describe('Account w/ server interaction', function () {
   beforeEach(function() {
     
     account = new bkeeping.models.Account;
+    register = new bkeeping.models.Register;
     login = new bkeeping.models.Login;
-  });
-
-
-  // defining AFTER here so it can be put into a callback handler 
-  var afterRun = function() {  
      
-    // delete the user created on the DB 
-    login.savek({ "tag": "user",
+    var inputUser = { "tag": "user",
                   "username": "stub", 
                   "password": "e8f65fd8d973f9985dc7ea3cf1614ae1", 
                   "email": "tim@interrupt.com",
-                }, 
-                function(model, response) { 
-                  account.destroy();
-                }, 
-                function(model, response) { 
-                });
-  };
-  
+                }; 
+
+    // delete the user created on the DB 
+    register.savek( inputUser,
+                    function(model, response) { 
+                      login.savek(inputUser);
+                    });
+    
+  });
+   
   // ** test ERROR on duplicate account creation
+  it("should get an ERROR if I try to add a duplicate account", function() { 
+    
+    account = new bkeeping.models.Account;
+    account.savek(accountAsset,
+      { success : 
+        function(model, response) { 
+        
+        var a2 = new bkeeping.models.Account;
+        a2.savek( accountAsset, 
+                  {
+                    success : function(model, response) { 
+                      console.log("Here 1 ... ");
+                      expect(response).toBeNull(); // there should NOT be a success on the 2nd account add
+                    }, 
+                    error : function(model, response) { 
+                      console.log("Here 2 ... ");
+                      expect(response).toBeDefined(); // there SHOULD be an error if we try to add a duplicate account 
+                    }
+                  });
+        }
+      });
+  });
+  
   // ** test ERROR on creating w/out loggin in
   // ** test creating an account 
-
+  
   // ** test retrieving an account 
   // ** test retrieving a list of accounts
   
@@ -64,54 +90,6 @@ describe('Account w/ server interaction', function () {
   // ** test deleting an account 
   
   // test creating a user 
-  it("do a basic save, and error on duplication attempt", function () { 
-    
-    account.set( 
-      { "tag": "user",
-        "username": "stub", 
-        "password": "stub", 
-        "email": "tim@interrupt.com",
-      },
-      { silent: true });
-    
-    account.savek({}, 
-          function(model, response) { 
-             
-             console.log("success [bkeeping.models.Account] CALLED > model["+ model +"] > response["+ response +"]"); 
-             
-             account["_id"] = response._id;
-             account["id"] = response.username;
-
-             expect(response).toBeDefined();
-             expect(response.tag).toEqual("user");
-             
-             // now delete the user (after logging in)
-             afterRun(); 
-
-           }, 
-          function(model, response) { 
-            expect(response).toBeNull(); // there should be no errors
-            afterRun(); 
-          });
-    
-    // test adding a duplicate user 
-    account.savek( {},
-         function(model, response) { 
-            expect(response).toBeNull(); // there should not be a success on duplicate user add 
-            afterRun(); 
-         },
-         function(model, response) { 
-            console.log("ERROR success [bkeeping.models.Account] CALLED > model["+ model +"] > response["+ response +"]"); 
-            
-            expect(response).toBeDefined();
-            expect(response.tag).toEqual("error");
-            
-            // now delete the user (after logging in)
-            afterRun(); 
-            
-         });
-        
-  });
   
 });
 

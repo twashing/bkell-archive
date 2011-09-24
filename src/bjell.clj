@@ -16,22 +16,22 @@
   (bkell/init-shell) 	;; the shell and memory 
 )
 
+(defn generate-id [entity]
+  ;; traverse tree 
+  entity
+)
 
 (defn add [artifact & etal]
   "artifact - input can be JSON String or Reader"
   
-  (let  [ artifact-p (domain/keywordize-tags (clojure.data.json/read-json artifact))]
+  (let  [ artifact-p (-> artifact clojure.data.json/read-json domain/keywordize-tags generate-id)]
 
-(let [thing 
       (domain/bsonid-to-id
         (eval `(bkell/add ~artifact-p ~@etal)) )
-      ]
-(println "add result: " thing)
-thing
-) 
   )
 )
 
+;; java.rmi.dgc.VMID iid = new java.rmi.dgc.VMID();
 
 (defn get [akey & etal]
   "akey - input is a String"

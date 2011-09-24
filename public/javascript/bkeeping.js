@@ -43,5 +43,9 @@ bkeeping.models.Login = bkeeping.models.AbstractK.extend({
   urlRoot : "/login",
   
 }); 
-
+bkeeping.models.Account = bkeeping.models.AbstractK.extend({
+  
+  urlRoot : "/account",
+  
+}); 
 
