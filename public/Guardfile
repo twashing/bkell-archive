@@ -1,0 +1,21 @@
+guard 'haml' do
+  #watch('table.html.haml')
+  watch(/^.+\.html\.haml$/)
+end
+
+guard 'livereload' do
+  watch(/^.+\.html$/)
+  #watch(/^public\/assets\/.+\.(css|js)$/)
+end
+
+# guard 'haml', :input => 'public', :output => 'public' do
+#   watch(%r{^public/.+\.html\.haml})
+# end
+# 
+# guard 'livereload' do
+#   watch(%r{.+\.(css|js|html)})
+# end
+
+# guard 'sass', :output => 'public/css'
+# guard 'coffeescript', :input => 'public/javascript'
+
