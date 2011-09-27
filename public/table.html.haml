@@ -2,7 +2,14 @@
 
   %head
     %meta{ :charset => "utf-8" }
-
+    %script{ :src => "javascript/jquery-1.6.3.js" }
+    %script{ :src => "javascript/pure.js" }
+    %script{ :src => "puredata.js" }
+    :javascript 
+      $(document).ready(function() {
+        $(".tab_container").render(pd, directive);
+      });
+  
   %body
     %article 
       %header 
@@ -24,11 +31,11 @@
                   %th 
               %tbody
                 %tr
-                  %td 
+                  %td
                     %input{ :type => "checkbox" } 
-                  %td My Name 
-                  %td My Type 
-                  %td My Weight 
+                  %td{ :class => "name" }  My Name 
+                  %td{ :class => "type" }  My Type 
+                  %td{ :class => "weight" }  My Weight 
                   %td 
                     %a{ :href => "#" } thing 
 
