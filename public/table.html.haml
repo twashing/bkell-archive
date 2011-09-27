@@ -1,0 +1,33 @@
+%html{ :lang => "en" } 
+
+  %head
+    %meta{ :charset => "utf-8" }
+
+  %body
+    %article 
+      %header 
+        %h3 Content Manager 
+        %ul
+          %li Posts
+          %li Comments
+
+      .tab_container
+        .tab_content
+          .tab1 
+            %table 
+              %thead 
+                %tr 
+                  %th 
+                  %th Name 
+                  %th Type
+                  %th Weight 
+                  %th 
+              %tbody
+                %tr
+                  %td 
+                    %input{ :type => "checkbox" } 
+                  %td My Name 
+                  %td My Name 
+                  %td My Name 
+                  %td 
+                    %a{ :src => "#" } thing
