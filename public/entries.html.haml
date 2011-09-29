@@ -4,34 +4,34 @@
     %meta{ :charset => "utf-8" }
     %script{ :src => "javascript/jquery-1.6.3.js" }
     %script{ :src => "javascript/pure.js" }
-    %script{ :src => "puredata.js" }
+    %script{ :src => "pureentries.js" }
     :javascript 
       $(document).ready(function() {
-        $(".tab_container").render(pd, directive);
+        $(".entries_container").render(pd, directive);
       });
   
   %body
     %article 
       %header 
-        %h3 Accounts 
+        %h3 Entries
       
-      .tab_container
-        .tab_content
+      .entries_container
+        .entry_content
           %table 
             %thead 
               %tr 
                 %th 
-                %th Name 
-                %th Category
-                %th Type 
+                %th Date
+                %th Name
+                %th Balance
                 %th 
             %tbody
               %tr
                 %td
                   %a{ :href => "#" } edit 
+                %td{ :class => "date" }  My Date
                 %td{ :class => "name" }  My Name 
-                %td{ :class => "type" }  My Type 
-                %td{ :class => "weight" }  My Weight 
+                %td{ :class => "balance" }  My Balance 
                 %td 
                   %a{ :href => "#" } delete 
 

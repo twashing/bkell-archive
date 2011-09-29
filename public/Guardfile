@@ -4,6 +4,7 @@ end
 
 guard 'livereload' do
   watch(/^.+\.html$/)
+  watch(/^javascript\/+\.js$/)
 end
 
 # guard 'sass', :output => 'public/css'

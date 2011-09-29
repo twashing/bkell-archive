@@ -1,7 +1,6 @@
 
 pd = {
   puredata : [
-	
 	{"tag":"account",
 	 "type":"asset",
 	 "id":"cash",
@@ -12,7 +11,7 @@ pd = {
 	 "type":"liability",
 	 "id":"accounts payable",
 	 "name":"accounts payable",
-	 "counterWeight":"debit"} , 
+	 "counterWeight":"credit"} , 
 	
 	{"tag":"account",
 	 "type":"revenue",
@@ -24,8 +23,7 @@ pd = {
 	 "type":"expense",
 	 "id":"expense",
 	 "name":"expense",
-	 "counterWeight":"debit"}
-	
+	 "counterWeight":"credit"}
   ]
 }
 
