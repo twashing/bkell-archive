@@ -1,0 +1,55 @@
+
+@import "compass/layout"
+@import "compass/layout/stretching"
+@import "compass/css3/box"
+@import "ceaser-easing"
+
+$header-height : 50px
+$footer-height : 150px
+$left-col-width : 250px
+@include sticky-footer( $footer-height , "#container", "#left-col", "#footer")
+
+html, body
+  min-height: 400px 
+  min-width: 800px
+  height: 100%
+
+.header
+  background: #999
+  height: $header-height
+  box-shadow: 0 4px 6px #543
+
+.footer 
+  background: #fdd 
+  clear: both
+  z-index: 10
+  height: $footer-height
+
+.container
+  padding: 0px
+  width: 100%
+  min-height: 100% 
+  margin: 0 auto -150px
+
+.main-content
+  @include display-box
+  @include box-orient(horizontal)
+  +stretch( $offset-top : $header-height, $offset-bottom : $footer-height )
+
+.left-col
+  width: $left-col-width
+  @extend .stretched
+  @include box-flex(1)
+  @include ceaser-transition(easeInOutExpo, width, 500ms, 0s)
+
+.left-col.closed
+  width: 0px
+
+.right-col
+  @extend .stretched
+  @include box-flex(5)
+
+.debug
+  border-style: solid
+  border-width: 1px 
+
