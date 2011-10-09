@@ -1,0 +1,37 @@
+%html{ :lang => "en" } 
+
+  %head
+    %meta{ :charset => "utf-8" }
+    %script{ :src => "javascript/jquery-1.6.3.js" }
+    %script{ :src => "javascript/pure.js" }
+    %script{ :src => "puredata.js" }
+    :javascript 
+      $(document).ready(function() {
+        $(".tab_container").render(pd, directive);
+      });
+  
+  %body
+    %article 
+      %header 
+        %h3 Accounts 
+      
+      .tab_container
+        .tab_content
+          %table 
+            %thead 
+              %tr 
+                %th 
+                %th Name 
+                %th Category
+                %th Type 
+                %th 
+            %tbody
+              %tr
+                %td
+                  %a{ :href => "#" } edit 
+                %td{ :class => "name" }  My Name 
+                %td{ :class => "type" }  My Type 
+                %td{ :class => "weight" }  My Weight 
+                %td 
+                  %a{ :href => "#" } delete 
+
