@@ -1,7 +1,7 @@
 (ns commands
 
   (:use somnium.congomongo)
-  (:require debug)
+  ;;(:require debug)
   (:require domain)
 )
 

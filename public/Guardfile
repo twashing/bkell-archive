@@ -1,12 +1,14 @@
-guard 'haml' do
-  watch(/^.+\.html\.haml$/)
+
+#guard 'haml' do
+#  watch(/^.+\.haml$/)
+#end
+guard 'haml', :input => 'haml', :output => ['.', 'include'] do
+  watch(/^.+\.haml$/)
 end
 
-guard 'livereload' do
-  watch(/^.+\.html$/)
-  watch(/^javascript\/+\.js$/)
-end
-
-# guard 'sass', :output => 'public/css'
-# guard 'coffeescript', :input => 'public/javascript'
+# guard 'livereload' do
+#  watch(/^.+\.html$/)
+#  watch(%r{css/.+\.css})
+#  watch(%r{javascript/.+\.js})
+# end
 

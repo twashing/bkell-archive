@@ -8,7 +8,7 @@
   (:require util)
   
   (:use somnium.congomongo)
-  (:require debug)
+  ;;(:require debug)
 )
 
 
