@@ -2,7 +2,7 @@
   
   %head
     %meta{ :charset => "utf-8" }
-    %link{ :href => "/css/styles.css", :media => "screen", :rel => "stylesheet", :type => "text/css" }
+    //%link{ :href => "/css/styles.css", :media => "screen", :rel => "stylesheet", :type => "text/css" }
     %link{ :href => "/css/screen.css", :media => "screen, projection", :rel => "stylesheet", :type => "text/css" }
     %link{ :href => "/css/print.css", :media => "print", :rel => "stylesheet", :type => "text/css" }
     /[if IE]
@@ -14,10 +14,15 @@
     :javascript
       $(document).ready(function() {
         
+        // setting animation for lefet column 
         $(".left-col").click(function() {
-          
           $(".left-col").toggleClass("closed");
         });
+
+        // putting account list in left column 
+        $(".left-col").load("/include/accounts.html");
+        $(".right-col").load("/include/entries.html");
+        
       }); 
 
   %body 

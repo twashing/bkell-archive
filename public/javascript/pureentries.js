@@ -1,5 +1,5 @@
 
-pd = {
+entryData = {
   pureentries : [
 		
 	{"tag":"entry",
@@ -25,7 +25,7 @@ pd = {
   ]
 }
 
-directive = { 
+entryDirective = { 
   
   "tbody tr" : { 
     "each<-pureentries" : {

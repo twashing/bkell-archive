@@ -1,7 +1,7 @@
 
 group 'include' do
-  guard 'haml' , :output => "include" do
-    watch(%r{^haml/(.+)\.html\.haml$})    
+  guard 'haml', :input => "haml" , :output => "include" do
+    watch(%r{^(.+)\.html\.haml$})    
   end
 end 
 

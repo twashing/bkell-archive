@@ -1,5 +1,5 @@
 
-pd = {
+accountsData = {
   puredata : [
 	{"tag":"account",
 	 "type":"asset",
@@ -27,7 +27,7 @@ pd = {
   ]
 }
 
-directive = { 
+accountsDirective = { 
   
   "tbody tr" : { 
     "each<-puredata" : {
