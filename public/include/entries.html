@@ -1,0 +1,50 @@
+<html lang='en'>
+  <head>
+    <meta charset='utf-8' />
+    <script src='javascript/jquery-1.6.3.js'></script>
+    <script src='javascript/pure.js'></script>
+    <script src='javascript/pureentries.js'></script>
+    <script type='text/javascript'>
+      //<![CDATA[
+        $(document).ready(function() {
+          $(".entries_container").render(entryData, entryDirective);
+        });
+      //]]>
+    </script>
+  </head>
+  <body>
+    <article>
+      <header>
+        <h3>Entries</h3>
+      </header>
+      <div class='entries_container'>
+        <div class='entry_content'>
+          <table>
+            <thead>
+              <tr>
+                <th></th>
+                <th>Date</th>
+                <th>Name</th>
+                <th>Balance</th>
+                <th></th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>
+                  <a href='#'>edit</a>
+                </td>
+                <td class='date'>My Date</td>
+                <td class='name'>My Name</td>
+                <td class='balance'>My Balance</td>
+                <td>
+                  <a href='#'>delete</a>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </article>
+  </body>
+</html>

@@ -1,0 +1,40 @@
+<html lang='en'>
+  <head>
+    <meta charset='utf-8' />
+    <!-- /%link{ :href => "/css/styles.css", :media => "screen", :rel => "stylesheet", :type => "text/css" } -->
+    <link href='/css/screen.css' media='screen, projection' rel='stylesheet' type='text/css' />
+    <link href='/css/print.css' media='print' rel='stylesheet' type='text/css' />
+    <!--[if IE]>
+      <link href='/css/ie.css' media='screen, projection' rel='stylesheet' type='text/css' />
+    <![endif]-->
+    <link href='css/landing.css' media='screen' rel='stylesheet' type='text/css' />
+    <script src='javascript/jquery-1.6.3.js'></script>
+    <script src='javascript/pure.js'></script>
+    <script type='text/javascript'>
+      //<![CDATA[
+        $(document).ready(function() {
+          
+          // setting animation for left column 
+          $(".left-col").click(function() {
+            $(".left-col").toggleClass("closed");
+          });
+        
+          // putting account list in left column 
+          $(".left-col").load("/include/accounts.html");
+          $(".right-col").load("/include/entries.html");
+          
+        });
+      //]]>
+    </script>
+  </head>
+  <body>
+    <div class='container'>
+      <div class='header'>Header</div>
+      <div class='main-content'>
+        <div class='left-col debug'>Left Panel</div>
+        <div class='right-col debug'>Right Panel</div>
+      </div>
+    </div>
+    <div class='footer'>Footer</div>
+  </body>
+</html>

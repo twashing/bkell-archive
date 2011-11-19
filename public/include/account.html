@@ -1,0 +1,50 @@
+<html lang='en'>
+  <head>
+    <meta charset='utf-8' />
+    <script src='javascript/jquery-1.6.3.js'></script>
+    <script src='javascript/pure.js'></script>
+    <script src='javascript/pureentry.js'></script>
+    <script type='text/javascript'>
+      //<![CDATA[
+        $(document).ready(function() {
+          $(".entry_container").render(pd, directive);
+        });
+      //]]>
+    </script>
+  </head>
+  <body>
+    <article>
+      <header>
+        <h3>Account</h3>
+      </header>
+      <div class='account_container'>
+        <div class='account_content'>
+          <div>
+            <label>Name</label>
+            <input type='text' />
+          </div>
+          <div>
+            <label>Category</label>
+            <select>
+              <option value='asset'>asset</option>
+              <option value='liability'>liability</option>
+              <option value='revenue'>revenue</option>
+              <option value='expense'>expense</option>
+            </select>
+          </div>
+          <div>
+            <label>Type</label>
+            <select>
+              <option value='debit'>debit</option>
+              <option value='credit'>credit</option>
+            </select>
+          </div>
+          <div>
+            <input type='button' value='ok' />
+            <input type='button' value='cancel' />
+          </div>
+        </div>
+      </div>
+    </article>
+  </body>
+</html>

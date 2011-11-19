@@ -1,0 +1,115 @@
+/* line 10, ../../../../.rvm/gems/ruby-1.9.2-p290/gems/compass-0.11.5/frameworks/compass/stylesheets/compass/layout/_sticky-footer.scss */
+html, body {
+  height: 100%;
+}
+
+/* line 12, ../../../../.rvm/gems/ruby-1.9.2-p290/gems/compass-0.11.5/frameworks/compass/stylesheets/compass/layout/_sticky-footer.scss */
+#container {
+  clear: both;
+  min-height: 100%;
+  height: auto !important;
+  height: 100%;
+  margin-bottom: -150px;
+}
+/* line 18, ../../../../.rvm/gems/ruby-1.9.2-p290/gems/compass-0.11.5/frameworks/compass/stylesheets/compass/layout/_sticky-footer.scss */
+#container #left-col {
+  height: 150px;
+}
+
+/* line 20, ../../../../.rvm/gems/ruby-1.9.2-p290/gems/compass-0.11.5/frameworks/compass/stylesheets/compass/layout/_sticky-footer.scss */
+#footer {
+  clear: both;
+  position: relative;
+  height: 150px;
+}
+
+/* line 12, ../sass/landing.sass */
+html, body {
+  min-height: 400px;
+  min-width: 800px;
+  height: 100%;
+}
+
+/* line 17, ../sass/landing.sass */
+.header {
+  background: #999999;
+  height: 50px;
+  box-shadow: 0 4px 6px #554433;
+}
+
+/* line 22, ../sass/landing.sass */
+.footer {
+  background: #ffdddd;
+  clear: both;
+  z-index: 10;
+  height: 150px;
+}
+
+/* line 28, ../sass/landing.sass */
+.container {
+  padding: 0px;
+  width: 100%;
+  min-height: 100%;
+  margin: 0 auto -150px;
+}
+
+/* line 34, ../sass/landing.sass */
+.main-content {
+  display: -moz-box;
+  display: -webkit-box;
+  display: -ms-box;
+  display: box;
+  -moz-box-orient: horizontal;
+  -webkit-box-orient: horizontal;
+  -ms-box-orient: horizontal;
+  box-orient: horizontal;
+  position: absolute;
+  top: 50px;
+  bottom: 150px;
+  left: 0;
+  right: 0;
+}
+
+/* line 39, ../sass/landing.sass */
+.left-col {
+  width: 250px;
+  -moz-box-flex: 1;
+  -webkit-box-flex: 1;
+  -ms-box-flex: 1;
+  box-flex: 1;
+  -moz-transition-property: width;
+  -webkit-transition-property: width;
+  -o-transition-property: width;
+  transition-property: width;
+  -moz-transition-duration: 500ms;
+  -webkit-transition-duration: 500ms;
+  -o-transition-duration: 500ms;
+  transition-duration: 500ms;
+  -moz-transition-timing-function: cubic-bezier(1.000, 0.000, 0.000, 1.000);
+  -webkit-transition-timing-function: cubic-bezier(1.000, 0.000, 0.000, 1.000);
+  -o-transition-timing-function: cubic-bezier(1.000, 0.000, 0.000, 1.000);
+  transition-timing-function: cubic-bezier(1.000, 0.000, 0.000, 1.000);
+  -moz-transition-delay: 0s;
+  -webkit-transition-delay: 0s;
+  -o-transition-delay: 0s;
+  transition-delay: 0s;
+}
+
+/* line 45, ../sass/landing.sass */
+.left-col.closed {
+  width: 0px;
+}
+
+/* line 48, ../sass/landing.sass */
+.right-col {
+  -moz-box-flex: 5;
+  -webkit-box-flex: 5;
+  -ms-box-flex: 5;
+  box-flex: 5;
+}
+
+/* line 52, ../sass/landing.sass */
+.debug {
+  border-style: solid;
+  border-width: 1px;
+}

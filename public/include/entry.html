@@ -1,0 +1,58 @@
+<html lang='en'>
+  <head>
+    <meta charset='utf-8' />
+    <script src='javascript/jquery-1.6.3.js'></script>
+    <script src='javascript/pure.js'></script>
+    <script src='javascript/pureentry.js'></script>
+    <script type='text/javascript'>
+      //<![CDATA[
+        $(document).ready(function() {
+          $(".entry_container").render(pd, directive);
+        });
+      //]]>
+    </script>
+  </head>
+  <body>
+    <article>
+      <header>
+        <h3>Entry</h3>
+        <h5>
+          <label>Date</label>
+          <div class='entry_date'>MyDate</div>
+        </h5>
+      </header>
+      <div class='entry_container'>
+        <div class='entry_content'>
+          <table>
+            <thead>
+              <tr>
+                <th></th>
+                <th>account</th>
+                <th>amount</th>
+                <th></th>
+                <th>account</th>
+                <th>amount</th>
+                <th></th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>
+                  <a href='#'>edit</a>
+                </td>
+                <td class='debitAccount'>Debit Account</td>
+                <td class='debitAmount'>Debit Amount</td>
+                <td>&nbsp;</td>
+                <td class='creditAccount'>Credit Account</td>
+                <td class='creditAmount'>Credit Amount</td>
+                <td>
+                  <a href='#'>delete</a>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </article>
+  </body>
+</html>
