@@ -7,29 +7,46 @@
     %link{ :href => "/css/print.css", :media => "print", :rel => "stylesheet", :type => "text/css" }
     /[if IE]
       %link{ :href => "/css/ie.css", :media => "screen, projection", :rel => "stylesheet", :type => "text/css" }
-    %link{ :rel => "stylesheet", :href => "css/landing.css", :type => "text/css", :media => "screen" }
+    %link{ :href => "/css/landing.css", :media => "screen", :rel => "stylesheet", :type => "text/css" }
 
-    %script{ :src => "javascript/jquery-1.6.3.js" }
-    %script{ :src => "javascript/pure.js" }
+    %script{ :src => "/js/jquery-1.6.3.js" }
+    %script{ :src => "/js/jquery.easing.1.3.js" }
+    %script{ :src => "/js/pure.js" }
     :javascript
       $(document).ready(function() {
         
         // setting animation for left column 
-        $(".left-col").click(function() {
-          $(".left-col").toggleClass("closed");
-        });
-
+        $("#left-toggler").toggle(
+          
+          function() {
+            
+            $('#left-col').animate({ left: '-=150', }, 
+              { duration: 500, 
+                easing: 'easeInOutExpo', 
+              });
+          },
+          function() {     
+            
+            $('#left-col').animate({ left: '+=150', }, 
+              { duration: 500, 
+                easing: 'easeInOutExpo', 
+              });
+          }
+          
+        );
+        
         // putting account list in left column 
-        $(".left-col").load("/include/accounts.html");
-        $(".right-col").load("/include/entries.html");
+        $("#left-col").load("/include/accounts.html");
+        $("#right-col").load("/include/entries.html");
         
       }); 
 
   %body 
     .container
       .header Header
-      .main-content 
-        .left-col.debug Left Panel
-        .right-col.debug Right Panel
+      #main-content 
+        #left-col.debug Left Panel
+        #left-toggler
+        #right-col.debug Right Panel
     .footer Footer
 

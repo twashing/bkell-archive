@@ -3,16 +3,16 @@
 @import "compass/layout/stretching"
 @import "compass/css3/box"
 @import "ceaser-easing"
-@import "grid-coordinates"
+//@import "grid-coordinates"
 
 $header-height : 50px
 $footer-height : 150px
 $left-col-width : 250px
 @include sticky-footer( $footer-height , "#container", "#left-col", "#footer")
 
-$grid-columns: 12
-$grid-gutter-width: 1px
-@include grid-coordinates
+//$grid-columns: 12
+//$grid-gutter-width: 1px
+//@include grid-coordinates
 
 @mixin debugM
   border-style: solid
@@ -38,29 +38,39 @@ html, body
   height: $footer-height
 
 .container
-  +grid-container
+  //+grid-container
   padding: 0px
   width: 100%
   min-height: 100% 
   margin: 0 auto -150px
+  position: absolute
 
-.main-content
+#main-content
   @include display-box
   @include box-orient(horizontal)
   +stretch( $offset-top : $header-height, $offset-bottom : $footer-height )
 
-.left-col
+#left-col
   //width: $left-col-width
-  +grid(5)
+  //+grid(5)
   @extend .stretched
+  left: 0px
+  position: relative
   //@include box-flex(1)
-  @include ceaser-transition(easeInOutExpo, width, 500ms, 0s)
+  //@include ceaser-transition(easeInOutExpo, width, 500ms, 0s)
 
-.left-col.closed
-  width: 0px
+#left-col.closed
+  //width: 0px
 
-.right-col
+#left-toggler
+  width: 40px
+  height: 40px
+  background-color: blue 
+  position: relative
+
+#right-col
   @extend .stretched
-  +grid(9)
+  //+grid(9)
   @include box-flex(5)
+  position: relative
 
