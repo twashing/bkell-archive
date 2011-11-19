@@ -3,11 +3,23 @@
 @import "compass/layout/stretching"
 @import "compass/css3/box"
 @import "ceaser-easing"
+@import "grid-coordinates"
 
 $header-height : 50px
 $footer-height : 150px
 $left-col-width : 250px
 @include sticky-footer( $footer-height , "#container", "#left-col", "#footer")
+
+$grid-columns: 12
+$grid-gutter-width: 1px
+@include grid-coordinates
+
+@mixin debugM
+  border-style: solid
+  border-width: 1px 
+
+.debug
+  +debugM 
 
 html, body
   min-height: 400px 
@@ -26,6 +38,7 @@ html, body
   height: $footer-height
 
 .container
+  +grid-container
   padding: 0px
   width: 100%
   min-height: 100% 
@@ -37,9 +50,10 @@ html, body
   +stretch( $offset-top : $header-height, $offset-bottom : $footer-height )
 
 .left-col
-  width: $left-col-width
+  //width: $left-col-width
+  +grid(5)
   @extend .stretched
-  @include box-flex(1)
+  //@include box-flex(1)
   @include ceaser-transition(easeInOutExpo, width, 500ms, 0s)
 
 .left-col.closed
@@ -47,9 +61,6 @@ html, body
 
 .right-col
   @extend .stretched
+  +grid(9)
   @include box-flex(5)
-
-.debug
-  border-style: solid
-  border-width: 1px 
 
