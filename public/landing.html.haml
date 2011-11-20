@@ -21,20 +21,30 @@
           function() {
             
             $('#left-col')
-              .animate({ left: ('-=' + $('#left-content').css('width')) , }, 
+              .animate(
+                { left: ('-=' + $('#left-content').css('width')), }, 
                 { duration: 500, 
                   easing: 'easeInOutSine', 
-                })
-              .css('width',0);
+                  complete: function() {
+                    
+                    /*** 
+                     * After animating out the left-col, we need to make sure the toggler button is still visible 
+                     ***/
+                    $('#left-toggler').css('left', $('#left-content').css('width'))
+                    $(this).css('width', $('#left-toggler').css('width'));
+                    
+                  },
+                });
           },
           function() {     
             
             $('#left-col')
+              .css('width','auto')
               .animate({ left: ('+=' + $('#left-content').css('width')), }, 
                 { duration: 500, 
                   easing: 'easeInOutSine', 
-                })
-              .css('width','auto');
+                });
+            $('#left-toggler').css('left', 0);
           }
           
         );
@@ -51,7 +61,7 @@
       #main-content 
         #left-col
           #left-content
-          #left-toggler
+          #left-toggler.debug
         #right-col.debug Right Panel
         .clear-col
     .footer Footer

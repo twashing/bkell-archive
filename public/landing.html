@@ -21,20 +21,30 @@
             function() {
               
               $('#left-col')
-                .animate({ left: ('-=' + $('#left-content').css('width')) , }, 
+                .animate(
+                  { left: ('-=' + $('#left-content').css('width')), }, 
                   { duration: 500, 
                     easing: 'easeInOutSine', 
-                  })
-                .css('width',0);
+                    complete: function() {
+                      
+                      /*** 
+                       * After animating out the left-col, we need to make sure the toggler button is still visible 
+                       ***/
+                      $('#left-toggler').css('left', $('#left-content').css('width'))
+                      $(this).css('width', $('#left-toggler').css('width'));
+                      
+                    },
+                  });
             },
             function() {     
               
               $('#left-col')
+                .css('width','auto')
                 .animate({ left: ('+=' + $('#left-content').css('width')), }, 
                   { duration: 500, 
                     easing: 'easeInOutSine', 
-                  })
-                .css('width','auto');
+                  });
+              $('#left-toggler').css('left', 0);
             }
             
           );
@@ -53,7 +63,7 @@
       <div id='main-content'>
         <div id='left-col'>
           <div id='left-content'></div>
-          <div id='left-toggler'></div>
+          <div class='debug' id='left-toggler'></div>
         </div>
         <div class='debug' id='right-col'>Right Panel</div>
         <div class='clear-col'></div>

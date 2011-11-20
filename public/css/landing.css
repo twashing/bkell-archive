@@ -91,7 +91,7 @@ html, body {
   width: 20px;
   height: 20px;
   background-color: blue;
-  float: left;
+  float: right;
   position: relative;
 }
 
@@ -101,7 +101,7 @@ html, body {
   -webkit-box-flex: 5;
   -ms-box-flex: 5;
   box-flex: 5;
-  position: static;
+  position: relative;
 }
 
 /* line 80, ../sass/landing.sass */
