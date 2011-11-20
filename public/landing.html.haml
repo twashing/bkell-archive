@@ -65,7 +65,9 @@
         $("#left-toggler").toggle( easeOUT, easeIN );
 
         
-        // putting account list in left column 
+        /*** 
+         * loading accounts and entries 
+         ***/
         $("#left-content").load("/include/accounts.html", function() { 
           
           LEFT_WIDTH = $('#left-content').css('width'); 
@@ -83,6 +85,5 @@
           #left-content
           #left-toggler.debug
         #right-col.debug Right Panel
-        .clear-col
     .footer Footer
 

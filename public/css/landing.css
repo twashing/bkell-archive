@@ -446,11 +446,29 @@ html, body {
 
 /* line 40, ../sass/landing.sass */
 .container {
+  zoom: 1;
+  margin-right: auto;
+  margin-left: auto;
+  width: 732px;
   padding: 0px;
   width: 100%;
   min-height: 100%;
   margin: 0 auto -150px;
-  position: absolute;
+}
+/* line 10, ../../../../.rvm/gems/ruby-1.9.2-p290/gems/grid-coordinates-1.2.0/stylesheets/modules/_bulletproof-clearfix.sass */
+.container:before, .container:after {
+  content: ".";
+  display: block;
+  overflow: hidden;
+  visibility: hidden;
+  font-size: 0;
+  line-height: 0;
+  width: 0;
+  height: 0;
+}
+/* line 19, ../../../../.rvm/gems/ruby-1.9.2-p290/gems/grid-coordinates-1.2.0/stylesheets/modules/_bulletproof-clearfix.sass */
+.container:after {
+  clear: both;
 }
 
 /* line 48, ../sass/landing.sass */
@@ -522,12 +540,4 @@ html, body {
 /* line 19, ../../../../.rvm/gems/ruby-1.9.2-p290/gems/grid-coordinates-1.2.0/stylesheets/modules/_bulletproof-clearfix.sass */
 #right-col:after {
   clear: both;
-}
-
-/* line 81, ../sass/landing.sass */
-.clear-col {
-  clear: both;
-  height: 1px;
-  margin-top: -1px;
-  overflow: hidden;
 }
