@@ -19,24 +19,25 @@
           $("#left-toggler").toggle(
             
             function() {
+              console.log('toggle CALLED');
               
-              $('#left-col').animate({ left: '-=150', }, 
+              $('#left-col').animate({ left: ('-=' + $('#left-content').css('width')) , }, 
                 { duration: 500, 
-                  easing: 'easeInOutExpo', 
+                  easing: 'easeInOutSine', 
                 });
             },
             function() {     
               
-              $('#left-col').animate({ left: '+=150', }, 
+              $('#left-col').animate({ left: ('+=' + $('#left-content').css('width')), }, 
                 { duration: 500, 
-                  easing: 'easeInOutExpo', 
+                  easing: 'easeInOutSine', 
                 });
             }
             
           );
           
           // putting account list in left column 
-          $("#left-col").load("/include/accounts.html");
+          $("#left-content").load("/include/accounts.html");
           $("#right-col").load("/include/entries.html");
           
         });
@@ -47,8 +48,10 @@
     <div class='container'>
       <div class='header'>Header</div>
       <div id='main-content'>
-        <div class='debug' id='left-col'>Left Panel</div>
-        <div id='left-toggler'></div>
+        <div class='debug' id='left-col'>
+          <div id='left-content'></div>
+          <div id='left-toggler'></div>
+        </div>
         <div class='debug' id='right-col'>Right Panel</div>
       </div>
     </div>

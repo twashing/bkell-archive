@@ -51,21 +51,24 @@ html, body
   +stretch( $offset-top : $header-height, $offset-bottom : $footer-height )
 
 #left-col
+  width: auto
+  left: 0px
+  float: left
+  position: relative
+  
+#left-content
   //width: $left-col-width
   //+grid(5)
   @extend .stretched
-  left: 0px
-  position: relative
+  float: left
   //@include box-flex(1)
   //@include ceaser-transition(easeInOutExpo, width, 500ms, 0s)
-
-#left-col.closed
-  //width: 0px
 
 #left-toggler
   width: 40px
   height: 40px
   background-color: blue 
+  float: left
   position: relative
 
 #right-col
@@ -73,4 +76,5 @@ html, body
   //+grid(9)
   @include box-flex(5)
   position: relative
+  width: auto
 

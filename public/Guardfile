@@ -13,6 +13,6 @@ guard 'livereload' do
  watch(/^.+\.html$/)
  watch(%r{include/.+\.html})
  watch(%r{css/.+\.css})
- watch(%r{javascript/.+\.js})
+ watch(%r{js/.+\.js})
 end
 

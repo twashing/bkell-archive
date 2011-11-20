@@ -79,23 +79,32 @@ html, body {
 
 /* line 53, ../sass/landing.sass */
 #left-col {
+  width: auto;
   left: 0px;
+  float: left;
   position: relative;
 }
 
-/* line 65, ../sass/landing.sass */
+/* line 59, ../sass/landing.sass */
+#left-content {
+  float: left;
+}
+
+/* line 67, ../sass/landing.sass */
 #left-toggler {
   width: 40px;
   height: 40px;
   background-color: blue;
+  float: left;
   position: relative;
 }
 
-/* line 71, ../sass/landing.sass */
+/* line 74, ../sass/landing.sass */
 #right-col {
   -moz-box-flex: 5;
   -webkit-box-flex: 5;
   -ms-box-flex: 5;
   box-flex: 5;
   position: relative;
+  width: auto;
 }
