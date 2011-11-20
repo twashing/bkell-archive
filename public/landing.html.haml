@@ -15,42 +15,62 @@
     :javascript
       $(document).ready(function() {
         
-        // setting animation for left column 
-        $("#left-toggler").toggle(
+        /***
+         * GLOBAL Vars 
+         ***/
+        LEFT_WIDTH = 0 
+        LEFT_COLUMN_WIDTH = 0 
+        
+        
+        /***
+         * Animation for left column 
+         ***/
+        var easeOUT = function() {
           
-          function() {
-            
-            $('#left-col')
-              .animate(
-                { left: ('-=' + $('#left-content').css('width')), }, 
-                { duration: 500, 
-                  easing: 'easeInOutSine', 
-                  complete: function() {
-                    
-                    /*** 
-                     * After animating out the left-col, we need to make sure the toggler button is still visible 
-                     ***/
-                    $('#left-toggler').css('left', $('#left-content').css('width'))
-                    $(this).css('width', $('#left-toggler').css('width'));
-                    
-                  },
-                });
-          },
-          function() {     
-            
-            $('#left-col')
-              .css('width','auto')
-              .animate({ left: ('+=' + $('#left-content').css('width')), }, 
-                { duration: 500, 
-                  easing: 'easeInOutSine', 
-                });
-            $('#left-toggler').css('left', 0);
-          }
+          $('#left-col')
+            .animate(
+              { left: ('-=' + $('#left-content').css('width')), }, 
+              { duration: 500, 
+                easing: 'easeInOutSine', 
+                complete: function() {
+                  
+                  /*** 
+                   * make sure the toggler button is still visible 
+                   ***/
+                  $('#left-content').css('display','none');
+                  $('#left-col').css('width', $('#left-toggler').css('width'));
+                  $('#left-toggler').css('left', LEFT_WIDTH)
+                  
+                },
+              });
+        };
+        var easeIN = function() {     
           
-        );
+          $('#left-content').css('display','block');
+          $('#left-col').css('width', LEFT_COLUMN_WIDTH);
+          $('#left-toggler').css('left', 0)
+          
+          $('#left-col')
+            .css('width','auto')
+            .animate({ left: ('+=' + $('#left-content').css('width')), }, 
+              { duration: 500, 
+                easing: 'easeInOutSine', 
+              });
+        };
+        
+        
+        /*** 
+         * set the animation functions 
+         ***/
+        $("#left-toggler").toggle( easeOUT, easeIN );
+
         
         // putting account list in left column 
-        $("#left-content").load("/include/accounts.html");
+        $("#left-content").load("/include/accounts.html", function() { 
+          
+          LEFT_WIDTH = $('#left-content').css('width'); 
+          LEFT_COLUMN_WIDTH = $('#left-col').css('width'); 
+        });
         $("#right-col").load("/include/entries.html");
         
       }); 

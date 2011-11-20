@@ -3,16 +3,16 @@
 @import compass/layout/stretching
 @import compass/css3/box
 @import ceaser-easing
-//@import grid-coordinates
+@import grid-coordinates
 
 $header-height : 50px
 $footer-height : 150px
 $left-col-width : 250px
 @include sticky-footer( $footer-height , "#container", "#left-col", "#footer")
 
-//$grid-columns: 12
-//$grid-gutter-width: 1px
-//@include grid-coordinates
+$grid-columns: 12
+$grid-gutter-width: 1px
+@include grid-coordinates
 
 @mixin debugM
   border-style: solid
@@ -73,9 +73,10 @@ html, body
 
 #right-col
   //@extend .stretched
-  //+grid(9)
+  +grid(9)
   +box-flex(5)
   position: relative
+  background-color: #bbb
 
 .clear-col
   clear: both
