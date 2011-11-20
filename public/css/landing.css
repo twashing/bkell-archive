@@ -66,10 +66,6 @@ html, body {
   display: -webkit-box;
   display: -ms-box;
   display: box;
-  -moz-box-orient: horizontal;
-  -webkit-box-orient: horizontal;
-  -ms-box-orient: horizontal;
-  box-orient: horizontal;
   position: absolute;
   top: 50px;
   bottom: 150px;
@@ -92,8 +88,8 @@ html, body {
 
 /* line 67, ../sass/landing.sass */
 #left-toggler {
-  width: 40px;
-  height: 40px;
+  width: 20px;
+  height: 20px;
   background-color: blue;
   float: left;
   position: relative;
@@ -105,6 +101,13 @@ html, body {
   -webkit-box-flex: 5;
   -ms-box-flex: 5;
   box-flex: 5;
-  position: relative;
-  width: auto;
+  position: static;
+}
+
+/* line 80, ../sass/landing.sass */
+.clear-col {
+  clear: both;
+  height: 1px;
+  margin-top: -1px;
+  overflow: hidden;
 }

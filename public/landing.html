@@ -19,19 +19,22 @@
           $("#left-toggler").toggle(
             
             function() {
-              console.log('toggle CALLED');
               
-              $('#left-col').animate({ left: ('-=' + $('#left-content').css('width')) , }, 
-                { duration: 500, 
-                  easing: 'easeInOutSine', 
-                });
+              $('#left-col')
+                .animate({ left: ('-=' + $('#left-content').css('width')) , }, 
+                  { duration: 500, 
+                    easing: 'easeInOutSine', 
+                  })
+                .css('width',0);
             },
             function() {     
               
-              $('#left-col').animate({ left: ('+=' + $('#left-content').css('width')), }, 
-                { duration: 500, 
-                  easing: 'easeInOutSine', 
-                });
+              $('#left-col')
+                .animate({ left: ('+=' + $('#left-content').css('width')), }, 
+                  { duration: 500, 
+                    easing: 'easeInOutSine', 
+                  })
+                .css('width','auto');
             }
             
           );
@@ -48,11 +51,12 @@
     <div class='container'>
       <div class='header'>Header</div>
       <div id='main-content'>
-        <div class='debug' id='left-col'>
+        <div id='left-col'>
           <div id='left-content'></div>
           <div id='left-toggler'></div>
         </div>
         <div class='debug' id='right-col'>Right Panel</div>
+        <div class='clear-col'></div>
       </div>
     </div>
     <div class='footer'>Footer</div>

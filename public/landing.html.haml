@@ -19,19 +19,22 @@
         $("#left-toggler").toggle(
           
           function() {
-            console.log('toggle CALLED');
             
-            $('#left-col').animate({ left: ('-=' + $('#left-content').css('width')) , }, 
-              { duration: 500, 
-                easing: 'easeInOutSine', 
-              });
+            $('#left-col')
+              .animate({ left: ('-=' + $('#left-content').css('width')) , }, 
+                { duration: 500, 
+                  easing: 'easeInOutSine', 
+                })
+              .css('width',0);
           },
           function() {     
             
-            $('#left-col').animate({ left: ('+=' + $('#left-content').css('width')), }, 
-              { duration: 500, 
-                easing: 'easeInOutSine', 
-              });
+            $('#left-col')
+              .animate({ left: ('+=' + $('#left-content').css('width')), }, 
+                { duration: 500, 
+                  easing: 'easeInOutSine', 
+                })
+              .css('width','auto');
           }
           
         );
@@ -46,9 +49,10 @@
     .container
       .header Header
       #main-content 
-        #left-col.debug 
+        #left-col
           #left-content
           #left-toggler
         #right-col.debug Right Panel
+        .clear-col
     .footer Footer
 

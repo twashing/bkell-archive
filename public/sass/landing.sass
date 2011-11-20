@@ -1,9 +1,9 @@
 
-@import "compass/layout"
-@import "compass/layout/stretching"
-@import "compass/css3/box"
-@import "ceaser-easing"
-//@import "grid-coordinates"
+@import compass/layout
+@import compass/layout/stretching
+@import compass/css3/box
+@import ceaser-easing
+//@import grid-coordinates
 
 $header-height : 50px
 $footer-height : 150px
@@ -46,8 +46,8 @@ html, body
   position: absolute
 
 #main-content
-  @include display-box
-  @include box-orient(horizontal)
+  +display-box
+  //+box-orient(horizontal)
   +stretch( $offset-top : $header-height, $offset-bottom : $footer-height )
 
 #left-col
@@ -65,16 +65,21 @@ html, body
   //@include ceaser-transition(easeInOutExpo, width, 500ms, 0s)
 
 #left-toggler
-  width: 40px
-  height: 40px
+  width: 20px
+  height: 20px
   background-color: blue 
   float: left
   position: relative
 
 #right-col
-  @extend .stretched
+  //@extend .stretched
   //+grid(9)
-  @include box-flex(5)
-  position: relative
-  width: auto
+  +box-flex(5)
+  position: static
+
+.clear-col
+  clear: both
+  height: 1px
+  margin-top: -1px
+  overflow: hidden
 
