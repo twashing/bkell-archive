@@ -5,7 +5,10 @@
     %script{ :src => "/js/puredata.js" }
     :javascript 
       $(document).ready(function() {
-        $(".tab_container").render(accountsData, accountsDirective);
+        $(".tab_container")
+          .render(accountsData, accountsDirective)
+          .find('table')
+          .dataTable();
       });
   
   %body
