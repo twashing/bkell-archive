@@ -13,8 +13,6 @@
     %script{ :src => "/js/jquery.easing.1.3.js" }
     %script{ :src => "/js/pure.js" }
     %script{ :src => "/js/jquery.dataTables.js" }
-    
-    %script{ :src => "/js/landing.js" }
     :javascript
       $(document).ready(function() { 
          
@@ -82,7 +80,13 @@
             .dataTable();
                 
         });
-        $("#right-col").load("/include/entries.html");
+        $('#right-col').load('/include/entries.html', function() { 
+          
+          $('.entries_container')
+            .render(entryData, entryDirective)
+            .find('table')
+            .dataTable();
+        });
         
       }); 
 
