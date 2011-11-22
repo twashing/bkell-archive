@@ -1,12 +1,12 @@
 
 group 'include' do
   guard 'haml', :input => "haml" , :output => "include" do
-    watch(%r{^(.+)\.html\.haml$})    
+    watch(%r{haml/(.+)\.html\.haml$})    
   end
 end 
 
 guard 'haml' do
-  watch('landing.html.haml')
+ watch('landing.html.haml')
 end
 
 guard 'livereload' do

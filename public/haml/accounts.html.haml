@@ -3,13 +3,6 @@
   %head
     %meta{ :charset => "utf-8" }
     %script{ :src => "/js/puredata.js" }
-    :javascript 
-      $(document).ready(function() {
-        $(".tab_container")
-          .render(accountsData, accountsDirective)
-          .find('table')
-          .dataTable();
-      });
   
   %body
     %article 
@@ -18,7 +11,7 @@
       
       .tab_container
         .tab_content
-          %table 
+          %table( id='accounts-table' ) 
             %thead 
               %tr 
                 %th 

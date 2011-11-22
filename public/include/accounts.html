@@ -2,13 +2,6 @@
   <head>
     <meta charset='utf-8' />
     <script src='/js/puredata.js'></script>
-    <script type='text/javascript'>
-      //<![CDATA[
-        $(document).ready(function() {
-          $(".tab_container").render(accountsData, accountsDirective);
-        });
-      //]]>
-    </script>
   </head>
   <body>
     <article>
@@ -17,7 +10,7 @@
       </header>
       <div class='tab_container'>
         <div class='tab_content'>
-          <table>
+          <table id='accounts-table'>
             <thead>
               <tr>
                 <th></th>
