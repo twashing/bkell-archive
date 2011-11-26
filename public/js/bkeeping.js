@@ -71,17 +71,18 @@ bkeeping.router.BkeepingRouter = Backbone.Router.extend({
   
   initialize:  function(params) {
     
-    this._bindRoutes();
+    //this._bindRoutes();
   }, 
   
   routes : { 
     '/accounts':                         'accounts',
     '/accounts/account/:account':        'account',
+    
     '/entries':                          'entries',
     '/entries/entry/:entry':             'entry',
     '/entries/entry/:entry/part/:part':  'entryPart',
   }, 
-
+  
   accounts : function() { 
     
     console.log('accounts CALLED'); 

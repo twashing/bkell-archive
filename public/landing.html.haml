@@ -100,11 +100,15 @@
         bkeeping.ENTRIES = new bkeeping.models.Entries(); 
         
         bkeeping.ROUTER = new bkeeping.router.BkeepingRouter();
+        //bkeeping.ROUTER.route(/accounts$/, 'accounts', function() { console.log('accounts CALLED'); }); 
+        //bkeeping.ROUTER.route(/accounts\/account\/:id/, 'account', function() { console.log('account CALLED'); }); 
+        
         Backbone.history.start({
           //pushState: true, 
           //silent: true,
         });
         
+        //console.log('hist start: ' + thing);
       }); 
 
   %body 
