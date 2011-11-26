@@ -42,10 +42,38 @@ bkeeping.models.Login = bkeeping.models.AbstractK.extend({
   
   urlRoot : "/login",
   
-}); 
-bkeeping.models.Account = bkeeping.models.AbstractK.extend({
+});
+
+
+
+/********* 
+ * Routes
+ *********/
+bkeeping.router.BkeepingRouter = Backbone.Router.extend({
   
-  urlRoot : "/account",
+  routes : { 
+    'accounts':                         'accounts',
+    'accounts/account/:account':        'account',
+    'entries':                          'entries',
+    'entries/entry/:entry':             'entry',
+    'entries/entry/:entry/part/:part':  'entryPart',
+  }
+});
+
+
+
+/********* 
+ * Accounts & Entries 
+ *********/
+bkeeping.models.Accounts = bkeeping.models.AbstractK.extend({
+  
+  urlRoot : "/accounts",
+  
+}); 
+
+bkeeping.models.Entries = bkeeping.models.AbstractK.extend({
+  
+  urlRoot : "/entries",
   
 }); 
 
