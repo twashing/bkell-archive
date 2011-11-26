@@ -53,7 +53,7 @@
   ;; ======
   ;; REGISTER & LOGIN
   (GET "/" []   ;; index is the default page of the application 
-    (ring-file/wrap-file "index.html" "public"))
+    (ring-file/wrap-file "landing" "public"))
   (GET "/register" []   ;; return static register.html page 
     (response/file-response "register.html" { :root "public" }))
   (POST "/login" [:as req] 

@@ -6,6 +6,7 @@
 
 bkeeping = {};
 bkeeping.models = {};
+bkeeping.router = {};
 
 bkeeping.models.AbstractK = Backbone.Model.extend({
 
@@ -47,22 +48,6 @@ bkeeping.models.Login = bkeeping.models.AbstractK.extend({
 
 
 /********* 
- * Routes
- *********/
-bkeeping.router.BkeepingRouter = Backbone.Router.extend({
-  
-  routes : { 
-    'accounts':                         'accounts',
-    'accounts/account/:account':        'account',
-    'entries':                          'entries',
-    'entries/entry/:entry':             'entry',
-    'entries/entry/:entry/part/:part':  'entryPart',
-  }
-});
-
-
-
-/********* 
  * Accounts & Entries 
  *********/
 bkeeping.models.Accounts = bkeeping.models.AbstractK.extend({
@@ -76,4 +61,48 @@ bkeeping.models.Entries = bkeeping.models.AbstractK.extend({
   urlRoot : "/entries",
   
 }); 
+
+
+
+/********* 
+ * Routes
+ *********/
+bkeeping.router.BkeepingRouter = Backbone.Router.extend({
+  
+  routes : { 
+    '/accounts':                         'accounts',
+    '/accounts/account/:account':        'account',
+    '/entries':                          'entries',
+    '/entries/entry/:entry':             'entry',
+    '/entries/entry/:entry/part/:part':  'entryPart',
+  }, 
+
+  accounts : function() { 
+    
+    console.log('accounts CALLED'); 
+  }, 
+
+  account : function(account) { 
+    
+    console.log('account CALLED'); 
+  }, 
+
+  entries : function() { 
+    
+    console.log('entries CALLED'); 
+  },
+
+  entry : function(entry) {
+    
+    console.log('entry CALLED'); 
+  },
+
+  entryPart : function(epart) { 
+    
+    console.log('entryPart CALLED'); 
+  },
+});
+
+
+
 

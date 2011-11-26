@@ -93,6 +93,18 @@
             .dataTable();
         });
         
+        /********* 
+         * Initialize Objects & Project 
+         *********/ 
+        bkeeping.ACCOUNTS = new bkeeping.models.Accounts(); 
+        bkeeping.ENTRIES = new bkeeping.models.Entries(); 
+        
+        bkeeping.ROUTER = new bkeeping.router.BkeepingRouter();
+        Backbone.history.start({
+          pushState: true, 
+          silent: true,
+        });
+        
       }); 
 
   %body 
