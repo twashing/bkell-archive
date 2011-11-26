@@ -1,9 +1,4 @@
 
-//require("/javascript/model/user.js", true);
-//require("/javascript/json2.js", true)
-//require("/javascript/underscore.js", true)
-//require("/javascript/backbone.js", true)
-
 bkeeping = {};
 bkeeping.models = {};
 bkeeping.router = {};
@@ -34,33 +29,46 @@ bkeeping.models.AbstractK = Backbone.Model.extend({
        );}
 });
 
+
+/********* 
+ * User & Login 
+ *********/
 bkeeping.models.Register = bkeeping.models.AbstractK.extend({
   
   urlRoot : "/user",
-  
 }); 
 bkeeping.models.Login = bkeeping.models.AbstractK.extend({
   
   urlRoot : "/login",
-  
 });
 
 
 
 /********* 
- * Accounts & Entries 
+ * Account & Entry
  *********/
-bkeeping.models.Accounts = bkeeping.models.AbstractK.extend({
+bkeeping.models.Account = bkeeping.models.AbstractK.extend({
   
-  urlRoot : "/accounts",
-  
+  urlRoot : "/account",
 }); 
 
-bkeeping.models.Entries = bkeeping.models.AbstractK.extend({
+bkeeping.models.Entry = bkeeping.models.AbstractK.extend({
   
-  urlRoot : "/entries",
-  
+  urlRoot : "/entry",
 }); 
+
+
+/********* 
+ * Collections
+ *********/
+bkeeping.models.Accounts = Backbone.Collection.extend({ 
+  
+  model: bkeeping.models.Account, 
+});
+bkeeping.models.Entries = Backbone.Collection.extend({
+  
+  model: bkeeping.models.Entry, 
+});
 
 
 
