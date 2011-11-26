@@ -69,6 +69,11 @@ bkeeping.models.Entries = bkeeping.models.AbstractK.extend({
  *********/
 bkeeping.router.BkeepingRouter = Backbone.Router.extend({
   
+  initialize:  function(params) {
+    
+    this._bindRoutes();
+  }, 
+  
   routes : { 
     '/accounts':                         'accounts',
     '/accounts/account/:account':        'account',
