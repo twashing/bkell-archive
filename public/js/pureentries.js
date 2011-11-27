@@ -29,6 +29,9 @@ entryDirective = {
   
   "tbody tr" : { 
     "each<-pureentries" : {
+      "a.editentry@href" : function(arg) {
+        return "/entries/entry/"+ arg.each.item.id; 
+      },
       "td.date" : "each.date", 
       "td.name" : "each.id", 
       "td.balance" : ""

@@ -114,6 +114,13 @@
             .render(entryData, entryDirective)
             .find('table')
             .dataTable();
+
+          // capturing entry edit clicks 
+          $('a.editentry').click(function(evt) { 
+            
+            bkeeping.ROUTER.navigate($(this).attr('href'), true);
+            return false;   // ensures that the browser window does not go to this URL... yet
+          });
         });
         
       }); 
