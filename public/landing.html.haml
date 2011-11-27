@@ -18,8 +18,9 @@
     %script{ :src => "/js/backbone.js" }
     
     %script{ :src => "/js/bkeeping.js" }
+    %script{ :src => "/js/bkeeping/domain.js" }
     %script{ :src => "/js/pureaccounts.js" }
-    %script{ :src => "/js/pureentry.js" }
+    %script{ :src => "/js/pureentries.js" }
     :javascript
       $(document).ready(function() { 
          
@@ -67,15 +68,28 @@
         };
         
         
-        /*** 
-         * set the animation functions 
-         ***/
+        /*********
+         * Set the animation functions 
+         *********/
         $("#left-toggler").toggle( easeOUT, easeIN );
-      
         
-        /*** 
+        
+        /********* 
+         * Initialize Objects & Project 
+         *********/ 
+        bkeeping.ACCOUNTS = new bkeeping.models.Accounts(); 
+        bkeeping.ENTRIES = new bkeeping.models.Entries(); 
+        
+        bkeeping.ACCOUNTS.reset(accountsData.puredata);
+        bkeeping.ENTRIES.reset(entryData.pureentries);
+        
+        bkeeping.ROUTER = new bkeeping.router.BkeepingRouter();
+        Backbone.history.start({ pushState: true, });
+        
+        
+        /********* 
          * loading accounts and entries 
-         ***/
+         *********/
         $("#left-content").load("/include/accounts.html", function() { 
           
           LEFT_WIDTH = $('#left-content').css('width'); 
@@ -85,25 +99,22 @@
             .render(accountsData, accountsDirective)
             .find('table')
             .dataTable();
-                
+          
+          // capturing account edit clicks 
+          $('a.editbtn').click(function(evt) { 
+            
+            bkeeping.ROUTER.navigate($(this).attr('href'), true);
+            return false;   // ensures that the browser window does not go to this URL... yet
+          });
+          
         });
         $('#right-col').load('/include/entries.html', function() { 
           
-          $('.entries_container')
+          $(this)
             .render(entryData, entryDirective)
             .find('table')
             .dataTable();
         });
-        
-        
-        /********* 
-         * Initialize Objects & Project 
-         *********/ 
-        bkeeping.ACCOUNTS = new bkeeping.models.Accounts(); 
-        bkeeping.ENTRIES = new bkeeping.models.Entries(); 
-        
-        bkeeping.ROUTER = new bkeeping.router.BkeepingRouter();
-        Backbone.history.start({ pushState: true, });
         
       }); 
 

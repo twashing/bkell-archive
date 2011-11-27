@@ -31,6 +31,9 @@ accountsDirective = {
   
   "tbody tr" : { 
     "each<-puredata" : {
+      "a.editbtn@href" : function(arg) {
+        return "/accounts/account/"+ arg.each.item.id; 
+      },
       "td.name" : "each.name", 
       "td.type" : "each.type", 
       "td.weight" : "each.counterWeight"
