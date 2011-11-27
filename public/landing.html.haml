@@ -8,11 +8,16 @@
     /[if IE]
       %link{ :href => "/css/ie.css", :media => "screen, projection", :rel => "stylesheet", :type => "text/css" }
     %link{ :href => "/css/landing.css", :media => "screen", :rel => "stylesheet", :type => "text/css" }
-
+    
     %script{ :src => "/js/jquery-1.6.3.js" }
     %script{ :src => "/js/jquery.easing.1.3.js" }
+    %script{ :src => "http://ajax.googleapis.com/ajax/libs/jqueryui/1.8/jquery-ui.min.js" }
+    
     %script{ :src => "/js/pure.js" }
     %script{ :src => "/js/jquery.dataTables.js" }
+    /%script{ :src => "/djpate-jSlideto-a416db4/js/jquery-ui-1.8.7.custom.min.js" }
+    /%script{ :src => "/djpate-jSlideto-a416db4/source/jquery.slideto.js" }
+    
     %script{ :src => "/js/json2.js" }
     %script{ :src => "/js/underscore.js" }
     %script{ :src => "/js/backbone.js" }
@@ -100,8 +105,12 @@
             .find('table')
             .dataTable();
           
+          
+          bkeeping.ACCOUNT_VIEW = new bkeeping.views.AccountView(); 
+          
+          
           // capturing account edit clicks 
-          $('a.editbtn').click(function(evt) { 
+          $('a.editaccount').click(function(evt) { 
             
             bkeeping.ROUTER.navigate($(this).attr('href'), true);
             return false;   // ensures that the browser window does not go to this URL... yet
