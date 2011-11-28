@@ -75,19 +75,22 @@ bkeeping.models.Entries = Backbone.Collection.extend({
 /********* 
  * Views
  *********/
-bkeeping.views.AccountView = Backbone.View.extend({
+bkeeping.views.AccountsView = Backbone.View.extend({
+  
+  //tagName: 'a', 
+  //className: 'editaccount', 
   
   events : { 
-    'click a.editaccount' :   'zaccount', 
+    'click a.editaccount' :   'account', 
   },
-
-  /*zaccount : function(evt) {
+  
+  account : function(evt) {
     
-    console.log('bkeeping.views.AccountView CALLED > arguments['+ arguments +']');
+    console.log('bkeeping.views.AccountsView CALLED > arguments['+ arguments +']');
     bkeeping.ROUTER.navigate($(this).attr('href'), true); 
     return false;   // ensures that the browser window does not go to this URL... yet
   },
-  */
+  
 });
 
 

@@ -106,16 +106,16 @@
             .dataTable();
           
           
-          bkeeping.ACCOUNT_VIEW = new bkeeping.views.AccountView(); 
+          bkeeping.ACCOUNTS_VIEW = new bkeeping.views.AccountsView({ el: $('#accounts-table') });
           
           
           // capturing account edit clicks 
-          $('a.editaccount').click(function(evt) { 
+          /*$('a.editaccount').click(function(evt) { 
             
             bkeeping.ROUTER.navigate($(this).attr('href'), true);
             return false;   // ensures that the browser window does not go to this URL... yet
           });
-          
+          */
         });
         $('#right-col').load('/include/entries.html', function() { 
           
