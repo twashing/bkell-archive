@@ -486,18 +486,33 @@ html, body {
 
 /* line 53, ../sass/landing.sass */
 #left-col {
-  width: auto;
-  left: 0px;
-  float: left;
   position: relative;
+  clear: left;
+  width: 275px;
+  height: 200px;
+  overflow-x: hidden;
+  overflow-y: hidden;
 }
 
-/* line 59, ../sass/landing.sass */
+/* line 64, ../sass/landing.sass */
 #left-content {
-  float: left;
+  border-style: solid;
+  border-width: 1px;
+  position: relative;
+  width: 600px;
 }
 
-/* line 67, ../sass/landing.sass */
+/* line 74, ../sass/landing.sass */
+#accounts, #account {
+  position: relative;
+  float: left;
+  margin: 0px;
+  padding: 0px;
+  border-style: solid;
+  border-width: 1px;
+}
+
+/* line 82, ../sass/landing.sass */
 #left-toggler {
   width: 20px;
   height: 20px;
@@ -506,7 +521,7 @@ html, body {
   position: relative;
 }
 
-/* line 74, ../sass/landing.sass */
+/* line 89, ../sass/landing.sass */
 #right-col {
   width: 548px;
   zoom: 1;

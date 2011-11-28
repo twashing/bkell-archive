@@ -51,18 +51,33 @@ html, body
   +stretch( $offset-top : $header-height, $offset-bottom : $footer-height )
 
 #left-col
-  width: auto
-  left: 0px
-  float: left
   position: relative
+  clear: left 
+  width: 275px
+  height: 200px
+  overflow-x: hidden
+  overflow-y: hidden
+
+  //left: 0px
+  //margin: 0 auto
   
 #left-content
   //width: $left-col-width
   //+grid(5)
-  @extend .stretched
-  float: left
+  //@extend .stretched
+  +debugM
+  position: relative 
+  width: 600px
   //@include box-flex(1)
   //@include ceaser-transition(easeInOutExpo, width, 500ms, 0s)
+
+#accounts , #account
+  position: relative 
+  float: left
+  margin: 0px
+  padding: 0px
+  +debugM 
+
 
 #left-toggler
   width: 20px
