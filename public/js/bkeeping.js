@@ -99,6 +99,14 @@ bkeeping.router.BkeepingRouter = Backbone.Router.extend({
   account : function(account) { 
     
     console.log('account CALLED'); 
+    /*$('<div/>').load('/include/account.html', function() { 
+      
+      console.log('ok'); 
+      $(this).show("slide", { direction: "down" }, 1000);
+      
+    });
+    */
+    $('#accounts').hide("slide", { direction: "down" }, 1000);
   }, 
 
   entries : function() { 
@@ -150,7 +158,7 @@ bkeeping.views.AccountsView = Backbone.View.extend({
     return false;   // ensures that the browser window does not go to this URL... yet
   },
   deleteAccount : function(evt) {
-  
+    
     console.log('bkeeping.views.AccountsView > deleteAccount CALLED > arguments['+ arguments +']');
   },
 });
@@ -158,7 +166,8 @@ bkeeping.views.AccountsView = Backbone.View.extend({
 
 bkeeping.views.AccountView = Backbone.View.extend({
   
-
+  initialize : function() { }, 
+  
 }); 
 
 
