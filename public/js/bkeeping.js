@@ -106,7 +106,7 @@ bkeeping.router.BkeepingRouter = Backbone.Router.extend({
       
     });
     */
-    $('#accounts').hide("slide", { direction: "down" }, 1000);
+    //$('#accounts-pane').hide("slide", { direction: "down" }, 1000);
   }, 
 
   entries : function() { 
@@ -132,7 +132,7 @@ bkeeping.router.BkeepingRouter = Backbone.Router.extend({
  *********/
 bkeeping.views.AccountsView = Backbone.View.extend({
   
-  el: '#accounts',
+  el: '#accounts-pane',
   
   initialize : function() { }, 
   

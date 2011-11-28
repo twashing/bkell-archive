@@ -92,7 +92,7 @@
           /********* 
            * loading accounts and entries 
            *********/
-          $("#left-content").load("/include/accounts.html", function() { 
+          $("#accounts").load("/include/accounts.html", function() { 
             
             LEFT_WIDTH = $('#left-content').css('width'); 
             LEFT_COLUMN_WIDTH = $('#left-col').css('width'); 
@@ -104,7 +104,7 @@
               .dataTable();
             
             // capturing account edit clicks 
-            bkeeping.ACCOUNTS_VIEW = new bkeeping.views.AccountsView({ el: $('#accounts') });
+            bkeeping.ACCOUNTS_VIEW = new bkeeping.views.AccountsView({ el: $('#accounts-pane') });
             
           });
           $('#right-col').load('/include/entries.html', function() { 
@@ -131,10 +131,18 @@
       <div class='header'>Header</div>
       <div id='main-content'>
         <div id='left-col'>
-          <div id='left-content'></div>
+          <div id='left-content'>
+            <div id='accounts'></div>
+            <div id='account'></div>
+          </div>
           <div class='debug' id='left-toggler'></div>
         </div>
-        <div class='debug' id='right-col'>Right Panel</div>
+        <div class='debug' id='right-col'>
+          <div id='right-content'>
+            <div id='entries'></div>
+            <div id='entry'></div>
+          </div>
+        </div>
       </div>
     </div>
     <div class='footer'>Footer</div>

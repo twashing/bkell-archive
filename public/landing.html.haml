@@ -95,7 +95,7 @@
         /********* 
          * loading accounts and entries 
          *********/
-        $("#left-content").load("/include/accounts.html", function() { 
+        $("#accounts").load("/include/accounts.html", function() { 
           
           LEFT_WIDTH = $('#left-content').css('width'); 
           LEFT_COLUMN_WIDTH = $('#left-col').css('width'); 
@@ -107,7 +107,7 @@
             .dataTable();
           
           // capturing account edit clicks 
-          bkeeping.ACCOUNTS_VIEW = new bkeeping.views.AccountsView({ el: $('#accounts') });
+          bkeeping.ACCOUNTS_VIEW = new bkeeping.views.AccountsView({ el: $('#accounts-pane') });
           
         });
         $('#right-col').load('/include/entries.html', function() { 
@@ -133,7 +133,12 @@
       #main-content 
         #left-col
           #left-content
+            #accounts
+            #account
           #left-toggler.debug
-        #right-col.debug Right Panel
+        #right-col.debug 
+          #right-content
+            #entries
+            #entry
     .footer Footer
 
