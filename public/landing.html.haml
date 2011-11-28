@@ -100,22 +100,16 @@
           LEFT_WIDTH = $('#left-content').css('width'); 
           LEFT_COLUMN_WIDTH = $('#left-col').css('width'); 
           
-          $(this)
+          /*$(this)
             .render(accountsData, accountsDirective)
             .find('table')
             .dataTable();
-          
-          
-          bkeeping.ACCOUNTS_VIEW = new bkeeping.views.AccountsView({ el: $('#accounts-table') });
-          
+          */
           
           // capturing account edit clicks 
-          /*$('a.editaccount').click(function(evt) { 
-            
-            bkeeping.ROUTER.navigate($(this).attr('href'), true);
-            return false;   // ensures that the browser window does not go to this URL... yet
-          });
-          */
+          bkeeping.ACCOUNTS_VIEW = new bkeeping.views.AccountsView({ el: $('#accounts') });
+          bkeeping.ACCOUNTS_VIEW.render();
+          
         });
         $('#right-col').load('/include/entries.html', function() { 
           

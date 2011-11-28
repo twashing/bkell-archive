@@ -73,28 +73,6 @@ bkeeping.models.Entries = Backbone.Collection.extend({
 
 
 /********* 
- * Views
- *********/
-bkeeping.views.AccountsView = Backbone.View.extend({
-  
-  //tagName: 'a', 
-  //className: 'editaccount', 
-  
-  events : { 
-    'click a.editaccount' :   'account', 
-  },
-  
-  account : function(evt) {
-    
-    console.log('bkeeping.views.AccountsView CALLED > arguments['+ arguments +']');
-    bkeeping.ROUTER.navigate($(this).attr('href'), true); 
-    return false;   // ensures that the browser window does not go to this URL... yet
-  },
-  
-});
-
-
-/********* 
  * Routes
  *********/
 bkeeping.router.BkeepingRouter = Backbone.Router.extend({
@@ -138,6 +116,54 @@ bkeeping.router.BkeepingRouter = Backbone.Router.extend({
     console.log('entryPart CALLED'); 
   },
 });
+
+
+
+/********* 
+ * Views
+ *********/
+bkeeping.views.AccountsView = Backbone.View.extend({
+  
+  //tagName: 'a', 
+  //className: 'editaccount', 
+  el: '#accounts',
+  
+  initialize : function() { 
+    //this.bind('',)
+  }, 
+  
+  events : { 
+    'click a.editaccount' :   'editAccount', 
+    'click a.deleteaccount' :   'deleteAccount', 
+  },
+  
+  render : function() { 
+    
+    $(this.el)
+      .render(accountsData, accountsDirective)
+      .find('table')
+      .dataTable();
+    
+    return this; 
+  }, 
+  
+  editAccount : function(evt) {
+    
+    console.log('bkeeping.views.AccountsView > editAccount CALLED > arguments['+ arguments +']');
+    bkeeping.ROUTER.navigate($(evt.srcElement).attr('href'), true); 
+    return false;   // ensures that the browser window does not go to this URL... yet
+  },
+  deleteAccount : function(evt) {
+  
+    console.log('bkeeping.views.AccountsView > deleteAccount CALLED > arguments['+ arguments +']');
+  },
+});
+
+
+bkeeping.views.AccountView = Backbone.View.extend({
+  
+
+}); 
 
 
 
