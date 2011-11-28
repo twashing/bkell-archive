@@ -97,15 +97,14 @@
             LEFT_WIDTH = $('#left-content').css('width'); 
             LEFT_COLUMN_WIDTH = $('#left-col').css('width'); 
             
-            /*$(this)
+            // INITIAL render of Accounts (elements need to exist before View can bind to them); View will have the same call
+            $(this)
               .render(accountsData, accountsDirective)
               .find('table')
               .dataTable();
-            */
             
             // capturing account edit clicks 
             bkeeping.ACCOUNTS_VIEW = new bkeeping.views.AccountsView({ el: $('#accounts') });
-            bkeeping.ACCOUNTS_VIEW.render();
             
           });
           $('#right-col').load('/include/entries.html', function() { 

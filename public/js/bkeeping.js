@@ -124,13 +124,9 @@ bkeeping.router.BkeepingRouter = Backbone.Router.extend({
  *********/
 bkeeping.views.AccountsView = Backbone.View.extend({
   
-  //tagName: 'a', 
-  //className: 'editaccount', 
   el: '#accounts',
   
-  initialize : function() { 
-    //this.bind('',)
-  }, 
+  initialize : function() { }, 
   
   events : { 
     'click a.editaccount' :   'editAccount', 
