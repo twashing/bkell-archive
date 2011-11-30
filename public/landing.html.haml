@@ -113,7 +113,14 @@
           
           $('#account').load('/include/account.html', function() { 
             
+            // Basic usage 
             //$('#left-col').scrollTo($('#account'), 500, {axis:'x'});
+
+            // Working horizontal / serial scrolling 
+            $('#left-col').serialScroll({ target: $('#left-col'), items: $('#accounts , #account'), duration: 500, });
+            
+            // Using this to toggle between views 
+            // $('#left-col').trigger('next');
 
           });
         });
