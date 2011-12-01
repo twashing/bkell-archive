@@ -80,12 +80,12 @@
   (ns bkell) 
   (use 'bkell) 
   (init-shell) 
-  ;;(require 'somnium.congomongo) 
-  ;;(somnium.congomongo/mongo! :db "bkell") 
   
-  ;;(require 'clojure.main)
-  ;;(clojure.main/repl)
+  (println "-main CALLED")
+  (require 'clojure.main)
+  (clojure.main/repl)
   
 )
 
 
+(-main)

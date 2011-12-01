@@ -17,6 +17,7 @@
                       [swank-clojure "1.4.0-SNAPSHOT"]
                       [clojure-source "1.2.0"]
                       [lein-fail-fast "1.0.0"]
+                      [lein-run "1.0.1-SNAPSHOT"]
 	            ] 
   
   :jvm-opts ["-agentlib:jdwp=transport=dt_socket,server=y,suspend=n"]
