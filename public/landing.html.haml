@@ -11,12 +11,7 @@
     
     %script{ :src => "/js/jquery-1.6.3.js" }
     %script{ :src => "/js/jquery.easing.1.3.js" }
-    %script{ :src => "http://ajax.googleapis.com/ajax/libs/jqueryui/1.8/jquery-ui.min.js" }
-    %script{ :src => "https://ajax.googleapis.com/ajax/libs/googleapis/0.0.4/googleapis.min.js" }
-    %script{ :src => 'https://ajax.googleapis.com/jsapi' }
-    :javascript
-      google.load("identitytoolkit", "1.0", { packages: ["ac"] });
-    
+    /%script{ :src => "http://ajax.googleapis.com/ajax/libs/jqueryui/1.8/jquery-ui.min.js" }
     
     %script{ :src => "/js/pure.js" }
     %script{ :src => "/js/jquery.dataTables.js" }
@@ -35,24 +30,6 @@
     :javascript
       $(document).ready(function() { 
         
-        
-        window.google.identitytoolkit.setConfig({
-          developerKey: "your dev api key goes here",
-          companyName: "Interrupt Software Inc.",
-          callbackUrl: "https://bkeeping.com/accountchooser-callbackurl", 
-          userStatusUrl: "/userStatus",           // these can just be partial paths
-          loginUrl: "/login",
-          signupUrl: "/register",
-          homeUrl: "/landing",
-          logoutUrl: "/logout",
-          realm: "",                            // optional
-          language: "en",
-          idps: ["Gmail", "AOL", "Hotmail", "Yahoo"],
-          tryFederatedFirst: true,
-          useCachedUserStatus: false
-        });
-         
-        $('#chooser').accountChooser();
         
         /*********
          * GLOBAL Vars 
@@ -197,5 +174,4 @@
             #entry
     .footer 
       Footer
-      #chooser
 
