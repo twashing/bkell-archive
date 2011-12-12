@@ -1,4 +1,4 @@
-/* line 3, ../sass/index.sass */
+/* line 6, ../sass/index.sass */
 #loading-msg {
   display: block;
   color: #113366;
@@ -9,7 +9,7 @@
   left: -100;
 }
 
-/* line 12, ../sass/index.sass */
+/* line 15, ../sass/index.sass */
 #title {
   position: relative;
   top: 15px;
@@ -18,30 +18,30 @@
   height: 35px;
 }
 
-/* line 23, ../sass/index.sass */
+/* line 26, ../sass/index.sass */
 .signup {
   color: #686868;
 }
 
-/* line 27, ../sass/index.sass */
+/* line 30, ../sass/index.sass */
 .signup-wrapper {
   margin-top: 20px;
 }
-/* line 29, ../sass/index.sass */
+/* line 32, ../sass/index.sass */
 .signup-wrapper .signup-anchor {
   text-decoration: none;
 }
-/* line 31, ../sass/index.sass */
+/* line 34, ../sass/index.sass */
 .signup-wrapper .signup-anchor .buttons {
   font-size: 13.2px;
 }
 
-/* line 34, ../sass/index.sass */
+/* line 37, ../sass/index.sass */
 #screenshots {
   float: left;
   margin-top: 60px;
 }
-/* line 38, ../sass/index.sass */
+/* line 41, ../sass/index.sass */
 #screenshots .screenshot {
   height: 24%;
   width: 12%;
