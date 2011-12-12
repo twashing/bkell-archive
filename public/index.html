@@ -43,53 +43,6 @@
            
           $('#account-chooser').accountChooser();
         
-        
-          /*********
-           * 
-           *********/
-        	$("a#bs1").fancybox({
-        		
-        		'hideOnContentClick': true, 
-        		'autoDimensions': true, 
-        		'titlePosition'	:	'over',
-        		'onComplete'	:	function() {
-        			$("#fancybox-wrap").hover(function() {
-        				$("#fancybox-title").show();
-        			}, function() {
-        				$("#fancybox-title").hide();
-        			});
-        		}
-        		
-        	});
-        	
-        	$("a#bs3").fancybox({
-        		'hideOnContentClick': true, 
-        		'autoDimensions': true, 
-        		'titlePosition'	:	'over',
-        		'onComplete'	:	function() {
-        			$("#fancybox-wrap").hover(function() {
-        				$("#fancybox-title").show();
-        			}, function() {
-        				$("#fancybox-title").hide();
-        			});
-        		}
-        		
-        	});
-        	
-        	$("a#bs4").fancybox({
-        		'hideOnContentClick': true, 
-        		'autoDimensions': true, 
-        		'titlePosition'	:	'over',
-        		'onComplete'	:	function() {
-        			$("#fancybox-wrap").hover(function() {
-        				$("#fancybox-title").show();
-        			}, function() {
-        				$("#fancybox-title").hide();
-        			});
-        		}
-        		
-        	});
-        	
         });
       //]]>
     </script>
@@ -97,11 +50,13 @@
   <body>
     <div class='container'>
       <div id='header'>
-        <div id='title'>
-          bkeeping
-          <div class='subheader'>
-            Your solution to simple
-            <div class='subheader-black'>online bookkeeping</div>
+        <div id='title-wrapper'>
+          <div id='title'>
+            bkeeping
+          </div>
+          <div id='subtitle'>
+            <div id='subtitle-default'>Your solution to simple &nbsp;</div>
+            <div id='subtitle-black'>online bookkeeping</div>
           </div>
           <div id='account-chooser'></div>
         </div>

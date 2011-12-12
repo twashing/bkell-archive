@@ -39,7 +39,7 @@ html, body {
 /* line 19, ../sass/common.sass */
 #header {
   background: #999999;
-  height: 50px;
+  height: 70px;
   box-shadow: 0 4px 6px #554433;
 }
 
@@ -85,7 +85,7 @@ html, body {
   display: -ms-box;
   display: box;
   position: absolute;
-  top: 50px;
+  top: 70px;
   bottom: 150px;
   left: 0;
   right: 0;

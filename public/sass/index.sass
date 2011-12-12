@@ -1,6 +1,10 @@
 
-// font: italic 1em Palatino, sans-serif
-// font: 11px Verdana, Arial, sans-serif
+.text-curly
+  font-style: italic 
+  font-family: Palatino, sans-serif
+
+.text-default
+  font: Verdana, Arial, sans-serif
 
 @import utils
 
@@ -13,17 +17,41 @@
   text-align: center
   left: -100
 
-#title
-  +debugM
-  position: relative
-  top: 15px
-  left: 30px
-  width: 70%
-  height: 35px
 
+#header
+  text-align: center 
 
-.subheader 
-  .subheader-black
+  #title-wrapper 
+    float: none
+    position: relative
+    width: 95%
+    margin: 0px auto
+    top: 10px
+    #title
+      position: relative
+      float: left 
+      @extend .text-curly 
+      font-size: 3em
+      font-weight: bold
+      margin: 0 10
+    #subtitle 
+      top: 20px
+      @extend .text-curly 
+      float: left
+      margin: 26 10 0 10
+      float: left
+      #subtitle-default
+        float: left
+        color: #666666
+      #subtitle-black
+        float: left
+        font-weight: bold
+  
+
+    #account-chooser
+      float: right
+      margin: 10 0 0 0
+
 
 .signup
   color: #686868

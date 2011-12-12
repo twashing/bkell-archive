@@ -42,63 +42,17 @@
          
         $('#account-chooser').accountChooser();
 
-
-        /*********
-         * 
-         *********/
-      	$("a#bs1").fancybox({
-      		
-      		'hideOnContentClick': true, 
-      		'autoDimensions': true, 
-      		'titlePosition'	:	'over',
-      		'onComplete'	:	function() {
-      			$("#fancybox-wrap").hover(function() {
-      				$("#fancybox-title").show();
-      			}, function() {
-      				$("#fancybox-title").hide();
-      			});
-      		}
-      		
-      	});
-      	
-      	$("a#bs3").fancybox({
-      		'hideOnContentClick': true, 
-      		'autoDimensions': true, 
-      		'titlePosition'	:	'over',
-      		'onComplete'	:	function() {
-      			$("#fancybox-wrap").hover(function() {
-      				$("#fancybox-title").show();
-      			}, function() {
-      				$("#fancybox-title").hide();
-      			});
-      		}
-      		
-      	});
-      	
-      	$("a#bs4").fancybox({
-      		'hideOnContentClick': true, 
-      		'autoDimensions': true, 
-      		'titlePosition'	:	'over',
-      		'onComplete'	:	function() {
-      			$("#fancybox-wrap").hover(function() {
-      				$("#fancybox-title").show();
-      			}, function() {
-      				$("#fancybox-title").hide();
-      			});
-      		}
-      		
-      	});
-      	
       });
    
   %body
     .container
       #header
-        #title
-          bkeeping
-          .subheader 
-            Your solution to simple 
-            .subheader-black online bookkeeping 
+        #title-wrapper
+          #title
+            bkeeping
+          #subtitle 
+            #subtitle-default Your solution to simple &nbsp;
+            #subtitle-black online bookkeeping 
           #account-chooser	
         
       #main-content 
