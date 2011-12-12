@@ -1,28 +1,3 @@
-/* line 10, ../../../../.rvm/gems/ruby-1.9.2-p290/gems/compass-0.11.5/frameworks/compass/stylesheets/compass/layout/_sticky-footer.scss */
-html, body {
-  height: 100%;
-}
-
-/* line 12, ../../../../.rvm/gems/ruby-1.9.2-p290/gems/compass-0.11.5/frameworks/compass/stylesheets/compass/layout/_sticky-footer.scss */
-#container {
-  clear: both;
-  min-height: 100%;
-  height: auto !important;
-  height: 100%;
-  margin-bottom: -150px;
-}
-/* line 18, ../../../../.rvm/gems/ruby-1.9.2-p290/gems/compass-0.11.5/frameworks/compass/stylesheets/compass/layout/_sticky-footer.scss */
-#container #left-col {
-  height: 150px;
-}
-
-/* line 20, ../../../../.rvm/gems/ruby-1.9.2-p290/gems/compass-0.11.5/frameworks/compass/stylesheets/compass/layout/_sticky-footer.scss */
-#footer {
-  clear: both;
-  position: relative;
-  height: 150px;
-}
-
 /* line 4, ../../../../.rvm/gems/ruby-1.9.2-p290/gems/grid-coordinates-1.2.0/stylesheets/partials/_grid-coordinates-mixin.scss */
 .clearfix, .grid-container,
 .nested-grid-container,
@@ -416,75 +391,20 @@ html, body {
   left: -671px;
 }
 
-/* line 20, ../sass/landing.sass */
+/* line 17, ../sass/landing.sass */
 .debug {
   border-style: solid;
   border-width: 1px;
 }
 
-/* line 23, ../sass/landing.sass */
+/* line 20, ../sass/landing.sass */
 html, body {
   min-height: 400px;
   min-width: 800px;
   height: 100%;
 }
 
-/* line 28, ../sass/landing.sass */
-.header {
-  background: #999999;
-  height: 50px;
-  box-shadow: 0 4px 6px #554433;
-}
-
-/* line 33, ../sass/landing.sass */
-.footer {
-  background: #ffdddd;
-  clear: both;
-  z-index: 10;
-  height: 150px;
-}
-
-/* line 39, ../sass/landing.sass */
-.container {
-  zoom: 1;
-  margin-right: auto;
-  margin-left: auto;
-  width: 732px;
-  padding: 0px;
-  width: 100%;
-  min-height: 100%;
-  margin: 0 auto -150px;
-}
-/* line 10, ../../../../.rvm/gems/ruby-1.9.2-p290/gems/grid-coordinates-1.2.0/stylesheets/modules/_bulletproof-clearfix.sass */
-.container:before, .container:after {
-  content: ".";
-  display: block;
-  overflow: hidden;
-  visibility: hidden;
-  font-size: 0;
-  line-height: 0;
-  width: 0;
-  height: 0;
-}
-/* line 19, ../../../../.rvm/gems/ruby-1.9.2-p290/gems/grid-coordinates-1.2.0/stylesheets/modules/_bulletproof-clearfix.sass */
-.container:after {
-  clear: both;
-}
-
-/* line 47, ../sass/landing.sass */
-#main-content {
-  display: -moz-box;
-  display: -webkit-box;
-  display: -ms-box;
-  display: box;
-  position: absolute;
-  top: 50px;
-  bottom: 150px;
-  left: 0;
-  right: 0;
-}
-
-/* line 52, ../sass/landing.sass */
+/* line 25, ../sass/landing.sass */
 #left-col {
   position: relative;
   clear: left;
@@ -494,7 +414,7 @@ html, body {
   overflow-y: hidden;
 }
 
-/* line 63, ../sass/landing.sass */
+/* line 36, ../sass/landing.sass */
 #left-content {
   border-style: solid;
   border-width: 1px;
@@ -502,7 +422,7 @@ html, body {
   width: 600px;
 }
 
-/* line 73, ../sass/landing.sass */
+/* line 46, ../sass/landing.sass */
 #accounts, #account {
   position: relative;
   float: left;
@@ -512,7 +432,7 @@ html, body {
   border-width: 1px;
 }
 
-/* line 81, ../sass/landing.sass */
+/* line 54, ../sass/landing.sass */
 #left-toggler {
   width: 20px;
   height: 20px;
@@ -521,7 +441,7 @@ html, body {
   position: relative;
 }
 
-/* line 88, ../sass/landing.sass */
+/* line 61, ../sass/landing.sass */
 #right-col {
   width: 548px;
   zoom: 1;

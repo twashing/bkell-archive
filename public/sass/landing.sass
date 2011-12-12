@@ -5,10 +5,7 @@
 @import ceaser-easing
 @import grid-coordinates
 
-$header-height : 50px
-$footer-height : 150px
 $left-col-width : 250px
-@include sticky-footer( $footer-height , "#container", "#left-col", "#footer")
 
 $grid-columns: 12
 $grid-gutter-width: 1px
@@ -24,30 +21,6 @@ html, body
   min-height: 400px 
   min-width: 800px
   height: 100%
-
-.header
-  background: #999
-  height: $header-height
-  box-shadow: 0 4px 6px #543
-
-.footer 
-  background: #fdd 
-  clear: both
-  z-index: 10
-  height: $footer-height
-
-.container
-  +grid-container
-  padding: 0px
-  width: 100%
-  min-height: 100% 
-  margin: 0 auto -150px
-  //position: absolute
-
-#main-content
-  +display-box
-  //+box-orient(horizontal)
-  +stretch( $offset-top : $header-height, $offset-bottom : $footer-height )
 
 #left-col
   position: relative
