@@ -23,27 +23,27 @@ html, body {
   height: 150px;
 }
 
-/* line 16, ../sass/common.sass */
+/* line 5, ../sass/_utils.sass */
 .debug {
   border-style: solid;
   border-width: 1px;
 }
 
-/* line 19, ../sass/common.sass */
+/* line 14, ../sass/common.sass */
 html, body {
   min-height: 400px;
   min-width: 800px;
   height: 100%;
 }
 
-/* line 24, ../sass/common.sass */
+/* line 19, ../sass/common.sass */
 #header {
   background: #999999;
   height: 50px;
   box-shadow: 0 4px 6px #554433;
 }
 
-/* line 29, ../sass/common.sass */
+/* line 24, ../sass/common.sass */
 #footer {
   background-color: silver;
   clear: both;
@@ -51,7 +51,7 @@ html, body {
   height: 150px;
 }
 
-/* line 35, ../sass/common.sass */
+/* line 30, ../sass/common.sass */
 .container {
   zoom: 1;
   margin-right: auto;
@@ -78,7 +78,7 @@ html, body {
   clear: both;
 }
 
-/* line 42, ../sass/common.sass */
+/* line 37, ../sass/common.sass */
 #main-content {
   display: -moz-box;
   display: -webkit-box;

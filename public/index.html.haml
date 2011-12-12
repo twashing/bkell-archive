@@ -1,13 +1,9 @@
 %html{ :lang => "en" }
   %head
-    /%link( type="text/css" href="css/site.css" rel="stylesheet" )
-    /%link( type="text/css" href="css/main.css" rel="stylesheet" )
     
     %link( type="text/css" href="css/common.css" rel="stylesheet" )
     %link( type="text/css" href="css/index.css" rel="stylesheet" )
     
-    /%script( type="text/javascript" src="javascript/jquery-1.3.2.js" )
-    /%script( type="text/javascript" src="javascript/jquery-ui-1.7.2.custom.min.js" )
     %script{ :src => "/js/jquery-1.6.3.js" }
     %script{ :src => "http://ajax.googleapis.com/ajax/libs/jqueryui/1.8/jquery-ui.min.js" }
     %script{ :src => "https://ajax.googleapis.com/ajax/libs/googleapis/0.0.4/googleapis.min.js" }
@@ -15,19 +11,16 @@
     :javascript
       google.load("identitytoolkit", "1.0", { packages: ["ac"] });
     
-    
     %script( type="text/javascript" src="javascript/bkeeping.js" )
-    
-    
-    /fancybox stuff
-    %script( type="text/javascript" src="fancybox/jquery.fancybox-1.3.1.pack.js" )
-    %script( type="text/javascript" src="fancybox/jquery.easing-1.3.pack.js" )
-    %script( type="text/javascript" src="fancybox/jquery.mousewheel-3.0.2.pack.js" )
-    
-    %link( rel="stylesheet" href="fancybox/jquery.fancybox-1.3.1.css" type="text/css" media="screen" )
     :javascript
       $(document).ready(function() {
         
+        /*********
+         * Some internal code is giving the body a margin - can't figure out what it is
+         *********/
+        $('body').css('margin', '0px'); 
+        
+
         /*********
          * GITkit Account Chooser code
          *********/
@@ -101,14 +94,14 @@
   %body
     .container
       #header
-        .content
-          #title.title
-            bkeeping
-            .subheader 
-              Your solution to simple 
-              .subheader-black online bookkeeping 
-            #account-chooser	
+        #title
+          bkeeping
+          .subheader 
+            Your solution to simple 
+            .subheader-black online bookkeeping 
+          #account-chooser	
         
+      #main-content 
         .signup
           %p.signuptitle Not a member yet?
           %p It takes less than 5 minutes to sign up.

@@ -9,12 +9,7 @@ $header-height : 50px
 $footer-height : 150px
 @include sticky-footer( $footer-height , "#container", "#left-col", "#footer")
 
-
-@mixin debugM
-  border-style: solid
-  border-width: 1px 
-.debug
-  +debugM 
+@import utils
 
 html, body
   min-height: 400px 
@@ -41,6 +36,5 @@ html, body
 
 #main-content
   +display-box
-  //+box-orient(horizontal)
   +stretch( $offset-top : $header-height, $offset-bottom : $footer-height )
 

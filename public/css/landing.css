@@ -397,14 +397,7 @@
   border-width: 1px;
 }
 
-/* line 20, ../sass/landing.sass */
-html, body {
-  min-height: 400px;
-  min-width: 800px;
-  height: 100%;
-}
-
-/* line 25, ../sass/landing.sass */
+/* line 21, ../sass/landing.sass */
 #left-col {
   position: relative;
   clear: left;
@@ -414,7 +407,7 @@ html, body {
   overflow-y: hidden;
 }
 
-/* line 36, ../sass/landing.sass */
+/* line 32, ../sass/landing.sass */
 #left-content {
   border-style: solid;
   border-width: 1px;
@@ -422,7 +415,7 @@ html, body {
   width: 600px;
 }
 
-/* line 46, ../sass/landing.sass */
+/* line 42, ../sass/landing.sass */
 #accounts, #account {
   position: relative;
   float: left;
@@ -432,7 +425,7 @@ html, body {
   border-width: 1px;
 }
 
-/* line 54, ../sass/landing.sass */
+/* line 50, ../sass/landing.sass */
 #left-toggler {
   width: 20px;
   height: 20px;
@@ -441,7 +434,7 @@ html, body {
   position: relative;
 }
 
-/* line 61, ../sass/landing.sass */
+/* line 57, ../sass/landing.sass */
 #right-col {
   width: 548px;
   zoom: 1;

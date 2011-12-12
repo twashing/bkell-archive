@@ -1,4 +1,10 @@
-/* line 6, ../sass/index.sass */
+/* line 5, /home/webkell/Projects/bkell/public/sass/_utils.sass */
+.debug {
+  border-style: solid;
+  border-width: 1px;
+}
+
+/* line 7, ../sass/index.sass */
 #loading-msg {
   display: block;
   color: #113366;
@@ -9,8 +15,10 @@
   left: -100;
 }
 
-/* line 15, ../sass/index.sass */
+/* line 16, ../sass/index.sass */
 #title {
+  border-style: solid;
+  border-width: 1px;
   position: relative;
   top: 15px;
   left: 30px;
@@ -18,30 +26,30 @@
   height: 35px;
 }
 
-/* line 26, ../sass/index.sass */
+/* line 28, ../sass/index.sass */
 .signup {
   color: #686868;
 }
 
-/* line 30, ../sass/index.sass */
+/* line 32, ../sass/index.sass */
 .signup-wrapper {
   margin-top: 20px;
 }
-/* line 32, ../sass/index.sass */
+/* line 34, ../sass/index.sass */
 .signup-wrapper .signup-anchor {
   text-decoration: none;
 }
-/* line 34, ../sass/index.sass */
+/* line 36, ../sass/index.sass */
 .signup-wrapper .signup-anchor .buttons {
   font-size: 13.2px;
 }
 
-/* line 37, ../sass/index.sass */
+/* line 39, ../sass/index.sass */
 #screenshots {
   float: left;
   margin-top: 60px;
 }
-/* line 41, ../sass/index.sass */
+/* line 43, ../sass/index.sass */
 #screenshots .screenshot {
   height: 24%;
   width: 12%;

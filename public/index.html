@@ -1,11 +1,7 @@
 <html lang='en'>
   <head>
-    <!-- %link( type="text/css" href="css/site.css" rel="stylesheet" ) -->
-    <!-- %link( type="text/css" href="css/main.css" rel="stylesheet" ) -->
     <link href='css/common.css' rel='stylesheet' type='text/css' />
     <link href='css/index.css' rel='stylesheet' type='text/css' />
-    <!-- %script( type="text/javascript" src="javascript/jquery-1.3.2.js" ) -->
-    <!-- %script( type="text/javascript" src="javascript/jquery-ui-1.7.2.custom.min.js" ) -->
     <script src='/js/jquery-1.6.3.js'></script>
     <script src='http://ajax.googleapis.com/ajax/libs/jqueryui/1.8/jquery-ui.min.js'></script>
     <script src='https://ajax.googleapis.com/ajax/libs/googleapis/0.0.4/googleapis.min.js'></script>
@@ -16,15 +12,16 @@
       //]]>
     </script>
     <script src='javascript/bkeeping.js' type='text/javascript'></script>
-    <!-- fancybox stuff -->
-    <script src='fancybox/jquery.fancybox-1.3.1.pack.js' type='text/javascript'></script>
-    <script src='fancybox/jquery.easing-1.3.pack.js' type='text/javascript'></script>
-    <script src='fancybox/jquery.mousewheel-3.0.2.pack.js' type='text/javascript'></script>
-    <link href='fancybox/jquery.fancybox-1.3.1.css' media='screen' rel='stylesheet' type='text/css' />
     <script type='text/javascript'>
       //<![CDATA[
         $(document).ready(function() {
           
+          /*********
+           * Some internal code is giving the body a margin - can't figure out what it is
+           *********/
+          $('body').css('margin', '0px'); 
+          
+        
           /*********
            * GITkit Account Chooser code
            *********/
@@ -100,16 +97,16 @@
   <body>
     <div class='container'>
       <div id='header'>
-        <div class='content'>
-          <div class='title' id='title'>
-            bkeeping
-            <div class='subheader'>
-              Your solution to simple
-              <div class='subheader-black'>online bookkeeping</div>
-            </div>
-            <div id='account-chooser'></div>
+        <div id='title'>
+          bkeeping
+          <div class='subheader'>
+            Your solution to simple
+            <div class='subheader-black'>online bookkeeping</div>
           </div>
+          <div id='account-chooser'></div>
         </div>
+      </div>
+      <div id='main-content'>
         <div class='signup'>
           <p class='signuptitle'>Not a member yet?</p>
           <p>It takes less than 5 minutes to sign up.</p>
