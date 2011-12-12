@@ -2,6 +2,7 @@
   <head>
     <link href='css/site.css' rel='stylesheet' type='text/css' />
     <link href='css/main.css' rel='stylesheet' type='text/css' />
+    <link href='css/common.css' rel='stylesheet' type='text/css' />
     <link href='css/index.css' rel='stylesheet' type='text/css' />
     <!-- %script( type="text/javascript" src="javascript/jquery-1.3.2.js" ) -->
     <!-- %script( type="text/javascript" src="javascript/jquery-ui-1.7.2.custom.min.js" ) -->
@@ -97,58 +98,58 @@
     </script>
   </head>
   <body>
-    <div class='header'></div>
-    <div id='loading-msg'>
-      Loading...
-    </div>
-    <div class='content'>
-      <div class='title' id='title'>
-        bkeeping
-        <div class='subheader'>
-          Your solution to simple
-          <div class='subheader-black'>online bookkeeping</div>
+    <div class='container'>
+      <div id='header'>
+        <div class='content'>
+          <div class='title' id='title'>
+            bkeeping
+            <div class='subheader'>
+              Your solution to simple
+              <div class='subheader-black'>online bookkeeping</div>
+            </div>
+            <div id='account-chooser'></div>
+          </div>
         </div>
-        <div id='account-chooser'></div>
+        <div class='signup'>
+          <p class='signuptitle'>Not a member yet?</p>
+          <p>It takes less than 5 minutes to sign up.</p>
+          <p>Fast, easy to use bookkeeping.</p>
+          <p>The best way to manage your bookkeeping needs.</p>
+          <p class='signup-wrapper'>
+            <asignup-anchor href='register'>
+              <button class='buttons'>SIGN UP</button>
+            </asignup-anchor>
+          </p>
+        </div>
+        <div class='fastandeasy'>
+          The
+          <span class='huge'>fastest</span>
+          and
+          <span class='huge'>easiest</span>
+          <br />
+          <p class='pushright'>way to</p>
+          manage your bookkeeping.
+        </div>
+        <div id='screenshots'>
+          <a href='images/bkeeping_screenshot_1.png' id='bs1'>
+            <img alt='Landing Screen with Accounts &amp; Journals' class='screenshot' src='images/bkeeping_screenshot_1.png' />
+          </a>
+          <a href='images/bkeeping_screenshot_3.png' id='bs3'>
+            <img alt='Listing out both sides of an Entry' class='screenshot' src='images/bkeeping_screenshot_3.png' />
+          </a>
+          <a href='images/bkeeping_screenshot_4.png' id='bs4'>
+            <img alt='Editing one side of an Entry' class='screenshot' src='images/bkeeping_screenshot_4.png' />
+          </a>
+        </div>
       </div>
-      <div class='signup'>
-        <p class='signuptitle'>Not a member yet?</p>
-        <p>It takes less than 5 minutes to sign up.</p>
-        <p>Fast, easy to use bookkeeping.</p>
-        <p>The best way to manage your bookkeeping needs.</p>
-        <p class='signup-wrapper'>
-          <asignup-anchor href='register'>
-            <button class='buttons'>SIGN UP</button>
-          </asignup-anchor>
+      <div class='modal screen' id='modal_screen'>
+        &nbsp;
+      </div>
+      <div id='footer'>
+        <p class='legal'>
+          2008-2009 bkeeping Software, Inc. | All Rights Reserved
         </p>
       </div>
-      <div class='fastandeasy'>
-        The
-        <span class='huge'>fastest</span>
-        and
-        <span class='huge'>easiest</span>
-        <br />
-        <p class='pushright'>way to</p>
-        manage your bookkeeping.
-      </div>
-      <div id='screenshots'>
-        <a href='images/bkeeping_screenshot_1.png' id='bs1'>
-          <img alt='Landing Screen with Accounts &amp; Journals' class='screenshot' src='images/bkeeping_screenshot_1.png' />
-        </a>
-        <a href='images/bkeeping_screenshot_3.png' id='bs3'>
-          <img alt='Listing out both sides of an Entry' class='screenshot' src='images/bkeeping_screenshot_3.png' />
-        </a>
-        <a href='images/bkeeping_screenshot_4.png' id='bs4'>
-          <img alt='Editing one side of an Entry' class='screenshot' src='images/bkeeping_screenshot_4.png' />
-        </a>
-      </div>
-    </div>
-    <div class='modal screen' id='modal_screen'>
-      &nbsp;
-    </div>
-    <div class='footer'>
-      <p class='legal'>
-        2008-2009 bkeeping Software, Inc. | All Rights Reserved
-      </p>
     </div>
   </body>
 </html>

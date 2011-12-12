@@ -1,0 +1,52 @@
+/* line 10, ../../../../.rvm/gems/ruby-1.9.2-p290/gems/compass-0.11.5/frameworks/compass/stylesheets/compass/layout/_sticky-footer.scss */
+html, body {
+  height: 100%;
+}
+
+/* line 12, ../../../../.rvm/gems/ruby-1.9.2-p290/gems/compass-0.11.5/frameworks/compass/stylesheets/compass/layout/_sticky-footer.scss */
+#container {
+  clear: both;
+  min-height: 100%;
+  height: auto !important;
+  height: 100%;
+  margin-bottom: -150px;
+}
+/* line 18, ../../../../.rvm/gems/ruby-1.9.2-p290/gems/compass-0.11.5/frameworks/compass/stylesheets/compass/layout/_sticky-footer.scss */
+#container #left-col {
+  height: 150px;
+}
+
+/* line 20, ../../../../.rvm/gems/ruby-1.9.2-p290/gems/compass-0.11.5/frameworks/compass/stylesheets/compass/layout/_sticky-footer.scss */
+#footer {
+  clear: both;
+  position: relative;
+  height: 150px;
+}
+
+/* line 16, ../sass/common.sass */
+.debug {
+  border-style: solid;
+  border-width: 1px;
+}
+
+/* line 19, ../sass/common.sass */
+html, body {
+  min-height: 400px;
+  min-width: 800px;
+  height: 100%;
+}
+
+/* line 24, ../sass/common.sass */
+#header {
+  background: #999999;
+  height: 50px;
+  box-shadow: 0 4px 6px #554433;
+}
+
+/* line 29, ../sass/common.sass */
+#footer {
+  background-color: silver;
+  clear: both;
+  z-index: 10;
+  height: 150px;
+}

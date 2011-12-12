@@ -1,0 +1,34 @@
+
+@import compass/layout
+@import compass/layout/stretching
+@import compass/css3/box
+@import ceaser-easing
+@import grid-coordinates
+
+$header-height : 50px
+$footer-height : 150px
+@include sticky-footer( $footer-height , "#container", "#left-col", "#footer")
+
+
+@mixin debugM
+  border-style: solid
+  border-width: 1px 
+.debug
+  +debugM 
+
+html, body
+  min-height: 400px 
+  min-width: 800px
+  height: 100%
+
+#header
+  background: #999
+  height: $header-height
+  box-shadow: 0 4px 6px #543
+
+#footer 
+  background-color: silver
+  clear: both
+  z-index: 10
+  height: $footer-height
+
