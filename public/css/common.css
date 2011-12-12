@@ -29,6 +29,17 @@ html, body {
   border-width: 1px;
 }
 
+/* line 8, ../sass/_utils.sass */
+.text-curly, #header #title-wrapper #title, #header #title-wrapper #subtitle, #legal {
+  font-style: italic;
+  font-family: Palatino, sans-serif;
+}
+
+/* line 12, ../sass/_utils.sass */
+.text-default {
+  font: Verdana, Arial, sans-serif;
+}
+
 /* line 14, ../sass/common.sass */
 html, body {
   min-height: 400px;
@@ -37,13 +48,52 @@ html, body {
 }
 
 /* line 19, ../sass/common.sass */
+.common-wrapper, #header #title-wrapper, #legal {
+  float: none;
+  position: relative;
+  width: 95%;
+  margin: 0px auto;
+  top: 10px;
+}
+
+/* line 26, ../sass/common.sass */
 #header {
   background-color: #999999;
   height: 70px;
   box-shadow: 0 4px 6px #554433;
 }
+/* line 34, ../sass/common.sass */
+#header #title-wrapper #title {
+  position: relative;
+  float: left;
+  font-size: 3em;
+  font-weight: bold;
+  margin: 0 10;
+}
+/* line 41, ../sass/common.sass */
+#header #title-wrapper #subtitle {
+  top: 20px;
+  float: left;
+  margin: 26 10 0 10;
+  float: left;
+}
+/* line 47, ../sass/common.sass */
+#header #title-wrapper #subtitle #subtitle-default {
+  float: left;
+  color: #666666;
+}
+/* line 50, ../sass/common.sass */
+#header #title-wrapper #subtitle #subtitle-black {
+  float: left;
+  font-weight: bold;
+}
+/* line 55, ../sass/common.sass */
+#header #title-wrapper #account-chooser {
+  float: right;
+  margin: 10 0 0 0;
+}
 
-/* line 24, ../sass/common.sass */
+/* line 60, ../sass/common.sass */
 #footer {
   background-color: #999999;
   clear: both;
@@ -51,7 +101,7 @@ html, body {
   height: 150px;
 }
 
-/* line 30, ../sass/common.sass */
+/* line 66, ../sass/common.sass */
 .container {
   zoom: 1;
   margin-right: auto;
@@ -78,7 +128,7 @@ html, body {
   clear: both;
 }
 
-/* line 37, ../sass/common.sass */
+/* line 73, ../sass/common.sass */
 #main-content {
   display: -moz-box;
   display: -webkit-box;
@@ -89,4 +139,9 @@ html, body {
   bottom: 150px;
   left: 0;
   right: 0;
+}
+
+/* line 77, ../sass/common.sass */
+#legal {
+  color: #666666;
 }

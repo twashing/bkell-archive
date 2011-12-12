@@ -391,13 +391,24 @@
   left: -671px;
 }
 
-/* line 17, ../sass/landing.sass */
+/* line 5, ../sass/_utils.sass */
 .debug {
   border-style: solid;
   border-width: 1px;
 }
 
-/* line 21, ../sass/landing.sass */
+/* line 8, ../sass/_utils.sass */
+.text-curly {
+  font-style: italic;
+  font-family: Palatino, sans-serif;
+}
+
+/* line 12, ../sass/_utils.sass */
+.text-default {
+  font: Verdana, Arial, sans-serif;
+}
+
+/* line 17, ../sass/landing.sass */
 #left-col {
   position: relative;
   clear: left;
@@ -407,7 +418,7 @@
   overflow-y: hidden;
 }
 
-/* line 32, ../sass/landing.sass */
+/* line 28, ../sass/landing.sass */
 #left-content {
   border-style: solid;
   border-width: 1px;
@@ -415,7 +426,7 @@
   width: 600px;
 }
 
-/* line 42, ../sass/landing.sass */
+/* line 38, ../sass/landing.sass */
 #accounts, #account {
   position: relative;
   float: left;
@@ -425,7 +436,7 @@
   border-width: 1px;
 }
 
-/* line 50, ../sass/landing.sass */
+/* line 46, ../sass/landing.sass */
 #left-toggler {
   width: 20px;
   height: 20px;
@@ -434,7 +445,7 @@
   position: relative;
 }
 
-/* line 57, ../sass/landing.sass */
+/* line 53, ../sass/landing.sass */
 #right-col {
   width: 548px;
   zoom: 1;

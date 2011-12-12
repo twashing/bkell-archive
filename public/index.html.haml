@@ -41,19 +41,18 @@
         });
          
         $('#account-chooser').accountChooser();
-
+        
+        /********* 
+         * load the header and footer files
+         *********/
+        $('#header').load('/include/headerPart.html');
+        $('#footer').load('/include/footerPart.html');
+        
       });
    
   %body
     .container
       #header
-        #title-wrapper
-          #title
-            bkeeping
-          #subtitle 
-            #subtitle-default Your solution to simple &nbsp;
-            #subtitle-black online bookkeeping 
-          #account-chooser	
         
       #main-content 
         .signup
@@ -77,7 +76,5 @@
       #modal_screen.modal.screen
         &nbsp;
   	
-      #footer
-        #legal 
-          2011 Interrupt Software Inc. | All Rights Reserved
+    #footer
 

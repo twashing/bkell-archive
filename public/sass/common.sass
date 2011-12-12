@@ -16,10 +16,46 @@ html, body
   min-width: 800px
   height: 100%
 
+.common-wrapper
+  float: none
+  position: relative
+  width: 95%
+  margin: 0px auto
+  top: 10px
+
 #header
   background-color: #999
   height: $header-height
   box-shadow: 0 4px 6px #543
+
+  #title-wrapper 
+    @extend .common-wrapper
+
+    #title
+      position: relative
+      float: left 
+      @extend .text-curly 
+      font-size: 3em
+      font-weight: bold
+      margin: 0 10
+    #subtitle 
+      top: 20px
+      @extend .text-curly 
+      float: left
+      margin: 26 10 0 10
+      float: left
+      #subtitle-default
+        float: left
+        color: #666666
+      #subtitle-black
+        float: left
+        font-weight: bold
+  
+
+    #account-chooser
+      float: right
+      margin: 10 0 0 0
+
 
 #footer 
   background-color: #999
@@ -37,4 +73,9 @@ html, body
 #main-content
   +display-box
   +stretch( $offset-top : $header-height, $offset-bottom : $footer-height )
+
+#legal
+  @extend .common-wrapper
+  @extend .text-curly 
+  color: #666666
 

@@ -42,25 +42,20 @@
           });
            
           $('#account-chooser').accountChooser();
-        
+          
+          /********* 
+           * load the header and footer files
+           *********/
+          $('#header').load('/include/headerPart.html');
+          $('#footer').load('/include/footerPart.html');
+          
         });
       //]]>
     </script>
   </head>
   <body>
     <div class='container'>
-      <div id='header'>
-        <div id='title-wrapper'>
-          <div id='title'>
-            bkeeping
-          </div>
-          <div id='subtitle'>
-            <div id='subtitle-default'>Your solution to simple &nbsp;</div>
-            <div id='subtitle-black'>online bookkeeping</div>
-          </div>
-          <div id='account-chooser'></div>
-        </div>
-      </div>
+      <div id='header'></div>
       <div id='main-content'>
         <div class='signup'>
           <p class='signuptitle'>Not a member yet?</p>
@@ -86,11 +81,7 @@
       <div class='modal screen' id='modal_screen'>
         &nbsp;
       </div>
-      <div id='footer'>
-        <div id='legal'>
-          2011 Interrupt Software Inc. | All Rights Reserved
-        </div>
-      </div>
     </div>
+    <div id='footer'></div>
   </body>
 </html>
