@@ -1,5 +1,5 @@
 /* line 2, ../sass/index.sass */
-.text-curly, #header #title-wrapper #title, #header #title-wrapper #subtitle {
+.text-curly, #header #title-wrapper #title, #header #title-wrapper #subtitle, #legal {
   font-style: italic;
   font-family: Palatino, sans-serif;
 }
@@ -16,29 +16,19 @@
 }
 
 /* line 11, ../sass/index.sass */
-#loading-msg {
-  display: block;
-  color: #113366;
-  padding: 2px;
-  width: 60px;
-  background-color: silver;
-  text-align: center;
-  left: -100;
-}
-
-/* line 21, ../sass/index.sass */
-#header {
-  text-align: center;
-}
-/* line 24, ../sass/index.sass */
-#header #title-wrapper {
+.common-wrapper, #header #title-wrapper, #legal {
   float: none;
   position: relative;
   width: 95%;
   margin: 0px auto;
   top: 10px;
 }
-/* line 30, ../sass/index.sass */
+
+/* line 19, ../sass/index.sass */
+#header {
+  text-align: center;
+}
+/* line 25, ../sass/index.sass */
 #header #title-wrapper #title {
   position: relative;
   float: left;
@@ -46,56 +36,48 @@
   font-weight: bold;
   margin: 0 10;
 }
-/* line 37, ../sass/index.sass */
+/* line 32, ../sass/index.sass */
 #header #title-wrapper #subtitle {
   top: 20px;
   float: left;
   margin: 26 10 0 10;
   float: left;
 }
-/* line 43, ../sass/index.sass */
+/* line 38, ../sass/index.sass */
 #header #title-wrapper #subtitle #subtitle-default {
   float: left;
   color: #666666;
 }
-/* line 46, ../sass/index.sass */
+/* line 41, ../sass/index.sass */
 #header #title-wrapper #subtitle #subtitle-black {
   float: left;
   font-weight: bold;
 }
-/* line 51, ../sass/index.sass */
+/* line 46, ../sass/index.sass */
 #header #title-wrapper #account-chooser {
   float: right;
   margin: 10 0 0 0;
 }
 
-/* line 56, ../sass/index.sass */
+/* line 51, ../sass/index.sass */
 .signup {
   color: #686868;
 }
 
-/* line 60, ../sass/index.sass */
+/* line 55, ../sass/index.sass */
 .signup-wrapper {
   margin-top: 20px;
 }
-/* line 62, ../sass/index.sass */
+/* line 57, ../sass/index.sass */
 .signup-wrapper .signup-anchor {
   text-decoration: none;
 }
-/* line 64, ../sass/index.sass */
+/* line 59, ../sass/index.sass */
 .signup-wrapper .signup-anchor .buttons {
   font-size: 13.2px;
 }
 
-/* line 67, ../sass/index.sass */
-#screenshots {
-  float: left;
-  margin-top: 60px;
-}
-/* line 71, ../sass/index.sass */
-#screenshots .screenshot {
-  height: 24%;
-  width: 12%;
-  float: left;
-  border: 0px;
+/* line 62, ../sass/index.sass */
+#legal {
+  color: #666666;
 }

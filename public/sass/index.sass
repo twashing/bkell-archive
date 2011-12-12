@@ -8,25 +8,20 @@
 
 @import utils
 
-#loading-msg
-  display: block
-  color: #113366 
-  padding: 2px
-  width: 60px
-  background-color: #C0C0C0
-  text-align: center
-  left: -100
+.common-wrapper
+  float: none
+  position: relative
+  width: 95%
+  margin: 0px auto
+  top: 10px
 
 
 #header
   text-align: center 
 
   #title-wrapper 
-    float: none
-    position: relative
-    width: 95%
-    margin: 0px auto
-    top: 10px
+    @extend .common-wrapper
+
     #title
       position: relative
       float: left 
@@ -64,16 +59,9 @@
     .buttons
       font-size: 13.2px
 
-#screenshots
-  float: left
-  margin-top: 60px
-
-  .screenshot
-    height: 24%
-    width: 12%
-    float: left 
-    border: 0px
-
-
+#legal
+  @extend .common-wrapper
+  @extend .text-curly 
+  color: #666666
 
 
