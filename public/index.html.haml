@@ -4,14 +4,17 @@
     %link( type="text/css" href="css/common.css" rel="stylesheet" )
     %link( type="text/css" href="css/index.css" rel="stylesheet" )
     
-    %script{ :src => "/js/jquery-1.6.3.js" }
-    %script{ :src => "http://ajax.googleapis.com/ajax/libs/jqueryui/1.8/jquery-ui.min.js" }
-    %script{ :src => "https://ajax.googleapis.com/ajax/libs/googleapis/0.0.4/googleapis.min.js" }
-    %script{ :src => 'https://ajax.googleapis.com/jsapi' }
+    %script( src="/js/jquery-1.6.3.js" )
+    %script( src= "http://ajax.googleapis.com/ajax/libs/jqueryui/1.8/jquery-ui.min.js" )
+    %script( src= "https://ajax.googleapis.com/ajax/libs/googleapis/0.0.4/googleapis.min.js" )
+    %script( src= 'https://ajax.googleapis.com/jsapi' )
     :javascript
       google.load("identitytoolkit", "1.0", { packages: ["ac"] });
     
-    %script( type="text/javascript" src="javascript/bkeeping.js" )
+    %script( src="/js/json2.js" )
+    %script( src="/js/underscore.js" )
+    %script( src="/js/backbone.js" )
+    %script( src="js/bkeeping.js" type="text/javascript" )
     :javascript
       $(document).ready(function() {
         
@@ -20,7 +23,7 @@
          *********/
         $('body').css('margin', '0px'); 
         
-
+        
         /*********
          * GITkit Account Chooser code
          *********/
@@ -42,10 +45,10 @@
          
         $('#account-chooser').accountChooser();
         
+        
         /********* 
-         * load the header and footer files
+         * load the footer file
          *********/
-        $('#header').load('/include/headerPart.html');
         $('#footer').load('/include/footerPart.html');
         
       });
@@ -53,6 +56,14 @@
   %body
     .container
       #header
+        #title-wrapper
+          #title
+            bkeeping
+          #subtitle 
+            #subtitle-default Your solution to simple &nbsp;
+            #subtitle-black online bookkeeping 
+          #account-chooser
+
         
       #main-content 
         .signup

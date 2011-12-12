@@ -147,9 +147,8 @@
         
         
         /********* 
-         * load the header and footer files
+         * load the footer file
          *********/
-        $('#header').load('/include/headerPart.html');
         $('#footer').load('/include/footerPart.html');
         
       
@@ -169,7 +168,14 @@
 
   %body 
     .container
-      #header Header
+      #header 
+        #title-wrapper
+          #title
+            bkeeping
+          #subtitle 
+            #subtitle-default Your solution to simple &nbsp;
+            #subtitle-black online bookkeeping 
+      
       #main-content 
         #left-col
           #left-content
