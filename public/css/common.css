@@ -139,9 +139,10 @@ html, body {
   bottom: 150px;
   left: 0;
   right: 0;
+  background-image: url("/images/paper_2.png");
 }
 
-/* line 77, ../sass/common.sass */
+/* line 78, ../sass/common.sass */
 #legal {
   color: #666666;
 }

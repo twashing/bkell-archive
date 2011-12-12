@@ -1,34 +1,34 @@
-/* line 5, /home/webkell/Projects/bkell/public/sass/_utils.sass */
+/* line 5, ../sass/_utils.sass */
 .debug {
   border-style: solid;
   border-width: 1px;
 }
 
-/* line 8, /home/webkell/Projects/bkell/public/sass/_utils.sass */
+/* line 8, ../sass/_utils.sass */
 .text-curly {
   font-style: italic;
   font-family: Palatino, sans-serif;
 }
 
-/* line 12, /home/webkell/Projects/bkell/public/sass/_utils.sass */
+/* line 12, ../sass/_utils.sass */
 .text-default {
   font: Verdana, Arial, sans-serif;
 }
 
-/* line 5, ../sass/index.sass */
+/* line 4, ../sass/index.sass */
 .signup {
   color: #686868;
 }
 
-/* line 9, ../sass/index.sass */
+/* line 8, ../sass/index.sass */
 .signup-wrapper {
   margin-top: 20px;
 }
-/* line 11, ../sass/index.sass */
+/* line 10, ../sass/index.sass */
 .signup-wrapper .signup-anchor {
   text-decoration: none;
 }
-/* line 13, ../sass/index.sass */
+/* line 12, ../sass/index.sass */
 .signup-wrapper .signup-anchor .buttons {
   font-size: 13.2px;
 }

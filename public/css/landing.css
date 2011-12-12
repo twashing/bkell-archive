@@ -463,7 +463,6 @@
   -ms-box-flex: 5;
   box-flex: 5;
   position: relative;
-  background-color: #bbbbbb;
 }
 /* line 10, ../../../../.rvm/gems/ruby-1.9.2-p290/gems/grid-coordinates-1.2.0/stylesheets/modules/_bulletproof-clearfix.sass */
 #right-col:before, #right-col:after {
