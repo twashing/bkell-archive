@@ -2,6 +2,7 @@
   <head>
     <link href='css/site.css' rel='stylesheet' type='text/css' />
     <link href='css/main.css' rel='stylesheet' type='text/css' />
+    <link href='css/index.css' rel='stylesheet' type='text/css' />
     <!-- %script( type="text/javascript" src="javascript/jquery-1.3.2.js" ) -->
     <!-- %script( type="text/javascript" src="javascript/jquery-ui-1.7.2.custom.min.js" ) -->
     <script src='/js/jquery-1.6.3.js'></script>
@@ -97,27 +98,27 @@
   </head>
   <body>
     <div class='header'></div>
-    <div id='loading-msg' style=' display: block; color: #113366; padding: 2px; width: 60px; background-color: #C0C0C0; text-align: center; left: -100; '>
+    <div id='loading-msg'>
       Loading...
     </div>
     <div class='content'>
-      <div class='title' id='title' style=' position:relative; top:15px; left:30px; width:70%; height: 35px;'>
+      <div class='title' id='title'>
         bkeeping
         <div class='subheader'>
           Your solution to simple
-          <div style='color:#000000'>online bookkeeping</div>
+          <div class='subheader-black'>online bookkeeping</div>
         </div>
         <div id='account-chooser'></div>
       </div>
-      <div class='signup' style='color: #686868'>
+      <div class='signup'>
         <p class='signuptitle'>Not a member yet?</p>
         <p>It takes less than 5 minutes to sign up.</p>
         <p>Fast, easy to use bookkeeping.</p>
         <p>The best way to manage your bookkeeping needs.</p>
-        <p style='margin-top: 20px;'>
-          <a href='register' style='text-decoration: none;'>
-            <button class='buttons' style='font-size: 13.2px;'>SIGN UP</button>
-          </a>
+        <p class='signup-wrapper'>
+          <asignup-anchor href='register'>
+            <button class='buttons'>SIGN UP</button>
+          </asignup-anchor>
         </p>
       </div>
       <div class='fastandeasy'>
@@ -129,15 +130,15 @@
         <p class='pushright'>way to</p>
         manage your bookkeeping.
       </div>
-      <div id='screenshots' style='float:left; margin-top: 60px;'>
+      <div id='screenshots'>
         <a href='images/bkeeping_screenshot_1.png' id='bs1'>
-          <img alt='Landing Screen with Accounts &amp; Journals' src='images/bkeeping_screenshot_1.png' style='height: 24%; width: 12%; float:left; border: 0px;' />
+          <img alt='Landing Screen with Accounts &amp; Journals' class='screenshot' src='images/bkeeping_screenshot_1.png' />
         </a>
         <a href='images/bkeeping_screenshot_3.png' id='bs3'>
-          <img alt='Listing out both sides of an Entry' src='images/bkeeping_screenshot_3.png' style='height: 24%; width: 12%; float:left; border: 0px;' />
+          <img alt='Listing out both sides of an Entry' class='screenshot' src='images/bkeeping_screenshot_3.png' />
         </a>
         <a href='images/bkeeping_screenshot_4.png' id='bs4'>
-          <img alt='Editing one side of an Entry' src='images/bkeeping_screenshot_4.png' style='height: 24%; width: 12%; float:left; border: 0px;' />
+          <img alt='Editing one side of an Entry' class='screenshot' src='images/bkeeping_screenshot_4.png' />
         </a>
       </div>
     </div>

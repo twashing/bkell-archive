@@ -2,6 +2,7 @@
   %head
     %link( type="text/css" href="css/site.css" rel="stylesheet" )
     %link( type="text/css" href="css/main.css" rel="stylesheet" )
+    %link( type="text/css" href="css/index.css" rel="stylesheet" )
     
     /%script( type="text/javascript" src="javascript/jquery-1.3.2.js" )
     /%script( type="text/javascript" src="javascript/jquery-ui-1.7.2.custom.min.js" )
@@ -98,25 +99,25 @@
   %body
     .header
   	
-    #loading-msg( style=" display: block; color: #113366; padding: 2px; width: 60px; background-color: #C0C0C0; text-align: center; left: -100; " )
+    #loading-msg
       Loading...
 	
     .content
-      #title.title( style=" position:relative; top:15px; left:30px; width:70%; height: 35px;" )
+      #title.title
         bkeeping
         .subheader 
           Your solution to simple 
-          %div( style="color:#000000" ) online bookkeeping 
+          .subheader-black online bookkeeping 
         #account-chooser	
       
-      .signup( style="color: #686868" )
+      .signup
         %p.signuptitle Not a member yet?
         %p It takes less than 5 minutes to sign up.
         %p Fast, easy to use bookkeeping.
         %p The best way to manage your bookkeeping needs.
-        %p( style="margin-top: 20px;" )
-          %a( href="register" style="text-decoration: none;" )
-            %button.buttons( style="font-size: 13.2px;" ) SIGN UP
+        %p.signup-wrapper
+          %asignup-anchor( href="register" )
+            %button.buttons SIGN UP
       
       .fastandeasy
         The 
@@ -127,14 +128,14 @@
         %p.pushright way to
         manage your bookkeeping.
       
-      #screenshots( style="float:left; margin-top: 60px;" )
+      #screenshots
       	
         %a#bs1( href="images/bkeeping_screenshot_1.png" )
-          %img( src="images/bkeeping_screenshot_1.png" style="height: 24%; width: 12%; float:left; border: 0px;" alt="Landing Screen with Accounts & Journals" )
+          %img.screenshot( src="images/bkeeping_screenshot_1.png" alt="Landing Screen with Accounts & Journals" )
         %a#bs3( href="images/bkeeping_screenshot_3.png" )
-          %img( src="images/bkeeping_screenshot_3.png" style="height: 24%; width: 12%; float:left; border: 0px;" alt="Listing out both sides of an Entry" )
+          %img.screenshot( src="images/bkeeping_screenshot_3.png" alt="Listing out both sides of an Entry" )
         %a#bs4( href="images/bkeeping_screenshot_4.png" )
-          %img( src="images/bkeeping_screenshot_4.png" style="height: 24%; width: 12%; float:left; border: 0px;" alt="Editing one side of an Entry" )
+          %img.screenshot( src="images/bkeeping_screenshot_4.png" alt="Editing one side of an Entry" )
 	
     #modal_screen.modal.screen
       &nbsp;
