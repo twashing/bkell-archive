@@ -9,7 +9,8 @@
     %script( src= "https://ajax.googleapis.com/ajax/libs/googleapis/0.0.4/googleapis.min.js" )
     %script( src= 'https://ajax.googleapis.com/jsapi' )
     :javascript
-      google.load("identitytoolkit", "1.0", { packages: ["ac"] });
+      //google.load("identitytoolkit", "1.0", { packages: ["ac"] });
+      google.load("identitytoolkit", "1", {packages: ["ac"], language:"en"});
     
     %script( src="/js/json2.js" )
     %script( src="/js/underscore.js" )
@@ -28,17 +29,16 @@
          * GITkit Account Chooser code
          *********/
         window.google.identitytoolkit.setConfig({
-          developerKey: "your dev api key goes here",
+          developerKey: "AIzaSyDc7_lGZsmbtdOUpprPClKBOxXCQ6LztRE",
           companyName: "Interrupt Software Inc.",
-          callbackUrl: "https://bkeeping.com/accountchooser-callbackurl", 
-          userStatusUrl: "/userStatus",           // these can just be partial paths
+          callbackUrl: "http://172.16.210.144:3000/callbackGitkit",
+          realm: "", 
+          userStatusUrl: "/userStatus",
           loginUrl: "/login",
           signupUrl: "/register",
           homeUrl: "/landing",
           logoutUrl: "/logout",
-          realm: "",                            // optional
-          language: "en",
-          idps: ["Gmail", "AOL", "Hotmail", "Yahoo"],
+          idps: ["Gmail", "Yahoo", "AOL"],
           tryFederatedFirst: true,
           useCachedUserStatus: false
         });

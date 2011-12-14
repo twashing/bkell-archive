@@ -1,4 +1,4 @@
-(ns util )
+(ns util)
 
 
 ;; Inspired by Shantanu Kumar's util functions - https://bitbucket.org/kumarshantanu/clj-miscutil/src/acfb97c662d9/src/main/clj/org/bituf/clj_miscutil.clj
@@ -44,4 +44,7 @@
 (defn wrap-error-msg [msg status]
   (wrap-error (generate-error-response msg) status))
 
-
+(def swank-con swank.core.connection/*current-connection*)
+(defmacro break []
+  `(binding [swank.core.connection/*current-connection* swank-con]
+     (swank.core/break)))

@@ -60,9 +60,11 @@ html, body {
 #header {
   background-color: #999999;
   height: 70px;
+  position: relative;
+  z-index: 10;
   box-shadow: 0 4px 6px #554433;
 }
-/* line 34, ../sass/common.sass */
+/* line 39, ../sass/common.sass */
 #header #title-wrapper #title {
   position: relative;
   float: left;
@@ -70,30 +72,30 @@ html, body {
   font-weight: bold;
   margin: 0 10;
 }
-/* line 41, ../sass/common.sass */
+/* line 46, ../sass/common.sass */
 #header #title-wrapper #subtitle {
   top: 20px;
   float: left;
   margin: 26 10 0 10;
   float: left;
 }
-/* line 47, ../sass/common.sass */
+/* line 52, ../sass/common.sass */
 #header #title-wrapper #subtitle #subtitle-default {
   float: left;
   color: #666666;
 }
-/* line 50, ../sass/common.sass */
+/* line 55, ../sass/common.sass */
 #header #title-wrapper #subtitle #subtitle-black {
   float: left;
   font-weight: bold;
 }
-/* line 55, ../sass/common.sass */
+/* line 60, ../sass/common.sass */
 #header #title-wrapper #account-chooser {
   float: right;
   margin: 10 0 0 0;
 }
 
-/* line 60, ../sass/common.sass */
+/* line 65, ../sass/common.sass */
 #footer {
   background-color: #999999;
   clear: both;
@@ -101,7 +103,7 @@ html, body {
   height: 150px;
 }
 
-/* line 66, ../sass/common.sass */
+/* line 71, ../sass/common.sass */
 .container {
   zoom: 1;
   margin-right: auto;
@@ -128,7 +130,7 @@ html, body {
   clear: both;
 }
 
-/* line 73, ../sass/common.sass */
+/* line 78, ../sass/common.sass */
 #main-content {
   display: -moz-box;
   display: -webkit-box;
@@ -142,7 +144,7 @@ html, body {
   background-image: url("/images/paper_2.png");
 }
 
-/* line 78, ../sass/common.sass */
+/* line 83, ../sass/common.sass */
 #legal {
   color: #666666;
 }

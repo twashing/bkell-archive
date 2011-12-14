@@ -40,6 +40,11 @@
 )
 
 
+(defn callbackHandlerCommon [method arg]
+  (println (str method " ; /callbackGitkit [" arg "]"))
+)
+
+
 (defroutes main
   "Some core functions and their URL mappings 
     
@@ -53,7 +58,7 @@
   ;; ======
   ;; REGISTER & LOGIN
   (GET "/" []   ;; index is the default page of the application 
-    (response/file-response "landing.html" { :root "public" }))
+    (response/file-response "index.html" { :root "public" }))
   (GET "/register" []   ;; return static register.html page 
     (response/file-response "register.html" { :root "public" }))
   (POST "/login" [:as req] 
@@ -72,6 +77,17 @@
       (clojure.data.json/json-str (util/wrap-error-msg "POST body is nil" 400))
     )
   )
+  
+  
+  ;; ======
+  ;; ACCOUNT CHOOSER (GITkit) URL handlers
+  (GET "/callbackGitkit" [:as req]
+    ;(callbackHandlerCommon "GET" arg))
+    (println (str "GET ; /callbackGitkit [" req "]")))
+  (POST "/callbackGitkit" [:as req]
+    ;(callbackHandlerCommon "POST" arg))
+    (util/break)
+    (println (str "POST ; /callbackGitkit [" req "]")))
   
   
   ;; ======
