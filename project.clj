@@ -11,13 +11,11 @@
                     [congomongo "0.1.5-SNAPSHOT"]
 	          ]
   
-  :dev-dependencies [ [lein-ring "0.4.0"]
-                      [lein-search "0.3.4"]
+   :dev-dependencies[ [lein-search "0.3.4"]
                       [vimclojure/server "2.3.0-SNAPSHOT"]
                       [swank-clojure "1.4.0-SNAPSHOT"]
                       [clojure-source "1.2.0"]
-                      [lein-fail-fast "1.0.0"]
-                      [lein-run "1.0.1-SNAPSHOT"]
+                      [ring-serve "0.1.0"]
 	            ] 
   
   :jvm-opts ["-agentlib:jdwp=transport=dt_socket,server=y,suspend=n"]

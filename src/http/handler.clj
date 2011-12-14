@@ -87,6 +87,7 @@
   (POST "/callbackGitkit" [:as req]
     ;(callbackHandlerCommon "POST" arg))
     (util/break)
+    (println "Changing value")
     (println (str "POST ; /callbackGitkit [" req "]")))
   
   

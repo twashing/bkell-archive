@@ -1,5 +1,4 @@
-(use 'ring.adapter.jetty)
-(use 'http.handler)
+(use 'http.handler :reload)
+(use 'ring.util.serve)
 
-(run-jetty http.handler/app {:port 3000}) 
-
+(serve http.handler/app)
