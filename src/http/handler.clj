@@ -13,7 +13,10 @@
             [clojure.data.json :as json]
             [ring.middleware.file :as ring-file]
             [ring.util.response :as response]
-            [util])
+            [util]
+            [clj-http.client :as client]
+            [clojure.contrib.duck-streams :as dstream])
+  
 )
 
 
@@ -40,8 +43,18 @@
 )
 
 
-(defn callbackHandlerCommon [method arg]
-  (println (str method " ; /callbackGitkit [" arg "]"))
+(defn callbackHandlerCommon [method req]
+
+  ;; needs to call 'verifyAssertion' to parse response
+  (println (str method " ; /callbackGitkit [" req "]"))
+  (util/break)
+  (let [presp (client/post
+               "https://www.googleapis.com/identitytoolkit/v1/relyingparty/verifyAssertion?key=AIzaSyDc7_lGZsmbtdOUpprPClKBOxXCQ6LztRE"
+               { :requestUri (:uri req)
+                 :body (dstream/to-byte-array (:body req)) } )
+       ]
+    (util/break)
+  )
 )
 
 
@@ -60,7 +73,7 @@
   (GET "/" []   ;; index is the default page of the application 
     (response/file-response "index.html" { :root "public" }))
   (GET "/register" []   ;; return static register.html page 
-    (response/file-response "register.html" { :root "public" }))
+   (response/file-response "register.html" { :root "public" }))
   (POST "/login" [:as req] 
     
     (println (str "POST ; /login ; " req))
@@ -82,13 +95,23 @@
   ;; ======
   ;; ACCOUNT CHOOSER (GITkit) URL handlers
   (GET "/callbackGitkit" [:as req]
-    ;(callbackHandlerCommon "GET" arg))
-    (println (str "GET ; /callbackGitkit [" req "]")))
+    (callbackHandlerCommon "GET" req))
   (POST "/callbackGitkit" [:as req]
-    ;(callbackHandlerCommon "POST" arg))
-    (util/break)
-    (println "Changing value")
-    (println (str "POST ; /callbackGitkit [" req "]")))
+    #_(util/break)
+    (callbackHandlerCommon "POST" req))
+
+  ;; TODO 
+  (POST "/userStatusUrl" [:as req]
+        ;; parse request
+        ;; user email
+    { "registered" false }
+  )
+  (POST "/loginUrl" [:as req]
+    { "status" "OK" }
+  )
+  (GET "/landing" [:as req]
+    
+  )
   
   
   ;; ======
