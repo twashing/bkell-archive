@@ -27,6 +27,7 @@
 )
  
 
+
 (defn handle-errors [result status]
   
   (if (or (= :error (:tag result))
@@ -47,13 +48,13 @@
 
   ;; needs to call 'verifyAssertion' to parse response
   (println (str method " ; /callbackGitkit [" req "]"))
-  (util/break)
+  #_(util/break)
   (let [presp (client/post
                "https://www.googleapis.com/identitytoolkit/v1/relyingparty/verifyAssertion?key=AIzaSyDc7_lGZsmbtdOUpprPClKBOxXCQ6LztRE"
                { :requestUri (:uri req)
                  :body (dstream/to-byte-array (:body req)) } )
        ]
-    (util/break)
+    #_(util/break)
   )
 )
 

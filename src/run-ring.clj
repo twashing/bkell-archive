@@ -1,4 +1,6 @@
 (use 'http.handler :reload)
-(use 'ring.util.serve)
+(require '(ring.util [serve :as ring]))
 
-(serve http.handler/app)
+
+(ring/serve-headless http.handler/app)
+
