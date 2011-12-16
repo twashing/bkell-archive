@@ -1,6 +1,7 @@
 (ns http.handler
   
-  (:use [compojure.core])
+  (:use [compojure.core]
+  )
   
   ;;(:use net.cgrand.enlive-html)
   (:import java.io.FileReader)
@@ -15,7 +16,7 @@
             [ring.util.response :as response]
             [util]
             [clj-http.client :as client]
-            [clojure.contrib.duck-streams :as dstream])
+            )
   
 )
 
@@ -45,14 +46,21 @@
 
 
 (defn callbackHandlerCommon [method req]
-
+  
   ;; needs to call 'verifyAssertion' to parse response
-  (println (str method " ; /callbackGitkit [" req "]"))
-  #_(util/break)
-  (let [presp (client/post
+  (println (str method " ; /callbackGitkit [" {:body (json/json-str (:params req)) } "]"))
+  (util/break)
+  (let [presp (.. (com.google.apps.easyconnect.easyrp.client.basic.util.GitServiceClientImpl. "AIzaSyDc7_lGZsmbtdOUpprPClKBOxXCQ6LztRE")
+                  (verifyResponse "https://www.googleapis.com/identitytoolkit/v1/relyingparty/verifyAssertion" (json/json-str (:params req))))
+        ]
+    (println (str "presp: " presp))
+  )
+  
+  #_(let [presp (client/post
                "https://www.googleapis.com/identitytoolkit/v1/relyingparty/verifyAssertion?key=AIzaSyDc7_lGZsmbtdOUpprPClKBOxXCQ6LztRE"
-               { :requestUri (:uri req)
-                 :body (dstream/to-byte-array (:body req)) } )
+               {:body (json/json-str (:params req))
+                :content-type :json
+               } )
        ]
     #_(util/break)
   )
