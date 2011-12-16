@@ -1,3 +1,0 @@
-[submodule "vendor/debug"]
-	path = vendor/debug
-	url = git://gist.github.com/1081550.git

@@ -1,7 +1,7 @@
 (ns http.handler
-
-  (:use [compojure.core]
-  )
+  
+  (:use [compojure.core])
+  
   ;;(:use net.cgrand.enlive-html)
   (:import java.io.FileReader)
   (:require [compojure.route :as route]

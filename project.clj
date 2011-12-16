@@ -11,6 +11,7 @@
 	              ]
   
    :dev-dependencies[ [lein-search "0.3.4"]
+                      [swank-clojure "1.4.0-SNAPSHOT"]
                       [vimclojure/server "2.3.0-SNAPSHOT"]
                       [clojure-source "1.2.0"]
                       [ring-serve "0.1.2"]
