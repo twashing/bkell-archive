@@ -4,6 +4,7 @@
    
    :dependencies  [ [org.clojure/clojure "1.3.0-beta1"]
                     [org.clojure/data.json "0.1.0"]
+                    [clj-json "0.4.3"]
 	                [org.clojure/clojure-contrib "1.2.0"]
                     [compojure "0.6.2"]
                     [congomongo "0.1.5-SNAPSHOT"]
@@ -11,7 +12,6 @@
 	              ]
   
    :dev-dependencies[ [lein-search "0.3.4"]
-                      [swank-clojure "1.4.0-SNAPSHOT"]
                       [vimclojure/server "2.3.0-SNAPSHOT"]
                       [clojure-source "1.2.0"]
                       [ring-serve "0.1.2"]
@@ -33,8 +33,7 @@
 
   ;;:repl-init "src/bkell.clj" 
   :ring {:handler http.handler/app}
-  :resources-path ".:src/:test/:src/commands/:src/spittoon/:vendor/:vendor/debug/:vendor/clojure/contrib/:public/:etc/resources/"
-  ;;:resources-path ".:build/gen/:build/src/:src/:test/:src/commands/:src/spittoon/:vendor/252421/:vendor/congomongo/src/:vendor/congomongo/lib/mongo-java-driver-2.3.jar:vendor/congomongo/lib/clojure-1.2.0.jar:vendor/congomongo/lib/clojure-contrib-1.2.0.jar"
+  :resources-path ".:src/:test/:src/commands/:src/spittoon/:vendor/:vendor/debug/:public/:etc/resources/"
   
 )
 
