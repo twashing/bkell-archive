@@ -20,6 +20,7 @@
             [util]
             [clj-http.client :as client]
             [clojure.contrib.duck-streams :as dstreams]
+            ;[sandbar.stateful-session :as sandbar-session]
             )
   
 )
@@ -57,7 +58,6 @@
 (defn callbackHandlerCommon [method req]
   
   ;; needs to call 'verifyAssertion' to parse response
-  #_(util/break)
   #_(debug-repl)
   #_(println (str method " ; /callbackHandlerCommon [" req "]"))
   #_(let [presp (.. (com.google.apps.easyconnect.easyrp.client.basic.util.GitServiceClientImpl. "AIzaSyDc7_lGZsmbtdOUpprPClKBOxXCQ6LztRE")
@@ -68,6 +68,7 @@
               )
        ]
     (println (str "presp: " presp))
+    (util/break)
   )
   
   (let [ruri "http://172.16.210.144:3000/callbackGitkit" 
@@ -124,7 +125,6 @@
   (GET "/callbackGitkit" [:as req]
     (callbackHandlerCommon "GET" req))
   (POST "/callbackGitkit" [:as req]
-    #_(util/break)
     (callbackHandlerCommon "POST" req))
 
   ;; TODO 

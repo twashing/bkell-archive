@@ -9,6 +9,7 @@
                     [compojure "0.6.2"]
                     [congomongo "0.1.5-SNAPSHOT"]
                     [clj-http "0.2.6"]
+                    [sandbar "0.4.0-SNAPSHOT"]
 	              ]
   
    :dev-dependencies[ [lein-search "0.3.4"]
