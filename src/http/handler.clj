@@ -108,7 +108,7 @@
             ;;(session-put! :current-user add-resp)
             
           )
-          (catch java.lang.AssertionError ae (println (str "AssertionError: " ae))))
+          (catch java.lang.Exception ae (println (str "Not adding this user as it already exists:  " ae))))
         
       
       ; FINAL - return verify-resp
@@ -156,11 +156,11 @@
   (GET "/callbackGitkit" [:as req]
     (callbackHandlerCommon "GET" req))
   (POST "/callbackGitkit" [:as req]
-
-    (response/file-response 
-      "include/callbackUrlSuccess.html" 
-      (callbackHandlerCommon "POST" req)
-      { :root "public" }
+    
+    (let [cb-resp (callbackHandlerCommon "POST" req)]
+      (println (str "cb-resp: " cb-resp))
+      ;;(response/redirect "/include/callbackUrlSuccess.html" cb-resp { :root "public" })
+      (response/redirect "/include/callbackUrlSuccess.html")
     )
   )
   
@@ -174,7 +174,7 @@
     { "status" "OK" }
   )
   (GET "/landing" [:as req]
-    
+    (response/file-response "landing.html" { :root "public" })
   )
   
   
