@@ -1,7 +1,9 @@
 (ns http.handler
   
   (:use [compojure.core]
-        [debug :as debug]
+        [debug]
+        [sandbar.stateful-session]
+        [hozumi.session-expiry]
   )
   
   ;;(:use net.cgrand.enlive-html)
@@ -15,12 +17,12 @@
             [commands.authenticate]
             [clojure.contrib.duck-streams :as duck-streams]
             [clojure.data.json :as json]
+            [clojure.pprint :as pprint]
             [ring.middleware.file :as ring-file]
             [ring.util.response :as response]
             [util]
             [clj-http.client :as client]
             [clojure.contrib.duck-streams :as dstreams]
-            ;[sandbar.stateful-session :as sandbar-session]
             )
   
 )
@@ -57,32 +59,61 @@
 
 (defn callbackHandlerCommon [method req]
   
-  ;; needs to call 'verifyAssertion' to parse response
-  #_(debug-repl)
-  #_(println (str method " ; /callbackHandlerCommon [" req "]"))
-  #_(let [presp (.. (com.google.apps.easyconnect.easyrp.client.basic.util.GitServiceClientImpl. "AIzaSyDc7_lGZsmbtdOUpprPClKBOxXCQ6LztRE")
-                  (verifyResponse "https://www.googleapis.com/identitytoolkit/v1/relyingparty/verifyAssertion" (:params req))
-                  #_(verifyResponse
-                   "https://www.googleapis.com/identitytoolkit/v1/relyingparty/verifyAssertion"
-                   (apply str (map char (dstreams/to-byte-array (:body req)) )) )
-              )
-       ]
-    (println (str "presp: " presp))
-    (util/break)
-  )
-  
-  (let [ruri "http://172.16.210.144:3000/callbackGitkit" 
-        pbody (encode-params (:params req))
-        final-body (clojure.data.json/json-str { :requestUri ruri :postBody pbody })
-        thing (println (str "final-body:[" final-body "]"))
-        presp (client/post
-                "https://www.googleapis.com/identitytoolkit/v1/relyingparty/verifyAssertion?key=AIzaSyDc7_lGZsmbtdOUpprPClKBOxXCQ6LztRE"
-                { :body final-body
-                  :content-type :json
-                })
-       ]
-    (println (str "presp: " presp))
-  )
+    ;; needs to call 'verifyAssertion' to parse response - should return a { :user :map }
+    (let [  ruri "http://172.16.210.144:3000/callbackGitkit" 
+            pbody (encode-params (:params req))
+            final-body (clojure.data.json/json-str { :requestUri ruri :postBody pbody })
+            print1 (println (str "final-body:[" final-body "]"))
+            verify-resp (client/post
+                    "https://www.googleapis.com/identitytoolkit/v1/relyingparty/verifyAssertion?key=AIzaSyDc7_lGZsmbtdOUpprPClKBOxXCQ6LztRE"
+                    { :body final-body
+                      :content-type :json
+                    })
+            print2 (println (str "verify-resp " verify-resp))
+            
+         ]
+      
+        ; check if user exists ; add to DB if not 
+        ; ** bjell will throw an AssertionError if user already exists 
+        (try 
+          (let [verify-sexp (-> verify-resp :body clojure.data.json/read-json)
+                vjson (println (str "from-verify-JSON" verify-sexp))
+                add-resp (bkell/add {  :tag :user
+                                       :username (:verifiedEmail verify-sexp)
+                                       :password ""
+                                       :content 
+                                         [{  :tag :profileDetails,
+                                             :content
+                                             [{:tag :profileDetail,
+                                               :name "first.name", 
+                                               :value (:firstName verify-sexp),
+                                               :content nil}
+                                              {:tag :profileDetail,
+                                               :name "last.name", 
+                                               :value (:lastName verify-sexp),
+                                               :content nil}
+                                              {:tag :profileDetail,
+                                               :name "email", 
+                                               :value (:verifiedEmail verify-sexp),
+                                               :content nil}
+                                              {:tag :profileDetail,
+                                               :name "country", 
+                                               :value "",
+                                               :content nil}]}]
+                                    })]
+            
+            (println (str "add-resp: " add-resp))
+            
+            ; log the user in ; session should die after some inactivity 
+            ;;(session-put! :current-user add-resp)
+            
+          )
+          (catch java.lang.AssertionError ae (println (str "AssertionError: " ae))))
+        
+      
+      ; FINAL - return verify-resp
+      verify-resp
+    )
 )
 
 
@@ -125,8 +156,14 @@
   (GET "/callbackGitkit" [:as req]
     (callbackHandlerCommon "GET" req))
   (POST "/callbackGitkit" [:as req]
-    (callbackHandlerCommon "POST" req))
 
+    (response/file-response 
+      "include/callbackUrlSuccess.html" 
+      (callbackHandlerCommon "POST" req)
+      { :root "public" }
+    )
+  )
+  
   ;; TODO 
   (POST "/userStatusUrl" [:as req]
         ;; parse request
@@ -309,11 +346,14 @@
 )
 
 
-#_(def app
-  (-> #'handler/site
-      (ring-file/wrap-file "public")
-      main))
 (def app
+  (-> main 
+      handler/site
+      ;;(wrap-session-expiry 3600)  ;; 1 hour 
+      ;;wrap-stateful-session))
+      ))
+
+#_(def app
   (handler/site main))
 
 
