@@ -23,6 +23,7 @@
             [util]
             [clj-http.client :as client]
             [clojure.contrib.duck-streams :as dstreams]
+            [net.cgrand.enlive-html :as enlive]
             )
   
 )
@@ -76,7 +77,7 @@
         ; check if user exists ; add to DB if not 
         ; ** bjell will throw an AssertionError if user already exists 
         (try 
-          (let [verify-sexp (-> verify-resp :body clojure.data.json/read-json)
+          (let [verify-sexp (-> verify-resp :body clojure.data.json/read-json (merge { :exists false }))
                 vjson (println (str "from-verify-JSON" verify-sexp))
                 add-resp (bkell/add {  :tag :user
                                        :username (:verifiedEmail verify-sexp)
@@ -104,6 +105,7 @@
             
             (println (str "add-resp: " add-resp))
             
+            (merge verify-sexp { :exists true })
             ; log the user in ; session should die after some inactivity 
             ;;(session-put! :current-user add-resp)
             
@@ -112,7 +114,7 @@
         
       
       ; FINAL - return verify-resp
-      verify-resp
+      (-> verify-resp :body clojure.data.json/read-json (merge { :exists false }))
     )
 )
 
@@ -157,10 +159,20 @@
     (callbackHandlerCommon "GET" req))
   (POST "/callbackGitkit" [:as req]
     
-    (let [cb-resp (callbackHandlerCommon "POST" req)]
-      (println (str "cb-resp: " cb-resp))
+    (let  [ cb-resp (callbackHandlerCommon "POST" req)
+            one (println (str "cb-resp: " cb-resp))
+            templ (enlive/html-resource "include/callbackUrlSuccess.html")
+            notify-input { :email (:verifiedEmail cb-resp) :registered (-> cb-resp :exists str) }
+            notify-input-str (clojure.data.json/json-str notify-input)
+          ]
+      
       ;;(response/redirect "/include/callbackUrlSuccess.html" cb-resp { :root "public" })
-      (response/redirect "/include/callbackUrlSuccess.html")
+      ;;(response/redirect "/include/callbackUrlSuccess.html")
+      
+      (apply str (enlive/emit*  (enlive/transform templ
+                          [[ :script (enlive/nth-of-type 3) ]]
+                          (enlive/content (str "window.google.identitytoolkit.notifyFederatedSuccess(" notify-input-str ");")))
+      ))
     )
   )
   

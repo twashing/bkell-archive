@@ -11,6 +11,7 @@
                     [clj-http "0.2.6"]
                     [twashing/sandbar "0.4.0-SNAPSHOT"]
                     [org.clojars.hozumi/session-expiry "1.0.0-SNAPSHOT"]
+                    [enlive "1.0.0"]
 	              ]
   
    :dev-dependencies[ [lein-search "0.3.4"]
