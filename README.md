@@ -9,9 +9,7 @@ git clone 'https://github.com/twashing/bkell.git'
 ```
 
 ## Database 
-````
 bkell requires a MongoDB to be installed
-````
 
 ## Run
 ````
