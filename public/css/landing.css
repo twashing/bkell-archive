@@ -410,27 +410,20 @@
 
 /* line 20, ../sass/landing.sass */
 #left-col {
-  position: relative;
-  clear: left;
   width: 308;
-  overflow-x: hidden;
-  overflow-y: hidden;
   background-image: url("/images/paper_2.png");
+  overflow-x: hidden;
 }
 
-/* line 32, ../sass/landing.sass */
+/* line 31, ../sass/landing.sass */
 #left-content {
   border-style: solid;
   border-width: 1px;
-  position: relative;
+  position: absolute;
   float: left;
-  width: auto;
-  height: auto;
-  overflow-x: auto;
-  overflow-y: auto;
 }
 
-/* line 46, ../sass/landing.sass */
+/* line 41, ../sass/landing.sass */
 #accounts, #account {
   border-style: solid;
   border-width: 1px;
@@ -441,7 +434,7 @@
   padding: 0px;
 }
 
-/* line 55, ../sass/landing.sass */
+/* line 50, ../sass/landing.sass */
 #left-toggler {
   width: 20;
   height: 20px;
@@ -450,8 +443,9 @@
   position: relative;
 }
 
-/* line 62, ../sass/landing.sass */
+/* line 57, ../sass/landing.sass */
 #right-col {
+  z-index: 10;
   width: 548px;
   zoom: 1;
   -moz-box-sizing: border-box;

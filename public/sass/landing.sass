@@ -18,30 +18,25 @@ $grid-gutter-width: 1px
 
 
 #left-col
-  position: relative
-  clear: left 
+  //position: relative
+  //clear: left 
   width: $left-content-width + $left-content-margin + $left-toggler-width
   //height: 200px
-  overflow-x: hidden
-  overflow-y: hidden
   background-image: url('/images/paper_2.png')
 
   //left: 0px
   //margin: 0 auto
+  overflow-x: hidden
   
 #left-content
   +debugM
   //width: $left-col-width
   //+grid(5)
-  @extend .stretched
-  position: relative 
+  //@extend .stretched
+  position: absolute 
   float: left
-  width: auto
-  height: auto
   //@include box-flex(1)
   //@include ceaser-transition(easeInOutExpo, width, 500ms, 0s)
-  overflow-x: auto
-  overflow-y: auto
 
 #accounts , #account
   +debugM
@@ -61,6 +56,7 @@ $grid-gutter-width: 1px
 
 #right-col
   //@extend .stretched
+  z-index: 10
   +grid(9)
   +box-flex(5)
   position: relative
