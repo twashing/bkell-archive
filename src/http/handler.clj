@@ -166,12 +166,10 @@
             notify-input-str (clojure.data.json/json-str notify-input)
           ]
       
-      ;;(response/redirect "/include/callbackUrlSuccess.html" cb-resp { :root "public" })
-      ;;(response/redirect "/include/callbackUrlSuccess.html")
-      
-      (apply str (enlive/emit*  (enlive/transform templ
-                          [[ :script (enlive/nth-of-type 3) ]]
-                          (enlive/content (str "window.google.identitytoolkit.notifyFederatedSuccess(" notify-input-str ");")))
+      (apply str (enlive/emit*  (enlive/transform 
+                                  templ
+                                  [[ :script (enlive/nth-of-type 3) ]]  ;; get the 3rd script tag 
+                                  (enlive/content (str "window.google.identitytoolkit.notifyFederatedSuccess(" notify-input-str ");")))
       ))
     )
   )

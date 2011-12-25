@@ -3,10 +3,15 @@
     <meta charset='utf-8' />
     <script src='https://ajax.googleapis.com/jsapi' type='text/javascript'></script>
     <script type='text/javascript'>
+      //<![CDATA[
         google.load("identitytoolkit", "1.0", {packages: ["notify"]});
+      //]]>
     </script>
     <script type='text/javascript'>
+      //<![CDATA[
         window.google.identitytoolkit.notifyFederatedSuccess({ "email": "name@email.com", "registered": true });
+        // use window.google.identitytoolkit.notifyFederatedError(); in case of error
+      //]]>
     </script>
   </head>
 </html>
