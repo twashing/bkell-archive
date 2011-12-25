@@ -15,9 +15,7 @@ bkell requires a MongoDB to be installed
 ````
 $ lein repl
 user=> 
-user=> (load "bkell")
-user=> (require 'bkell)
-user=> (bkell/-main)
+user=> (load "run-bkell")
 ````
 
 ## Tests
