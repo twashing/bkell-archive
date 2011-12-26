@@ -44,9 +44,10 @@
          *********/
         var easeOUT = function() {
           
+          console.log('easeOUT CALLED');
           $('#left-col')
             .animate(
-              { left: ('-=' + $('#left-content').css('width')), }, 
+              { left: '-=' + LEFT_WIDTH }, 
               { duration: 500, 
                 easing: 'easeInOutSine', 
                 complete: function() {
@@ -54,22 +55,24 @@
                   /*** 
                    * make sure the toggler button is still visible 
                    ***/
-                  $('#left-content').css('display','none');
-                  $('#left-col').css('width', $('#left-toggler').css('width'));
-                  $('#left-toggler').css('left', LEFT_WIDTH)
+                  //$('#left-wrapper').css('display','none');
+                  //$('#left-col').css('width', $('#left-toggler').css('width'));
+                  //$('#left-toggler').css('left', LEFT_WIDTH)
                   
                 },
               });
         };
         var easeIN = function() {     
           
-          $('#left-content').css('display','block');
-          $('#left-col').css('width', LEFT_COLUMN_WIDTH);
-          $('#left-toggler').css('left', 0)
+          console.log('easeIN CALLED');
+          
+          //$('#left-wrapper').css('display','block');
+          //$('#left-col').css('width', LEFT_COLUMN_WIDTH);
+          //$('#left-toggler').css('left', 0)
           
           $('#left-col')
-            .css('width','auto')
-            .animate({ left: ('+=' + $('#left-content').css('width')), }, 
+            //.css('width','auto')
+            .animate({ left: 0 }, 
               { duration: 500, 
                 easing: 'easeInOutSine', 
               });
@@ -101,7 +104,7 @@
         
         $("#accounts").load("/include/accounts.html", function() { 
           
-          LEFT_WIDTH = $('#accounts').css('width'); 
+          LEFT_WIDTH = $('#left-wrapper').width();
           LEFT_COLUMN_WIDTH = $('#left-col').css('width'); 
           
           // INITIAL render of Accounts (elements need to exist before View can bind to them); View will have the same call
@@ -177,10 +180,11 @@
             #subtitle-black online bookkeeping 
       
       #main-content 
-        #left-col.debug
-          #left-content
-            #accounts
-            #account
+        #left-col
+          #left-wrapper 
+            #left-content
+              #accounts
+              #account
           #left-toggler
         #right-col.debug 
           #right-content

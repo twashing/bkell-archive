@@ -410,31 +410,35 @@
 
 /* line 20, ../sass/landing.sass */
 #left-col {
+  position: relative;
   width: 308;
   background-image: url("/images/paper_2.png");
-  overflow-x: hidden;
 }
 
-/* line 31, ../sass/landing.sass */
-#left-content {
+/* line 30, ../sass/landing.sass */
+#left-wrapper {
   border-style: solid;
   border-width: 1px;
-  position: absolute;
-  float: left;
+  width: 288;
+  height: 500;
 }
 
-/* line 41, ../sass/landing.sass */
+/* line 38, ../sass/landing.sass */
+#left-content {
+  position: absolute;
+}
+
+/* line 48, ../sass/landing.sass */
 #accounts, #account {
   border-style: solid;
   border-width: 1px;
-  position: relative;
   width: 280;
   float: left;
   margin: 8;
   padding: 0px;
 }
 
-/* line 50, ../sass/landing.sass */
+/* line 57, ../sass/landing.sass */
 #left-toggler {
   width: 20;
   height: 20px;
@@ -443,7 +447,7 @@
   position: relative;
 }
 
-/* line 57, ../sass/landing.sass */
+/* line 64, ../sass/landing.sass */
 #right-col {
   z-index: 10;
   width: 548px;

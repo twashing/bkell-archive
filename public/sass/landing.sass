@@ -18,7 +18,7 @@ $grid-gutter-width: 1px
 
 
 #left-col
-  //position: relative
+  position: relative
   //clear: left 
   width: $left-content-width + $left-content-margin + $left-toggler-width
   //height: 200px
@@ -26,21 +26,28 @@ $grid-gutter-width: 1px
 
   //left: 0px
   //margin: 0 auto
-  overflow-x: hidden
+
+#left-wrapper
+  +debugM
+  //position: absolute
+  width: $left-content-width + $left-content-margin
+  height: 500
+  //overflow-x: hidden
+  //@extend .stretched
   
 #left-content
-  +debugM
+  //+debugM
   //width: $left-col-width
   //+grid(5)
   //@extend .stretched
   position: absolute 
-  float: left
+  //float: left
   //@include box-flex(1)
   //@include ceaser-transition(easeInOutExpo, width, 500ms, 0s)
 
 #accounts , #account
   +debugM
-  position: relative 
+  //position: relative 
   width: $left-content-width
   float: left
   margin: $left-content-margin
