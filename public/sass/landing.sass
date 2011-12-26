@@ -19,35 +19,23 @@ $grid-gutter-width: 1px
 
 #left-col
   position: relative
-  //clear: left 
   width: $left-content-width + $left-content-margin + $left-toggler-width
-  //height: 200px
   background-image: url('/images/paper_2.png')
 
-  //left: 0px
-  //margin: 0 auto
 
 #left-wrapper
-  +debugM
-  //position: absolute
+  float: left
   width: $left-content-width + $left-content-margin
   height: 500
-  //overflow-x: hidden
-  //@extend .stretched
+  overflow-x: hidden
+  overflow-y: hidden
   
 #left-content
-  //+debugM
-  //width: $left-col-width
-  //+grid(5)
   //@extend .stretched
-  position: absolute 
-  //float: left
-  //@include box-flex(1)
-  //@include ceaser-transition(easeInOutExpo, width, 500ms, 0s)
+  white-space: nowrap
+  width: 1000
 
 #accounts , #account
-  +debugM
-  //position: relative 
   width: $left-content-width
   float: left
   margin: $left-content-margin
@@ -63,7 +51,6 @@ $grid-gutter-width: 1px
 
 #right-col
   //@extend .stretched
-  z-index: 10
   +grid(9)
   +box-flex(5)
   position: relative

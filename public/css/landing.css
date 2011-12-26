@@ -415,30 +415,30 @@
   background-image: url("/images/paper_2.png");
 }
 
-/* line 30, ../sass/landing.sass */
+/* line 26, ../sass/landing.sass */
 #left-wrapper {
-  border-style: solid;
-  border-width: 1px;
+  float: left;
   width: 288;
   height: 500;
+  overflow-x: hidden;
+  overflow-y: hidden;
+}
+
+/* line 33, ../sass/landing.sass */
+#left-content {
+  white-space: nowrap;
+  width: 1000;
 }
 
 /* line 38, ../sass/landing.sass */
-#left-content {
-  position: absolute;
-}
-
-/* line 48, ../sass/landing.sass */
 #accounts, #account {
-  border-style: solid;
-  border-width: 1px;
   width: 280;
   float: left;
   margin: 8;
   padding: 0px;
 }
 
-/* line 57, ../sass/landing.sass */
+/* line 45, ../sass/landing.sass */
 #left-toggler {
   width: 20;
   height: 20px;
@@ -447,9 +447,8 @@
   position: relative;
 }
 
-/* line 64, ../sass/landing.sass */
+/* line 52, ../sass/landing.sass */
 #right-col {
-  z-index: 10;
   width: 548px;
   zoom: 1;
   -moz-box-sizing: border-box;
