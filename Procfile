@@ -1,3 +1,3 @@
 
-web: lein exec src/run-ring.clj
+web: lein run -m http.handler
 
