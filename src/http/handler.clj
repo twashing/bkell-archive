@@ -2,8 +2,8 @@
   
   (:use [compojure.core]
         [debug]
-        [sandbar.stateful-session]
-        [hozumi.session-expiry]
+        ;;[sandbar.stateful-session]
+        ;;[hozumi.session-expiry]
   )
   
   ;;(:use net.cgrand.enlive-html)
