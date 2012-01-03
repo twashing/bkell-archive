@@ -13,6 +13,7 @@
                     [org.clojars.hozumi/session-expiry "1.0.0-SNAPSHOT"]
                     [enlive "1.0.0"]
                     [swank-clojure "1.4.0-SNAPSHOT"]
+                    [ring/ring-jetty-adapter "1.0.1"]
 	              ]
   
    :dev-dependencies[ [lein-search "0.3.4"]
