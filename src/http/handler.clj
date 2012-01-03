@@ -24,8 +24,8 @@
             [clj-http.client :as client]
             [clojure.contrib.duck-streams :as dstreams]
             [net.cgrand.enlive-html :as enlive]
-            )
-  
+            [ring.adapter.jetty :as jetty]
+  )
 )
 
 
@@ -369,7 +369,7 @@
 
 (defn -main []
   (let [port (Integer/parseInt (System/getenv "PORT"))]
-    (run-jetty app {:port port})
+    (jetty/run-jetty app {:port port})
   ))
 
 
