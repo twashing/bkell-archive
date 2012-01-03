@@ -1,7 +1,7 @@
 (ns http.handler
   
   (:use [compojure.core]
-        [debug]
+        ;;[debug]
         ;;[sandbar.stateful-session]
         ;;[hozumi.session-expiry]
   )
