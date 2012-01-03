@@ -367,3 +367,8 @@
   (handler/site main))
 
 
+(defn -main []
+  (let [port (Integer/parseInt (System/getenv "PORT"))]
+  (run-jetty app {:port port})))
+
+
