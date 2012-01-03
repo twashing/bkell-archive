@@ -369,6 +369,7 @@
 
 (defn -main []
   (let [port (Integer/parseInt (System/getenv "PORT"))]
+    (println (str "Heroku port: " port))
     (jetty/run-jetty app {:port port})
   ))
 
