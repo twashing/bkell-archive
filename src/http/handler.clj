@@ -61,7 +61,7 @@
 (defn callbackHandlerCommon [method req]
   
     ;; needs to call 'verifyAssertion' to parse response - should return a { :user :map }
-    (let [  ruri "http://172.16.210.144:3000/callbackGitkit" 
+    #_(let [  ruri "http://172.16.210.144:3000/callbackGitkit" 
             pbody (encode-params (:params req))
             final-body (clojure.data.json/json-str { :requestUri ruri :postBody pbody })
             print1 (println (str "final-body:[" final-body "]"))

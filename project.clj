@@ -35,7 +35,7 @@
   ;; ./public/test/bin/jasmine-node -i . -i public/javascript/ public/test/test_register.js 
 
   ;;:repl-init "src/bkell.clj" 
-  :ring {:handler http.handler/app}
+  ;;:ring {:handler http.handler/app}
   :resources-path ".:src/:test/:src/commands/:src/spittoon/:vendor/:vendor/debug/:public/:etc/resources/"
   
 )
