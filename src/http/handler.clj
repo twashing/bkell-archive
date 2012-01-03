@@ -356,19 +356,20 @@
 )
 
 
-(def app
+#_(def app
   (-> main 
       handler/site
       ;;(wrap-session-expiry 3600)  ;; 1 hour 
       ;;wrap-stateful-session))
       ))
 
-#_(def app
+(def app
   (handler/site main))
 
 
 (defn -main []
   (let [port (Integer/parseInt (System/getenv "PORT"))]
-  (run-jetty app {:port port})))
+    (run-jetty app {:port port})
+  ))
 
 
