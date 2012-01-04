@@ -367,8 +367,9 @@
   (handler/site main))
 
 
-(defn -main []
-  (let [port (Integer/parseInt (System/getenv "PORT"))]
+(defn -main [& m]
+  (let [mode (keyword (or (first m) :dev))
+        port (Integer/parseInt (get (System/getenv) "PORT" "8080"))]
     (println (str "Heroku port: " port))
     (jetty/run-jetty app {:port port})
   ))
