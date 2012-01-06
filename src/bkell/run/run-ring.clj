@@ -1,4 +1,4 @@
-(ns bkell.run-ring
+(ns bkell.run.run-ring
   (:require [noir.server :as server])
 
 (server/load-views "src/bkell/http/views/") 

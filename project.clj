@@ -37,7 +37,7 @@
 
   ;;:repl-init "src/bkell.clj" 
   ;;:ring {:handler http.handler/app}
-  :resources-path ".:src/:test/:src/commands/:src/spittoon/:vendor/:vendor/debug/:public/:etc/resources/"
+  :resources-path ".:src/:test/:src/bkell/commands/:src/bkell/spittoon/:vendor/:vendor/debug/:public/:etc/resources/"
   
   :main bkell.run-ring
 )
