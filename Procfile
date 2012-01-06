@@ -1,3 +1,3 @@
 
-web: lein run -m http.handler
+web: lein run -m http.handler $PORT
 
