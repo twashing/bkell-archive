@@ -40,5 +40,6 @@
   ;;:ring {:handler http.handler/app}
   :resources-path ".:src/:test/:src/commands/:src/spittoon/:vendor/:vendor/debug/:public/:etc/resources/"
   
+  :main bkell.run-ring
 )
 
