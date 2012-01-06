@@ -13,6 +13,7 @@
                     [enlive "1.0.0"]
                     [swank-clojure "1.4.0-SNAPSHOT"]
                     [ring/ring-jetty-adapter "1.0.1"]
+                    [noir "1.3.0-alpha3"]
 	              ]
   
    :dev-dependencies[ [lein-search "0.3.4"]
@@ -35,10 +36,10 @@
   ;; trying with i) jasmine-node: https://github.com/mhevery/jasmine-node ii) downgraded nodejs to a stable version (v0.4.12)
   ;; ./public/test/bin/jasmine-node -i . -i public/javascript/ public/test/test_register.js 
 
-  ;;:repl-init "src/bkell.clj" 
-  ;;:ring {:handler http.handler/app}
-  :resources-path ".:src/:test/:src/bkell/commands/:src/bkell/spittoon/:vendor/:vendor/debug/:public/:etc/resources/"
+  ;; :repl-init "src/bkell.clj" 
+  ;; :ring {:handler http.handler/app}
+  ;; :resources-path ".:src/:test/:src/bkell/commands/:src/bkell/spittoon/:vendor/:vendor/debug/:public/:etc/resources/"
   
-  :main bkell.run-ring
+  :main bkell.run.run-ring
 )
 
