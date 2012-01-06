@@ -2,7 +2,7 @@
 
   (:use somnium.congomongo)
   ;;(:require debug)
-  (:require domain)
+  (:require bkell.domain)
 )
 
 
@@ -12,7 +12,7 @@
   (let [result (first (fetch "users" :where { :username uname }))]
     
     (if (-> result empty? not)
-      (domain/keywordize-tags result)
+      (bkell.domain/keywordize-tags result)
       nil
     )
   )
@@ -40,7 +40,7 @@
         r   "function(k,vals) { return { result : vals } ; }"
         result (map-reduce :bookkeeping m r :result-collection)]
     
-    (vec (map domain/keywordize-tags 
+    (vec (map bkell.domain/keywordize-tags 
       (-> result first :value :result)))  ;; dig in and get the currency list 
   )
 )
@@ -62,7 +62,7 @@
         result (map-reduce :bookkeeping m r :result-collection)]
 
     (if (-> result empty? not)
-      (-> result first :value domain/keywordize-tags) ;; dig in and get the currency
+      (-> result first :value bkell.domain/keywordize-tags) ;; dig in and get the currency
       nil
     )
   )
@@ -84,7 +84,7 @@
         r   "function(k,vals) { return { result : vals } ; }"
         result (map-reduce :bookkeeping m r :result-collection)]
     
-    (vec (map domain/keywordize-tags 
+    (vec (map bkell.domain/keywordize-tags 
       (-> result first :value :result)))  ;; dig in and get the currency list 
     
   )
@@ -107,7 +107,7 @@
         result (map-reduce :bookkeeping m r :result-collection)]
     
     (if (-> result empty? not)
-      (-> result first :value domain/keywordize-tags) ;; dig in and get the currency
+      (-> result first :value bkell.domain/keywordize-tags) ;; dig in and get the currency
       nil
     )
   )
@@ -131,7 +131,7 @@
         r   "function(k,vals) { return { result : vals } ; }"
         result (map-reduce :bookkeeping m r :result-collection)]
     
-    (vec (map domain/keywordize-tags 
+    (vec (map bkell.domain/keywordize-tags 
       (-> result first :value :result)))  ;; dig in and get the currency list 
     
   )
@@ -154,7 +154,7 @@
         result (map-reduce :bookkeeping m r :result-collection)]
 
     (if (-> result empty? not)
-      (-> result first :value domain/keywordize-tags)  ;; dig in and get the account
+      (-> result first :value bkell.domain/keywordize-tags)  ;; dig in and get the account
       nil
     )
   )

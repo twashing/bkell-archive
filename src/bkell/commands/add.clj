@@ -1,11 +1,11 @@
-(ns commands
+(ns bkell.commands
   
   ;;(:require clojure.contrib.logging)
   (:require clojure.string)
   (:require clojure.pprint)
   (:require [clojure.zip :as zip])
-  (:require domain)
-  (:require util)
+  (:require bkell.domain)
+  (:require bkell.util)
   
   (:use somnium.congomongo)
   ;;(:require debug)
@@ -14,7 +14,7 @@
 
 (defn add-user [user] 
   
-  { :pre  [ (util/verify-arg 
+  { :pre  [ (bkell.util/verify-arg 
               (not (= (:username user) ;; check that there is not a duplicate user 
                       (:username (first (fetch "users" :where { :username (:username user) })))))
               "This is a duplicate User"
@@ -25,8 +25,8 @@
     (insert! :groups (assoc gr :name (:username user) :owner (:username user))))
   (let [bk (load-file "etc/data/default.bookkeeping.clj")]  ;; insert the associated bookkeeping
     (insert! :bookkeeping (assoc bk :owner (:username user))))
-  (domain/keywordize-tags 
-    (insert! :users (assoc user :password (domain/md5-sum (:password user))))) ;; insert the user, after MD5 encrypting the password 
+  (bkell.domain/keywordize-tags 
+    (insert! :users (assoc user :password (bkell.domain/md5-sum (:password user))))) ;; insert the user, after MD5 encrypting the password 
 )
 
 
@@ -47,7 +47,7 @@
     ;;(debug/debug-repl)
     (if-let [result     ;; result will be a 'com.mongodb.WriteResult'
       (update! :bookkeeping { :_id (:_id ru) }  ;; passing in hash w/ ObjecId, NOT original object 
-        (domain/modify-currency                       ;; update the currency if existing  
+        (bkell.domain/modify-currency                       ;; update the currency if existing  
           ru
           :insert
           currency 
@@ -55,7 +55,7 @@
       
       (if (-> result .getLastError .ok)
         currency
-        (util/generate-error-response (.getErrorMessage result)))
+        (bkell.util/generate-error-response (.getErrorMessage result)))
     )
   )
 )
@@ -85,11 +85,11 @@
     
     (if-let [result ;; result will be a 'com.mongodb.WriteResult' 
       (update! :bookkeeping { :_id (:_id ru) }  ;; passing in hash w/ ObjecId, NOT original object
-        (domain/traverse-tree ru :insert { :id "main.accounts" } account))]
+        (bkell.domain/traverse-tree ru :insert { :id "main.accounts" } account))]
       
       (if (-> result .getLastError .ok)
         account
-        (util/generate-error-response (.getErrorMessage result)))
+        (bkell.util/generate-error-response (.getErrorMessage result)))
     )
   )
 )
@@ -103,13 +103,13 @@
             (not (clojure.string/blank? (:date entry)))
             
             ;; ASSERT that accounts correspond with existing accounts
-            (domain/account-for-entry? uname entry)
+            (bkell.domain/account-for-entry? uname entry)
             
             
             ;; ASSERT that entry is balanced 
             ;; :lhs -> dt/dt == ct/ct
             ;; :rhs -> dt/cr == ct/dt 
-            (domain/entry-balanced? uname entry)
+            (bkell.domain/entry-balanced? uname entry)
           ]
   }
   
@@ -117,11 +117,11 @@
     
     (if-let [result ;; result will be a 'com.mongodb.WriteResult' 
       (update! :bookkeeping { :_id (:_id ru) }  ;; passing in hash w/ ObjecId, NOT original object
-        (domain/traverse-tree ru :insert { :id "main.entries" } entry))]
+        (bkell.domain/traverse-tree ru :insert { :id "main.entries" } entry))]
       
       (if (-> result .getLastError .ok)
         entry
-        (util/generate-error-response (.getErrorMessage result)))
+        (bkell.util/generate-error-response (.getErrorMessage result)))
     )
   )
 )

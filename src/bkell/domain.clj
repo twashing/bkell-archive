@@ -1,4 +1,4 @@
-(ns domain
+(ns bkell.domain
   
   (:require [clojure.zip :as zip])
   (:use somnium.congomongo)

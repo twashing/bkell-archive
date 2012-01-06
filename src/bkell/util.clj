@@ -1,4 +1,4 @@
-(ns util
+(ns bkell.util
   (:require [swank.core]
             [swank.core.connection])
 )

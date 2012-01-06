@@ -2,13 +2,13 @@
 
   (:import java.io.FileReader)
   (:import java.lang.AssertionError)
-  (:require [domain]
-            [util]
-            [commands.add]
-            [commands.update]
-            [commands.get]
-            [commands.remove]
-            [commands.authenticate])
+  (:require [bkell.domain]
+            [bkell.util]
+            [bkell.commands.add]
+            [bkell.commands.update]
+            [bkell.commands.get]
+            [bkell.commands.remove]
+            [bkell.commands.authenticate])
 )
 
 
@@ -20,44 +20,44 @@
 
 (defn add [artifact-p & etal]
   
-  (let [  logged-in-user (commands/logged-in-user)]
+  (let [  logged-in-user (bkell.commands/logged-in-user)]
 
     (if (-> logged-in-user nil?)  ;; we want to see a logged-in-user 
       (if (-> artifact-p :tag (= :user) not) ;; you do not have to be authenticated to add a user 
-        (util/generate-error-response "User is not authenticated")
-        (eval `(commands/add (domain/keywordize-tags ~artifact-p) ~@etal))
+        (bkell.util/generate-error-response "User is not authenticated")
+        (eval `(bkell.commands/add (bkell.domain/keywordize-tags ~artifact-p) ~@etal))
       )
-      (eval `(commands/add (domain/keywordize-tags ~artifact-p) ~@etal))
+      (eval `(bkell.commands/add (bkell.domain/keywordize-tags ~artifact-p) ~@etal))
     )
   )
 )
 
 (defn get [akey & etal]
   
-  (let [  logged-in-user (commands/logged-in-user)]
+  (let [  logged-in-user (bkell.commands/logged-in-user)]
     (if (-> logged-in-user nil?)  ;; we want to see a logged-in-user 
-      (util/generate-error-response "User is not authenticated")
-      (eval `(commands/get ~akey ~@etal))  ;; ensure result is not nil before returning
+      (bkell.util/generate-error-response "User is not authenticated")
+      (eval `(bkell.commands/get ~akey ~@etal))  ;; ensure result is not nil before returning
     )
   )
 )
 
 (defn update [artifact-p & etal]
   
-  (let [  logged-in-user (commands/logged-in-user)]
+  (let [  logged-in-user (bkell.commands/logged-in-user)]
     (if (-> logged-in-user nil?)  ;; we want to see a logged-in-user 
-      (util/generate-error-response "User is not authenticated")
-      (domain/keywordize-tags 
-        (eval `(commands/update (domain/keywordize-tags ~artifact-p) ~@etal)))
+      (bkell.util/generate-error-response "User is not authenticated")
+      (bkell.domain/keywordize-tags 
+        (eval `(bkell.commands/update (bkell.domain/keywordize-tags ~artifact-p) ~@etal)))
     )
   )
 )
 
 (defn remove [entity & etal]
-  (let [  logged-in-user (commands/logged-in-user)]
+  (let [  logged-in-user (bkell.commands/logged-in-user)]
     (if (-> logged-in-user nil?)  ;; we want to see a logged-in-user 
-      (util/generate-error-response "User is not authenticated")
-      (eval `(commands/removek ~entity ~@etal))
+      (bkell.util/generate-error-response "User is not authenticated")
+      (eval `(bkell.commands/removek ~entity ~@etal))
     )
   )
 )
@@ -69,8 +69,8 @@
           ] }
   
   (try 
-    (commands/login-user user) 
-    (catch java.lang.AssertionError e (util/generate-error-responses (str "Error logging in: " (.getMessage e))))
+    (bkell.commands/login-user user) 
+    (catch java.lang.AssertionError e (bkell.util/generate-error-responses (str "Error logging in: " (.getMessage e))))
   )
 )
 

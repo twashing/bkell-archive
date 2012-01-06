@@ -1,4 +1,4 @@
-(ns run)
+(ns bkell.run)
 
 (load "bkell")
 (require 'bkell)

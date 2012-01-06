@@ -1,9 +1,9 @@
 (ns commands 
   (:use somnium.congomongo)
   (:require clojure.string)
-  (:require commands.get)
-  (:require commands.add)
-  (:require domain)
+  (:require bkell.commands.get)
+  (:require bkell.commands.add)
+  (:require bkell.domain)
   ;;(:require debug)
 )
 
@@ -20,7 +20,7 @@
                 user)]
       (if (-> result .getLastError .ok)
         user
-        (util/generate-error-response (.getErrorMessage result)))
+        (bkell.util/generate-error-response (.getErrorMessage result)))
     )
   )
 )
@@ -34,7 +34,7 @@
             (not (clojure.string/blank? (:id currency)))
           ] }
   (let [ru (fetch-one "bookkeeping" :where { :owner uname })
-        rc (commands/get-currency uname (:id currency))]
+        rc (bkell.commands/get-currency uname (:id currency))]
     
     (if rc 
       (update! :bookkeeping { :_id (:_id ru) }  ;; passing in hash w/ ObjecId, NOT original object 
@@ -43,7 +43,7 @@
           :update
           currency 
           default))
-      (commands/add-currency currency uname default)  ;; insert the currency otherwise 
+      (bkell.commands/add-currency currency uname default)  ;; insert the currency otherwise 
     )
   )
 )
@@ -59,16 +59,16 @@
             (not (nil? (:counterWeight account)))
           ] }
   (let [ru (fetch-one "bookkeeping" :where { :owner uname })
-        ra (commands/get-account uname (:id account))]
+        ra (bkell.commands/get-account uname (:id account))]
     
     (if ra 
       (if-let [result (update! :bookkeeping { :_id (:_id ru) }  ;; passing in hash w/ ObjecId, NOT original object
                         (domain/traverse-tree ru :update { :id (:id account) } account))]
         (if (-> result .getLastError .ok)
           account
-          (util/generate-error-response (.getErrorMessage result)))
+          (bkell.util/generate-error-response (.getErrorMessage result)))
       )
-      (commands/add account uname)
+      (bkell.commands/add account uname)
     )
   )
 )
@@ -94,7 +94,7 @@
   }
   
   (let [ru (fetch-one "bookkeeping" :where { :owner uname })
-        re (commands/get-entry uname (:id entry))]
+        re (bkell.commands/get-entry uname (:id entry))]
     
     (if re 
       (if-let [result 
@@ -103,9 +103,9 @@
         
         (if (-> result .getLastError .ok)
           entry
-          (util/generate-error-response (.getErrorMessage result)))
+          (bkell.util/generate-error-response (.getErrorMessage result)))
       )
-      (commands/add-entry entry uname)  ;; insert the entry otherwise 
+      (bkell.commands/add-entry entry uname)  ;; insert the entry otherwise 
     )
   )
   

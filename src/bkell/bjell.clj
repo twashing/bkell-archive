@@ -4,16 +4,16 @@
   (:use somnium.congomongo)
   ;;(:use clojure.contrib.debug)
   
-  (:require [bkell]
+  (:require [bkell.bkell]
             [clojure.data.json]
-            [domain]
-            [util])
+            [bkell.domain]
+            [bkell.util])
 
 )
 
 
 (defn init-shell [] 
-  (bkell/init-shell) 	;; the shell and memory 
+  (bkell.bkell/init-shell) 	;; the shell and memory 
 )
 
 (defn generate-id [entity]
@@ -26,10 +26,10 @@
 (defn add [artifact & etal]
   "artifact - input can be JSON String or Reader"
   
-  (let  [ artifact-p (-> artifact clojure.data.json/read-json domain/keywordize-tags generate-id)]
+  (let  [ artifact-p (-> artifact clojure.data.json/read-json bkell.domain/keywordize-tags generate-id)]
 
-      (domain/bsonid-to-id
-        (eval `(bkell/add ~artifact-p ~@etal)) )
+      (bkell.domain/bsonid-to-id
+        (eval `(bkell.bkell/add ~artifact-p ~@etal)) )
   )
 )
 
@@ -37,13 +37,13 @@
 
 (defn get [akey & etal]
   "akey - input is a String"
-    (let [result (eval `(bkell/get ~akey ~@etal))]
+    (let [result (eval `(bkell.bkell/get ~akey ~@etal))]
 
       (if (or (vector? result)
               (list? result)
               (empty? result))
         result
-        (domain/bsonid-to-id result)
+        (bkell.domain/bsonid-to-id result)
       )
     )
 )
@@ -51,16 +51,16 @@
 (defn update [artifact & etal]
   "artifact - input can be JSON String or Reader"
   
-  (let  [ artifact-p (domain/keywordize-tags (clojure.data.json/read-json artifact))]
-    (domain/bsonid-to-id
-      (eval `(bkell/update ~artifact-p ~@etal)) )
+  (let  [ artifact-p (bkell.domain/keywordize-tags (clojure.data.json/read-json artifact))]
+    (bkell.domain/bsonid-to-id
+      (eval `(bkell.bkell/update ~artifact-p ~@etal)) )
   )
 )
 
 (defn remove [entity & etal]
   "entity - input is a String"
   
-    (let [result (eval `(bkell/remove ~entity ~@etal))]
+    (let [result (eval `(bkell.bkell/remove ~entity ~@etal))]
       result
       #_(if (-> result nil? not)
         (clojure.data.json/json-str result)
@@ -70,8 +70,8 @@
 )
 
 (defn login [user]
-  (let  [ user-p (domain/keywordize-tags (clojure.data.json/read-json user))]
-    (-> user-p bkell/login domain/bsonid-to-id ))
+  (let  [ user-p (bkell.domain/keywordize-tags (clojure.data.json/read-json user))]
+    (-> user-p bkell.bkell/login bkell.domain/bsonid-to-id ))
 
 )
 
