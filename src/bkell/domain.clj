@@ -172,7 +172,7 @@
         ]
     
       (reduce (fn [a b] 
-                (apply domain/traverse-tree    ;; before calling update!, iterate through action list and apply on tree
+                (apply traverse-tree    ;; before calling update!, iterate through action list and apply on tree
                   (into [a] b)))        ;; give a vector of args to apply fn 'traverse-tree'
               context 
               (filter #(not (nil? %1)) alist) ;; filter out nils from action list 
@@ -182,7 +182,7 @@
 
 (defn account-for-entry? [uname entry] 
 
-  (empty? (let [ alist (domain/get-accounts uname)]
+  (empty? (let [ alist (get-accounts uname)]
             (filter (fn [a] (loop [x a y alist ] ;; given main.account list, loop through dt / ct in entrys and see if accountid matches 
                   (if (= (:accountid x) (:id (first y)))
                     false
@@ -207,7 +207,7 @@
   [uname entry] 
 
   (let [result  (reduce (fn [a b] 
-                          (let [acct (domain/find-linked-account uname b)]
+                          (let [acct (find-linked-account uname b)]
                           (if (or (and (= "debit" (:counterWeight acct)) (= :debit (keyword (:tag b))) ) 
                                   (and (= "credit" (:counterWeight acct)) (= :credit (keyword (:tag b)))))
                             (merge a { :lhs (+ (:lhs a) (:amount b)) } )     ;; increase :lhs if debit(ing) a debit account OR credit(ing) a credit account 

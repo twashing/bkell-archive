@@ -1,7 +1,8 @@
 (ns bkell.run.run-ring
   (:require [noir.server :as server]))
 
-(server/load-views "src/bkell/http/views/") 
+#_(server/load-views "src/bkell/http/views/") 
+(server/load-views "src/bkell/http/") 
 
 (defn -main [& m]
   (let [mode (keyword (or (first m) :dev))

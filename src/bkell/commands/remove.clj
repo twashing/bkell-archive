@@ -1,6 +1,6 @@
-(ns bkell.commands 
+(ns bkell.commands.remove
   (:use somnium.congomongo)
-  (:require bkell.domain)
+  (:require [bkell.domain :as domain])
 )
 
 

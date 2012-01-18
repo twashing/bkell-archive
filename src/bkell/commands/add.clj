@@ -1,4 +1,4 @@
-(ns bkell.commands
+(ns bkell.commands.add
   
   ;;(:require clojure.contrib.logging)
   (:require clojure.string)

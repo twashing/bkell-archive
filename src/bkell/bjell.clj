@@ -1,4 +1,4 @@
-(ns bjell
+(ns bkell.bjell
 
   (:import java.io.FileReader)
   (:use somnium.congomongo)

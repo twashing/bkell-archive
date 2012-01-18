@@ -1,7 +1,6 @@
-(ns commands
+(ns bkell.commands.get
 
   (:use somnium.congomongo)
-  ;;(:require debug)
   (:require bkell.domain)
 )
 

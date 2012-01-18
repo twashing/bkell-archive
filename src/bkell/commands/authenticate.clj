@@ -1,7 +1,5 @@
-(ns commands
-  (:require [get]
-            [clojure.string]
-            [bkell.domain]
+(ns bkell.commands.authenticate
+  (:require [clojure.string]
             [bkell.util]
   )
 )

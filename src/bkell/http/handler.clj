@@ -1,6 +1,7 @@
 (ns bkell.http.handler
   
   (:use [compojure.core]
+        [noir.core :only [defpage]]
         ;;[debug]
         ;;[sandbar.stateful-session]
         ;;[hozumi.session-expiry]
@@ -12,15 +13,15 @@
   ) 
   (:require [compojure.route :as route]
             [compojure.handler :as handler]
-            [bjell]
-            [bkell]
-            [commands.authenticate]
+            [bkell.bjell :as bjell]
+            [bkell.bkell :as bkell]
+            [bkell.commands.authenticate :as authenticatek]
+            [bkell.util :as util]
             [clojure.contrib.duck-streams :as duck-streams]
             [clojure.data.json :as json]
             [clojure.pprint :as pprint]
             [ring.middleware.file :as ring-file]
             [ring.util.response :as response]
-            [util]
             [clj-http.client :as client]
             [clojure.contrib.duck-streams :as dstreams]
             [net.cgrand.enlive-html :as enlive]
@@ -28,6 +29,9 @@
   )
 )
 
+
+(defpage "/" []   ;; index is the default page of the application 
+  (response/file-response "index.html" { :root "public" }))
 
 (defn init-handler []
   
@@ -207,7 +211,7 @@
   (DELETE "/user/:id" [id] 
     
     (println (str "DELETE ; /user/:id ; " id))
-    (let [lin-user (commands/logged-in-user)]
+    (let [lin-user (authenticatek/logged-in-user)]
       
       (->      ;; JSON of MongoDB WriteResult; TODO - make a proper JSON string for client 
         lin-user (bjell/remove id) (handle-errors 400) substitute-body) ;; TODO - stubbing in 'stub' user for now
@@ -220,7 +224,7 @@
   (POST "/account" [:as req] 
     
     (println (str "POST ; /account ; " req))
-    (let [lin-user (commands/logged-in-user)]
+    (let [lin-user (authenticatek/logged-in-user)]
       (if-let [body (duck-streams/slurp* (:body req))]
         (->      ;; JSON of MongoDB WriteResult; TODO - make a proper JSON string for client 
           body (bjell/add (:username lin-user)) (handle-errors 400) substitute-body) ;; TODO - stubbing in 'stub' user for now
@@ -231,7 +235,7 @@
   (GET "/accounts" [:as req] 
     
     (println (str "GET ; /accounts ; " req))
-    (let [lin-user (commands/logged-in-user)]
+    (let [lin-user (authenticatek/logged-in-user)]
       
       (->      ;; JSON of MongoDB WriteResult; TODO - make a proper JSON string for client 
         (bjell/get :accounts (:username lin-user)) (handle-errors 400) substitute-body) ;; TODO - stubbing in 'stub' user for now
@@ -240,7 +244,7 @@
   (GET "/account/:id" [id] 
     
     (println (str "GET ; /accounts/:id ; " id))
-    (let [lin-user (commands/logged-in-user)]
+    (let [lin-user (authenticatek/logged-in-user)]
       
       (->      ;; JSON of MongoDB WriteResult; TODO - make a proper JSON string for client 
         (bjell/get :account (:username lin-user) id ) (handle-errors 400) substitute-body) ;; TODO - stubbing in 'stub' user for now
@@ -249,7 +253,7 @@
   (PUT "/account/:id" [id :as req]
     
     (println (str "PUT ; /account/:id ; " req))
-    (let [lin-user (commands/logged-in-user)]
+    (let [lin-user (authenticatek/logged-in-user)]
       (if-let [body (duck-streams/slurp* (:body req))]
         (->      ;; JSON of MongoDB WriteResult; TODO - make a proper JSON string for client 
           (bjell/update body (:username lin-user) ) (handle-errors 400) substitute-body) ;; TODO - stubbing in 'stub' user for now
@@ -260,7 +264,7 @@
   (DELETE "/account/:id" [id] 
     
     (println (str "DELETE ; /account/:id ; " id))
-    (let [lin-user (commands/logged-in-user)]
+    (let [lin-user (authenticatek/logged-in-user)]
       
       (->      ;; JSON of MongoDB WriteResult; TODO - make a proper JSON string for client 
         lin-user (bjell/remove id) (handle-errors 400) substitute-body) ;; TODO - stubbing in 'stub' user for now
@@ -273,7 +277,7 @@
   (GET "/bookkeeping/:id" [id]
      
     (println (str "GET ; /bookkeeping/:id ; " id))
-    (let [lin-user (commands/logged-in-user)]
+    (let [lin-user (authenticatek/logged-in-user)]
       
       (->      ;; JSON of MongoDB WriteResult; TODO - make a proper JSON string for client 
         (bjell/get :bookkeeping (:username lin-user) id ) (handle-errors 400) substitute-body) ;; TODO - stubbing in 'stub' user for now
@@ -286,7 +290,7 @@
   (POST "/entry" [:as req] 
     
     (println (str "POST ; /entry ; " req))
-    (let [lin-user (commands/logged-in-user)]
+    (let [lin-user (authenticatek/logged-in-user)]
       (if-let [body (duck-streams/slurp* (:body req))]
         (->      ;; JSON of MongoDB WriteResult; TODO - make a proper JSON string for client 
           body (bjell/add (:username lin-user)) (handle-errors 400) substitute-body) ;; TODO - stubbing in 'stub' user for now
@@ -297,7 +301,7 @@
   (GET "/entries" [:as req] 
     
     (println (str "GET ; /entries ; " req))
-    (let [lin-user (commands/logged-in-user)]
+    (let [lin-user (authenticatek/logged-in-user)]
       
       (->      ;; JSON of MongoDB WriteResult; TODO - make a proper JSON string for client 
         (bjell/get :entries (:username lin-user)) (handle-errors 400) substitute-body) ;; TODO - stubbing in 'stub' user for now
@@ -306,7 +310,7 @@
   (GET "/entry/:id" [id] 
     
     (println (str "GET ; /entries/:id ; " id))
-    (let [lin-user (commands/logged-in-user)]
+    (let [lin-user (authenticatek/logged-in-user)]
       
       (->      ;; JSON of MongoDB WriteResult; TODO - make a proper JSON string for client 
         (bjell/get :entry (:username lin-user) id ) (handle-errors 400) substitute-body) ;; TODO - stubbing in 'stub' user for now
@@ -315,7 +319,7 @@
   (PUT "/entry/:id" [id :as req]
     
     (println (str "PUT ; /entry/:id ; " req))
-    (let [lin-user (commands/logged-in-user)]
+    (let [lin-user (authenticatek/logged-in-user)]
       (if-let [body (duck-streams/slurp* (:body req))]
         (->      ;; JSON of MongoDB WriteResult; TODO - make a proper JSON string for client 
           body (bjell/update (:username lin-user) ) (handle-errors 400) substitute-body) ;; TODO - stubbing in 'stub' user for now
@@ -326,7 +330,7 @@
   (DELETE "/entry/:id" [id] 
     
     (println (str "DELETE ; /entry/:id ; " id))
-    (let [lin-user (commands/logged-in-user)]
+    (let [lin-user (authenticatek/logged-in-user)]
       
       (->      ;; JSON of MongoDB WriteResult; TODO - make a proper JSON string for client 
         lin-user (bjell/remove id ) (handle-errors 400) substitute-body) ;; TODO - stubbing in 'stub' user for now
@@ -339,7 +343,7 @@
   (GET "/bookkeeping/:id" [id]
      
     (println (str "GET ; /bookkeeping/:id ; " id))
-    (let [lin-user (commands/logged-in-user)]
+    (let [lin-user (authenticatek/logged-in-user)]
       
       (->      ;; JSON of MongoDB WriteResult; TODO - make a proper JSON string for client 
         (bjell/get :bookkeeping (:username lin-user) id ) (handle-errors 400) substitute-body) ;; TODO - stubbing in 'stub' user for now
@@ -370,7 +374,6 @@
 (defn -main [& m]
   (let [mode (keyword (or (first m) :dev))
         port (Integer/parseInt (get (System/getenv) "PORT" "8080"))]
-    (println (str "Heroku port: " port))
     (jetty/run-jetty app {:port port})
   ))
 

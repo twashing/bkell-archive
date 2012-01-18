@@ -1,11 +1,12 @@
-(ns commands 
+(ns bkell.commands.update
   (:use somnium.congomongo)
-  (:require clojure.string)
-  (:require bkell.commands.get)
-  (:require bkell.commands.add)
-  (:require bkell.domain)
-  ;;(:require debug)
+  (:require 
+    [clojure.string]
+    [bkell.commands.get :as getk]
+    [bkell.commands.add :as addk]
+    [bkell.domain :as domain])
 )
+
 
 
 ;; update user 
@@ -34,7 +35,7 @@
             (not (clojure.string/blank? (:id currency)))
           ] }
   (let [ru (fetch-one "bookkeeping" :where { :owner uname })
-        rc (bkell.commands/get-currency uname (:id currency))]
+        rc (getk/get-currency uname (:id currency))]
     
     (if rc 
       (update! :bookkeeping { :_id (:_id ru) }  ;; passing in hash w/ ObjecId, NOT original object 
@@ -43,7 +44,7 @@
           :update
           currency 
           default))
-      (bkell.commands/add-currency currency uname default)  ;; insert the currency otherwise 
+      (addk/add-currency currency uname default)  ;; insert the currency otherwise 
     )
   )
 )
@@ -59,7 +60,7 @@
             (not (nil? (:counterWeight account)))
           ] }
   (let [ru (fetch-one "bookkeeping" :where { :owner uname })
-        ra (bkell.commands/get-account uname (:id account))]
+        ra (getk/get-account uname (:id account))]
     
     (if ra 
       (if-let [result (update! :bookkeeping { :_id (:_id ru) }  ;; passing in hash w/ ObjecId, NOT original object
@@ -68,7 +69,7 @@
           account
           (bkell.util/generate-error-response (.getErrorMessage result)))
       )
-      (bkell.commands/add account uname)
+      (addk/add account uname)
     )
   )
 )
@@ -94,7 +95,7 @@
   }
   
   (let [ru (fetch-one "bookkeeping" :where { :owner uname })
-        re (bkell.commands/get-entry uname (:id entry))]
+        re (getk/get-entry uname (:id entry))]
     
     (if re 
       (if-let [result 
@@ -105,7 +106,7 @@
           entry
           (bkell.util/generate-error-response (.getErrorMessage result)))
       )
-      (bkell.commands/add-entry entry uname)  ;; insert the entry otherwise 
+      (addk/add-entry entry uname)  ;; insert the entry otherwise 
     )
   )
   
