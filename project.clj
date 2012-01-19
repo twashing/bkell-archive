@@ -11,7 +11,6 @@
                     ;;[twashing/sandbar "0.4.0-SNAPSHOT"]
                     [org.clojars.hozumi/session-expiry "1.0.0-SNAPSHOT"]
                     [enlive "1.0.0"]
-                    [swank-clojure "1.4.0-SNAPSHOT"]
                     [ring/ring-jetty-adapter "1.0.1"]
                     [noir "1.3.0-alpha3"]
 	              ]
@@ -21,7 +20,10 @@
                       [clojure-source "1.2.0"]
                       [ring-serve "0.1.2"]
                       [org.clojars.ibdknox/lein-nailgun "1.1.1"]
+                      [com.stuartsierra/lazytest "1.2.3"]
 	            ] 
+
+  :repositories {"stuart" "http://stuartsierra.com/maven2"}
   
   ;; :jvm-opts ["-agentlib:jdwp=transport=dt_socket,server=y,suspend=n"]
   ;; Running SHELL bkell 
