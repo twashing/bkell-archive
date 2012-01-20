@@ -1,7 +1,7 @@
 (defproject bkell-clj "pre-alpha"
    :description "A Clojure implementation of the bookkeeping project"
    
-   :dependencies  [ [org.clojure/clojure "1.3.0-beta1"]
+   :dependencies  [ [org.clojure/clojure "1.3.0"]
                     [org.clojure/data.json "0.1.0"]
                     [clj-json "0.4.3"]
 	                [org.clojure/clojure-contrib "1.2.0"]
@@ -13,6 +13,9 @@
                     [enlive "1.0.0"]
                     [ring/ring-jetty-adapter "1.0.1"]
                     [noir "1.3.0-alpha3"]
+
+                    ;; workaround for https://github.com/ibdknox/noir/issues/76
+                    [clj-stacktrace "0.2.4"]
 	              ]
   
    :dev-dependencies[ [lein-search "0.3.4"]
@@ -20,6 +23,7 @@
                       [clojure-source "1.2.0"]
                       [ring-serve "0.1.2"]
                       [org.clojars.ibdknox/lein-nailgun "1.1.1"]
+                      [midje "1.3.2-SNAPSHOT"]
                       [com.stuartsierra/lazytest "1.2.3"]
 	            ] 
 

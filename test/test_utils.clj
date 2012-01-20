@@ -1,8 +1,9 @@
 (ns test-utils 
-  (:require clojure.contrib.logging)
   (:use somnium.congomongo)
-  (:require commands.add)
-  (:require bkell)
+  (:require [clojure.contrib.logging]
+            [bkell.commands.add :as addk]
+            [bkell.bkell :as bkell]
+  )
 )
 
 (defn test-fixture-db
@@ -24,7 +25,7 @@
 (defn add-user [uloc]
 
   (let [user (load-file (if (not (nil? uloc)) uloc "test/etc/data/stubu-two.clj"))]
-    (commands/add-user user)
+    (addk/add-user user)
   )
 )
 
@@ -33,17 +34,17 @@
   [] 
   
   ;; Adding AUD to already existing list of CDN, USD, BP, EUR, JPN
-  (commands/add-currency (load-file "test/etc/data/test-currency.clj") "stub" false)
+  (addk/add-currency (load-file "test/etc/data/test-currency.clj") "stub" false)
    
 )
 
 (defn populate-accounts
   "create 4 test accounts "
   []
-  (commands/add-account (load-file "test/etc/data/test-account-asset.clj") "stub")
-  (commands/add-account (load-file "test/etc/data/test-account-expense.clj") "stub")
-  (commands/add-account (load-file "test/etc/data/test-account-liability.clj") "stub")
-  (commands/add-account (load-file "test/etc/data/test-account-revenue.clj") "stub")
+  (addk/add-account (load-file "test/etc/data/test-account-asset.clj") "stub")
+  (addk/add-account (load-file "test/etc/data/test-account-expense.clj") "stub")
+  (addk/add-account (load-file "test/etc/data/test-account-liability.clj") "stub")
+  (addk/add-account (load-file "test/etc/data/test-account-revenue.clj") "stub")
 )
 
 (defn populate-entries 
@@ -52,13 +53,13 @@
 
   (let [entry (load-file "test/etc/data/test-entry-bal.clj") ]
     
-    (commands/add-entry 
+    (addk/add-entry 
       (merge  (merge entry { :id "testid" :date "03/22/2011" }) 
         {:content [ {:tag :debit :id "dtS" :amount 120.00 :accountid "cash" } 
                     {:tag :credit :id "crS" :amount 120.00 :accountid "accounts payable" }]}) 
       "stub") 
     
-    (commands/add-entry 
+    (addk/add-entry 
       (merge  (merge entry { :id "testid2" :date "03/22/2011" }) 
         {:content [ {:tag :debit :id "dtS" :amount 3000.00 :accountid "cash" } 
                     {:tag :credit :id "crS" :amount 3000.00 :accountid "accounts payable" }]})

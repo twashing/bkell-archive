@@ -1,8 +1,8 @@
 (ns add-test
-  (:use [clojure.test])
-  (:use somnium.congomongo)
-  (:require test-utils)
-  (:require commands.add)
+  (:use [clojure.test]
+        [somnium.congomongo])
+  (:require [test-utils]
+            [bkell.commands.add :as addk])
 )
 
 
@@ -17,7 +17,7 @@
   
   ;; assert basic add
   (let [user (load-file "test/etc/data/stubu-two.clj")
-        result (commands/add-user user)
+        result (addk/add-user user)
         ru (fetch "users" :where { :username (:username user) })]
       
       (is (not (nil? ru)) "There SHOULD be a user with the username 'stub'")
@@ -35,8 +35,8 @@
   
   (let [user (load-file "test/etc/data/stubu-two.clj")]
     
-    (commands/add-user user) 
-    (let [ae  (try (commands/add-user user)
+    (addk/add-user user) 
+    (let [ae  (try (addk/add-user user)
                 (catch java.lang.AssertionError ae ae))]
       
       (is (not (nil? ae)) "There SHOULD be an error when adding a duplicate user")
@@ -49,7 +49,7 @@
 (deftest test-add-associated-group 
   
   (let [user (load-file "test/etc/data/stubu-two.clj")]
-    (let [  result (commands/add-user user) 
+    (let [  result (addk/add-user user) 
             gr (:owner (first (fetch "groups" :where { :owner (:username user) })))]
       
       (is (not (nil? gr)) "There SHOULD be an associated group with the added user")
@@ -62,7 +62,7 @@
 (deftest test-add-associated-bookkeeping 
   
   (let [user (load-file "test/etc/data/stubu-two.clj")]
-    (let [  result (commands/add-user user) 
+    (let [  result (addk/add-user user) 
             bk (:owner (first (fetch "bookkeeping" :where { :owner (:username user) })))]
       
       (is (not (nil? bk)) "There SHOULD be an associated bookkeeping with the added user")
@@ -76,7 +76,7 @@
 (deftest test-encrypted-password 
     
   (let [user (load-file "test/etc/data/stubu-two.clj")]
-    (let [  result (commands/add-user user) 
+    (let [  result (addk/add-user user) 
             ru (first (fetch "users" :where { :username (:username user) }))]
       
       (is (not (nil? ru)) "There SHOULD be a user after creation")
@@ -90,11 +90,11 @@
   BOOKKEEPING tests)
 (deftest test-add-currency-1
   (let [user (load-file "test/etc/data/stubu-two.clj")]
-    (let  [ result (commands/add-user user) 
+    (let  [ result (addk/add-user user) 
             currency (load-file "test/etc/data/test-currency.clj")]
       
       ;; there SHOULD be an error if 'uname' is not set 
-      (let [ae  (try (commands/add-currency currency nil false)
+      (let [ae  (try (addk/add-currency currency nil false)
                   (catch java.lang.AssertionError ae ae))]
         
         (is (not (nil? ae)) "there SHOULD be an error if 'uname' is not set ")
@@ -105,11 +105,11 @@
 )
 (deftest test-add-currency-2
   (let [user (load-file "test/etc/data/stubu-two.clj")]
-    (let  [ result (commands/add-user user) 
+    (let  [ result (addk/add-user user) 
             currency (load-file "test/etc/data/test-currency.clj")]
       
       ;; there SHOULD be an error if adding currency without a 'name' or 'id' 
-      (let [aee  (try (commands/add-currency { :tag :currency } "stub" false)
+      (let [aee  (try (addk/add-currency { :tag :currency } "stub" false)
                   (catch java.lang.AssertionError ae ae))]
         
         (is (not (nil? aee)) "there SHOULD be an error if 'name' or 'id' is not set ")
@@ -120,10 +120,10 @@
 )
 (deftest test-add-currency-3
   (let [user (load-file "test/etc/data/stubu-two.clj")]
-    (let  [ result (commands/add-user user) 
+    (let  [ result (addk/add-user user) 
             currency (load-file "test/etc/data/test-currency.clj")]
       
-      (commands/add-currency currency "stub" true)
+      (addk/add-currency currency "stub" true)
       (let  [ bk (first (fetch "bookkeeping" :where { :owner (:username user) })) ]
         
         ;; assert that currency was added
@@ -140,12 +140,12 @@
 )
 (deftest test-add-currency-4
   (let [user (load-file "test/etc/data/stubu-two.clj")]
-    (let  [ result (commands/add-user user) 
+    (let  [ result (addk/add-user user) 
             currency (load-file "test/etc/data/test-currency.clj")]
       
       ;; ensure that we cannot add a duplicate currency 
-      (commands/add-currency currency "stub" false)
-      (let [ae  (try (commands/add-currency currency "stub" false)
+      (addk/add-currency currency "stub" false)
+      (let [ae  (try (addk/add-currency currency "stub" false)
                   (catch java.lang.AssertionError ae ae))]
         
         (is (not (nil? ae)) "there SHOULD be an error if a duplicate currency is added")
@@ -165,10 +165,10 @@
 (deftest test-add-account-1
   
   (let [user (load-file "test/etc/data/stubu-two.clj")
-        ru (commands/add-user user)
+        ru (addk/add-user user)
         account (load-file "test/etc/data/test-account-asset.clj")]
     
-    (let [ae  (try (commands/add-account { :tag :account :type "asset" :id "cash" :name nil :counterWeight "debit" } "stub" )
+    (let [ae  (try (addk/add-account { :tag :account :type "asset" :id "cash" :name nil :counterWeight "debit" } "stub" )
                 (catch java.lang.AssertionError ae ae))]
       
       ;; assert that we can't add a bad account 
@@ -176,7 +176,7 @@
       (is (= java.lang.AssertionError (type ae)) "return type is NOT an assertion error")
     )
      
-    (let [ra (commands/add-account { :tag :account :type "asset" :id "cash" :name "cash" :counterWeight "debit" } "stub") ]
+    (let [ra (addk/add-account { :tag :account :type "asset" :id "cash" :name "cash" :counterWeight "debit" } "stub") ]
       
       (let  [ bk (first (fetch "bookkeeping" :where { :owner (:username user) })) ]
         
@@ -194,11 +194,11 @@
 (deftest test-add-account-2
   
   (let [user (load-file "test/etc/data/stubu-two.clj")
-        ru (commands/add-user user)
+        ru (addk/add-user user)
         account (load-file "test/etc/data/test-account-asset.clj")]
     
-    (commands/add-account account "stub")
-    (let [ae  (try (commands/add-account account "stub")
+    (addk/add-account account "stub")
+    (let [ae  (try (addk/add-account account "stub")
                 (catch java.lang.AssertionError ae ae))]
       
       ;; assert that there is no duplicate account
@@ -213,7 +213,7 @@
   
   ;; ensure that entry has date & id 
   (let [entry (load-file "test/etc/data/test-entry-bal.clj")
-        ae  (try (commands/add-entry entry "stub")
+        ae  (try (addk/add-entry entry "stub")
               (catch java.lang.AssertionError ae ae))]
   
     (is (not (nil? ae)) "there SHOULD be an error if entry doesn't have 'date' and / or 'id'")
@@ -223,13 +223,13 @@
   
 (deftest test-add-entry-2
   (let [user (load-file "test/etc/data/stubu-two.clj")
-        ru (commands/add-user user)
+        ru (addk/add-user user)
         entry (load-file "test/etc/data/test-entry-bal.clj")]
     
     (test-utils/populate-accounts)
     
     ;; make entry have dt / ct associated with those accounts
-    (let [ae  (try  (commands/add-entry 
+    (let [ae  (try  (addk/add-entry 
                       (merge  (merge entry { :id "testid" :date "03/22/2011" }) 
                         {:content [ {:tag :debit :id "dtS" :amount 120.00 :accountid "fubar" } 
                                     {:tag :credit :id "crS" :amount 120.00 :accountid "accounts payable" }]})
@@ -244,13 +244,13 @@
 )
 (deftest test-add-entry-3
   (let [user (load-file "test/etc/data/stubu-two.clj")
-        ru (commands/add-user user)
+        ru (addk/add-user user)
         entry (load-file "test/etc/data/test-entry-bal.clj")]
     
     (test-utils/populate-accounts)
     
     ;; make entry have dt / ct associated with those accounts
-    (let [ae  (try  (commands/add-entry 
+    (let [ae  (try  (addk/add-entry 
                       (merge  (merge entry { :id "testid" :date "03/22/2011" }) 
                         {:content [ {:tag :debit :id "dtS" :amount 130.00 :accountid "cash" } 
                                     {:tag :credit :id "crS" :amount 120.00 :accountid "accounts payable" }]})
@@ -265,13 +265,13 @@
 )
 (deftest test-add-entry-4
   (let [user (load-file "test/etc/data/stubu-two.clj")
-        ru (commands/add-user user)]
+        ru (addk/add-user user)]
         ;;entry (load-file "test/etc/data/test-entry-bal.clj")]
     
     (test-utils/populate-accounts)
     
     ;; add the entry
-    (commands/add-entry 
+    (addk/add-entry 
       (test-utils/create-balanced-test-entry)
       "stub")
     
@@ -290,30 +290,30 @@
 ;; Testing multimethods 
 (deftest test-addU
   (let [user (load-file "test/etc/data/stubu-two.clj")]
-    (commands/add user)
+    (addk/add user)
   )
 )
 (deftest test-addC
   (let [user (load-file "test/etc/data/stubu-two.clj")
-        ru (commands/add-user user)
+        ru (addk/add-user user)
         currency (load-file "test/etc/data/test-currency.clj")]
-    (commands/add currency "stub" false)
+    (addk/add currency "stub" false)
   )
 )
 (deftest test-addA
   (let [user (load-file "test/etc/data/stubu-two.clj")
-        ru (commands/add-user user)
+        ru (addk/add-user user)
         account (load-file "test/etc/data/test-account-asset.clj")]
-    (commands/add account "stub")
+    (addk/add account "stub")
   )
 )
 (deftest test-addE
   (let  [user (load-file "test/etc/data/stubu-two.clj")
-         ru (commands/add-user user)
+         ru (addk/add-user user)
          xx (test-utils/populate-accounts)
          entry (test-utils/create-balanced-test-entry)
          ]
-    (commands/add entry "stub")
+    (addk/add entry "stub")
   )
 )
 

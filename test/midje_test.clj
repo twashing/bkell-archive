@@ -1,10 +1,18 @@
 (ns midje_test
-  (:use clojure.test)
-  (:use midje.sweet)
+  
+  (:use [clojure.test]
+        [midje.sweet]
+  )
+  (:require [noir.util.test :as nutest]
+  )
 )
 
 
 ;; we can get a default page "/"
+#_(fact (nutest/send-request "/")
+      =>
+      asdf
+)
 
 
 
