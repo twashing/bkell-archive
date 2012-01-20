@@ -4,7 +4,8 @@
     [clojure.string]
     [bkell.commands.get :as getk]
     [bkell.commands.add :as addk]
-    [bkell.domain :as domain])
+    [bkell.domain :as domain]
+    [bkell.util])
 )
 
 

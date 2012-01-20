@@ -1,7 +1,7 @@
 (defproject bkell-clj "pre-alpha"
    :description "A Clojure implementation of the bookkeeping project"
    
-   :dependencies  [ [org.clojure/clojure "1.3.0"]
+   :dependencies  [ [org.clojure/clojure "1.3.0-beta1"]
                     [org.clojure/data.json "0.1.0"]
                     [clj-json "0.4.3"]
 	                [org.clojure/clojure-contrib "1.2.0"]
