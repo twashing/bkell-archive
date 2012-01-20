@@ -9,7 +9,8 @@
   "Throw IllegalArgumentException with specified arguments. Use this when you
    encounter bad/invalid parameters."
   [reason] 
-    (throw (IllegalArgumentException. reason )))
+  (throw (IllegalArgumentException. reason ))
+)
 
 
 (defmacro verify-arg

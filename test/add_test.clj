@@ -2,7 +2,8 @@
   (:use [clojure.test]
         [somnium.congomongo])
   (:require [test-utils]
-            [bkell.commands.add :as addk])
+            [bkell.commands.add :as addk]
+            [bkell.domain :as domain])
 )
 
 
@@ -36,11 +37,12 @@
   (let [user (load-file "test/etc/data/stubu-two.clj")]
     
     (addk/add-user user) 
-    (let [ae  (try (addk/add-user user)
-                (catch java.lang.AssertionError ae ae))]
+    (let [ae  (try  (addk/add-user user)
+                    (catch java.lang.AssertionError ae ae)
+                    (catch java.lang.IllegalArgumentException iae iae))]
       
       (is (not (nil? ae)) "There SHOULD be an error when adding a duplicate user")
-      (is (= java.lang.AssertionError (type ae)) "return type is NOT an assertion error")
+      (is (= java.lang.IllegalArgumentException (type ae)) "return type is NOT an assertion error")
     )
   )
 )
