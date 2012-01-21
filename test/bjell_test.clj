@@ -1,14 +1,16 @@
 (ns bjell-test 
-  (:use [bjell] :reload-all)
-  (:use [clojure.test])
-  (:use somnium.congomongo)
-  (:require test-utils)
-  ;;(:require clojure.contrib.logging)
-  (:require clojure.data.json)
-  (:require clojure.contrib.str-utils2)
+  
   (:import java.io.FileReader)
-  (:require bkell)
-  (:require domain)
+  (:use [clojure.test]
+        [somnium.congomongo])
+  
+  (:require [test-utils]
+            [clojure.data.json]
+            [clojure.contrib.str-utils2]
+            [bkell.bkell :as bkell]
+            [bkell.bjell :as bjell]
+            [bkell.domain :as domain]
+            [bkell.commands.authenticate :as authenticatek])
 )
 
 
@@ -52,7 +54,7 @@
     )
     
     ;; now log-in a user
-    (commands/login-user ru) 
+    (authenticatek/login-user ru) 
     
     (let [  fresult 
             (bjell/add (FileReader. "test/etc/data/test-currency.js") "stub" false)]  ;; have to reread the file b/c can't reset stram
@@ -80,7 +82,7 @@
     )
     
     ;; now log-in a user
-    (commands/login-user ru) 
+    (authenticatek/login-user ru) 
     
     (let [ fresult (bjell/get :user "stub")]
       
@@ -105,7 +107,7 @@
     )
     
     ;; now log-in a user
-    (commands/login-user ru) 
+    (authenticatek/login-user ru) 
     
     (let [ fresult (bjell/get :currency "stub" "USD")]
       

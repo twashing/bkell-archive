@@ -2,8 +2,6 @@
 
   (:import java.io.FileReader)
   (:use somnium.congomongo)
-  ;;(:use clojure.contrib.debug)
-  
   (:require [bkell.bkell]
             [clojure.data.json]
             [bkell.domain]
