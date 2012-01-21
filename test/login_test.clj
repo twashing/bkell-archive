@@ -1,18 +1,17 @@
 (ns login-test
   
-	(:require [bkell])
-      
-    (:use somnium.congomongo)
-    (:require test-utils)
-    (:use [clojure.test])
-	(:require clojure.contrib.str-utils)
-    (:require commands.add)
-    (:require commands.get)
-    (:require commands.remove)
-    (:require commands.authenticate)
-    (:require clojure.contrib.logging)
-    ;;(:require debug)
-    (:require bkell)
+    (:use [somnium.congomongo]
+          [clojure.test])
+    
+    (:require [test-utils]
+	          [clojure.contrib.str-utils]
+              [clojure.contrib.logging]
+              [bkell.commands.add :as addk]
+              [bkell.commands.get :as getk]
+              [bkell.commands.remove :as removek]
+              [bkell.commands.authenticate :as authenticatek]
+              [bkell.bkell :as bkell]
+    )
 )
 
 
@@ -62,9 +61,9 @@
 ;; test basic login
 (deftest test-login []
     
-    (let [ user (commands/get-user "stub") ]
+    (let [ user (getk/get-user "stub") ]
       
-      (commands/login-user user)
+      (authenticatek/login-user user)
       
       (is (not (nil? user)) "User should NOT be nil")
       (is (not (nil? (bkell/shell :logged-in-user))) "User should be in a 'logged-in-user' state")
@@ -75,18 +74,18 @@
 ;; test result when already logged in
 (deftest test-existing-login []
     
-    (let [ user (commands/get-user "stub") ]
+    (let [ user (getk/get-user "stub") ]
       
-      (commands/login-user user)
+      (authenticatek/login-user user)
       
-      (let [ nd_user (commands/get-user "stub") ]
+      (let [ nd_user (getk/get-user "stub") ]
         
         ;; check that nd_user is NOT nil 
         (is (not (nil? nd_user)))
 
         ;; login the '2nd_user' 
         (def nd_error nil)
-        (try  (commands/login-user nd_user)
+        (try  (authenticatek/login-user nd_user)
           (catch java.lang.AssertionError e e))
           
         ;; check that there are no errors 
@@ -98,7 +97,7 @@
     (let [ new_user (merge (load-file "test/etc/data/stubu-one.clj") { :username "two" } ) ]
       
       (def new_error nil)
-      (try  (commands/login-user new_user)
+      (try  (authenticatek/login-user new_user)
         (catch java.lang.AssertionError e (def new_error e)))
       
       ;; There SHOULD be errors when trying to login a new user without logging out the old 
@@ -111,7 +110,7 @@
 (deftest test-bad-password []
     
     (let [  auth-error
-            (try  (commands/login-user { :tag :user :username "stub" :password "xxxxxx" })
+            (try  (authenticatek/login-user { :tag :user :username "stub" :password "xxxxxx" })
                   (catch java.lang.AssertionError e e))]
         (is (not (nil? auth-error)) "There SHOULD be an error when givin a bad password") 
     )
@@ -121,12 +120,12 @@
 ;; test logging out
 (deftest test-logout-1 []
 
-    (let [ user (commands/get-user "stub") ]
+    (let [ user (getk/get-user "stub") ]
       
-      (commands/login-user user)
+      (authenticatek/login-user user)
       (is (not (nil? (@bkell/shell :logged-in-user))) "test-logout > User should be in a 'logged-in-user' state")
          
-      (commands/logout-user user)
+      (authenticatek/logout-user user)
       (is (nil? (@bkell/shell :logged-in-user)) "there SHOULD NOT be a logged-in-user" )
       
     )
@@ -135,12 +134,12 @@
 ;; ensure that user being logged out is indeed logged in 
 (deftest test-logout-2 []
   
-  (let [ user (commands/get-user "stub") ]
+  (let [ user (getk/get-user "stub") ]
     
-    (commands/login-user user)
+    (authenticatek/login-user user)
     (is (not (nil? (@bkell/shell :logged-in-user))) "test-logout > User should be in a 'logged-in-user' state")
     
-    (let  [ err (try  (commands/logout-user { :tag "user" :username "new.user" })
+    (let  [ err (try  (authenticatek/logout-user { :tag "user" :username "new.user" })
                       (catch java.lang.AssertionError e e))]
 
       (is (not (nil? err)) "There SHOULD be an error when trying to logout different user from existing logged in user" )
