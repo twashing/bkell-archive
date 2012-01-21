@@ -1,6 +1,7 @@
 (ns bkell.commands.authenticate
   (:require [clojure.string]
             [bkell.util]
+            [bkell.commands.get :as getk]
   )
 )
 
@@ -31,7 +32,7 @@
     
     { :pre  [ (not (same-user-check user))
               ;;(not (nil? (seq (commands/get :user (:username user))))) ;; TODO - figure out a way to make 1 DB call 
-              (= (:password user) (->> user :username (get :user) :password))
+              (= (:password user) (->> user :username (getk/get :user) :password))
             ]
     }
     (dosync 

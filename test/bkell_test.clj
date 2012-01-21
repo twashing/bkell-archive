@@ -1,22 +1,22 @@
 (ns bkell-test 
   
-  (:use [bkell] :reload-all)
   (:use [clojure.test])
   
-  (:require test-utils)
-  (:require clojure.contrib.logging)
-  (:require commands.add)
-  (:require commands.get)
-  (:require commands.update)
-  (:require commands.remove)
-  (:require commands.authenticate)
-  (:require domain)
-  (:require util)
+  (:require [test-utils]
+            [clojure.contrib.logging]
+            [bkell.commands.add :as addk]
+            [bkell.commands.get :as getk]
+            [bkell.commands.update :as updatek]
+            [bkell.commands.remove :as removek]
+            [bkell.commands.authenticate :as authenticatek]
+            [bkell.domain :as domain]
+            [bkell.util :as util]
+            [bkell.bkell :as bkell])
 )
 
 
 (use-fixtures :each test-utils/test-fixture-db)
-(somnium.congomongo/mongo! :db "bkell-test") ;; connect to mongodb
+(somnium.congomongo/mongo! :db "bkell") ;; connect to mongodb
 
 
 ;; ==================
@@ -32,7 +32,7 @@
 )
 (deftest test-addC
   (let [user (load-file "test/etc/data/stubu-two.clj")
-        ru (commands/add-user user)
+        ru (addk/add-user user)
         
         bk (bkell/init-shell)      ;; initialize the bkell 
         currency (load-file "test/etc/data/test-currency.clj")]
@@ -45,7 +45,7 @@
     )
     
     ;; now log-in a user
-    (commands/login-user ru) 
+    (authenticatek/login-user ru) 
     
     (let [ fresult (bkell/add currency "stub" false)]
       
@@ -56,7 +56,7 @@
 )
 (deftest test-addA
   (let [user (load-file "test/etc/data/stubu-two.clj")
-        ru (commands/add-user user)
+        ru (addk/add-user user)
         
         bk (bkell/init-shell)      ;; initialize the bkell 
         account (load-file "test/etc/data/test-account-asset.clj")]
@@ -67,7 +67,7 @@
       (is (-> eresult :tag (= :error)))
     )
     ;; now log-in a user
-    (commands/login-user ru) 
+    (authenticatek/login-user ru) 
     
     (let [fresult (bkell/add account "stub")]
       
@@ -78,7 +78,7 @@
 )
 (deftest test-addE
   (let  [ user (load-file "test/etc/data/stubu-two.clj")
-          ru (commands/add-user user)
+          ru (addk/add-user user)
           
           bk (bkell/init-shell)      ;; initialize the bkell 
           xx (test-utils/populate-accounts)
@@ -91,7 +91,7 @@
       (is (-> eresult :tag (= :error)))
     )
     ;; now log-in a user
-    (commands/login-user ru) 
+    (authenticatek/login-user ru) 
     
     (let [fresult (bkell/add entry "stub")]
       
@@ -116,7 +116,7 @@
     )
     
     ;; now log-in a user
-    (commands/login-user ruser) 
+    (authenticatek/login-user ruser) 
     
     (let [ fresult (bkell/get :user (:username ruser))]
       
@@ -128,7 +128,7 @@
 )
 (deftest test-getC
   (let [user (load-file "test/etc/data/stubu-two.clj")
-        ru (commands/add-user user)
+        ru (addk/add-user user)
         
         bk (bkell/init-shell)      ;; initialize the bkell 
         ]
@@ -141,7 +141,7 @@
     )
     
     ;; now log-in a user
-    (commands/login-user ru) 
+    (authenticatek/login-user ru) 
     
     (let [ fresult (bkell/get :currency "stub" "USD")]
       
@@ -155,7 +155,7 @@
 ;; ACCOUNTS 
 (deftest test-getA
   (let [user (load-file "test/etc/data/stubu-two.clj")
-        ru (commands/add-user user)
+        ru (addk/add-user user)
         
         bk (bkell/init-shell)      ;; initialize the bkell 
         account (load-file "test/etc/data/test-account-asset.clj")]
@@ -167,7 +167,7 @@
       (is (-> eresult :tag (= :error)))
     )
     
-    (commands/login-user ru) ;; now log-in a user
+    (authenticatek/login-user ru) ;; now log-in a user
     (bkell/add account "stub" false) ;; now add an account 
     
     (let [ fresult (bkell/get :account "stub" "cash")]
@@ -182,7 +182,7 @@
 ;; ENTRY 
 (deftest test-getE
   (let [user (load-file "test/etc/data/stubu-two.clj")
-        ru (commands/add-user user)
+        ru (addk/add-user user)
         
         bk (bkell/init-shell)      ;; initialize the bkell 
         entry (test-utils/create-balanced-test-entry)]
@@ -194,7 +194,7 @@
     )
     
     
-    (commands/login-user ru) ;; now log-in a user
+    (authenticatek/login-user ru) ;; now log-in a user
     (test-utils/populate-accounts)
     (test-utils/populate-entries)  ;; add a test entry before retreival
     
@@ -212,7 +212,7 @@
 (deftest test-get-lists
   
   ;; add the user 
-  (commands/add-user (load-file "test/etc/data/stubu-two.clj"))
+  (addk/add-user (load-file "test/etc/data/stubu-two.clj"))
   (bkell/init-shell)      ;; initialize the bkell 
   
   ;; test get currencies 
@@ -230,19 +230,19 @@
     (is (-> eresult :tag (= :error)))
   )
     
-  (let  [fresult (commands/get :currencies "stub")]
+  (let  [fresult (getk/get :currencies "stub")]
     (is (-> fresult nil? not))
     (is (-> fresult vector?))
     (is (-> fresult first :tag (= :currency)))
   )
   
-  (let  [fresult (commands/get :accounts "stub")]
+  (let  [fresult (getk/get :accounts "stub")]
     (is (-> fresult nil? not))
     (is (-> fresult vector?))
     (is (-> fresult first :tag (= :account)))
   )
   
-  (let  [fresult (commands/get :entries "stub")]
+  (let  [fresult (getk/get :entries "stub")]
     (is (-> fresult nil? not))
     (is (-> fresult vector?))
     (is (-> fresult first :tag (= :entry)))
@@ -268,7 +268,7 @@
     )
     
     ;; now log-in a user
-    (commands/login-user ruser) 
+    (authenticatek/login-user ruser) 
     
     ;; ensure we are returning a :user map
     (let [ fresult (bkell/update (merge user {:password "asdf"}))]
@@ -291,7 +291,7 @@
 ;; update currency 
 (deftest test-updateC
   (let [user (load-file "test/etc/data/stubu-two.clj")
-        ru (commands/add-user user)
+        ru (addk/add-user user)
         
         bk (bkell/init-shell)      ;; initialize the bkell 
         currency (load-file "test/etc/data/test-currency.clj")]
@@ -304,7 +304,7 @@
     )
     
     ;; now log-in a user
-    (commands/login-user ru) 
+    (authenticatek/login-user ru) 
     
     ;; ensure we are returning a :user map
     (let [ fresult (bkell/update (merge currency {:content "some content"}) (:username ru) false)]
@@ -326,7 +326,7 @@
 ;; update account 
 (deftest test-updateA
   (let [user (load-file "test/etc/data/stubu-two.clj")
-        ru (commands/add-user user)
+        ru (addk/add-user user)
         
         bk (bkell/init-shell)      ;; initialize the bkell 
         account (load-file "test/etc/data/test-account-asset.clj")]
@@ -339,7 +339,7 @@
     )
     
     ;; now log-in a user
-    (commands/login-user ru) 
+    (authenticatek/login-user ru) 
     
     ;; ensure we are returning a :user map
     (let [ fresult (bkell/update (merge account {:name "thing"}) (:username ru))]
@@ -362,7 +362,7 @@
 ;; update entry 
 (deftest test-updateE
   (let [user (load-file "test/etc/data/stubu-two.clj")
-        ru (commands/add-user user)
+        ru (addk/add-user user)
         
         bk (bkell/init-shell)      ;; initialize the bkell 
         entry (test-utils/create-balanced-test-entry)]
@@ -375,7 +375,7 @@
     )
     
     ;; now log-in a user
-    (commands/login-user ru) 
+    (authenticatek/login-user ru) 
     (test-utils/populate-accounts)
     
     ;; ensure we are returning a :user map
@@ -415,7 +415,7 @@
     )
     
     ;; now log-in a user
-    (commands/login-user ruser) 
+    (authenticatek/login-user ruser) 
     
     ;; ensure we are returning nil
     (let [ fresult (bkell/remove ruser)]
@@ -434,11 +434,11 @@
 ;; remove currency 
 (deftest test-removeC
   (let [user (load-file "test/etc/data/stubu-two.clj")
-        ru (commands/add-user user)
+        ru (addk/add-user user)
         
         bk (bkell/init-shell)      ;; initialize the bkell 
         currency (load-file "test/etc/data/test-currency.clj")
-        rc (commands/add-currency currency (:username ru) false)]
+        rc (addk/add-currency currency (:username ru) false)]
     
     ;; ensure that an error is returned if we try to remove a currency without logging in 
     (let [ eresult (bkell/remove currency (:username ru))]
@@ -447,7 +447,7 @@
     )
     
     ;; now log-in a user
-    (commands/login-user ru) 
+    (authenticatek/login-user ru) 
     
     ;; ensure we are returning nil
     (let [ fresult (bkell/remove currency (:username ru))]
@@ -462,11 +462,11 @@
 ;; remove account 
 (deftest test-removeA
   (let [user (load-file "test/etc/data/stubu-two.clj")
-        ru (commands/add-user user)
+        ru (addk/add-user user)
         
         bk (bkell/init-shell)      ;; initialize the bkell 
         account (load-file "test/etc/data/test-account-asset.clj")
-        ra (commands/add account (:username ru))]
+        ra (addk/add account (:username ru))]
     
     ;; ensure that an error is returned if we try to remove a currency without logging in 
     (let [ eresult (bkell/remove account (:username ru))]
@@ -475,7 +475,7 @@
     )
     
     ;; now log-in a user
-    (commands/login-user ru) 
+    (authenticatek/login-user ru) 
     
     ;; ensure we are returning nil
     (let [ fresult (bkell/remove account (:username ru))]
@@ -490,7 +490,7 @@
 ;; remove entry 
 (deftest test-removeE
   (let [user (load-file "test/etc/data/stubu-two.clj")
-        ru (commands/add-user user)
+        ru (addk/add-user user)
         
         bk (bkell/init-shell)      ;; initialize the bkell 
         xx (test-utils/populate-accounts)
@@ -503,7 +503,7 @@
     )
     
     ;; now log-in a user
-    (commands/login-user ru) 
+    (authenticatek/login-user ru) 
     
     ;; ensure we are returning nil
     (let [ fresult (bkell/remove entry (:username ru))]
