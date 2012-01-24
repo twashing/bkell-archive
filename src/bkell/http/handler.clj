@@ -57,16 +57,24 @@
             host-port (-> @bkell/shell :mode (@bkell/shell) :host-port)
             developer-key (-> @bkell/shell :mode (@bkell/shell) :developer-key)
             ruri  (str  (generate-host-address host-url host-port) "/callbackGitkit" )
-            pbody (encode-params (:params req))
-            final-body (clojure.data.json/json-str { :requestUri ruri :postBody pbody })
-            print1 (println (str "final-body:[" final-body "]"))
-            verify-resp (client/post
-                    (str "https://www.googleapis.com/identitytoolkit/v1/relyingparty/verifyAssertion?key=" developer-key)
+            pbody (encode-params req)
+            
+            print0 (println (str "ruri:[" ruri "]"))
+            
+            final-url (str "https://www.googleapis.com/identitytoolkit/v1/relyingparty/verifyAssertion?key=" developer-key)
+            ;;final-body (clojure.data.json/json-str { :requestUri ruri :postBody pbody })
+            final-body (str "{'requestUri':'" ruri "','postBody':'" pbody "'}")
+            
+            print1 (println (str "final-url:[" final-url "]"))
+            print2 (println (str "final-body:[" final-body "]"))
+            
+            verify-resp (client/post 
+                    final-url
                     { :body final-body
                       :content-type :json
                     })
-            print2 (println (str "verify-resp " verify-resp))
             
+            print3 (println (str "verify-resp: " verify-resp))
          ]
       
         ; check if user exists ; add to DB if not 
@@ -183,6 +191,7 @@
   (callbackHandlerCommon "GET" req))
 (defpage [:post "/callbackGitkit"] [:as req]
   
+  (println (str "/callbackGitkit HANDLER: " req))
   (let  [ cb-resp (callbackHandlerCommon "POST" req)
           one (println (str "cb-resp: " cb-resp))
           templ (enlive/html-resource "include/callbackUrlSuccess.html")
