@@ -4,8 +4,11 @@
 (server/load-views "src/bkell/http/") 
 
 (defn -main [& m]
-  (let [mode (keyword (or (first m) :dev))
-        port (Integer. (get (System/getenv) "PORT" "8080"))]
-    (server/start port {:mode mode
-                        :ns 'bkell})))
+  (let[ mode (keyword (or (first m) :dev))
+        config (load-file "etc/config/config.clj")
+        host-port (or (-> config mode :host-port)
+                      (get (System/getenv) "PORT" "8080"))
+      ]
+    (server/start (Integer. host-port) {  :mode mode
+                                          :ns 'bkell  })))
 

@@ -1,10 +1,11 @@
 
 {
-   :db-base-URL  "http://localhost:8080/exist/rest/"
-   :system-dir   "rootDir/system.main.system/"
-   :passwdBase64  "YWRtaW4=" 
-   :spittoon-mappings [   "/system.main.system/aauthentication.main.aauthentication/groups.aauth.groups" 
-                          "/system.main.system/aauthentication.main.aauthentication/users.aauth.users" 
-                          "/system.main.system/groups.main.groups" ]
+  :dev {
+    :host-url "172.16.210.144"
+    :host-port "8080"
+  }
+  :prod {
+    :host-url "0.0.0.0"
+  } 
 } 
 
