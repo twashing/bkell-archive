@@ -26,6 +26,12 @@
 )
 
 
+(defn generate-host-address [host-url host-port]
+  (str  "http://"  
+        (if (-> host-url nil? not) host-url "localhost") 
+        (if (-> host-port nil? not) (str ":" host-port)) 
+  )
+)
 (def local-ip
      (let [ ifc (NetworkInterface/getNetworkInterfaces)
             ifsq (enumeration-seq ifc)
@@ -47,12 +53,15 @@
 (defn callbackHandlerCommon [method req]
   
     ;; needs to call 'verifyAssertion' to parse response - should return a { :user :map }
-    (let [  ruri "http://" host-url ":8080/callbackGitkit" 
+    (let [  host-url (-> @bkell/shell :mode (@bkell/shell) :host-url)
+            host-port (-> @bkell/shell :mode (@bkell/shell) :host-port)
+            developer-key (-> @bkell/shell :mode (@bkell/shell) :developer-key)
+            ruri  (str  (generate-host-address host-url host-port) "/callbackGitkit" )
             pbody (encode-params (:params req))
             final-body (clojure.data.json/json-str { :requestUri ruri :postBody pbody })
             print1 (println (str "final-body:[" final-body "]"))
             verify-resp (client/post
-                    "https://www.googleapis.com/identitytoolkit/v1/relyingparty/verifyAssertion?key=AIzaSyDc7_lGZsmbtdOUpprPClKBOxXCQ6LztRE"
+                    (str "https://www.googleapis.com/identitytoolkit/v1/relyingparty/verifyAssertion?key=" developer-key)
                     { :body final-body
                       :content-type :json
                     })
@@ -109,8 +118,63 @@
 ;; ======
 ;; ROOT Page 
 (defpage "/" []   ;; index is the default page of the application 
-  (response/file-response "index.html" { :root "public" }))
-
+  (let  [ templ (enlive/html-resource "index.html")
+          host-url (-> @bkell/shell :mode (@bkell/shell) :host-url)
+          host-port (-> @bkell/shell :mode (@bkell/shell) :host-port)
+          developer-key (-> @bkell/shell :mode (@bkell/shell) :developer-key)
+          ruri  (str  (generate-host-address host-url host-port) "/callbackGitkit" )
+        ]
+  
+    ;;(response/file-response "index.html" { :root "public" })
+    (apply str (enlive/emit*  (enlive/transform 
+                                templ
+                                [[ :script (enlive/nth-of-type 10) ]]  ;; get the 3rd script tag 
+                                (enlive/content 
+                                  (str 
+                                    " 
+                                          //<![CDATA[
+                                            $(document).ready(function() {
+                                              
+                                              /*********
+                                               * Some internal code is giving the body a margin - can't figure out what it is
+                                               *********/
+                                              $('body').css('margin', '0px'); 
+                                              
+                                              
+                                              /*********
+                                               * GITkit Account Chooser code
+                                               *********/
+                                              window.google.identitytoolkit.setConfig({
+                                                developerKey: '" developer-key "',
+                                                companyName: 'Interrupt Software Inc.',
+                                                callbackUrl: '" ruri "',
+                                                realm: '', 
+                                                userStatusUrl: '/userStatusUrl',
+                                                loginUrl: '/loginUrl',
+                                                signupUrl: '/register',
+                                                homeUrl: '/landing',
+                                                logoutUrl: '/logout',
+                                                idps: ['Gmail', 'Yahoo', 'AOL'],
+                                                tryFederatedFirst: true,
+                                                useCachedUserStatus: false
+                                              });
+                                               
+                                              $('#account-chooser').accountChooser();
+                                              
+                                              
+                                              /********* 
+                                               * load the footer file
+                                               *********/
+                                              $('#footer').load('/include/footerPart.html');
+                                              
+                                            });
+                                          //]]>
+                                    "
+                                  ))
+              ))
+    )
+  )
+)
 
 
 ;; ======
