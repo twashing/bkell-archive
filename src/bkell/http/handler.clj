@@ -199,6 +199,18 @@
           notify-input-str (clojure.data.json/json-str notify-input)
         ]
     
+    (comment 
+      ? Email exists in the user database
+        Log the user in;
+
+      ? Email does not exist in the user database
+        Create a new entry in your account database with that email address;
+        Add additional information such as the user attributes from the verifyAssertion response. 
+          <Google suggests always saving the value of displayName and photoUrl if available because they can be used later to add the user's name and photo to the account chooser>
+        Log the user in to the newly created account;
+        By setting registered=true in the HTML response below, the user will then be redirected to your signupURL to collect any addditional information.
+
+    )
     (apply str (enlive/emit*  (enlive/transform 
                                 templ
                                 [[ :script (enlive/nth-of-type 3) ]]  ;; get the 3rd script tag 
@@ -207,4 +219,51 @@
   )
 )
 
+
+;; ======
+;; LANDING Page
+#_(GET "/landing" [:as req]
+  (response/file-response "landing.html" { :root "public" })
+)
+
+
+;; ======
+;; CRUD on User
+#_(POST "/user" [:as req])
+#_(DELETE "/user/:id" [id] )
+
+
+;; ======
+;; CRUD on Accounts
+#_(POST "/account" [:as req] )
+#_(GET "/accounts" [:as req] )
+#_(GET "/account/:id" [id] )
+#_(PUT "/account/:id" [id :as req])
+#_(DELETE "/account/:id" [id] )
+
+
+;; ======
+;; CRUD on Bookkeeping
+#_(GET "/bookkeeping/:id" [id])
+
+
+;; ======
+;; CRUD on Entries
+#_(POST "/entry" [:as req] )
+#_(GET "/entries" [:as req] )
+#_(GET "/entry/:id" [id] )
+#_(PUT "/entry/:id" [id :as req])
+#_(DELETE "/entry/:id" [id] )
+
+
+;; ======
+;; CRUD on Bookkeeping
+#_(GET "/bookkeeping/:id" [id] )
+
+
+
+#_(route/files "/")
+#_(route/resources "/")
+#_(route/not-found "Page not found")
+#_(ANY "/*" [path] )
 
