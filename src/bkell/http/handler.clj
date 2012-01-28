@@ -28,12 +28,6 @@
 )
 
 
-(defn generate-host-address [host-url host-port]
-  (str  "http://"  
-        (if (-> host-url nil? not) host-url "localhost") 
-        (if (-> host-port nil? not) (str ":" host-port)) 
-  )
-)
 (def local-ip
      (let [ ifc (NetworkInterface/getNetworkInterfaces)
             ifsq (enumeration-seq ifc)
@@ -46,43 +40,12 @@
             (str (second (.split ips "/")))
       ))
 
-(defn encode-params [request-params]
-  (let [encode #(URLEncoder/encode (str %) "UTF-8")
-        coded (for [[n v] request-params] (str (encode (name n)) "=" (encode
-                                                               v)))]
-        (apply str (interpose "&" coded))))
-
-(defn callbackHandlerCommon [method req]
-  
-    ;; needs to call 'verifyAssertion' to parse response - should return a { :user :map }
-    (let [  host-url (-> @bkell/shell :mode (@bkell/shell) :host-url)
-            host-port (-> @bkell/shell :mode (@bkell/shell) :host-port)
-            developer-key (-> @bkell/shell :mode (@bkell/shell) :developer-key)
-            ruri  (str  (generate-host-address host-url host-port) "/callbackGitkit" )
-            pbody (encode-params req)
-            
-            print0 (println (str "ruri:[" ruri "]"))
-            
-            final-url (str "https://www.googleapis.com/identitytoolkit/v1/relyingparty/verifyAssertion?key=" developer-key)
-            ;;final-body (clojure.data.json/json-str { :requestUri ruri :postBody pbody })
-            final-body (str "{'requestUri':'" ruri "','postBody':'" pbody "'}")
-            
-            print1 (println (str "final-url:[" final-url "]"))
-            print2 (println (str "final-body:[" final-body "]"))
-            
-            verify-resp (client/post 
-                    final-url
-                    { :body final-body
-                      :content-type :json
-                    })
-            
-            print3 (println (str "verify-resp: " verify-resp))
-         ]
-      
-      (-> verify-resp :body clojure.data.json/read-json (merge { :exists false }))
-    )
+(defn generate-host-address [host-url host-port]
+  (str  "http://"  
+        (if (-> host-url nil? not) host-url "localhost") 
+        (if (-> host-port nil? not) (str ":" host-port)) 
+  )
 )
-
 
 
 ;; ======
@@ -146,9 +109,43 @@
   )
 )
 
+(defn encode-params [request-params]
+  (let [encode #(URLEncoder/encode (str %) "UTF-8")
+        coded (for [[n v] request-params] (str (encode (name n)) "=" (encode
+                                                               v)))]
+        (apply str (interpose "&" coded))))
 
-;; ======
-;; ACCOUNT CHOOSER (GITkit) URL handlers
+(defn callbackHandlerCommon [method req]
+  
+    ;; needs to call 'verifyAssertion' to parse response - should return a { :user :map }
+    (let [  host-url (-> @bkell/shell :mode (@bkell/shell) :host-url)
+            host-port (-> @bkell/shell :mode (@bkell/shell) :host-port)
+            developer-key (-> @bkell/shell :mode (@bkell/shell) :developer-key)
+            ruri  (str  (generate-host-address host-url host-port) "/callbackGitkit" )
+            pbody (encode-params req)
+            
+            print0 (println (str "ruri:[" ruri "]"))
+            
+            final-url (str "https://www.googleapis.com/identitytoolkit/v1/relyingparty/verifyAssertion?key=" developer-key)
+            ;;final-body (clojure.data.json/json-str { :requestUri ruri :postBody pbody })
+            final-body (str "{'requestUri':'" ruri "','postBody':'" pbody "'}")
+            
+            print1 (println (str "final-url:[" final-url "]"))
+            print2 (println (str "final-body:[" final-body "]"))
+            
+            verify-resp (client/post 
+                    final-url
+                    { :body final-body
+                      :content-type :json
+                    })
+            
+            print3 (println (str "verify-resp: " verify-resp))
+         ]
+      
+      (-> verify-resp :body clojure.data.json/read-json (merge { :exists false }))
+    )
+)
+
 (defn adduser-ifnil [ruser cb-resp] 
   
   (if (nil? ruser) 
@@ -187,6 +184,9 @@
     { :cb-resp cb-resp :new-user nil }   ;; otherwise just return the result
   )
 )
+
+;; ======
+;; ACCOUNT CHOOSER (GITkit) URL handlers
 (noir/defpage "/callbackGitkit" [:as req]
   (noir/render [:post "/callbackGitkit"] { :request req } )
 )
@@ -233,13 +233,19 @@
 )
 
 
+;; ======
+;; ACCOUNT CHOOSER Legacy handlers 
+  ;; /userStatusUrl
+  ;; /loginUrl
+  ;; /signupUrl
+
+
 (defn substitute-body [input]
   
   (if-let [body (:body input)]
     (merge input { :body (json/json-str body) })
     (json/json-str input))
 )
-
 (defmacro page-preconditions [ fn-run ]
   
   (comment  i. block action unless authenticated 
@@ -249,6 +255,7 @@
     (~fn-run)
   )
 )
+
 
 ;; ======
 ;; LANDING Page
