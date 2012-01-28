@@ -1,7 +1,6 @@
 (ns bkell.http.handler
   
   (:use [compojure.core]
-        [noir.core :only [defpage]]
   )
   
   (:import [java.io FileReader]
@@ -23,6 +22,7 @@
             [clojure.contrib.duck-streams :as dstreams]
             [net.cgrand.enlive-html :as enlive]
             [ring.adapter.jetty :as jetty]
+            [noir.core :as noir]
             [noir.session :as session]
   )
 )
@@ -87,7 +87,7 @@
 
 ;; ======
 ;; ROOT Page 
-(defpage "/" []   ;; index is the default page of the application 
+(noir/defpage "/" []   ;; index is the default page of the application 
   (let  [ templ (enlive/html-resource "index.html")
           host-url (-> @bkell/shell :mode (@bkell/shell) :host-url)
           host-port (-> @bkell/shell :mode (@bkell/shell) :host-port)
@@ -187,11 +187,12 @@
     { :cb-resp cb-resp :new-user nil }   ;; otherwise just return the result
   )
 )
-(defpage "/callbackGitkit" [:as req]
-  (callbackHandlerCommon "GET" req))
-(defpage [:post "/callbackGitkit"] [:as req]
+(noir/defpage "/callbackGitkit" [:as req]
+  (noir/render [:post "/callbackGitkit"] { :request req } )
+)
+(noir/defpage [:post "/callbackGitkit"] [:as req]
   
-  (println (str "/callbackGitkit HANDLER: " req))
+  (println (str "/callbackGitkit HANDLER [POST]: " req))
   (let  [ cb-resp (callbackHandlerCommon "POST" req)
           one (println (str "cb-resp: " cb-resp))
           ru (getk/get-user (:verifiedEmail cb-resp))
@@ -234,7 +235,7 @@
 
 ;; ======
 ;; LANDING Page
-#_(GET "/landing" [:as req]
+(noir/defpage "/landing" [:as req]
   (response/file-response "landing.html" { :root "public" })
 )
 
