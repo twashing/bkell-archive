@@ -233,10 +233,29 @@
 )
 
 
+(defn substitute-body [input]
+  
+  (if-let [body (:body input)]
+    (merge input { :body (json/json-str body) })
+    (json/json-str input))
+)
+
+(defmacro page-preconditions [ fn-run ]
+  
+  (comment  i. block action unless authenticated 
+            ii. block action unless correct user )
+  `(if (nil? (session/get :current-user))
+    (-> "User is not authenticated" (util/wrap-error-msg 400) substitute-body)
+    (~fn-run)
+  )
+)
+
 ;; ======
 ;; LANDING Page
 (noir/defpage "/landing" [:as req]
-  (response/file-response "landing.html" { :root "public" })
+  
+  (page-preconditions
+    #(response/file-response "landing.html" { :root "public" }))
 )
 
 
