@@ -12,6 +12,7 @@
             [bkell.bjell :as bjell]
             [bkell.bkell :as bkell]
             [bkell.commands.authenticate :as authenticatek]
+            [bkell.commands.get :as getk]
             [bkell.util :as util]
             [clojure.contrib.duck-streams :as duck-streams]
             [clojure.data.json :as json]
@@ -22,6 +23,7 @@
             [clojure.contrib.duck-streams :as dstreams]
             [net.cgrand.enlive-html :as enlive]
             [ring.adapter.jetty :as jetty]
+            [noir.session :as session]
   )
 )
 
@@ -77,46 +79,6 @@
             print3 (println (str "verify-resp: " verify-resp))
          ]
       
-        ; check if user exists ; add to DB if not 
-        ; ** bjell will throw an AssertionError if user already exists 
-        (try 
-          (let [verify-sexp (-> verify-resp :body clojure.data.json/read-json (merge { :exists false }))
-                json (println (str "from-verify-JSON" verify-sexp))
-                add-resp (bkell/add {  :tag :user
-                                       :username (:verifiedEmail verify-sexp)
-                                       :password ""
-                                       :content 
-                                         [{  :tag :profileDetails,
-                                             :content
-                                             [{:tag :profileDetail,
-                                               :name "first.name", 
-                                               :value (:firstName verify-sexp),
-                                               :content nil}
-                                              {:tag :profileDetail,
-                                               :name "last.name", 
-                                               :value (:lastName verify-sexp),
-                                               :content nil}
-                                              {:tag :profileDetail,
-                                               :name "email", 
-                                               :value (:verifiedEmail verify-sexp),
-                                               :content nil}
-                                              {:tag :profileDetail,
-                                               :name "country", 
-                                               :value "",
-                                               :content nil}]}]
-                                    })]
-            
-            (println (str "add-resp: " add-resp))
-            
-            (merge verify-sexp { :exists true })
-            ; log the user in ; session should die after some inactivity 
-            ;;(session-put! :current-user add-resp)
-            
-          )
-          (catch java.lang.Exception ae (println (str "Not adding this user as it already exists:  " ae))))
-        
-      
-      ; FINAL - return verify-resp
       (-> verify-resp :body clojure.data.json/read-json (merge { :exists false }))
     )
 )
@@ -187,6 +149,44 @@
 
 ;; ======
 ;; ACCOUNT CHOOSER (GITkit) URL handlers
+(defn adduser-ifnil [ruser cb-resp] 
+  
+  (if (nil? ruser) 
+    
+    (try  ;; add user if it is nil in DB 
+      (let [json (println (str "from-verify-JSON" cb-resp))
+            add-resp (bkell/add {  :tag :user
+                                   :username (:verifiedEmail cb-resp)
+                                   :password ""
+                                   :content 
+                                     [{  :tag :profileDetails,
+                                         :content
+                                         [{:tag :profileDetail,
+                                           :name "first.name", 
+                                           :value (:firstName cb-resp),
+                                           :content nil}
+                                          {:tag :profileDetail,
+                                           :name "last.name", 
+                                           :value (:lastName cb-resp),
+                                           :content nil}
+                                          {:tag :profileDetail,
+                                           :name "email", 
+                                           :value (:verifiedEmail cb-resp),
+                                           :content nil}
+                                          {:tag :profileDetail,
+                                           :name "country", 
+                                           :value "",
+                                           :content nil}]}]
+                                })]
+        
+        (println (str "add-resp: " add-resp))
+        { :cb-resp (merge cb-resp { :exists true }) :new-user add-resp }
+      )
+      (catch java.lang.Exception ae (println (str "Not adding this user as it already exists:  " ae))))
+    
+    { :cb-resp cb-resp :new-user nil }   ;; otherwise just return the result
+  )
+)
 (defpage "/callbackGitkit" [:as req]
   (callbackHandlerCommon "GET" req))
 (defpage [:post "/callbackGitkit"] [:as req]
@@ -194,28 +194,40 @@
   (println (str "/callbackGitkit HANDLER: " req))
   (let  [ cb-resp (callbackHandlerCommon "POST" req)
           one (println (str "cb-resp: " cb-resp))
+          ru (getk/get-user (:verifiedEmail cb-resp))
           templ (enlive/html-resource "include/callbackUrlSuccess.html")
-          notify-input { :email (:verifiedEmail cb-resp) :registered (-> cb-resp :exists str) }
-          notify-input-str (clojure.data.json/json-str notify-input)
         ]
     
     (comment 
       ? Email exists in the user database
         Log the user in;
-
+        
       ? Email does not exist in the user database
         Create a new entry in your account database with that email address;
         Add additional information such as the user attributes from the verifyAssertion response. 
           <Google suggests always saving the value of displayName and photoUrl if available because they can be used later to add the user's name and photo to the account chooser>
         Log the user in to the newly created account;
         By setting registered=true in the HTML response below, the user will then be redirected to your signupURL to collect any addditional information.
-
+        
+    )      
+    
+    (let  [ rsetup (adduser-ifnil ru cb-resp)
+            rresp (:cb-resp rsetup)
+          ]
+      
+      ;; Log the user in; session should die after some inactivity
+      (session/put! :current-user (if (nil? (:new-user rsetup)) ru (:new-user rsetup) ))
+      
+      (let  [ notify-input { :email (:verifiedEmail rresp) :registered (-> rresp :exists str) }
+              notify-input-str (clojure.data.json/json-str notify-input)
+            ]
+        (apply str  (enlive/emit*  (enlive/transform 
+                                    templ
+                                    [[ :script (enlive/nth-of-type 3) ]]  ;; get the 3rd script tag 
+                                    (enlive/content (str "window.google.identitytoolkit.notifyFederatedSuccess(" notify-input-str ");")))
+                    ))
+      )
     )
-    (apply str (enlive/emit*  (enlive/transform 
-                                templ
-                                [[ :script (enlive/nth-of-type 3) ]]  ;; get the 3rd script tag 
-                                (enlive/content (str "window.google.identitytoolkit.notifyFederatedSuccess(" notify-input-str ");")))
-    ))
   )
 )
 
