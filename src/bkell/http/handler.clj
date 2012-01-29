@@ -282,11 +282,6 @@
 
 
 ;; ======
-;; CRUD on Bookkeeping
-#_(GET "/bookkeeping/:id" [id])
-
-
-;; ======
 ;; CRUD on Entries
 #_(POST "/entry" [:as req] )
 #_(GET "/entries" [:as req] )
@@ -297,8 +292,7 @@
 
 ;; ======
 ;; CRUD on Bookkeeping
-#_(GET "/bookkeeping/:id" [id] )
-
+#_(GET "/bookkeeping/:id" [id])
 
 
 #_(route/files "/")

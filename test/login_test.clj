@@ -24,7 +24,7 @@
     "Initialize the shell"
     [test]
 
-    (clojure.contrib.logging/info "test-fixture-shell CALLED")
+    ;;(clojure.contrib.logging/info "test-fixture-shell CALLED")
     (bkell/init-shell)
 
     (test)
@@ -34,7 +34,7 @@
     "test to clear out shell memory before a test is run"
     [test]
 
-    (clojure.contrib.logging/info "test-fixture-db CALLED")
+    ;;(clojure.contrib.logging/info "test-fixture-db CALLED")
 
     ;; make the shell active
     ;; create a basic user in the DB
@@ -48,7 +48,7 @@
     ;; ** execute the TEST function
     (test)
     
-    (clojure.contrib.logging/info "test-fixture-db EXIT")
+    ;; (clojure.contrib.logging/info "test-fixture-db EXIT")
     
     ;; make the shell inactive
 	(dosync (alter bkell/shell conj { :active false }))

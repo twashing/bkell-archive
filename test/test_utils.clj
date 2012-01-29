@@ -10,7 +10,7 @@
     "test to clear out DB before a test is run"
     [test]
 
-    (clojure.contrib.logging/info "test-fixture-db CALLED")
+    ;;(clojure.contrib.logging/info "test-fixture-db CALLED")
     (destroy! :users {})  ;; destroying all users
     (destroy! :groups {}) ;; destroying all groups
     (destroy! :bookkeeping {}) ;; destroying all bookkeeping
@@ -18,7 +18,7 @@
     ;; ** execute the TEST function
     (bkell/init-shell)      ;; initialize the bkell 
     (test)
-    (clojure.contrib.logging/info "test-fixture-db EXIT")
+    ;;(clojure.contrib.logging/info "test-fixture-db EXIT")
 
 )
 
