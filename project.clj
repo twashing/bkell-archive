@@ -12,7 +12,8 @@
                     [org.clojars.hozumi/session-expiry "1.0.0-SNAPSHOT"]
                     [enlive "1.0.0"]
                     [ring/ring-jetty-adapter "1.0.1"]
-                    [noir "1.3.0-alpha3"]
+                    ;;[noir "1.3.0-alpha3"]
+                    [noir "1.3.0-alpha5"]
 
                     ;; workaround for https://github.com/ibdknox/noir/issues/76
                     [clj-stacktrace "0.2.4"]

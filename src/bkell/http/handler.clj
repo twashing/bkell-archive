@@ -255,7 +255,14 @@
     (~fn-run)
   )
 )
-
+(defn handle-errors [result status]
+  
+  (if (or (= :error (:tag result))
+          (= :errors (:tag result)))
+    (util/wrap-error result status)
+    result
+  )
+)
 
 ;; ======
 ;; LANDING Page
@@ -274,7 +281,17 @@
 
 ;; ======
 ;; CRUD on Accounts
-#_(POST "/account" [:as req] )
+(noir/defpage [ :post "/account" ] [:as req] 
+    
+    (println (str "POST ; /account ; " req))
+    (let [lin-user (authenticatek/logged-in-user)]
+      (if-let [body (duck-streams/slurp* (:body req))]
+        (->      ;; JSON of MongoDB WriteResult; TODO - make a proper JSON string for client 
+          body (bjell/add (:username lin-user)) (handle-errors 400) substitute-body) ;; TODO - stubbing in 'stub' user for now
+        (println "ERROR - POST body is nil")
+      )
+    )
+)
 #_(GET "/accounts" [:as req] )
 #_(GET "/account/:id" [id] )
 #_(PUT "/account/:id" [id :as req])

@@ -48,7 +48,7 @@
 (defn wrap-error-msg [msg status]
   (wrap-error (generate-error-response msg) status))
 
-(def swank-con swank.core.connection/*current-connection*)
-(defmacro break []
+#_(def swank-con swank.core.connection/*current-connection*)
+#_(defmacro break []
   `(binding [swank.core.connection/*current-connection* swank-con]
      (swank.core/break)))
