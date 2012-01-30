@@ -26,6 +26,7 @@
                       [org.clojars.ibdknox/lein-nailgun "1.1.1"]
                       [midje "1.3.2-SNAPSHOT"]
                       [com.stuartsierra/lazytest "1.2.3"]
+                      [ring-mock "0.1.1"]
 	            ] 
 
   :repositories {"stuart" "http://stuartsierra.com/maven2"}

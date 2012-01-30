@@ -12,6 +12,8 @@
             [noir.core :as noir]
             [bkell.domain :as domain]
             [bkell.http.handler :as handler]
+            [ring.mock.request :as rmock]
+            [clojure.contrib.duck-streams :as duck-streams]
   )
 )
 
@@ -144,13 +146,11 @@
   ;;(println (str "Sanity Check: " (clojure.data.json/read-json (java.io.FileReader. "test/etc/data/test-account-asset.js") )))
   
   ;; ensure that an error is returned if we try to add an account without being logged in
-  (let [ result (test-request { :url "/account" :request-method :post :body (clojure.data.json/read-json (java.io.FileReader. "test/etc/data/test-account-asset.js")) } ) ] 
-  
-  ;; (let [ result (test-request [ :post "/account" ] { :body (java.io.File. "test/etc/data/test-account-asset.js") } ) ] 
-  
-  ;; (let [ result (test-request [ :post "/account" ] { :fu "bar" } ) ] 
-    
-    (is (= 500 (:status result))) ;; ensure status is 200
+  (let  [result (test-request (-> (rmock/request :post "/account")
+                                  (rmock/body (duck-streams/slurp* "test/etc/data/test-account-asset.js")))) 
+        ] 
+     
+    (is (= 500 (:status result)))   ;; ensure status is 200
     #_(is (= :error (->  :body       ;; this ensures that the body is a JSON string and that the tag is an error
                        result 
                        clojure.data.json/read-json 
