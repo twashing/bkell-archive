@@ -19,7 +19,6 @@
             [ring.middleware.file :as ring-file]
             [ring.util.response :as response]
             [clj-http.client :as client]
-            [clojure.contrib.duck-streams :as dstreams]
             [net.cgrand.enlive-html :as enlive]
             [ring.adapter.jetty :as jetty]
             [noir.core :as noir]
@@ -287,8 +286,8 @@
     (let [lin-user (authenticatek/logged-in-user)]
       ;;(if-let [body (duck-streams/slurp* (:body req))]
         (->      ;; JSON of MongoDB WriteResult; TODO - make a proper JSON string for client 
-          req (bjell/add (:username lin-user)) (handle-errors 400) substitute-body) ;; TODO - stubbing in 'stub' user for now
-        (println "ERROR - POST body is nil")
+          req (bkell/add (:username lin-user)) (handle-errors 500) substitute-body) ;; TODO - stubbing in 'stub' user for now
+        ;;(println "ERROR - POST body is nil")
       ;;)
     )
 )

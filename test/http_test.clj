@@ -144,12 +144,14 @@
 (deftest test-account-add1
   
   ;;(println (str "Sanity Check: " (clojure.data.json/read-json (java.io.FileReader. "test/etc/data/test-account-asset.js") )))
+  ;;(println (str "Sanity Check: " (duck-streams/slurp* "test/etc/data/test-account-asset.js") ))
   
   ;; ensure that an error is returned if we try to add an account without being logged in
   (let  [result (test-request (-> (rmock/request :post "/account")
-                                  (rmock/body (duck-streams/slurp* "test/etc/data/test-account-asset.js")))) 
+                                  (rmock/body (clojure.data.json/read-json (java.io.FileReader. "test/etc/data/test-account-asset.js") )))) 
         ] 
      
+    (println (str "--- result: " result))
     (is (= 500 (:status result)))   ;; ensure status is 200
     #_(is (= :error (->  :body       ;; this ensures that the body is a JSON string and that the tag is an error
                        result 
