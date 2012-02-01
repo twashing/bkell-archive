@@ -1,4 +1,15 @@
 
+dome = function() {
+  
+  // this gives the correct input on the server (a clojure map)
+  // POST ; /account ; {:counterWeight "debit", :name "cash", :id "cash", :type "asset", :tag "account"}
+  $.post('/account', {tag : 'account',  type : 'asset', id : 'cash', name : 'cash', counterWeight: 'debit'}, function(data) {
+    console.log(arguments); 
+  });
+
+}
+
+
 bkeeping = {};
 bkeeping.models = {};
 bkeeping.views = {};
