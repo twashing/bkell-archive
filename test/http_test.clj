@@ -232,7 +232,6 @@
           pas (test-utils/populate-accounts)
           result (test-request (rmock/request :get "/account/cash"))] 
     
-    (println (str "--- result: " result))
     (is (-> result :body nil? not))
     (is (-> result :body empty? not))
     (is (= 200 (:status result))) ;; ensure status is 200
@@ -243,16 +242,12 @@
                        :tag)))
   )
 )
-#_(deftest test-account-update
+(deftest test-account-update
   
   (let  [ ruser (test-utils/add-user nil)
-          rlogin (request "/login" handler/main :post 
-                  {:body (StringBufferInputStream. 
-                          "{ \"tag\":\"user\", \"username\":\"stub\", \"password\":\"5185e8b8fd8a71fc80545e144f91faf2\" }") })
-          ;;raccount (request "/account" handler/main :post {:body (java.io.File. "test/etc/data/test-account-asset.js")})
+          rlogin (-> ruser bkell/login (handler/handle-errors 400))
           pas (test-utils/populate-accounts)
-          r1 (request "/account/cash" handler/main :get {})
-        ] 
+          r1 (test-request (rmock/request :get "/account/cash"))] 
     
     ;; get the original 
     (is (= 200 (:status r1))) ;; ensure status is 200
@@ -263,11 +258,11 @@
                         :tag)))
     
     ;; update account 
-    (let [r2 (request "/account/cash" handler/main :put
-              {:body 
-                (StringBufferInputStream. 
-                  "{\"tag\":\"account\", \"type\":\"asset\", \"id\":\"cash\", \"name\":\"fubar\", \"counterWeight\":\"debit\"}")
-              })]
+    (let  [ r2  (test-request 
+                  (-> (rmock/request :put "/account/cash")
+                      (rmock/body (clojure.data.json/read-json  (InputStreamReader. 
+                                                                  (StringBufferInputStream. "{\"tag\":\"account\", \"type\":\"asset\", \"id\":\"cash\", \"name\":\"fubar\", \"counterWeight\":\"debit\"}") )))))
+          ]
       
       (is (= 200 (:status r2))) ;; ensure status is 200
       (is (= :account (-> r2       ;; this ensures that the body is a JSON string and that the tag is an account
@@ -284,7 +279,8 @@
     )
     
     ;; get the update  
-    (let [r3 (request "/account/cash" handler/main :get {})]
+    (let [ r3 (test-request (rmock/request :get "/account/cash")) ]
+      
       (is (= 200 (:status r3))) ;; ensure status is 200
       (is (= :account (-> r3       ;; this ensures that the body is a JSON string and that the tag is an account
                           :body 
@@ -309,6 +305,8 @@
           pas (test-utils/populate-accounts)
         ] 
     
+      (println (str "--- result: " pas))
+      
     (let [  r2 (request "/account/cash" handler/main :delete {:body nil })]
       (is (= 400 (:status r2))) ;; ensure status is 400
       (is (= :error (-> :body       ;; this ensures that the body is a JSON string and that the tag is an error

@@ -307,7 +307,14 @@
       (bkell/get :account (:username lin-user) id ) (handle-errors 400) substitute-body) 
   )
 )
-#_(PUT "/account/:id" [id :as req])
+(noir/defpage [ :put "/account/:id" ] [ :as req { :keys [id] } ]
+  
+  (println (str "PUT ; /account/:id ; " req))
+  (let [lin-user (authenticatek/logged-in-user)]
+    (->      ;; JSON of MongoDB WriteResult; 
+      (bkell/update req (:username lin-user) ) (handle-errors 400) substitute-body) ;; 
+  )
+)
 #_(DELETE "/account/:id" [id] )
 
 
