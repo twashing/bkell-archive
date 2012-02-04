@@ -296,18 +296,15 @@
     
   )
 )
-#_(deftest test-account-delete
+(deftest test-account-delete
   
   (let  [ ruser (test-utils/add-user nil)
-          ;;rlogin (request "/login" handler/main :post 
-          ;;        {:body (StringBufferInputStream. 
-          ;;                "{ \"tag\":\"user\", \"username\":\"stub\", \"password\":\"5185e8b8fd8a71fc80545e144f91faf2\" }") })
           pas (test-utils/populate-accounts)
         ] 
     
-      (println (str "--- result: " pas))
+    (let  [ r2 (test-request (rmock/request :delete "/account/cash"))
+          ]
       
-    (let [  r2 (request "/account/cash" handler/main :delete {:body nil })]
       (is (= 400 (:status r2))) ;; ensure status is 400
       (is (= :error (-> :body       ;; this ensures that the body is a JSON string and that the tag is an error
                         r2 
@@ -316,17 +313,14 @@
                         :tag)))
     )
     
-    (let  [ rlogin (request "/login" handler/main :post 
-                    {:body (StringBufferInputStream. 
-                            "{ \"tag\":\"user\", \"username\":\"stub\", \"password\":\"5185e8b8fd8a71fc80545e144f91faf2\" }") })
-            r3 (request "/account/cash" handler/main :delete {:body nil })
+    (let  [ rlogin (-> ruser bkell/login (handler/handle-errors 400))
+            r3 (test-request (rmock/request :delete "/account/cash"))
+          
           ]
-        
-        
+       
       (is (= 200 (:status r3))) ;; ensure status is 200
       (is (= "null" (:body r3)))
     )
-    
   )
 )
 
