@@ -315,7 +315,6 @@
     
     (let  [ rlogin (-> ruser bkell/login (handler/handle-errors 400))
             r3 (test-request (rmock/request :delete "/account/cash"))
-          
           ]
        
       (is (= 200 (:status r3))) ;; ensure status is 200
@@ -329,10 +328,12 @@
 ;; ======
 ;; CRUD on Entries
 
-#_(deftest test-entry-add1
+(deftest test-entry-add1
   
   ;; ensure that an error is returned if we try to add an entry without being logged in
-  (let [result (request "/entry" handler/main :post {:body (java.io.File. "test/etc/data/test-entry-FULL.js")})] 
+  (let  [ result (test-request (->  (rmock/request :post "/entry")
+                                      (rmock/body (clojure.data.json/read-json (java.io.FileReader. "test/etc/data/test-entry-FULL.js") ))))
+        ] 
     
     (is (= 400 (:status result))) ;; ensure status is 200
     (is (= :error (->  :body       ;; this ensures that the body is a JSON string and that the tag is an error

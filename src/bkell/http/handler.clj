@@ -312,7 +312,7 @@
   (println (str "PUT ; /account/:id ; " req))
   (let [lin-user (authenticatek/logged-in-user)]
     (->      ;; JSON of MongoDB WriteResult; 
-      (bkell/update req (:username lin-user) ) (handle-errors 400) substitute-body) ;; 
+      (bkell/update req (:username lin-user) ) (handle-errors 400) substitute-body) 
   )
 )
 (noir/defpage [ :delete "/account/:id" ] { :keys [id] }
@@ -321,14 +321,21 @@
   (let [lin-user (authenticatek/logged-in-user)]
     
     (->      ;; JSON of MongoDB WriteResult; TODO - make a proper JSON string for client 
-      lin-user (bkell/remove id) (handle-errors 400) substitute-body) ;; TODO - stubbing in 'stub' user for now
+      lin-user (bkell/remove id) (handle-errors 400) substitute-body) 
   )
 )
 
 
 ;; ======
 ;; CRUD on Entries
-#_(POST "/entry" [:as req] )
+(noir/defpage [ :post "/entry" ] [:as req] 
+  
+  (println (str "POST ; /entry ; " req))
+  (let [lin-user (authenticatek/logged-in-user)]
+    (->      ;; JSON of MongoDB WriteResult; TODO - make a proper JSON string for client 
+      req (bkell/add (:username lin-user)) (handle-errors 400) substitute-body) 
+  )
+)
 #_(GET "/entries" [:as req] )
 #_(GET "/entry/:id" [id] )
 #_(PUT "/entry/:id" [id :as req])
