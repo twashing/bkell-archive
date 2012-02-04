@@ -285,7 +285,7 @@
     (println (str "POST ; /account ; " req))
     (let [lin-user (authenticatek/logged-in-user)]
       
-      (->      ;; JSON of MongoDB WriteResult; TODO - make a proper JSON string for client 
+      (->      ;; JSON of MongoDB WriteResult; 
         req (bkell/add (:username lin-user)) (handle-errors 500) substitute-body) 
     )
 )
@@ -294,11 +294,19 @@
   (println (str "GET ; /accounts ; " req))
   (let [lin-user (authenticatek/logged-in-user)]
     
-    (->      ;; JSON of MongoDB WriteResult; TODO - make a proper JSON string for client 
+    (->      ;; JSON of MongoDB WriteResult; 
       (bkell/get :accounts (:username lin-user)) (handle-errors 400) substitute-body) 
   )
 )
-#_(GET "/account/:id" [id] )
+(noir/defpage [ :get "/account/:id" ] { :keys [id] }
+
+  (println (str "GET ; /account/:id ; " id))
+  (let [lin-user (authenticatek/logged-in-user)]
+    
+    (->      ;; JSON of MongoDB WriteResult; 
+      (bkell/get :account (:username lin-user) id ) (handle-errors 400) substitute-body) 
+  )
+)
 #_(PUT "/account/:id" [id :as req])
 #_(DELETE "/account/:id" [id] )
 

@@ -181,7 +181,6 @@
   (let  [ result (test-request (rmock/request :get "/accounts"))
         ]
     
-    (println (str "--- result: " result))
     (is (= 400 (:status result))) ;; ensure status is 200
     (is (= :error (->  :body       ;; this ensures that the body is a JSON string and that the tag is an error
                        result 
@@ -190,14 +189,11 @@
                        :tag)))
   )
 )
-#_(deftest test-account-getlist2
+(deftest test-account-getlist2
   
   (let  [ ruser (test-utils/add-user nil)
-          rk (handler/init-handler)
-          rlogin (request "/login" handler/main :post 
-                  {:body (StringBufferInputStream. 
-                          "{ \"tag\":\"user\", \"username\":\"stub\", \"password\":\"5185e8b8fd8a71fc80545e144f91faf2\" }") })
-          result (request "/accounts" handler/main :get {})] 
+          rlogin (-> ruser bkell/login (handler/handle-errors 400))
+          result (test-request (rmock/request :get "/accounts"))] 
     
     ;; ensure that we get even empty list of accounts
     (is (= 200 (:status result))) ;; ensure status is 200
@@ -206,15 +202,12 @@
                   clojure.data.json/read-json )))
   )
 )
-#_(deftest test-account-getlist3
+(deftest test-account-getlist3
   
   (let  [ ruser (test-utils/add-user nil)
-          rk (handler/init-handler)
-          rlogin (request "/login" handler/main :post 
-                  {:body (StringBufferInputStream. 
-                          "{ \"tag\":\"user\", \"username\":\"stub\", \"password\":\"5185e8b8fd8a71fc80545e144f91faf2\" }") })
+          rlogin (-> ruser bkell/login (handler/handle-errors 400))
           pas (test-utils/populate-accounts)
-          result (request "/accounts" handler/main :get {})] 
+          result (test-request (rmock/request :get "/accounts"))] 
     
     ;; result should look like the following...
     ;; {:status 200, :headers {Content-Type text/html}, :body [{"counterWeight":"debit","name":"revenue","type":"revenue","id":"revenue","tag":"account"},{"counterWeight":"debit","name":"accounts payable","type":"liability","id":"accounts payable","tag":"account"},{"counterWeight":"debit","name":"expense","type":"expense","id":"expense","tag":"account"},{"counterWeight":"debit","name":"cash","type":"asset","id":"cash","tag":"account"}]}
@@ -231,17 +224,15 @@
                           :tag)))
   )
 )
-#_(deftest test-account-get
+(deftest test-account-get
   
   ;; ensure that an error is returned if we try to get an account without being logged in
   (let  [ ruser (test-utils/add-user nil)
-          rk (handler/init-handler)
-          rlogin (request "/login" handler/main :post 
-                  {:body (StringBufferInputStream. 
-          "{ \"tag\":\"user\", \"username\":\"stub\", \"password\":\"5185e8b8fd8a71fc80545e144f91faf2\" }") })
+          rlogin (-> ruser bkell/login (handler/handle-errors 400))
           pas (test-utils/populate-accounts)
-          result (request "/account/cash" handler/main :get {})] 
+          result (test-request (rmock/request :get "/account/cash"))] 
     
+    (println (str "--- result: " result))
     (is (-> result :body nil? not))
     (is (-> result :body empty? not))
     (is (= 200 (:status result))) ;; ensure status is 200
