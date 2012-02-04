@@ -165,24 +165,23 @@
                                       (rmock/body (clojure.data.json/read-json (java.io.FileReader. "test/etc/data/test-account-asset.js") ))))
         ] 
     
-    (println (str "--- login " rlogin))
-    (println (str "--- raccount " raccount))
     ;; the result will look like: {:status 200, :headers {Content-Type text/html}, :body {"previous":{"tag":"user","username":"stub","password":"5185e8b8fd8a71fc80545e144f91faf2"},"logged-in-user":{"tag":"user","username":"stub","password
     ;; ":"5185e8b8fd8a71fc80545e144f91faf2"},"active":true}}
     (is (= 200 (:status raccount))) ;; ensure status is 200
-    #_(is (= :account (-> raccount       ;; this ensures that the body is a JSON string and that the tag is an error
+    (is (= :account (-> raccount       ;; this ensures that the body is a JSON string and that the tag is an error
                         :body 
                         clojure.data.json/read-json 
                         domain/keywordize-tags
                         :tag)))
   )
 )
-#_(deftest test-account-getlist1
+(deftest test-account-getlist1
   
   ;; ensure that an error is returned if we try to get an account list without being logged in
-  (let [rk (handler/init-handler)
-        result (request "/accounts" handler/main :get {})] 
+  (let  [ result (test-request (rmock/request :get "/accounts"))
+        ]
     
+    (println (str "--- result: " result))
     (is (= 400 (:status result))) ;; ensure status is 200
     (is (= :error (->  :body       ;; this ensures that the body is a JSON string and that the tag is an error
                        result 

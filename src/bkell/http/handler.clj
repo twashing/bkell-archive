@@ -284,14 +284,20 @@
     
     (println (str "POST ; /account ; " req))
     (let [lin-user (authenticatek/logged-in-user)]
-      ;;(if-let [body (duck-streams/slurp* (:body req))]
-        (->      ;; JSON of MongoDB WriteResult; TODO - make a proper JSON string for client 
-          req (bkell/add (:username lin-user)) (handle-errors 500) substitute-body) ;; TODO - stubbing in 'stub' user for now
-        ;;(println "ERROR - POST body is nil")
-      ;;)
+      
+      (->      ;; JSON of MongoDB WriteResult; TODO - make a proper JSON string for client 
+        req (bkell/add (:username lin-user)) (handle-errors 500) substitute-body) 
     )
 )
-#_(GET "/accounts" [:as req] )
+(noir/defpage [ :get "/accounts" ] [:as req] 
+  
+  (println (str "GET ; /accounts ; " req))
+  (let [lin-user (authenticatek/logged-in-user)]
+    
+    (->      ;; JSON of MongoDB WriteResult; TODO - make a proper JSON string for client 
+      (bkell/get :accounts (:username lin-user)) (handle-errors 400) substitute-body) 
+  )
+)
 #_(GET "/account/:id" [id] )
 #_(PUT "/account/:id" [id :as req])
 #_(DELETE "/account/:id" [id] )
