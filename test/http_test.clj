@@ -1,7 +1,7 @@
 
 (ns http-test
   
-  (:import java.io.StringBufferInputStream)
+  (:import  [java.io StringBufferInputStream InputStreamReader])
   (:use [clojure.test]
         [somnium.congomongo]
         [noir.util.test])
@@ -10,6 +10,7 @@
             [clojure.data.json]
             [test-utils]
             [noir.core :as noir]
+            [bkell.bkell :as bkell]
             [bkell.domain :as domain]
             [bkell.http.handler :as handler]
             [ring.mock.request :as rmock]
@@ -143,36 +144,33 @@
 
 (deftest test-account-add1
   
-  ;;(println (str "Sanity Check: " (clojure.data.json/read-json (java.io.FileReader. "test/etc/data/test-account-asset.js") )))
-  ;;(println (str "Sanity Check: " (duck-streams/slurp* "test/etc/data/test-account-asset.js") ))
-  
   ;; ensure that an error is returned if we try to add an account without being logged in
   (let  [result (test-request (-> (rmock/request :post "/account")
                                   (rmock/body (clojure.data.json/read-json (java.io.FileReader. "test/etc/data/test-account-asset.js") )))) 
         ] 
      
-    (println (str "--- result: " result))
     (is (= 500 (:status result)))   ;; ensure status is 200
-    #_(is (= :error (->  :body       ;; this ensures that the body is a JSON string and that the tag is an error
+    (is (= :error (->  :body       ;; this ensures that the body is a JSON string and that the tag is an error
                        result 
                        clojure.data.json/read-json 
                        domain/keywordize-tags
                        :tag)))
   )
 )
-#_(deftest test-account-add2
+(deftest test-account-add2
   
   (let  [ ruser (test-utils/add-user nil)
-          rlogin (request "/login" handler/main :post 
-                  {:body (StringBufferInputStream. 
-                          "{ \"tag\":\"user\", \"username\":\"stub\", \"password\":\"5185e8b8fd8a71fc80545e144f91faf2\" }") })
-          raccount (request "/account" handler/main :post {:body (java.io.File. "test/etc/data/test-account-asset.js")})
+          rlogin (-> ruser bkell/login (handler/handle-errors 400))
+          raccount (test-request (->  (rmock/request :post "/account")
+                                      (rmock/body (clojure.data.json/read-json (java.io.FileReader. "test/etc/data/test-account-asset.js") ))))
         ] 
     
+    (println (str "--- login " rlogin))
+    (println (str "--- raccount " raccount))
     ;; the result will look like: {:status 200, :headers {Content-Type text/html}, :body {"previous":{"tag":"user","username":"stub","password":"5185e8b8fd8a71fc80545e144f91faf2"},"logged-in-user":{"tag":"user","username":"stub","password
     ;; ":"5185e8b8fd8a71fc80545e144f91faf2"},"active":true}}
     (is (= 200 (:status raccount))) ;; ensure status is 200
-    (is (= :account (-> raccount       ;; this ensures that the body is a JSON string and that the tag is an error
+    #_(is (= :account (-> raccount       ;; this ensures that the body is a JSON string and that the tag is an error
                         :body 
                         clojure.data.json/read-json 
                         domain/keywordize-tags
