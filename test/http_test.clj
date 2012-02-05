@@ -413,17 +413,16 @@
                           :tag)))
   )
 )
-#_(deftest test-entry-get
+(deftest test-entry-get
   
   ;; ensure that an error is returned if we try to get an entry without being logged in
   (let  [ ruser (test-utils/add-user nil)
-          rk (handler/init-handler)
-          rlogin (request "/login" handler/main :post 
-                  {:body (StringBufferInputStream. 
-          "{ \"tag\":\"user\", \"username\":\"stub\", \"password\":\"5185e8b8fd8a71fc80545e144f91faf2\" }") })
+          rlogin (-> ruser bkell/login (handler/handle-errors 400))
           pas (test-utils/populate-accounts)
-          r1 (request "/entry" handler/main :post {:body (java.io.File. "test/etc/data/test-entry-bal.js")})
-          result (request "/entry/entryid" handler/main :get {})] 
+          r1 (test-request (->  (rmock/request :post "/entry")
+                                (rmock/body (slurp "test/etc/data/test-entry-bal.js") )))
+          result (test-request (rmock/request :get "/entry/entryid"))
+        ]
     
     (is (-> result :body nil? not))
     (is (-> result :body empty? not))

@@ -353,7 +353,15 @@
       (bkell/get :entries (:username lin-user)) (handle-errors 400) substitute-body) 
   )
 )
-#_(GET "/entry/:id" [id] )
+(noir/defpage [ :get "/entry/:id" ] { :keys [id] } 
+
+  (println (str "GET ; /entries/:id ; " id))
+  (let [lin-user (authenticatek/logged-in-user)]
+    
+    (->      ;; JSON of MongoDB WriteResult; TODO - make a proper JSON string for client 
+      (bkell/get :entry (:username lin-user) id ) (handle-errors 400) substitute-body) ;; TODO - stubbing in 'stub' user for now
+  )
+)
 #_(PUT "/entry/:id" [id :as req])
 #_(DELETE "/entry/:id" [id] )
 
