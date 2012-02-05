@@ -361,11 +361,11 @@
                       :tag)))
   )
 )
-#_(deftest test-entry-getlist1
+(deftest test-entry-getlist1
   
   ;; ensure that an error is returned if we try to get an entry list without being logged in
-  (let [rk (handler/init-handler)
-        result (request "/entries" handler/main :get {})] 
+  (let  [ result (test-request (rmock/request :get "/entries"))
+        ]
     
     (is (= 400 (:status result))) ;; ensure status is 200
     (is (= :error (->  :body       ;; this ensures that the body is a JSON string and that the tag is an error
@@ -375,14 +375,12 @@
                        :tag)))
   )
 )
-#_(deftest test-entry-getlist2
+(deftest test-entry-getlist2
   
   (let  [ ruser (test-utils/add-user nil)
-          rk (handler/init-handler)
-          rlogin (request "/login" handler/main :post 
-                  {:body (StringBufferInputStream. 
-                          "{ \"tag\":\"user\", \"username\":\"stub\", \"password\":\"5185e8b8fd8a71fc80545e144f91faf2\" }") })
-          result (request "/entries" handler/main :get {})] 
+          rlogin (-> ruser bkell/login (handler/handle-errors 400))
+          result (test-request (rmock/request :get "/entries"))
+        ]
     
     ;; ensure that we get even empty list of entries
     (is (= 200 (:status result))) ;; ensure status is 200
@@ -391,17 +389,17 @@
                   clojure.data.json/read-json )))
   )
 )
-#_(deftest test-entry-getlist3
+(deftest test-entry-getlist3
   
   (let  [ ruser (test-utils/add-user nil)
-          rk (handler/init-handler)
-          rlogin (request "/login" handler/main :post 
-                  {:body (StringBufferInputStream. 
-                          "{ \"tag\":\"user\", \"username\":\"stub\", \"password\":\"5185e8b8fd8a71fc80545e144f91faf2\" }") })
+          rlogin (-> ruser bkell/login (handler/handle-errors 400))
           pas (test-utils/populate-accounts)
-          r1 (request "/entry" handler/main :post {:body (java.io.File. "test/etc/data/test-entry-bal.js")})
-          r2 (request "/entry" handler/main :post {:body (java.io.File. "test/etc/data/test-entry-FULL.js")})
-          result (request "/entries" handler/main :get {})] 
+          r1 (test-request (->  (rmock/request :post "/entry")
+                                (rmock/body (slurp "test/etc/data/test-entry-bal.js") )))
+          r2 (test-request (->  (rmock/request :post "/entry")
+                                (rmock/body (slurp "test/etc/data/test-entry-FULL.js") )))
+          result (test-request (rmock/request :get "/entries"))
+        ]
     
     ;; ensure that we get even empty list of entries
     (is (-> result :body nil? not))

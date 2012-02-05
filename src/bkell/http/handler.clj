@@ -344,7 +344,15 @@
     )
   )
 )
-#_(GET "/entries" [:as req] )
+(noir/defpage [ :get "/entries" ] [:as req] 
+
+  (println (str "GET ; /entries ; " req))
+  (let [lin-user (authenticatek/logged-in-user)]
+    
+    (->      ;; JSON of MongoDB WriteResult; TODO - make a proper JSON string for client 
+      (bkell/get :entries (:username lin-user)) (handle-errors 400) substitute-body) 
+  )
+)
 #_(GET "/entry/:id" [id] )
 #_(PUT "/entry/:id" [id :as req])
 #_(DELETE "/entry/:id" [id] )
