@@ -332,33 +332,33 @@
   
   ;; ensure that an error is returned if we try to add an entry without being logged in
   (let  [ result (test-request (->  (rmock/request :post "/entry")
-                                      (rmock/body (clojure.data.json/read-json (java.io.FileReader. "test/etc/data/test-entry-FULL.js") ))))
+                                    (rmock/body (slurp "test/etc/data/test-entry-FULL.js") )))
         ] 
     
     (is (= 400 (:status result))) ;; ensure status is 200
-    (is (= :error (->  :body       ;; this ensures that the body is a JSON string and that the tag is an error
-                       result 
-                       clojure.data.json/read-json 
-                       domain/keywordize-tags
-                       :tag)))
+    (is (= :error (-> :body       ;; this ensures that the body is a JSON string and that the tag is an error
+                      result 
+                      clojure.data.json/read-json 
+                      domain/keywordize-tags
+                      :tag)))
   )
 )
-#_(deftest test-entry-add2
+(deftest test-entry-add2
   
   (let  [ ruser (test-utils/add-user nil)
-          rlogin (request "/login" handler/main :post 
-                  {:body (StringBufferInputStream. 
-                          "{ \"tag\":\"user\", \"username\":\"stub\", \"password\":\"5185e8b8fd8a71fc80545e144f91faf2\" }") })
+          rlogin (-> ruser bkell/login (handler/handle-errors 400))
           pas (test-utils/populate-accounts)
-          rentry (request "/entry" handler/main :post {:body (java.io.File. "test/etc/data/test-entry-FULL.js")})
+          
+          rentry (test-request (->  (rmock/request :post "/entry")
+                                    (rmock/body (slurp "test/etc/data/test-entry-FULL.js") )))
         ] 
     
     (is (= 200 (:status rentry))) ;; ensure status is 200
     (is (= :entry (-> rentry       ;; this ensures that the body is a JSON string and that the tag is an error
-                        :body 
-                        clojure.data.json/read-json 
-                        domain/keywordize-tags
-                        :tag)))
+                      :body 
+                      clojure.data.json/read-json 
+                      domain/keywordize-tags
+                      :tag)))
   )
 )
 #_(deftest test-entry-getlist1

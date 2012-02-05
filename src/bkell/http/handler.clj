@@ -3,8 +3,8 @@
   (:use [compojure.core]
   )
   
-  (:import [java.io FileReader]
-           [java.net URLEncoder NetworkInterface]
+  (:import  [java.io FileReader InputStreamReader]
+            [java.net URLEncoder NetworkInterface]
   ) 
   (:require [compojure.route :as route]
             [compojure.handler :as handler]
@@ -23,6 +23,7 @@
             [ring.adapter.jetty :as jetty]
             [noir.core :as noir]
             [noir.session :as session]
+            [noir.request :as request]
   )
 )
 
@@ -330,10 +331,17 @@
 ;; CRUD on Entries
 (noir/defpage [ :post "/entry" ] [:as req] 
   
-  (println (str "POST ; /entry ; " req))
-  (let [lin-user (authenticatek/logged-in-user)]
-    (->      ;; JSON of MongoDB WriteResult; TODO - make a proper JSON string for client 
-      req (bkell/add (:username lin-user)) (handle-errors 400) substitute-body) 
+  (let [raw-req (request/ring-request)]
+    
+    (println (str "POST ; /entry ; " raw-req))
+    (let [lin-user (authenticatek/logged-in-user)]
+      (if-let [body (InputStreamReader. (:body raw-req))]
+        (do 
+          (->      ;; JSON of MongoDB WriteResult; TODO - make a proper JSON string for client 
+            body (bjell/add (:username lin-user)) (handle-errors 400) substitute-body) 
+        )
+      )
+    )
   )
 )
 #_(GET "/entries" [:as req] )

@@ -6,4 +6,5 @@
   {"tag":"credit",
    "id":"crS",
    "amount":120.0,
-   "accountid":"accounts payable"}]}
+   "accountid":"accounts payable"}]
+}

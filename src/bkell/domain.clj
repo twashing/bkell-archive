@@ -183,18 +183,22 @@
 (defn account-for-entry? [uname entry] 
 
   (empty? (let [ alist (get-accounts uname)]
-            (filter (fn [a] (loop [x a y alist ] ;; given main.account list, loop through dt / ct in entrys and see if accountid matches 
-                  (if (= (:accountid x) (:id (first y)))
-                    false
-                    (if (< 1 (count y)) 
-                      (recur x (rest y))
-                      true                ;; entry added to filter if there was no accountid(s) that matched its reference
-                    )
-                  )
-                )
-              )
-              (:content entry)
+    
+    (filter 
+      (fn [a] 
+        (loop [x a y alist ]    ;; given main.account list, loop through dt / ct in entrys and see if accountid matches 
+          
+          (if (= (:accountid x) (:id (first y)))
+            false
+            (if (< 1 (count y)) 
+              (recur x (rest y))
+              true                ;; entry added to filter if there was no accountid(s) that matched its reference
             )
+          )
+        )
+      )
+      (:content entry)
+    )
   ))
             
 )
