@@ -321,7 +321,7 @@
   (println (str "DELETE ; /account/:id ; " id))
   (let [lin-user (authenticatek/logged-in-user)]
     
-    (->      ;; JSON of MongoDB WriteResult; TODO - make a proper JSON string for client 
+    (->      ;; JSON of MongoDB WriteResult; 
       lin-user (bkell/remove id) (handle-errors 400) substitute-body) 
   )
 )
@@ -336,10 +336,8 @@
     (println (str "POST ; /entry ; " raw-req))
     (let [lin-user (authenticatek/logged-in-user)]
       (if-let [body (InputStreamReader. (:body raw-req))]
-        (do 
-          (->      ;; JSON of MongoDB WriteResult; TODO - make a proper JSON string for client 
-            body (bjell/add (:username lin-user)) (handle-errors 400) substitute-body) 
-        )
+        (->      ;; JSON of MongoDB WriteResult; 
+          body (bjell/add (:username lin-user)) (handle-errors 400) substitute-body) 
       )
     )
   )
@@ -349,7 +347,7 @@
   (println (str "GET ; /entries ; " req))
   (let [lin-user (authenticatek/logged-in-user)]
     
-    (->      ;; JSON of MongoDB WriteResult; TODO - make a proper JSON string for client 
+    (->      ;; JSON of MongoDB WriteResult; 
       (bkell/get :entries (:username lin-user)) (handle-errors 400) substitute-body) 
   )
 )
@@ -358,11 +356,26 @@
   (println (str "GET ; /entries/:id ; " id))
   (let [lin-user (authenticatek/logged-in-user)]
     
-    (->      ;; JSON of MongoDB WriteResult; TODO - make a proper JSON string for client 
-      (bkell/get :entry (:username lin-user) id ) (handle-errors 400) substitute-body) ;; TODO - stubbing in 'stub' user for now
+    (->      ;; JSON of MongoDB WriteResult; 
+      (bkell/get :entry (:username lin-user) id ) (handle-errors 400) substitute-body) 
   )
 )
-#_(PUT "/entry/:id" [id :as req])
+(noir/defpage [ :put "/entry/:id" ] { :keys [id] } 
+  
+  (let [raw-req (request/ring-request)]
+    
+    (println (str "PUT ; /entry/:id ; " raw-req))
+    (let [lin-user (authenticatek/logged-in-user)]
+      (if-let [body (InputStreamReader. (:body raw-req))]
+        (do 
+          (->      ;; JSON of MongoDB WriteResult; 
+            body (bjell/update (:username lin-user) ) (handle-errors 400) substitute-body) 
+        )
+        (println "ERROR - PUT body is nil")
+      )
+    )
+  )
+)
 #_(DELETE "/entry/:id" [id] )
 
 

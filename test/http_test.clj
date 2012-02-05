@@ -434,15 +434,14 @@
                        :tag)))
   )
 )
-#_(deftest test-entry-update
+(deftest test-entry-update
   
   (let  [ ruser (test-utils/add-user nil)
-          rlogin (request "/login" handler/main :post 
-                  {:body (StringBufferInputStream. 
-                          "{ \"tag\":\"user\", \"username\":\"stub\", \"password\":\"5185e8b8fd8a71fc80545e144f91faf2\" }") })
+          rlogin (-> ruser bkell/login (handler/handle-errors 400))
           pas (test-utils/populate-accounts)
-          rentry (request "/entry" handler/main :post {:body (java.io.File. "test/etc/data/test-entry-bal.js")})
-          r1 (request "/entry/entryid" handler/main :get {})
+          r0 (test-request (->  (rmock/request :post "/entry")
+                                (rmock/body (slurp "test/etc/data/test-entry-bal.js") )))
+          r1 (test-request (rmock/request :get "/entry/entryid"))
         ] 
     
     ;; get the original 
@@ -454,18 +453,18 @@
                         :tag)))
     
     ;; update entry 
-    (let [r2 (request "/entry/entryid" handler/main :put
-              {:body 
-                (StringBufferInputStream. 
-                  "{\"tag\":\"entry\", \"id\":\"entryid\", \"date\":\"01/01/2012\", \"content\": [{\"tag\":\"debit\", \"id\":\"dtS\", \"amount\":120.0, \"accountid\":\"cash\"}, {\"tag\":\"credit\", \"id\":\"crS\", \"amount\":120.0, \"accountid\":\"accounts payable\"}]}")
-              })]
+    (let  [ r2  (test-request
+                  (-> (rmock/request :put "/entry/entryid")
+                      (rmock/body "{\"tag\":\"entry\", \"id\":\"entryid\", \"date\":\"01/01/2012\", \"content\": [{\"tag\":\"debit\", \"id\":\"dtS\", \"amount\":120.0, \"accountid\":\"cash\"}, {\"tag\":\"credit\", \"id\":\"crS\", \"amount\":120.0, \"accountid\":\"accounts payable\"}]}") 
+                  ))
+          ]
       
       (is (= 200 (:status r2))) ;; ensure status is 200
       (is (= :entry (-> r2       ;; this ensures that the body is a JSON string and that the tag is an entry
-                          :body 
-                          clojure.data.json/read-json 
-                          domain/keywordize-tags
-                          :tag)))
+                        :body 
+                        clojure.data.json/read-json 
+                        domain/keywordize-tags
+                        :tag)))
       (is (= "01/01/2012" (-> r2       ;; this ensures that the body is a JSON string and that the tag is an entry
                          :body 
                          clojure.data.json/read-json 
@@ -475,7 +474,8 @@
     )
     
     ;; get the update  
-    (let [r3 (request "/entry/entryid" handler/main :get {})]
+    (let  [ r3 (test-request (rmock/request :get "/entry/entryid"))
+          ]
       (is (= 200 (:status r3))) ;; ensure status is 200
       (is (= :entry (-> r3       ;; this ensures that the body is a JSON string and that the tag is an entry
                           :body 
