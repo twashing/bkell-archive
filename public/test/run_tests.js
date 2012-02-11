@@ -1,10 +1,20 @@
-
-phantom.injectJs("public/test/test_core.js")
-phantom.injectJs("public/test/test_register.js")
-
-jasmine.getEnv().addReporter(new jasmine.ConsoleReporter())
-jasmine.getEnv().addReporter(new jasmine.TrivialReporter())
-jasmine.getEnv().execute()
-
-phantom.exit()
-
+(function() {
+  var testAccount;
+  require.config({
+    baseUrl: "/test"
+  });
+  testAccount = require('test_account');
+  /*
+  testAccount.testC
+  testAccount.testR
+  testAccount.testU
+  testAccount.testD
+  */
+  /*
+  testEntry = require('test_entry')
+  testEntry.testC
+  testEntry.testR
+  testEntry.testU
+  testEntry.testD
+  */
+}).call(this);

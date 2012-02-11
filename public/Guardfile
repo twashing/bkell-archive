@@ -19,3 +19,11 @@ guard 'livereload' do
  watch(%r{js/.+\.js})
 end
 
+## tests 
+
+group 'tests' do
+  guard 'coffeescript', :input => "templ/test/coffeescript" , :output => "test" do
+    watch(%r{templ/test/coffeescript/(.+)\.coffee$})    
+  end
+end 
+
