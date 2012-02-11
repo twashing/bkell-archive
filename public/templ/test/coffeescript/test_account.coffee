@@ -1,11 +1,8 @@
-require.config({
-  baseUrl: '/test',
-  paths:
-    'src' : '/js'
-});
 
-require(['bkeeping/models'], (models) ->
-  console.log("bkeeping/models loaded: #{models}")
+define(['js/bkeeping/models'], (models) ->
+  
+  ping : -> 
+    console.log("bkeeping/models loaded: #{models}")
 );
 
 

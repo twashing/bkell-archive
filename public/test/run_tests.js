@@ -1,8 +1,11 @@
 (function() {
   require.config({
-    baseUrl: "/test",
+    baseUrl: '/test',
     paths: {
-      'src': '/js'
+      js: '/js/',
+      jQuery: 'thing',
+      Underscore: 'asdf',
+      Backbone: 'fubar'
     }
   });
   require(['test_account'], function(taccount) {

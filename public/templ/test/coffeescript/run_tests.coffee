@@ -1,8 +1,11 @@
-require.config({
-  baseUrl: "/test",
+require.config(
+  baseUrl: '/test'
   paths:
-    'src' : '/js'
-});
+    js : '/js/'
+    jQuery : 'thing'
+    Underscore : 'asdf'
+    Backbone : 'fubar'
+);
 
 
 # CRUD account 
