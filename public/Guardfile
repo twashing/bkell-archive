@@ -1,13 +1,17 @@
 
 group 'include' do
   guard 'haml', :input => "templ/haml" , :output => "include" do
-    watch(%r{templ/haml/(.+)\.html\.haml$})    
+    
+    # excluding index and landing HAML files
+    watch(%r{templ/haml/[^index\.html\.haml][^landing\.html\.haml](.+)\.html\.haml$})    
   end
 end 
 
-guard 'haml' do
- watch('landing.html.haml')
- watch('index.html.haml')
+group 'main'do
+  guard 'haml' , :output => "." do
+    watch('templ/haml/landing.html.haml')
+    watch('templ/haml/index.html.haml')
+  end
 end
 
 guard 'coffeescript', :input => "templ/coffeescript", :output => "js"
