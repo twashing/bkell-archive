@@ -1,9 +1,13 @@
 (function() {
-  var testAccount;
   require.config({
-    baseUrl: "/test"
+    baseUrl: "/test",
+    paths: {
+      'src': '/js'
+    }
   });
-  testAccount = require('test_account');
+  require(['test_account'], function(taccount) {
+    return console.log("test_account loaded: " + taccount);
+  });
   /*
   testAccount.testC
   testAccount.testR
@@ -11,7 +15,7 @@
   testAccount.testD
   */
   /*
-  testEntry = require('test_entry')
+  testEntry = require('test_entry');
   testEntry.testC
   testEntry.testR
   testEntry.testU

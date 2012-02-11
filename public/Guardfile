@@ -1,18 +1,18 @@
 
-group 'include' do
-  guard 'haml', :input => "templ/haml" , :output => "include" do
-    
-    # excluding index and landing HAML files
-    watch(%r{templ/haml/[^index\.html\.haml][^landing\.html\.haml](.+)\.html\.haml$})    
-  end
-end 
-
 group 'main'do
-  guard 'haml' , :output => "." do
+  guard 'haml', :input => "templ/haml", :output => "." do
     watch('templ/haml/landing.html.haml')
     watch('templ/haml/index.html.haml')
   end
 end
+
+group 'include' do
+  guard 'haml', :input => "templ/haml", :output => "include" do
+    
+    # excluding index and landing HAML files
+    watch(%r{templ/haml/(?!(landing)|(index))(.+)\.html\.haml}) 
+  end
+end 
 
 guard 'coffeescript', :input => "templ/coffeescript", :output => "js"
 
@@ -23,7 +23,8 @@ guard 'livereload' do
  watch(%r{js/.+\.js})
 end
 
-## tests 
+
+## Tests 
 
 group 'tests' do
   guard 'coffeescript', :input => "templ/test/coffeescript" , :output => "test" do
