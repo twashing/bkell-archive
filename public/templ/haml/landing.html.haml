@@ -11,165 +11,166 @@
     %link{ :href => "/css/landing.css", :media => "screen", :rel => "stylesheet", :type => "text/css" }
     
     /%script( src="/js/require.js" data-main="js/bkeeping/landing" )
-    %script( src="/js/require.js" data-main="test/run_tests" )
-    %script{ :src => "/js/jquery-1.6.3.js" }
-    %script{ :src => "/js/jquery.easing.1.3.js" }
-    /%script{ :src => "http://ajax.googleapis.com/ajax/libs/jqueryui/1.8/jquery-ui.min.js" }
+    %script( src="/js/lib/require.js" data-main="test/run_tests" )
     
-    %script{ :src => "/js/pure.js" }
-    %script{ :src => "/js/jquery.dataTables.js" }
-    %script{ :src => "/js/jquery.serialScroll.js" }
-    %script{ :src => "/js/jquery.scrollTo.js" }
+    %script{ :src => "/js/lib/jquery-1.6.3.js" }
+    %script{ :src => "/js/lib/jquery.easing.1.3.js" }
     
-    %script{ :src => "/js/json2.js" }
-    %script{ :src => "/js/underscore.js" }
-    %script{ :src => "/js/backbone.js" }
-    %script{ :src => "/js/md5.js" }
+    %script{ :src => "/js/lib/pure.js" }
+    %script{ :src => "/js/lib/jquery.dataTables.js" }
+    %script{ :src => "/js/lib/jquery.serialScroll.js" }
+    %script{ :src => "/js/lib/jquery.scrollTo.js" }
     
-    %script{ :src => "/js/bkeeping.js" }
-    %script{ :src => "/js/bkeeping/domain.js" }
-    %script{ :src => "/js/pureaccounts.js" }
-    %script{ :src => "/js/pureentries.js" }
-    :javascript
-      $(document).ready(function() { 
-        
-        
-        /*********
-         * GLOBAL Vars 
-         *********/
-        LEFT_WIDTH = 0 
-        LEFT_COLUMN_WIDTH = 0 
-        
-        
-        /*********
-         * Animation for left column 
-         *********/
-        var easeOUT = function() {
-          
-          console.log('easeOUT CALLED');
-          $('#left-col')
-            .animate(
-              { left: '-=' + LEFT_WIDTH }, 
-              { duration: 500, 
-                easing: 'easeInOutSine', 
-                complete: function() {
-                  
-                  /*** 
-                   * make sure the toggler button is still visible 
-                   ***/
-                  //$('#left-wrapper').css('display','none');
-                  //$('#left-col').css('width', $('#left-toggler').css('width'));
-                  //$('#left-toggler').css('left', LEFT_WIDTH)
-                  
-                },
-              });
-        };
-        var easeIN = function() {     
-          
-          console.log('easeIN CALLED');
-          
-          //$('#left-wrapper').css('display','block');
-          //$('#left-col').css('width', LEFT_COLUMN_WIDTH);
-          //$('#left-toggler').css('left', 0)
-          
-          $('#left-col')
-            //.css('width','auto')
-            .animate({ left: 0 }, 
-              { duration: 500, 
-                easing: 'easeInOutSine', 
-              });
-        };
-        
-        
-        /*********
-         * Set the animation functions 
-         *********/
-        $("#left-toggler").toggle( easeOUT, easeIN );
-        
-        
-        /********* 
-         * Initialize Objects & Project 
-         *********/ 
-        bkeeping.ACCOUNTS = new bkeeping.models.Accounts(); 
-        bkeeping.ENTRIES = new bkeeping.models.Entries(); 
-        
-        bkeeping.ACCOUNTS.reset(accountsData.puredata);
-        bkeeping.ENTRIES.reset(entryData.pureentries);
-        
-        bkeeping.ROUTER = new bkeeping.router.BkeepingRouter();
-        Backbone.history.start({ pushState: true, });
-        
-        
-        /********* 
-         * loading accounts and entries 
-         *********/
-        
-        $("#accounts").load("/include/accounts.html", function() { 
-          
-          LEFT_WIDTH = $('#left-wrapper').width();
-          LEFT_COLUMN_WIDTH = $('#left-col').css('width'); 
-          
-          // INITIAL render of Accounts (elements need to exist before View can bind to them); View will have the same call
-          $(this)
-            .render(accountsData, accountsDirective)
-            .find('table')
-            .dataTable();
+    %script{ :src => "/js/lib/json2.js" }
+    %script{ :src => "/js/lib/underscore.js" }
+    %script{ :src => "/js/lib/backbone.js" }
+    %script{ :src => "/js/lib/md5.js" }
+    
+    /
+      %script{ :src => "/js/bkeeping.js" }
+      %script{ :src => "/js/bkeeping/domain.js" }
+      %script{ :src => "/js/pureaccounts.js" }
+      %script{ :src => "/js/pureentries.js" }
+      :javascript
+        $(document).ready(function() { 
           
           
-          // capturing account edit clicks 
-          bkeeping.ACCOUNTS_VIEW = new bkeeping.views.AccountsView({ el: $('#accounts-pane') });
+          /*********
+           * GLOBAL Vars 
+           *********/
+          LEFT_WIDTH = 0 
+          LEFT_COLUMN_WIDTH = 0 
           
-          $('#account').load('/include/account.html', function() { 
+          
+          /*********
+           * Animation for left column 
+           *********/
+          var easeOUT = function() {
             
-            // Basic usage 
-            //$('#left-col').scrollTo($('#account'), 500, {axis:'x'});
-
-            // Working horizontal / serial scrolling 
-            $('#left-col').serialScroll({ target: $('#left-col'), items: $('#accounts , #account'), duration: 500, });
+            console.log('easeOUT CALLED');
+            $('#left-col')
+              .animate(
+                { left: '-=' + LEFT_WIDTH }, 
+                { duration: 500, 
+                  easing: 'easeInOutSine', 
+                  complete: function() {
+                    
+                    /*** 
+                     * make sure the toggler button is still visible 
+                     ***/
+                    //$('#left-wrapper').css('display','none');
+                    //$('#left-col').css('width', $('#left-toggler').css('width'));
+                    //$('#left-toggler').css('left', LEFT_WIDTH)
+                    
+                  },
+                });
+          };
+          var easeIN = function() {     
             
-            // Using this to toggle between views 
-            // $('#left-col').trigger('next');
-
+            console.log('easeIN CALLED');
+            
+            //$('#left-wrapper').css('display','block');
+            //$('#left-col').css('width', LEFT_COLUMN_WIDTH);
+            //$('#left-toggler').css('left', 0)
+            
+            $('#left-col')
+              //.css('width','auto')
+              .animate({ left: 0 }, 
+                { duration: 500, 
+                  easing: 'easeInOutSine', 
+                });
+          };
+          
+          
+          /*********
+           * Set the animation functions 
+           *********/
+          $("#left-toggler").toggle( easeOUT, easeIN );
+          
+          
+          /********* 
+           * Initialize Objects & Project 
+           *********/ 
+          bkeeping.ACCOUNTS = new bkeeping.models.Accounts(); 
+          bkeeping.ENTRIES = new bkeeping.models.Entries(); 
+          
+          bkeeping.ACCOUNTS.reset(accountsData.puredata);
+          bkeeping.ENTRIES.reset(entryData.pureentries);
+          
+          bkeeping.ROUTER = new bkeeping.router.BkeepingRouter();
+          Backbone.history.start({ pushState: true, });
+          
+          
+          /********* 
+           * loading accounts and entries 
+           *********/
+          
+          $("#accounts").load("/include/accounts.html", function() { 
+            
+            LEFT_WIDTH = $('#left-wrapper').width();
+            LEFT_COLUMN_WIDTH = $('#left-col').css('width'); 
+            
+            // INITIAL render of Accounts (elements need to exist before View can bind to them); View will have the same call
+            $(this)
+              .render(accountsData, accountsDirective)
+              .find('table')
+              .dataTable();
+            
+            
+            // capturing account edit clicks 
+            bkeeping.ACCOUNTS_VIEW = new bkeeping.views.AccountsView({ el: $('#accounts-pane') });
+            
+            $('#account').load('/include/account.html', function() { 
+              
+              // Basic usage 
+              //$('#left-col').scrollTo($('#account'), 500, {axis:'x'});
+  
+              // Working horizontal / serial scrolling 
+              $('#left-col').serialScroll({ target: $('#left-col'), items: $('#accounts , #account'), duration: 500, });
+              
+              // Using this to toggle between views 
+              // $('#left-col').trigger('next');
+  
+            });
           });
-        });
-        
-        
-        
-        $('#right-col').load('/include/entries.html', function() { 
           
-          $(this)
-            .render(entryData, entryDirective)
-            .find('table')
-            .dataTable();
           
-          // capturing entry edit clicks 
-          $('a.editentry').click(function(evt) { 
+          
+          $('#right-col').load('/include/entries.html', function() { 
             
-            bkeeping.ROUTER.navigate($(this).attr('href'), true);
-            return false;   // ensures that the browser window does not go to this URL... yet
+            $(this)
+              .render(entryData, entryDirective)
+              .find('table')
+              .dataTable();
+            
+            // capturing entry edit clicks 
+            $('a.editentry').click(function(evt) { 
+              
+              bkeeping.ROUTER.navigate($(this).attr('href'), true);
+              return false;   // ensures that the browser window does not go to this URL... yet
+            });
           });
-        });
+          
+          
+          /********* 
+           * load the footer file
+           *********/
+          $('#footer').load('/include/footerPart.html');
+          
         
-        
-        /********* 
-         * load the footer file
-         *********/
-        $('#footer').load('/include/footerPart.html');
-        
-      
-      /*
-      $('#accounts')
-        .css('width','275px') 
-        .css('height','200px') 
-        .css('background-color','red') 
-        
-      $('#account')
-        .css('width','275px') 
-        .css('height','200px') 
-        .css('background-color','blue') 
-      */
-
-      }); 
+        /*
+        $('#accounts')
+          .css('width','275px') 
+          .css('height','200px') 
+          .css('background-color','red') 
+          
+        $('#account')
+          .css('width','275px') 
+          .css('height','200px') 
+          .css('background-color','blue') 
+        */
+  
+        }); 
 
   %body 
     .container

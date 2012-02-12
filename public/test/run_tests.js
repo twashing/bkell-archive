@@ -3,9 +3,9 @@
     baseUrl: '/test',
     paths: {
       js: '/js/',
-      jQuery: 'thing',
-      Underscore: 'asdf',
-      Backbone: 'fubar'
+      jQuery: '/js/lib/jquery-1.6.3',
+      Underscore: '/js/lib/underscore',
+      Backbone: '/js/lib/backbone_loader'
     }
   });
   require(['test_account'], function(taccount) {

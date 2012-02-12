@@ -5,7 +5,7 @@
     %link( type="text/css" href="css/common.css" rel="stylesheet" )
     %link( type="text/css" href="css/index.css" rel="stylesheet" )
     
-    %script( src="/js/jquery-1.6.3.js" )
+    %script( src="/js/lib/jquery-1.6.3.js" )
     %script( src= "http://ajax.googleapis.com/ajax/libs/jqueryui/1.8/jquery-ui.min.js" )
     %script( src= "https://ajax.googleapis.com/ajax/libs/googleapis/0.0.4/googleapis.min.js" )
     %script( src= 'https://ajax.googleapis.com/jsapi' )
@@ -13,9 +13,9 @@
       //google.load("identitytoolkit", "1.0", { packages: ["ac"] });
       google.load("identitytoolkit", "1", {packages: ["ac"], language:"en"});
     
-    %script( src="/js/json2.js" )
-    %script( src="/js/underscore.js" )
-    %script( src="/js/backbone.js" )
+    %script( src="/js/lib/json2.js" )
+    %script( src="/js/lib/underscore.js" )
+    %script( src="/js/lib/backbone.js" )
     %script( src="js/bkeeping.js" type="text/javascript" )
     :javascript
       $(document).ready(function() {
