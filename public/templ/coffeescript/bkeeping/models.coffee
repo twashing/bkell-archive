@@ -6,7 +6,7 @@ define(['Backbone'], (bb) ->
   
   Backbone = bb.Backbone
   
-  Account = Backbone.Model.extend(
+  Account : Backbone.Model.extend(
     urlRoot : "/account",
   )
 )

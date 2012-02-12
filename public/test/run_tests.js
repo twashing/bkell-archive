@@ -8,11 +8,12 @@
       Backbone: '/js/lib/backbone_loader'
     }
   });
-  require(['test_account'], function(taccount) {
-    return console.log("test_account loaded: " + taccount);
+  require(['test_account'], function(testAccount) {
+    console.log("test_account loaded: " + testAccount);
+    testAccount.ping();
+    return testAccount.testC();
   });
   /*
-  testAccount.testC
   testAccount.testR
   testAccount.testU
   testAccount.testD

@@ -10,13 +10,15 @@ require.config(
 
 # CRUD account 
 
-require(['test_account'], (taccount) ->
-  console.log("test_account loaded: #{taccount}")
+require(['test_account'], (testAccount) ->
+  
+  console.log("test_account loaded: #{testAccount}")
+  testAccount.ping()
+  testAccount.testC()
 );
 
 
 ###
-testAccount.testC
 testAccount.testR
 testAccount.testU
 testAccount.testD
