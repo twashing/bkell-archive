@@ -217,7 +217,11 @@
           ]
       
       ;; Log the user in; session should die after some inactivity
-      (session/put! :current-user (if (nil? (:new-user rsetup)) ru (:new-user rsetup) ))
+      (let [logu (if (nil? (:new-user rsetup)) ru (:new-user rsetup) )] 
+
+        (authenticatek/login-user logu)
+        (session/put! :current-user logu)
+      )
       
       (let  [ notify-input { :email (:verifiedEmail rresp) :registered (-> rresp :exists str) }
               notify-input-str (clojure.data.json/json-str notify-input)
