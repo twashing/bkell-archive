@@ -281,14 +281,17 @@
 
 ;; ======
 ;; CRUD on Accounts
-(noir/defpage [ :post "/account" ] [:as req] 
+(noir/defpage [ :put "/account/:id" ] [:as req] 
     
-    (println (str "POST ; /account ; " req))
-    (let [lin-user (authenticatek/logged-in-user)]
+  (let [raw-req (request/ring-request)]
+    (println (str "PUT ; /account ; " raw-req))
+    (let [body (InputStreamReader. (:body raw-req))
+          lin-user (authenticatek/logged-in-user)]
       
       (->      ;; JSON of MongoDB WriteResult; 
-        req (bkell/add (:username lin-user)) (handle-errors 500) substitute-body) 
+        body (bjell/add (:username lin-user)) (handle-errors 500) substitute-body) 
     )
+  )
 )
 (noir/defpage [ :get "/accounts" ] [:as req] 
   
@@ -308,12 +311,15 @@
       (bkell/get :account (:username lin-user) id ) (handle-errors 400) substitute-body) 
   )
 )
-(noir/defpage [ :put "/account/:id" ] [ :as req { :keys [id] } ]
+(noir/defpage [ :post "/account/:id" ] [ :as req { :keys [id] } ]
   
-  (println (str "PUT ; /account/:id ; " req))
-  (let [lin-user (authenticatek/logged-in-user)]
-    (->      ;; JSON of MongoDB WriteResult; 
-      (bkell/update req (:username lin-user) ) (handle-errors 400) substitute-body) 
+  (let [raw-req (request/ring-request)]
+    (println (str "POST ; /account/:id ; " raw-req))
+    (let [body (InputStreamReader. (:body raw-req))
+          lin-user (authenticatek/logged-in-user)]
+      (->      ;; JSON of MongoDB WriteResult; 
+        body (bjell/update (:username lin-user) ) (handle-errors 400) substitute-body) 
+    )
   )
 )
 (noir/defpage [ :delete "/account/:id" ] { :keys [id] }

@@ -145,8 +145,8 @@
 (deftest test-account-add1
   
   ;; ensure that an error is returned if we try to add an account without being logged in
-  (let  [result (test-request (-> (rmock/request :post "/account")
-                                  (rmock/body (clojure.data.json/read-json (java.io.FileReader. "test/etc/data/test-account-asset.js") )))) 
+  (let  [result (test-request (-> (rmock/request :put "/account/cash")
+                                  (rmock/body (slurp "test/etc/data/test-account-asset.js") )))
         ] 
      
     (is (= 500 (:status result)))   ;; ensure status is 200
@@ -161,8 +161,8 @@
   
   (let  [ ruser (test-utils/add-user nil)
           rlogin (-> ruser bkell/login (handler/handle-errors 400))
-          raccount (test-request (->  (rmock/request :post "/account")
-                                      (rmock/body (clojure.data.json/read-json (java.io.FileReader. "test/etc/data/test-account-asset.js") ))))
+          raccount (test-request (->  (rmock/request :put "/account/cash")
+                                      (rmock/body (slurp "test/etc/data/test-account-asset.js") )))
         ] 
     
     ;; the result will look like: {:status 200, :headers {Content-Type text/html}, :body {"previous":{"tag":"user","username":"stub","password":"5185e8b8fd8a71fc80545e144f91faf2"},"logged-in-user":{"tag":"user","username":"stub","password
@@ -259,9 +259,8 @@
     
     ;; update account 
     (let  [ r2  (test-request 
-                  (-> (rmock/request :put "/account/cash")
-                      (rmock/body (clojure.data.json/read-json  (InputStreamReader. 
-                                                                  (StringBufferInputStream. "{\"tag\":\"account\", \"type\":\"asset\", \"id\":\"cash\", \"name\":\"fubar\", \"counterWeight\":\"debit\"}") )))))
+                  (-> (rmock/request :post "/account/cash")
+                      (rmock/body "{\"tag\":\"account\", \"type\":\"asset\", \"id\":\"cash\", \"name\":\"fubar\", \"counterWeight\":\"debit\"}") ))
           ]
       
       (is (= 200 (:status r2))) ;; ensure status is 200
@@ -328,7 +327,7 @@
 ;; ======
 ;; CRUD on Entries
 
-(deftest test-entry-add1
+#_(deftest test-entry-add1
   
   ;; ensure that an error is returned if we try to add an entry without being logged in
   (let  [ result (test-request (->  (rmock/request :post "/entry")
@@ -343,7 +342,7 @@
                       :tag)))
   )
 )
-(deftest test-entry-add2
+#_(deftest test-entry-add2
   
   (let  [ ruser (test-utils/add-user nil)
           rlogin (-> ruser bkell/login (handler/handle-errors 400))
@@ -361,7 +360,7 @@
                       :tag)))
   )
 )
-(deftest test-entry-getlist1
+#_(deftest test-entry-getlist1
   
   ;; ensure that an error is returned if we try to get an entry list without being logged in
   (let  [ result (test-request (rmock/request :get "/entries"))
@@ -375,7 +374,7 @@
                        :tag)))
   )
 )
-(deftest test-entry-getlist2
+#_(deftest test-entry-getlist2
   
   (let  [ ruser (test-utils/add-user nil)
           rlogin (-> ruser bkell/login (handler/handle-errors 400))
@@ -389,7 +388,7 @@
                   clojure.data.json/read-json )))
   )
 )
-(deftest test-entry-getlist3
+#_(deftest test-entry-getlist3
   
   (let  [ ruser (test-utils/add-user nil)
           rlogin (-> ruser bkell/login (handler/handle-errors 400))
@@ -413,7 +412,7 @@
                           :tag)))
   )
 )
-(deftest test-entry-get
+#_(deftest test-entry-get
   
   ;; ensure that an error is returned if we try to get an entry without being logged in
   (let  [ ruser (test-utils/add-user nil)
@@ -434,7 +433,7 @@
                        :tag)))
   )
 )
-(deftest test-entry-update
+#_(deftest test-entry-update
   
   (let  [ ruser (test-utils/add-user nil)
           rlogin (-> ruser bkell/login (handler/handle-errors 400))
@@ -491,7 +490,7 @@
     
   )
 )
-(deftest test-entry-delete
+#_(deftest test-entry-delete
   
   (let  [ ruser (test-utils/add-user nil)
           pas (test-utils/populate-accounts)
