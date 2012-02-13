@@ -327,7 +327,7 @@
 ;; ======
 ;; CRUD on Entries
 
-#_(deftest test-entry-add1
+(deftest test-entry-add1
   
   ;; ensure that an error is returned if we try to add an entry without being logged in
   (let  [ result (test-request (->  (rmock/request :post "/entry")
@@ -342,7 +342,7 @@
                       :tag)))
   )
 )
-#_(deftest test-entry-add2
+(deftest test-entry-add2
   
   (let  [ ruser (test-utils/add-user nil)
           rlogin (-> ruser bkell/login (handler/handle-errors 400))
@@ -360,7 +360,7 @@
                       :tag)))
   )
 )
-#_(deftest test-entry-getlist1
+(deftest test-entry-getlist1
   
   ;; ensure that an error is returned if we try to get an entry list without being logged in
   (let  [ result (test-request (rmock/request :get "/entries"))
@@ -374,7 +374,7 @@
                        :tag)))
   )
 )
-#_(deftest test-entry-getlist2
+(deftest test-entry-getlist2
   
   (let  [ ruser (test-utils/add-user nil)
           rlogin (-> ruser bkell/login (handler/handle-errors 400))
@@ -388,7 +388,7 @@
                   clojure.data.json/read-json )))
   )
 )
-#_(deftest test-entry-getlist3
+(deftest test-entry-getlist3
   
   (let  [ ruser (test-utils/add-user nil)
           rlogin (-> ruser bkell/login (handler/handle-errors 400))
@@ -412,7 +412,7 @@
                           :tag)))
   )
 )
-#_(deftest test-entry-get
+(deftest test-entry-get
   
   ;; ensure that an error is returned if we try to get an entry without being logged in
   (let  [ ruser (test-utils/add-user nil)
@@ -433,7 +433,7 @@
                        :tag)))
   )
 )
-#_(deftest test-entry-update
+(deftest test-entry-update
   
   (let  [ ruser (test-utils/add-user nil)
           rlogin (-> ruser bkell/login (handler/handle-errors 400))
@@ -490,7 +490,7 @@
     
   )
 )
-#_(deftest test-entry-delete
+(deftest test-entry-delete
   
   (let  [ ruser (test-utils/add-user nil)
           pas (test-utils/populate-accounts)
