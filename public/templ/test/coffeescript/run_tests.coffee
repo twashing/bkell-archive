@@ -13,8 +13,14 @@ require.config(
 require(['test_account'], (testAccount) ->
   
   console.log("test_account loaded: #{testAccount}")
-  testAccount.ping()
-  testAccount.testC()
+  #testAccount.ping()
+  
+  # this is WORKING. just don't want to create duplicates
+  #testAccount.testC()
+  testAccount.testR()
+  testAccount.testU()
+  testAccount.testD()
+  testAccount.testList()
 )
 
 

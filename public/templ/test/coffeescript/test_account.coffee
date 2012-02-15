@@ -19,16 +19,33 @@ define(['js/bkeeping/models'], (models) ->
     console.log("testC: saving... #{acct}")
     acct.save()
     
-    # TODO - have AbstractK that accepts success and error callback handlers
     # TODO - callback to handle {"message":"User is not authenticated","tag":"error"}
-    # TODO - create to POST
   
   testR : ->
   
+    console.log("test_account.testR CALLED")
+    
+    acct = new models.Account()
+    acct.set( "id":"cash")
+    acct.fetchS()
+    
   testU : ->
   
+    console.log("test_account.testU CALLED")
+    
   testD : ->
   
+    console.log("test_account.testD CALLED")
+    
+  testList : ->
+    
+    ###
+    console.log("test_account.testList CALLED")
+    
+    accounts = new models.Accounts()
+    accounts.fetchS()
+    ###
+    
 )
 
 

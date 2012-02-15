@@ -10,8 +10,10 @@
   });
   require(['test_account'], function(testAccount) {
     console.log("test_account loaded: " + testAccount);
-    testAccount.ping();
-    return testAccount.testC();
+    testAccount.testR();
+    testAccount.testU();
+    testAccount.testD();
+    return testAccount.testList();
   });
   /*
   testAccount.testR

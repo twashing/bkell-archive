@@ -18,9 +18,29 @@
         console.log("testC: saving... " + acct);
         return acct.save();
       },
-      testR: function() {},
-      testU: function() {},
-      testD: function() {}
+      testR: function() {
+        var acct;
+        console.log("test_account.testR CALLED");
+        acct = new models.Account();
+        acct.set({
+          "id": "cash"
+        });
+        return acct.fetchS();
+      },
+      testU: function() {
+        return console.log("test_account.testU CALLED");
+      },
+      testD: function() {
+        return console.log("test_account.testD CALLED");
+      },
+      testList: function() {
+        /*
+            console.log("test_account.testList CALLED")
+            
+            accounts = new models.Accounts()
+            accounts.fetchS()
+            */
+      }
     };
   });
 }).call(this);
