@@ -43,6 +43,12 @@ define(['js/bkeeping/models'], (models) ->
   
     console.log("test_account.testD CALLED")
     
+    acct = new models.Account()
+    acct.set( "id":"cash")
+    acct.fetchS(  success: (model, response) ->
+                    acct.removeS()
+    )
+    
   testList : ->
     
     ###

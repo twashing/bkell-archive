@@ -327,12 +327,13 @@
   )
 )
 (noir/defpage [ :delete "/account/:id" ] { :keys [id] }
-
+  
   (println (str "DELETE ; /account/:id ; " id))
+  
   (let [lin-user (authenticatek/logged-in-user)]
     
     (->      ;; JSON of MongoDB WriteResult; 
-      lin-user (bkell/remove id) (handle-errors 400) substitute-body) 
+      (bkell/remove { :tag :account :id id } (:username lin-user)) (handle-errors 400) ) 
   )
 )
 
@@ -389,10 +390,11 @@
 (noir/defpage [ :delete "/entry/:id" ] { :keys [id] }
   
   (println (str "DELETE ; /entry/:id ; " id))
+  
   (let [lin-user (authenticatek/logged-in-user)]
     
     (->      ;; JSON of MongoDB WriteResult; TODO - make a proper JSON string for client 
-      lin-user (bkell/remove id ) (handle-errors 400) substitute-body) ;; TODO - stubbing in 'stub' user for now
+      (bkell/remove { :tag :entry :id id } (:username lin-user) ) (handle-errors 400) substitute-body) ;; TODO - stubbing in 'stub' user for now
   )
 )
 

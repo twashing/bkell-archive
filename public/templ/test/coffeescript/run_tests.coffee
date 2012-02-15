@@ -17,10 +17,10 @@ require(['test_account'], (testAccount) ->
   
   # this is WORKING. just don't want to create duplicates
   #testAccount.testC()
-  testAccount.testR()
-  testAccount.testU()
+  #testAccount.testR()
+  #testAccount.testU()
   testAccount.testD()
-  testAccount.testList()
+  #testAccount.testList()
 )
 
 

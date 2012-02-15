@@ -12,29 +12,24 @@
       # Setup an Abstract Class & Collection that accepts success and error callbacks
       */
     commonFetch = function(options) {
-      var errorC, statusC, successC;
+      var errorC, successC;
       successC = options && options.success ? options.success : (function(model, response) {
         return console.log("success [commonFetch] CALLED > model[ " + model + " ] > response[ " + response + " ]");
       });
       errorC = options && options.error ? options.error : (function(model, response) {
         return console.log("error CALLED > model[" + model(+"] > response[" + response.responseText(+"]")));
       });
-      statusC = options && options.statusCode ? options.statusCode : {
-        302: function() {
-          return console.log("302 called");
-        }
-      };
-      return this.fetch({
-        success: successC
-      }, {
+      return this.fetch(_.extend((options ? options : {}), {
+        success: successC,
         error: errorC
-      });
+      }));
     };
     AbstractK = Backbone.Model.extend({
+      fetchS: commonFetch,
       saveS: function(valueMap, options) {
         var errorC, statusC, successC;
         successC = options && options.success ? options.success : (function(model, response) {
-          return console.log("success [bkeeping.models.AbstractK] CALLED > model[ " + model + " ] > response[ " + response + " ]");
+          return console.log("success [bkeeping.models.AbstractK.saveS] CALLED > model[ " + model + " ] > response[ " + response + " ]");
           /*
                   this["_id"] = response._id
                   this["id"] = response.username
@@ -52,7 +47,17 @@
           statusCode: statusC
         }));
       },
-      fetchS: commonFetch
+      removeS: function(options) {
+        var errorC, successC;
+        successC = options && options.success ? options.success : (function(model, response) {
+          return console.log("success [bkeeping.models.AbstractK.removeS] CALLED > model[ " + model + " ] > response[ " + response + " ]");
+        });
+        errorC = options && options.error ? options.error : (function(model, response) {});
+        return this.destroy(_.extend((options ? options : {}), {
+          success: successC,
+          error: errorC
+        }));
+      }
     });
     AbstractL = Backbone.Collection.extend({
       fetchS: commonFetch

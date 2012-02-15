@@ -10,10 +10,7 @@
   });
   require(['test_account'], function(testAccount) {
     console.log("test_account loaded: " + testAccount);
-    testAccount.testR();
-    testAccount.testU();
-    testAccount.testD();
-    return testAccount.testList();
+    return testAccount.testD();
   });
   /*
   testAccount.testR

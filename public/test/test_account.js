@@ -45,7 +45,17 @@
         });
       },
       testD: function() {
-        return console.log("test_account.testD CALLED");
+        var acct;
+        console.log("test_account.testD CALLED");
+        acct = new models.Account();
+        acct.set({
+          "id": "cash"
+        });
+        return acct.fetchS({
+          success: function(model, response) {
+            return acct.removeS();
+          }
+        });
       },
       testList: function() {
         /*
