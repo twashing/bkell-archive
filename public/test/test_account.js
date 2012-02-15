@@ -15,8 +15,7 @@
           "name": "cash",
           "counterWeight": "debit"
         });
-        console.log("testC: saving... " + acct);
-        return acct.save();
+        return acct.saveS();
       },
       testR: function() {
         var acct;
@@ -28,7 +27,22 @@
         return acct.fetchS();
       },
       testU: function() {
-        return console.log("test_account.testU CALLED");
+        var acct;
+        console.log("test_account.testU CALLED");
+        acct = new models.Account();
+        acct.set({
+          "id": "cash"
+        });
+        return acct.fetchS({
+          success: function(model, response) {
+            acct.set({
+              "counterWeight": "credit"
+            });
+            return acct.saveS({}, {
+              type: 'POST'
+            });
+          }
+        });
       },
       testD: function() {
         return console.log("test_account.testD CALLED");

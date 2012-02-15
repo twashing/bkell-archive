@@ -16,8 +16,7 @@ define(['js/bkeeping/models'], (models) ->
       "name":"cash"
       "counterWeight":"debit"
     )
-    console.log("testC: saving... #{acct}")
-    acct.save()
+    acct.saveS()
     
     # TODO - callback to handle {"message":"User is not authenticated","tag":"error"}
   
@@ -33,6 +32,13 @@ define(['js/bkeeping/models'], (models) ->
   
     console.log("test_account.testU CALLED")
     
+    acct = new models.Account()
+    acct.set( "id":"cash")
+    acct.fetchS(  success: (model, response) ->
+                    acct.set( "counterWeight":"credit" )
+                    acct.saveS( {}, type : 'POST' )
+    )
+  
   testD : ->
   
     console.log("test_account.testD CALLED")

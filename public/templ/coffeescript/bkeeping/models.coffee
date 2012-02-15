@@ -14,7 +14,7 @@ define(['Backbone'], (bb) ->
   ###
   # Setup an Abstract Class & Collection that accepts success and error callbacks
   ###
-  commonFetch = (valueMap, options) ->
+  commonFetch = (options) ->
     
     # assigning default success, error and options unless user passes one in
     successC = if(options && options.success) then (options.success) else ((model, response) ->
@@ -28,7 +28,6 @@ define(['Backbone'], (bb) ->
     
     this.fetch( success : successC,
                 error : errorC
-                
     )
   
   AbstractK = Backbone.Model.extend({
@@ -40,21 +39,25 @@ define(['Backbone'], (bb) ->
         
         console.log("success [bkeeping.models.AbstractK] CALLED > model[ #{model} ] > response[ #{response} ]")
         
+        ###
         this["_id"] = response._id
         this["id"] = response.username
+        ###
       )
       
       errorC = if(options && options.error) then (options.error) else ((model, response) ->
-        console.log("error CALLED > model["+ model +"] > response["+ response.responseText +"]")
+        #console.log("error CALLED > model["+ model +"] > response["+ response.responseText +"]")
       )
       
       statusC = if(options && options.statusCode) then (options.statusCode) else ({ 302 : -> console.log("302 called")  })
       
       
       this.save(  ( if(valueMap) then (valueMap) else ({}) ),
-                  success : successC,
-                  error : errorC,
-                  statusCode: statusC
+                  _.extend((if(options) then (options) else ({})),
+                    success : successC,
+                    error : errorC,
+                    statusCode: statusC
+                  )
                   
       )
     
