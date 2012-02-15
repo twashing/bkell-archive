@@ -1,15 +1,15 @@
 
 define(['js/bkeeping/models'], (models) ->
   
-  ping : -> 
+  ping : ->
     console.log("bkeeping/models loaded: #{models}")
   
-  testC : -> 
+  testC : ->
     
     console.log("test_account.testC CALLED")
     
     acct = new models.Account()
-    acct.set( 
+    acct.set(
       "tag":"account"
       "type":"asset"
       "id":"cash"
@@ -23,12 +23,12 @@ define(['js/bkeeping/models'], (models) ->
     # TODO - callback to handle {"message":"User is not authenticated","tag":"error"}
     # TODO - create to POST
   
-  testR : -> 
+  testR : ->
   
-  testU : -> 
+  testU : ->
   
-  testD : -> 
+  testD : ->
   
-);
+)
 
 

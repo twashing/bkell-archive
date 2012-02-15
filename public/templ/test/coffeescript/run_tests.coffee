@@ -5,7 +5,7 @@ require.config(
     jQuery : '/js/lib/jquery-1.6.3'
     Underscore : '/js/lib/underscore'
     Backbone : '/js/lib/backbone_loader'
-);
+)
 
 
 # CRUD account 
@@ -15,7 +15,7 @@ require(['test_account'], (testAccount) ->
   console.log("test_account loaded: #{testAccount}")
   testAccount.ping()
   testAccount.testC()
-);
+)
 
 
 ###
