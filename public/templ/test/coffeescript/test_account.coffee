@@ -1,9 +1,6 @@
 
 define(['js/bkeeping/models'], (models) ->
   
-  ping : ->
-    console.log("bkeeping/models loaded: #{models}")
-  
   testC : ->
     
     console.log("test_account.testC CALLED")
@@ -12,8 +9,8 @@ define(['js/bkeeping/models'], (models) ->
     acct.set(
       "tag":"account"
       "type":"asset"
-      "id":"cash"
-      "name":"cash"
+      "id":"stock"
+      "name":"stock"
       "counterWeight":"debit"
     )
     acct.saveS()
@@ -23,7 +20,6 @@ define(['js/bkeeping/models'], (models) ->
   testR : ->
   
     console.log("test_account.testR CALLED")
-    
     acct = new models.Account()
     acct.set( "id":"cash")
     acct.fetchS()
@@ -31,7 +27,6 @@ define(['js/bkeeping/models'], (models) ->
   testU : ->
   
     console.log("test_account.testU CALLED")
-    
     acct = new models.Account()
     acct.set( "id":"cash")
     acct.fetchS(  success: (model, response) ->
@@ -42,7 +37,6 @@ define(['js/bkeeping/models'], (models) ->
   testD : ->
   
     console.log("test_account.testD CALLED")
-    
     acct = new models.Account()
     acct.set( "id":"cash")
     acct.fetchS(  success: (model, response) ->
@@ -51,12 +45,10 @@ define(['js/bkeeping/models'], (models) ->
     
   testList : ->
     
-    ###
     console.log("test_account.testList CALLED")
     
     accounts = new models.Accounts()
     accounts.fetchS()
-    ###
     
 )
 

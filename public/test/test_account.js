@@ -1,9 +1,6 @@
 (function() {
   define(['js/bkeeping/models'], function(models) {
     return {
-      ping: function() {
-        return console.log("bkeeping/models loaded: " + models);
-      },
       testC: function() {
         var acct;
         console.log("test_account.testC CALLED");
@@ -11,8 +8,8 @@
         acct.set({
           "tag": "account",
           "type": "asset",
-          "id": "cash",
-          "name": "cash",
+          "id": "stock",
+          "name": "stock",
           "counterWeight": "debit"
         });
         return acct.saveS();
@@ -58,12 +55,10 @@
         });
       },
       testList: function() {
-        /*
-            console.log("test_account.testList CALLED")
-            
-            accounts = new models.Accounts()
-            accounts.fetchS()
-            */
+        var accounts;
+        console.log("test_account.testList CALLED");
+        accounts = new models.Accounts();
+        return accounts.fetchS();
       }
     };
   });

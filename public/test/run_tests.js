@@ -9,19 +9,13 @@
     }
   });
   require(['test_account'], function(testAccount) {
-    console.log("test_account loaded: " + testAccount);
-    return testAccount.testD();
+    return console.log("test_account loaded: " + testAccount);
+    /*
+      testEntry = require('test_entry');
+      testEntry.testC
+      testEntry.testR
+      testEntry.testU
+      testEntry.testD
+      */
   });
-  /*
-  testAccount.testR
-  testAccount.testU
-  testAccount.testD
-  */
-  /*
-  testEntry = require('test_entry');
-  testEntry.testC
-  testEntry.testR
-  testEntry.testU
-  testEntry.testD
-  */
 }).call(this);

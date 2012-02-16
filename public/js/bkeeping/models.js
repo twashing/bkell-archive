@@ -76,9 +76,11 @@
         # Collections
         */
       Accounts: AbstractL.extend({
+        url: '/accounts',
         model: this.Account
       }),
       Entries: AbstractL.extend({
+        url: '/entries',
         model: this.Entry
       })
     };

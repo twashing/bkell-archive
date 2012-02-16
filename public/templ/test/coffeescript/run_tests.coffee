@@ -8,37 +8,34 @@ require.config(
 )
 
 
-# CRUD account 
-
 require(['test_account'], (testAccount) ->
   
   console.log("test_account loaded: #{testAccount}")
-  #testAccount.ping()
+  
+  # CRUD account 
   
   # this is WORKING. just don't want to create duplicates
   #testAccount.testC()
   #testAccount.testR()
   #testAccount.testU()
-  testAccount.testD()
+  #testAccount.testD()
+  
+  # TODO - For some reason this only working when there's more than 1 account
   #testAccount.testList()
+  
+  
+  # CRUD entry
+  
+  ###
+  testEntry = require('test_entry');
+  testEntry.testC
+  testEntry.testR
+  testEntry.testU
+  testEntry.testD
+  ###
+
+
 )
 
-
-###
-testAccount.testR
-testAccount.testU
-testAccount.testD
-###
-
-
-# CRUD entry
-
-###
-testEntry = require('test_entry');
-testEntry.testC
-testEntry.testR
-testEntry.testU
-testEntry.testD
-###
 
 

@@ -83,6 +83,7 @@
         r   "function(k,vals) { return { result : vals } ; }"
         result (map-reduce :bookkeeping m r :result-collection)]
     
+    ;;(println (str "get-accounts > result[" (first result) "]"))
     (vec (map bkell.domain/keywordize-tags 
       (-> result first :value :result)))  ;; dig in and get the currency list 
     
