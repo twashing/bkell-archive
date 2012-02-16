@@ -334,6 +334,7 @@
     
     (->      ;; JSON of MongoDB WriteResult; 
       (bkell/remove { :tag :account :id id } (:username lin-user)) (handle-errors 400) ) 
+    { :tag :account :id id }
   )
 )
 

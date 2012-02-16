@@ -32,14 +32,7 @@
 ;; remove account 
 (defn remove-account [account uname]
 
-  (println "... Grrr")
-  (println (str "account[" account "] / uname[" uname "]"))
   (let  [ ru (fetch-one "bookkeeping" :where { :owner uname }) ]
-    
-    (println (str "ru[" ru "]"))
-    (println (str "aaaaand[" (domain/traverse-tree ru :remove { :id (:id account) } nil) "]"))
-    (println (str ""))
-    
     (update! :bookkeeping { :_id (:_id ru) }  ;; passing in hash w/ ObjecId, NOT original object
       (domain/traverse-tree ru :remove { :id (:id account) } nil))
   )
