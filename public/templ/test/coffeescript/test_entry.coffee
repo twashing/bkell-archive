@@ -43,7 +43,7 @@ define(['js/bkeeping/models'], (models) ->
     entry.fetchS(  success: (model, response) ->
                     entry.removeS()
     )
-    
+  
   testList : ->
     
     console.log("test_entry.testList CALLED")

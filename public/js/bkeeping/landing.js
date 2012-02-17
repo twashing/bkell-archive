@@ -2,7 +2,7 @@
   require.config({
     baseUrl: "/js"
   });
-  require(['domReady!'], function() {
-    return console.log('hello');
+  require(['domReady!, domReady!bkeeping/bkeeping'], function(bkeeping) {
+    return console.log('landing LOADED');
   });
 }).call(this);
