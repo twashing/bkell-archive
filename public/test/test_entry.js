@@ -51,7 +51,7 @@
             });
           }
         });
-      }
+      },
       /*
         testD : ->
         
@@ -62,14 +62,13 @@
                           entry.removeS()
           )
           
-        testList : ->
-          
-          console.log("test_entry.testList CALLED")
-          
-          entry = new models.Entry()
-          entry.fetchS()
-          
         */
+      testList: function() {
+        var entrys;
+        console.log("test_entry.testList CALLED");
+        entrys = new models.Entries();
+        return entrys.fetchS();
+      }
     };
   });
 }).call(this);

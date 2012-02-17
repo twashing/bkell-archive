@@ -45,14 +45,14 @@ define(['js/bkeeping/models'], (models) ->
                     entry.removeS()
     )
     
+  ###
+    
   testList : ->
     
     console.log("test_entry.testList CALLED")
     
-    entry = new models.Entry()
-    entry.fetchS()
-    
-  ###
+    entrys = new models.Entries()
+    entrys.fetchS()
 )
 
 
