@@ -33,22 +33,30 @@
           "id": "testid"
         });
         return entry.fetchS();
+      },
+      testU: function() {
+        var entry;
+        console.log("test_entry.testU CALLED");
+        entry = new models.Entry();
+        entry.set({
+          "id": "testid"
+        });
+        return entry.fetchS({
+          success: function(model, response) {
+            entry.set({
+              "date": "01\/01\/2012"
+            });
+            return entry.saveS({}, {
+              type: 'POST'
+            });
+          }
+        });
       }
       /*
-        testU : ->
-        
-          console.log("test_account.testU CALLED")
-          entry = new models.Account()
-          entry.set( "id":"cash")
-          entry.fetchS(  success: (model, response) ->
-                          entry.set( "counterWeight":"credit" )
-                          entry.saveS( {}, type : 'POST' )
-          )
-        
         testD : ->
         
-          console.log("test_account.testD CALLED")
-          entry = new models.Account()
+          console.log("test_entry.testD CALLED")
+          entry = new models.Entry()
           entry.set( "id":"cash")
           entry.fetchS(  success: (model, response) ->
                           entry.removeS()
@@ -56,10 +64,10 @@
           
         testList : ->
           
-          console.log("test_account.testList CALLED")
+          console.log("test_entry.testList CALLED")
           
-          accounts = new models.Accounts()
-          accounts.fetchS()
+          entry = new models.Entry()
+          entry.fetchS()
           
         */
     };

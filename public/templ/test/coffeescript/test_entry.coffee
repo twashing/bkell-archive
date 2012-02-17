@@ -25,21 +25,21 @@ define(['js/bkeeping/models'], (models) ->
     entry.set( "id":"testid")
     entry.fetchS()
     
-  ###
   testU : ->
   
-    console.log("test_account.testU CALLED")
-    entry = new models.Account()
-    entry.set( "id":"cash")
+    console.log("test_entry.testU CALLED")
+    entry = new models.Entry()
+    entry.set( "id":"testid")
     entry.fetchS(  success: (model, response) ->
-                    entry.set( "counterWeight":"credit" )
+                    entry.set( "date":"01\/01\/2012" )
                     entry.saveS( {}, type : 'POST' )
     )
   
+  ###
   testD : ->
   
-    console.log("test_account.testD CALLED")
-    entry = new models.Account()
+    console.log("test_entry.testD CALLED")
+    entry = new models.Entry()
     entry.set( "id":"cash")
     entry.fetchS(  success: (model, response) ->
                     entry.removeS()
@@ -47,10 +47,10 @@ define(['js/bkeeping/models'], (models) ->
     
   testList : ->
     
-    console.log("test_account.testList CALLED")
+    console.log("test_entry.testList CALLED")
     
-    accounts = new models.Accounts()
-    accounts.fetchS()
+    entry = new models.Entry()
+    entry.fetchS()
     
   ###
 )
