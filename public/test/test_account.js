@@ -5,22 +5,22 @@
         var acct;
         console.log("test_account.testC CALLED");
         acct = new models.Account();
+        acct.set({
+          "tag": "account",
+          "type": "asset",
+          "id": "cash",
+          "name": "cash",
+          "counterWeight": "debit"
+        });
         /*
             acct.set(
               "tag":"account"
-              "type":"asset"
-              "id":"cash"
-              "name":"cash"
+              "type":"liability"
+              "id":"accounts payable"
+              "name":"accounts payable"
               "counterWeight":"debit"
             )
             */
-        acct.set({
-          "tag": "account",
-          "type": "liability",
-          "id": "accounts payable",
-          "name": "accounts payable",
-          "counterWeight": "credit"
-        });
         return acct.saveS();
       },
       testR: function() {
@@ -55,7 +55,7 @@
         console.log("test_account.testD CALLED");
         acct = new models.Account();
         acct.set({
-          "id": "cash"
+          "id": "accounts payable"
         });
         return acct.fetchS({
           success: function(model, response) {

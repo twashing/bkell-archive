@@ -11,6 +11,6 @@
   require(['test_account', 'test_entry'], function(testAccount, testEntry) {
     console.log("test_account loaded: " + testAccount);
     console.log("test_entry loaded: " + testEntry);
-    return testEntry.testC();
+    return testEntry.testR();
   });
 }).call(this);

@@ -341,7 +341,7 @@
 
 ;; ======
 ;; CRUD on Entries
-(noir/defpage [ :put "/entry:id" ] [:as req] 
+(noir/defpage [ :put "/entry/:id" ] [:as req] 
   
   (let [raw-req (request/ring-request)]
     

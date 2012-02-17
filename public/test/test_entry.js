@@ -24,34 +24,34 @@
           ]
         });
         return entry.saveS();
+      },
+      testR: function() {
+        var entry;
+        console.log("test_entry.testR CALLED");
+        entry = new models.Entry();
+        entry.set({
+          "id": "testid"
+        });
+        return entry.fetchS();
       }
       /*
-          # TODO - callback to handle {"message":"User is not authenticated","tag":"error"}
-        
-        testR : ->
-        
-          console.log("test_account.testR CALLED")
-          acct = new models.Account()
-          acct.set( "id":"cash")
-          acct.fetchS()
-          
         testU : ->
         
           console.log("test_account.testU CALLED")
-          acct = new models.Account()
-          acct.set( "id":"cash")
-          acct.fetchS(  success: (model, response) ->
-                          acct.set( "counterWeight":"credit" )
-                          acct.saveS( {}, type : 'POST' )
+          entry = new models.Account()
+          entry.set( "id":"cash")
+          entry.fetchS(  success: (model, response) ->
+                          entry.set( "counterWeight":"credit" )
+                          entry.saveS( {}, type : 'POST' )
           )
         
         testD : ->
         
           console.log("test_account.testD CALLED")
-          acct = new models.Account()
-          acct.set( "id":"cash")
-          acct.fetchS(  success: (model, response) ->
-                          acct.removeS()
+          entry = new models.Account()
+          entry.set( "id":"cash")
+          entry.fetchS(  success: (model, response) ->
+                          entry.removeS()
           )
           
         testList : ->

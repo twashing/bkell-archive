@@ -209,7 +209,8 @@
     :lhs -> dt/dt == ct/ct
     :rhs -> dt/cr == ct/dt "
   [uname entry] 
-
+  
+  ;;(println (str "entry-balanced? > uname[" uname "] > entry[" entry "]"))
   (let [result  (reduce (fn [a b] 
                           (let [acct (find-linked-account uname b)]
                           (if (or (and (= "debit" (:counterWeight acct)) (= :debit (keyword (:tag b))) ) 
@@ -219,6 +220,7 @@
                   { :lhs 0.0 :rhs 0.0 }   ;; beginning tally 
                   (:content entry))]       ;; list of debits and credits 
 
+    ;;(println (str "entry-balanced? > result[" result "]"))
     (= (:lhs result) (:rhs result))
   )
 )

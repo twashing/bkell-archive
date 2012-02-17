@@ -27,8 +27,8 @@ require(['test_account','test_entry'], (testAccount, testEntry) ->
   
   # CRUD entry
   
-  testEntry.testC()
-  #testEntry.testR()
+  #testEntry.testC()
+  testEntry.testR()
   #testEntry.testU()
   #testEntry.testD()
 
