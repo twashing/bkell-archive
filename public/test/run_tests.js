@@ -8,14 +8,9 @@
       Backbone: '/js/lib/backbone_loader'
     }
   });
-  require(['test_account'], function(testAccount) {
-    return console.log("test_account loaded: " + testAccount);
-    /*
-      testEntry = require('test_entry');
-      testEntry.testC
-      testEntry.testR
-      testEntry.testU
-      testEntry.testD
-      */
+  require(['test_account', 'test_entry'], function(testAccount, testEntry) {
+    console.log("test_account loaded: " + testAccount);
+    console.log("test_entry loaded: " + testEntry);
+    return testEntry.testC();
   });
 }).call(this);

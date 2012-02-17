@@ -5,12 +5,21 @@
         var acct;
         console.log("test_account.testC CALLED");
         acct = new models.Account();
+        /*
+            acct.set(
+              "tag":"account"
+              "type":"asset"
+              "id":"cash"
+              "name":"cash"
+              "counterWeight":"debit"
+            )
+            */
         acct.set({
           "tag": "account",
-          "type": "asset",
-          "id": "stock",
-          "name": "stock",
-          "counterWeight": "debit"
+          "type": "liability",
+          "id": "accounts payable",
+          "name": "accounts payable",
+          "counterWeight": "credit"
         });
         return acct.saveS();
       },

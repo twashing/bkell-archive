@@ -341,11 +341,11 @@
 
 ;; ======
 ;; CRUD on Entries
-(noir/defpage [ :post "/entry" ] [:as req] 
+(noir/defpage [ :put "/entry:id" ] [:as req] 
   
   (let [raw-req (request/ring-request)]
     
-    (println (str "POST ; /entry ; " raw-req))
+    (println (str "PUT ; /entry ; " raw-req))
     (let [lin-user (authenticatek/logged-in-user)]
       (if-let [body (InputStreamReader. (:body raw-req))]
         (->      ;; JSON of MongoDB WriteResult; 
@@ -372,19 +372,16 @@
       (bkell/get :entry (:username lin-user) id ) (handle-errors 400) substitute-body) 
   )
 )
-(noir/defpage [ :put "/entry/:id" ] { :keys [id] } 
+(noir/defpage [ :post "/entry/:id" ] { :keys [id] } 
   
   (let [raw-req (request/ring-request)]
     
-    (println (str "PUT ; /entry/:id ; " raw-req))
-    (let [lin-user (authenticatek/logged-in-user)]
-      (if-let [body (InputStreamReader. (:body raw-req))]
-        (do 
-          (->      ;; JSON of MongoDB WriteResult; 
-            body (bjell/update (:username lin-user) ) (handle-errors 400) substitute-body) 
-        )
-        (println "ERROR - PUT body is nil")
-      )
+    (println (str "POST ; /entry/:id ; " raw-req))
+    (let  [ lin-user (authenticatek/logged-in-user)
+            body (InputStreamReader. (:body raw-req))
+          ]
+      (->      ;; JSON of MongoDB WriteResult; 
+        body (bjell/update (:username lin-user) ) (handle-errors 400) substitute-body) 
     )
   )
 )

@@ -8,9 +8,10 @@ require.config(
 )
 
 
-require(['test_account'], (testAccount) ->
+require(['test_account','test_entry'], (testAccount, testEntry) ->
   
   console.log("test_account loaded: #{testAccount}")
+  console.log("test_entry loaded: #{testEntry}")
   
   # CRUD account 
   
@@ -26,14 +27,10 @@ require(['test_account'], (testAccount) ->
   
   # CRUD entry
   
-  ###
-  testEntry = require('test_entry');
-  testEntry.testC
-  testEntry.testR
-  testEntry.testU
-  testEntry.testD
-  ###
-
+  testEntry.testC()
+  #testEntry.testR()
+  #testEntry.testU()
+  #testEntry.testD()
 
 )
 

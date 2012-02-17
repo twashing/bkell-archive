@@ -3,27 +3,20 @@ define(['js/bkeeping/models'], (models) ->
   
   testC : ->
     
-    console.log("test_account.testC CALLED")
+    console.log("test_entry.testC CALLED")
     
-    acct = new models.Account()
-    ###
-    acct.set(
-      "tag":"account"
-      "type":"asset"
-      "id":"cash"
-      "name":"cash"
-      "counterWeight":"debit"
+    entry = new models.Entry()
+    entry.set(
+      "tag" : "entry"
+      "id" : "testid"
+      "date" : "03\/22\/2011"
+      "content" : [ { "tag":"debit" , "id":"dtS" , "amount":120.0 , "accountid":"cash" },
+                    { "tag":"credit" , "id":"ctS" , "amount":120.0 , "accountid":"accounts payable" }
+      ]
     )
-    ###
-    acct.set(
-      "tag":"account"
-      "type":"liability"
-      "id":"accounts payable"
-      "name":"accounts payable"
-      "counterWeight":"credit"
-    )
-    acct.saveS()
+    entry.saveS()
     
+  ###
     # TODO - callback to handle {"message":"User is not authenticated","tag":"error"}
   
   testR : ->
@@ -59,6 +52,7 @@ define(['js/bkeeping/models'], (models) ->
     accounts = new models.Accounts()
     accounts.fetchS()
     
+  ###
 )
 
 
