@@ -30,7 +30,7 @@ require(['test_account','test_entry'], (testAccount, testEntry) ->
   #testEntry.testC()
   #testEntry.testR()
   #testEntry.testU()
-  #testEntry.testD()
+  testEntry.testD()
 
 
   # TODO - Again, for some reason lists only work when there are more than 1 entity to be retrieved

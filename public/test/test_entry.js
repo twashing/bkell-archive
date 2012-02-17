@@ -52,17 +52,19 @@
           }
         });
       },
-      /*
-        testD : ->
-        
-          console.log("test_entry.testD CALLED")
-          entry = new models.Entry()
-          entry.set( "id":"cash")
-          entry.fetchS(  success: (model, response) ->
-                          entry.removeS()
-          )
-          
-        */
+      testD: function() {
+        var entry;
+        console.log("test_entry.testD CALLED");
+        entry = new models.Entry();
+        entry.set({
+          "id": "testid"
+        });
+        return entry.fetchS({
+          success: function(model, response) {
+            return entry.removeS();
+          }
+        });
+      },
       testList: function() {
         var entrys;
         console.log("test_entry.testList CALLED");

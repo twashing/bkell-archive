@@ -392,7 +392,8 @@
   (let [lin-user (authenticatek/logged-in-user)]
     
     (->      ;; JSON of MongoDB WriteResult; TODO - make a proper JSON string for client 
-      (bkell/remove { :tag :entry :id id } (:username lin-user) ) (handle-errors 400) substitute-body) ;; TODO - stubbing in 'stub' user for now
+      (bkell/remove { :tag :entry :id id } (:username lin-user) ) (handle-errors 400) ) ;; TODO - stubbing in 'stub' user for now
+    { :tag :entry :id id }
   )
 )
 

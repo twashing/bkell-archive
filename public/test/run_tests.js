@@ -10,6 +10,7 @@
   });
   require(['test_account', 'test_entry'], function(testAccount, testEntry) {
     console.log("test_account loaded: " + testAccount);
-    return console.log("test_entry loaded: " + testEntry);
+    console.log("test_entry loaded: " + testEntry);
+    return testEntry.testD();
   });
 }).call(this);

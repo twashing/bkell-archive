@@ -35,17 +35,14 @@ define(['js/bkeeping/models'], (models) ->
                     entry.saveS( {}, type : 'POST' )
     )
   
-  ###
   testD : ->
   
     console.log("test_entry.testD CALLED")
     entry = new models.Entry()
-    entry.set( "id":"cash")
+    entry.set( "id":"testid")
     entry.fetchS(  success: (model, response) ->
                     entry.removeS()
     )
-    
-  ###
     
   testList : ->
     
