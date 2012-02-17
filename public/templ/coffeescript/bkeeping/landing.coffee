@@ -1,10 +1,16 @@
 require.config({
   baseUrl: "/js",
+  paths:
+    js : '/js/'
+    jQuery : '/js/lib/jquery-1.6.3'
+    Underscore : '/js/lib/underscore'
+    Backbone : '/js/lib/backbone_loader'
 })
 
-require( ['domReady!, domReady!bkeeping/bkeeping']
+require( ['js/bkeeping/bkeeping']
   (bkeeping) ->
-    console.log('landing LOADED')
+
+    console.log("landing LOADED / bkeeping[#{bkeeping.models}]")
     
 )
 

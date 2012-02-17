@@ -1,8 +1,14 @@
 (function() {
   require.config({
-    baseUrl: "/js"
+    baseUrl: "/js",
+    paths: {
+      js: '/js/',
+      jQuery: '/js/lib/jquery-1.6.3',
+      Underscore: '/js/lib/underscore',
+      Backbone: '/js/lib/backbone_loader'
+    }
   });
-  require(['domReady!, domReady!bkeeping/bkeeping'], function(bkeeping) {
-    return console.log('landing LOADED');
+  require(['js/bkeeping/bkeeping'], function(bkeeping) {
+    return console.log("landing LOADED / bkeeping[" + bkeeping.models + "]");
   });
 }).call(this);
