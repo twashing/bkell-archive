@@ -9,6 +9,20 @@
     }
   });
   require(['js/bkeeping/bkeeping'], function(bkeeping) {
-    return console.log("landing LOADED / bkeeping[" + bkeeping.models + "]");
+    var $, handlers, models;
+    console.log("landing LOADED / bkeeping[" + bkeeping.models + "]");
+    models = bkeeping.models;
+    $ = bkeeping.jQuery;
+    handlers = {
+      accountsLoad: function() {
+        return console.log("accounts LOADED");
+      },
+      entriesLoad: function() {
+        return console.log("entries LOADED");
+      }
+    };
+    $('#accounts').load("/include/accounts.html", handlers.accountsLoad);
+    $('#right-col').load("/include/entries.html", handlers.entriesLoad);
+    return $('#footer').load("/include/footerPart.html");
   });
 }).call(this);

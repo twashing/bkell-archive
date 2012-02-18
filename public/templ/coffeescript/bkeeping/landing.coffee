@@ -9,8 +9,20 @@ require.config({
 
 require( ['js/bkeeping/bkeeping']
   (bkeeping) ->
-
+    
     console.log("landing LOADED / bkeeping[#{bkeeping.models}]")
     
+    models = bkeeping.models
+    $ = bkeeping.jQuery
+    
+    handlers =
+      accountsLoad: () ->
+        console.log("accounts LOADED")
+      entriesLoad: () ->
+        console.log("entries LOADED")
+      
+    $('#accounts').load("/include/accounts.html", handlers.accountsLoad)
+    $('#right-col').load("/include/entries.html", handlers.entriesLoad)
+    $('#footer').load("/include/footerPart.html")
 )
 

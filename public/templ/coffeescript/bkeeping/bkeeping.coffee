@@ -7,12 +7,13 @@ require.config({
     Backbone : '/js/lib/backbone_loader'
 })
 
-define( ['js/bkeeping/models']
+define( ['js/bkeeping/models', 'jQuery']
   (models) ->
     
     console.log('bkeeping LOADED')
     
     # return an object with the models in it 
     models : models
+    jQuery: jQuery
 )
 

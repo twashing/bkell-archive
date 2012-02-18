@@ -8,10 +8,11 @@
       Backbone: '/js/lib/backbone_loader'
     }
   });
-  define(['js/bkeeping/models'], function(models) {
+  define(['js/bkeeping/models', 'jQuery'], function(models) {
     console.log('bkeeping LOADED');
     return {
-      models: models
+      models: models,
+      jQuery: jQuery
     };
   });
 }).call(this);
