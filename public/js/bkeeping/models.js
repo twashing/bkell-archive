@@ -1,7 +1,4 @@
 (function() {
-  require.config({
-    baseUrl: '/js'
-  });
   define(['Backbone'], function(bb) {
     /*
       # Grab the Backbone object 

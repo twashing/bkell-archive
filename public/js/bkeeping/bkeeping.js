@@ -1,25 +1,13 @@
 (function() {
-  require.config({
-    baseUrl: "/js",
-    paths: {
-      order: 'lib/order',
-      domReady: 'lib/domReady',
-      jQuery: 'lib/jquery-1.6.3',
-      json2: 'lib/json2',
-      Underscore: 'lib/underscore',
-      Backbone: 'lib/backbone',
-      pure: 'lib/pure'
-    }
-  });
-  define(['order!lib/jquery-1.6.3', 'order!lib/json2', 'order!lib/underscore', 'order!lib/backbone', 'order!lib/pure', 'order!bkeeping/models'], function(jq, jsn, und, bbn, pur, models) {
+  define(['order!js/lib/jquery-1.7', 'order!js/lib/pure', 'order!js/lib/json2', 'order!js/lib/underscore', 'order!js/lib/backbone', 'order!bkeeping/models'], function(jq, pur, jsn, und, bbn, models) {
     console.log('bkeeping LOADED');
     return {
       models: models,
-      jQuery: jq,
+      jQuery: jQuery.noConflict(),
+      pure: pur,
       json2: jsn,
-      Underscore: und,
-      Backbone: bbn,
-      pure: pure
+      Underscore: _.noConflict(),
+      Backbone: Backbone.noConflict()
     };
   });
 }).call(this);

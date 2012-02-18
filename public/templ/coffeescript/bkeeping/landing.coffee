@@ -1,6 +1,25 @@
 require.config({
   baseUrl: "/js",
+  paths:
+    'js' : '/js/'
+    'order' : 'lib/order'
+    'domReady' : 'lib/domReady'
+    'use' : 'lib/use'
+    'jQuery' : 'lib/jquery-1.7'
+    'json2' : 'lib/json2'
+    'Underscore' : 'lib/underscore'
+    'Backbone' : 'lib/backbone_loader'
+    'pure' : 'lib/pure'
+  
+  use:
+    
+    'Backbone': {
+      deps: ['use!Underscore', 'jQuery'],
+    }
+
 })
+
+
 
 require( ['bkeeping/bkeeping']
   (bkeeping) ->

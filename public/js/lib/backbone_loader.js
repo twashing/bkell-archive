@@ -1,5 +1,7 @@
 
-define(['js/lib/order!js/lib/jquery-1.6.3', 'js/lib/order!js/lib/underscore', 'js/lib/order!js/lib/backbone'],
+define(['order!js/lib/jquery-1.7', 
+        'order!js/lib/underscore', 
+        'order!js/lib/backbone'],
   function(){
     return {
       Backbone: Backbone.noConflict(),

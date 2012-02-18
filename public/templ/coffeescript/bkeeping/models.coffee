@@ -1,6 +1,3 @@
-require.config(
-  baseUrl: '/js',
-)
 
 define(['Backbone'], (bb) ->
   
