@@ -1,23 +1,30 @@
 require.config({
   baseUrl: "/js",
-  paths:
-    js : '/js/'
-    jQuery : '/js/lib/jquery-1.6.3'
-    Underscore : '/js/lib/underscore'
-    Backbone : '/js/lib/backbone_loader'
 })
 
-require( ['js/bkeeping/bkeeping']
+require( ['bkeeping/bkeeping']
   (bkeeping) ->
     
     console.log("landing LOADED / bkeeping[#{bkeeping.models}]")
     
+    
+    # LIB imports 
     models = bkeeping.models
     $ = bkeeping.jQuery
+    json2 = bkeeping.json2
+    _ = bkeeping.Underscore
+    Backbone = bkeeping.Backbone
+    pure = bkeeping.pure
+    
     
     handlers =
       accountsLoad: () ->
         console.log("accounts LOADED")
+        $(this)
+          .render(accountsData, accountsDirective)
+          .find('table')
+          .dataTable()
+      
       entriesLoad: () ->
         console.log("entries LOADED")
       

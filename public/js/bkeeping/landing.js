@@ -1,21 +1,20 @@
 (function() {
   require.config({
-    baseUrl: "/js",
-    paths: {
-      js: '/js/',
-      jQuery: '/js/lib/jquery-1.6.3',
-      Underscore: '/js/lib/underscore',
-      Backbone: '/js/lib/backbone_loader'
-    }
+    baseUrl: "/js"
   });
-  require(['js/bkeeping/bkeeping'], function(bkeeping) {
-    var $, handlers, models;
+  require(['bkeeping/bkeeping'], function(bkeeping) {
+    var $, Backbone, handlers, json2, models, pure, _;
     console.log("landing LOADED / bkeeping[" + bkeeping.models + "]");
     models = bkeeping.models;
     $ = bkeeping.jQuery;
+    json2 = bkeeping.json2;
+    _ = bkeeping.Underscore;
+    Backbone = bkeeping.Backbone;
+    pure = bkeeping.pure;
     handlers = {
       accountsLoad: function() {
-        return console.log("accounts LOADED");
+        console.log("accounts LOADED");
+        return $(this).render(accountsData, accountsDirective).find('table').dataTable();
       },
       entriesLoad: function() {
         return console.log("entries LOADED");

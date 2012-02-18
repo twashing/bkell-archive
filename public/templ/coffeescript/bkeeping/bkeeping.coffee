@@ -1,19 +1,32 @@
 require.config({
   baseUrl: "/js",
   paths:
-    js : '/js/'
-    jQuery : '/js/lib/jquery-1.6.3'
-    Underscore : '/js/lib/underscore'
-    Backbone : '/js/lib/backbone_loader'
+    order : 'lib/order'
+    domReady : 'lib/domReady'
+    jQuery : 'lib/jquery-1.6.3'
+    json2 : 'lib/json2'
+    Underscore : 'lib/underscore'
+    Backbone : 'lib/backbone'
+    pure : 'lib/pure'
 })
 
-define( ['js/bkeeping/models', 'jQuery']
-  (models) ->
+
+define( [ 'order!lib/jquery-1.6.3',
+          'order!lib/json2',
+          'order!lib/underscore',
+          'order!lib/backbone',
+          'order!lib/pure',
+          'order!bkeeping/models', ]
+  (jq, jsn, und, bbn, pur, models) ->
     
     console.log('bkeeping LOADED')
     
     # return an object with the models in it 
     models : models
-    jQuery: jQuery
+    jQuery : jq
+    json2 : jsn
+    Underscore : und
+    Backbone : bbn
+    pure : pure
 )
 
