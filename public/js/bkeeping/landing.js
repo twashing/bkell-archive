@@ -11,15 +11,10 @@
       'Underscore': 'lib/underscore',
       'Backbone': 'lib/backbone_loader',
       'pure': 'lib/pure'
-    },
-    use: {
-      'Backbone': {
-        deps: ['use!Underscore', 'jQuery']
-      }
     }
   });
   require(['bkeeping/bkeeping'], function(bkeeping) {
-    var $, Backbone, handlers, json2, models, pure, _;
+    var $, Backbone, accounts, entries, handlers, json2, models, pure, pureDirectives, _;
     console.log("landing LOADED / bkeeping[" + bkeeping.models + "]");
     models = bkeeping.models;
     $ = bkeeping.jQuery;
@@ -27,13 +22,50 @@
     _ = bkeeping.Underscore;
     Backbone = bkeeping.Backbone;
     pure = bkeeping.pure;
+    accounts = new models.Accounts();
+    entries = new models.Entries();
+    pureDirectives = {
+      accountsDirective: {
+        "tbody tr": {
+          "each<-puredata": {
+            "a.editaccount@href": function(arg) {
+              return "/accounts/account/" + arg.each.item.id;
+            },
+            "td.name": "each.name",
+            "td.type": "each.type",
+            "td.weight": "each.counterWeight"
+          }
+        }
+      },
+      entriesDirective: {
+        "tbody tr": {
+          "each<-pureentries": {
+            "a.editentry@href": function(arg) {
+              return "/entries/entry/" + arg.each.item.id;
+            },
+            "td.date": "each.date",
+            "td.name": "each.id",
+            "td.balance": ""
+          }
+        }
+      }
+    };
     handlers = {
+      onAccounts: function(models, response) {
+        return $(this).render(response, pureDirectives.accountsDirective).find('table').dataTable();
+      },
       accountsLoad: function() {
-        console.log("accounts LOADED");
-        return $(this).render(accountsData, accountsDirective).find('table').dataTable();
+        var htmlContext;
+        console.log("accounts.html LOADED");
+        htmlContext = this;
+        return accounts.fetchS({
+          success: function(models, response) {
+            return $(htmlContext).render(response, pureDirectives.accountsDirective).find('table').dataTable();
+          }
+        });
       },
       entriesLoad: function() {
-        return console.log("entries LOADED");
+        return console.log("entries.html LOADED");
       }
     };
     $('#accounts').load("/include/accounts.html", handlers.accountsLoad);
