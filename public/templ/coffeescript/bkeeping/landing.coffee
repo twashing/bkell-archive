@@ -21,6 +21,7 @@ require( ['bkeeping/bkeeping']
     
     # LIB imports 
     models = bkeeping.models
+    views = bkeeping.views
     $ = bkeeping.jQuery
     json2 = bkeeping.json2
     _ = bkeeping.Underscore
@@ -33,7 +34,7 @@ require( ['bkeeping/bkeeping']
     entries = new models.Entries()
     
     
-    
+    ###
     # Pure Template DIRECTIVES
     pureDirectives =
       accountsDirective:
@@ -93,6 +94,16 @@ require( ['bkeeping/bkeeping']
       
     $('#accounts').load("/include/accounts.html", handlers.accountsLoad)
     $('#right-col').load("/include/entries.html", handlers.entriesLoad)
+    ###
+    
+    accountsView = new views.AccountsView( { collection: accounts } )
+    $('#accounts').load("/include/accounts.html", () ->
+      accountsView.render()
+    )
+    
+    
     $('#footer').load("/include/footerPart.html")
 )
+
+
 
