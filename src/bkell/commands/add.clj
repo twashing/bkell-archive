@@ -36,7 +36,7 @@
   { :pre  [ (not (nil? uname)) 
             (not (clojure.string/blank? (:name currency)))
             (not (clojure.string/blank? (:id currency)))
-            (= 0 (count (fetch "bookkeeping" :where { "content.content.id" (:id currency) }))) ;; ensure no duplicates 
+            (= 0 (count (fetch "bookkeeping" :where { "content.content.id" (:id currency) :owner uname }))) ;; ensure no duplicates 
           ] }
   
   ;; creating a zipper function. Good reference points are: 
@@ -78,7 +78,7 @@
             (not (clojure.string/blank? (:id account)))
             (not (nil? (:type account)))
             (not (nil? (:counterWeight account)))
-            (= 0 (count (fetch "bookkeeping" :where { "content.content.id" (:id account) }))) ;; ensure no duplicates 
+            (= 0 (count (fetch "bookkeeping" :where { "content.content.id" (:id account) :owner uname }))) ;; ensure no duplicates 
           ] }
   
   (let  [ ru (fetch-one "bookkeeping" :where { :owner uname }) ]

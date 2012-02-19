@@ -12,16 +12,35 @@
           "name": "cash",
           "counterWeight": "debit"
         });
+        return acct.saveS();
         /*
             acct.set(
-              "tag":"account"
-              "type":"liability"
-              "id":"accounts payable"
-              "name":"accounts payable"
-              "counterWeight":"debit"
+              "counterWeight" : "debit"
+              "name" : "revenue"
+              "type" : "revenue"
+              "id" : "revenue"
+              "tag" : "account"
             )
+            acct.saveS()
+            
+            acct.set(
+              "counterWeight" : "debit"
+              "name" : "accounts payable"
+              "type" : "liability"
+              "id" : "accounts payable"
+              "tag" : "account"
+            )
+            acct.saveS()
+            
+            acct.set(
+              "counterWeight" : "debit"
+              "name" : "expense"
+              "type" : "expense"
+              "id" : "expense"
+              "tag" : "account"
+            )
+            acct.saveS()
             */
-        return acct.saveS();
       },
       testR: function() {
         var acct;

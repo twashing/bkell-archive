@@ -2,6 +2,7 @@ require.config(
   baseUrl: '/test'
   paths:
     js : '/js/'
+    order : '/js/lib/order'
     jQuery : '/js/lib/jquery-1.6.3'
     Underscore : '/js/lib/underscore'
     Backbone : '/js/lib/backbone_loader'
@@ -16,7 +17,7 @@ require(['test_account','test_entry'], (testAccount, testEntry) ->
   # CRUD account 
   
   # this is WORKING. just don't want to create duplicates
-  #testAccount.testC()
+  testAccount.testC()
   #testAccount.testR()
   #testAccount.testU()
   #testAccount.testD()
@@ -30,7 +31,7 @@ require(['test_account','test_entry'], (testAccount, testEntry) ->
   #testEntry.testC()
   #testEntry.testR()
   #testEntry.testU()
-  testEntry.testD()
+  #testEntry.testD()
 
 
   # TODO - Again, for some reason lists only work when there are more than 1 entity to be retrieved
