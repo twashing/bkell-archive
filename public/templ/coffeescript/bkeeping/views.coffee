@@ -9,7 +9,9 @@ define(['Backbone'], (bb) ->
   _ = bb._
   
   
+  ###
   # Pure Template DIRECTIVES
+  ###
   pureDirectives =
     accountsDirective:
       {
@@ -37,25 +39,45 @@ define(['Backbone'], (bb) ->
       }
   
   
+  ###
   # return an object with the View classes
-  
+  ###
   AccountsView : Backbone.View.extend(
     
     el: $('#accounts')
     initialize : (options) ->
+      
       this.collection = options.collection
+      
+      # doing a double bind so that render has proper context. See: 
+      # http://stackoverflow.com/questions/7254290/passing-context-with-bind-in-backbone-js
+      this.collection.bind('reset', _.bind(this.render, this))
     
     render: () ->
       
-      htmlContext = this.el
-      this.collection.fetchS( { success: (models, response) ->
-         
-        $(htmlContext)
-          .render( { puredata : response } , pureDirectives.accountsDirective)
-          .find('table')
-          .dataTable()
+      this.el      # the HTML context should be passed in as an argument
+        .render(  { puredata : this.collection.toJSON() } ,   # returning raw JSON object (instead of BB models) for pure templ
+                  pureDirectives.accountsDirective
+        )
+        .find('table')
+        .dataTable()
+  )
+  EntriesView : Backbone.View.extend(
+    
+    el: $('#right-col')
+    initialize : (options) ->
+      this.collection = options.collection
+      this.collection.bind('reset', _.bind(this.render, this))
+    
+    render: () ->
       
-      } )
+      this.el
+        .render(  { puredata : this.collection.toJSON() } ,
+                  pureDirectives.entriesDirective
+        )
+        .find('table')
+        .dataTable()
+           
   )
   
 )

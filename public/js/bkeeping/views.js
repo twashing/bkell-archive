@@ -6,6 +6,9 @@
     var Backbone, pureDirectives, _;
     Backbone = bb.Backbone;
     _ = bb._;
+    /*
+      # Pure Template DIRECTIVES
+      */
     pureDirectives = {
       accountsDirective: {
         "tbody tr": {
@@ -33,21 +36,31 @@
       }
     };
     return {
+      /*
+        # return an object with the View classes
+        */
       AccountsView: Backbone.View.extend({
         el: $('#accounts'),
         initialize: function(options) {
-          return this.collection = options.collection;
+          this.collection = options.collection;
+          return this.collection.bind('reset', _.bind(this.render, this));
         },
         render: function() {
-          var htmlContext;
-          htmlContext = this.el;
-          return this.collection.fetchS({
-            success: function(models, response) {
-              return $(htmlContext).render({
-                puredata: response
-              }, pureDirectives.accountsDirective).find('table').dataTable();
-            }
-          });
+          return this.el.render({
+            puredata: this.collection.toJSON()
+          }, pureDirectives.accountsDirective).find('table').dataTable();
+        }
+      }),
+      EntriesView: Backbone.View.extend({
+        el: $('#right-col'),
+        initialize: function(options) {
+          this.collection = options.collection;
+          return this.collection.bind('reset', _.bind(this.render, this));
+        },
+        render: function() {
+          return this.el.render({
+            puredata: this.collection.toJSON()
+          }, pureDirectives.entriesDirective).find('table').dataTable();
         }
       })
     };
