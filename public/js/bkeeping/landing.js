@@ -51,16 +51,15 @@
       }
     };
     handlers = {
-      onAccounts: function(models, response) {
-        return $(this).render(response, pureDirectives.accountsDirective).find('table').dataTable();
-      },
       accountsLoad: function() {
         var htmlContext;
         console.log("accounts.html LOADED");
         htmlContext = this;
         return accounts.fetchS({
           success: function(models, response) {
-            return $(htmlContext).render(response, pureDirectives.accountsDirective).find('table').dataTable();
+            return $(htmlContext).render({
+              puredata: response
+            }, pureDirectives.accountsDirective).find('table').dataTable();
           }
         });
       },

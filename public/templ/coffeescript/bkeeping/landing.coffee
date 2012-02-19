@@ -64,12 +64,6 @@ require( ['bkeeping/bkeeping']
     
     # HANDLERS
     handlers =
-      onAccounts: (models, response) ->
-        
-        $(this)
-          .render(response, pureDirectives.accountsDirective)
-          .find('table')
-          .dataTable()
       
       accountsLoad: () ->
         
@@ -79,7 +73,7 @@ require( ['bkeeping/bkeeping']
         accounts.fetchS( { success: (models, response) ->
            
           $(htmlContext)
-            .render(response, pureDirectives.accountsDirective)
+            .render( { puredata : response } , pureDirectives.accountsDirective)
             .find('table')
             .dataTable()
         
