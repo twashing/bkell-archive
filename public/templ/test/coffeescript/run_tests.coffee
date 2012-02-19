@@ -17,7 +17,7 @@ require(['test_account','test_entry'], (testAccount, testEntry) ->
   # CRUD account 
   
   # this is WORKING. just don't want to create duplicates
-  testAccount.testC()
+  #testAccount.testC()
   #testAccount.testR()
   #testAccount.testU()
   #testAccount.testD()
@@ -28,7 +28,7 @@ require(['test_account','test_entry'], (testAccount, testEntry) ->
   
   # CRUD entry
   
-  #testEntry.testC()
+  testEntry.testC()
   #testEntry.testR()
   #testEntry.testU()
   #testEntry.testD()

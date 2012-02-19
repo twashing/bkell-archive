@@ -8,7 +8,7 @@ define(['js/bkeeping/models'], (models) ->
     entry = new models.Entry()
     entry.set(
       "tag" : "entry"
-      "id" : "testid"
+      "id" : "testid2"
       "date" : "03\/22\/2011"
       "content" : [ { "tag":"debit" , "id":"dtS" , "amount":120.0 , "accountid":"cash" },
                     { "tag":"credit" , "id":"ctS" , "amount":120.0 , "accountid":"accounts payable" }

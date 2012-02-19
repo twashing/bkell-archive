@@ -39,7 +39,7 @@
       },
       entriesDirective: {
         "tbody tr": {
-          "each<-pureentries": {
+          "each<-puredata": {
             "a.editentry@href": function(arg) {
               return "/entries/entry/" + arg.each.item.id;
             },
@@ -64,7 +64,16 @@
         });
       },
       entriesLoad: function() {
-        return console.log("entries.html LOADED");
+        var htmlContext;
+        console.log("entries.html LOADED");
+        htmlContext = this;
+        return entries.fetchS({
+          success: function(models, response) {
+            return $(htmlContext).render({
+              puredata: response
+            }, pureDirectives.entriesDirective).find('table').dataTable();
+          }
+        });
       }
     };
     $('#accounts').load("/include/accounts.html", handlers.accountsLoad);

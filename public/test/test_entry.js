@@ -7,7 +7,7 @@
         entry = new models.Entry();
         entry.set({
           "tag": "entry",
-          "id": "testid",
+          "id": "testid2",
           "date": "03\/22\/2011",
           "content": [
             {

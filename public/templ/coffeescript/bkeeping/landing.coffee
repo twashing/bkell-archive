@@ -51,7 +51,7 @@ require( ['bkeeping/bkeeping']
       entriesDirective:
         {
           "tbody tr" : {
-            "each<-pureentries" : {
+            "each<-puredata" : {
               "a.editentry@href" : (arg) ->
                 return "/entries/entry/"+ arg.each.item.id
               "td.date" : "each.date"
@@ -68,7 +68,6 @@ require( ['bkeeping/bkeeping']
       accountsLoad: () ->
         
         console.log("accounts.html LOADED")
-        
         htmlContext = this
         accounts.fetchS( { success: (models, response) ->
            
@@ -80,7 +79,17 @@ require( ['bkeeping/bkeeping']
         } )
       
       entriesLoad: () ->
+         
         console.log("entries.html LOADED")
+        htmlContext = this
+        entries.fetchS( { success: (models, response) ->
+           
+          $(htmlContext)
+            .render( { puredata : response } , pureDirectives.entriesDirective)
+            .find('table')
+            .dataTable()
+        
+        } )
       
     $('#accounts').load("/include/accounts.html", handlers.accountsLoad)
     $('#right-col').load("/include/entries.html", handlers.entriesLoad)
