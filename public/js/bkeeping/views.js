@@ -3,7 +3,7 @@
     /*
       # Grab the Backbone object 
       */
-    var AccountRow, AccountsView, Backbone, EntriesView, EntryRow, pureDirectives, _;
+    var AccountRow, AccountView, AccountsView, Backbone, EntriesView, EntryRow, EntryView, pureDirectives, _;
     Backbone = bb.Backbone;
     _ = bb._;
     /*
@@ -35,12 +35,42 @@
         }
       }
     };
+    /*
+      # Detail VIEWs
+      */
+    AccountView = Backbone.View.extend({
+      initialize: function(options) {
+        return console('AccountView initialize CALLED');
+      },
+      render: function(options) {
+        return console('AccountView render CALLED');
+      }
+    });
+    EntryView = Backbone.View.extend({});
+    /*
+      # Row VIEWs
+      */
     AccountRow = Backbone.View.extend({
       initialize: function(options) {
-        return this.el = options.el;
+        this.el = $(options.el);
+        this.el.bind('change', this.accountChanged);
+        this.el.find('.editaccount').bind('click', _.bind(this.editClicked, this));
+        return this.el.find('.deleteaccount').bind('click', _.bind(this.deleteClicked, this));
+      },
+      editClicked: function() {
+        return console.log('edit CLICKED');
+      },
+      deleteClicked: function() {
+        return console.log('delete CLICKED');
+      },
+      accountChanged: function() {
+        return console.log('account has been CHANGED');
       }
     });
     EntryRow = Backbone.View.extend({});
+    /*
+      # Accounts and Entries VIEWs
+      */
     AccountsView = Backbone.View.extend({
       el: $('#accounts'),
       initialize: function(options) {
@@ -81,6 +111,8 @@
       /*
         # return an object with the View classes
         */
+      AccountView: AccountView,
+      EntryView: EntryView,
       AccountRow: AccountRow,
       EntryRow: EntryRow,
       AccountsView: AccountsView,

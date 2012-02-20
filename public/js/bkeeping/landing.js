@@ -38,7 +38,8 @@
       collection: accounts
     });
     $('#accounts').load("/include/accounts.html", function() {
-      return accounts.fetchS();
+      accounts.fetchS();
+      return $('#account').load('/include/account.html', function() {});
     });
     entriesView = new views.EntriesView({
       collection: entries

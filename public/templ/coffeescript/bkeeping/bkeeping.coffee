@@ -7,8 +7,10 @@ define( [ 'order!js/lib/jquery-1.7',
           'order!bkeeping/models',
           'order!bkeeping/views',
           'order!js/lib/jquery.dataTables',
+          'order!js/lib/jquery.serialScroll.js',
+          'order!js/lib/jquery.scrollTo.js',
           ]
-  (jq, pur, jsn, und, bbn, models, views, dataTables) ->
+  (jq, pur, jsn, und, bbn, models, views) ->
     
     console.log('bkeeping LOADED')
     

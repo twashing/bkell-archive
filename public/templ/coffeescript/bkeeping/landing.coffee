@@ -43,7 +43,21 @@ require( ['bkeeping/bkeeping']
     ###
     accountsView = new views.AccountsView( { collection: accounts } )
     $('#accounts').load("/include/accounts.html", () ->
+      
       accounts.fetchS()
+      
+      $('#account').load('/include/account.html', () ->
+        
+        # Basic usage 
+        #$('#left-col').scrollTo($('#account'), 500, {axis:'x'});
+  
+        # Working horizontal / serial scrolling 
+        #$('#left-col').serialScroll({ target: $('#left-col'), items: $('#accounts , #account'), duration: 500, })
+        
+        # Using this to toggle between views
+        # $('#left-col').trigger('next')
+        
+      )
     )
     
     entriesView = new views.EntriesView( { collection: entries } )
