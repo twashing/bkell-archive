@@ -46,6 +46,9 @@
     $('#right-col').load("/include/entries.html", function() {
       return entries.fetchS();
     });
+    /*
+        # Load Footer
+        */
     return $('#footer').load("/include/footerPart.html");
   });
 }).call(this);

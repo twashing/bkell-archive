@@ -39,10 +39,16 @@ define(['Backbone'], (bb) ->
       }
   
   
-  ###
-  # return an object with the View classes
-  ###
-  AccountsView : Backbone.View.extend(
+  AccountRow = Backbone.View.extend({
+  
+    initialize : (options) ->
+      this.el = options.el
+  })
+  EntryRow = Backbone.View.extend({})
+  
+  
+  # TODO - create and bind i) add event
+  AccountsView = Backbone.View.extend(
     
     el: $('#accounts')
     initialize : (options) ->
@@ -52,17 +58,27 @@ define(['Backbone'], (bb) ->
       # doing a double bind so that render has proper context. See: 
       # http://stackoverflow.com/questions/7254290/passing-context-with-bind-in-backbone-js
       this.collection.bind('reset', _.bind(this.render, this))
-    
+   
+    accountRows: []
     render: () ->
       
+      ctx = this
       this.el      # the HTML context should be passed in as an argument
         .render(  { puredata : this.collection.toJSON() } ,   # returning raw JSON object (instead of BB models) for pure templ
-                  pureDirectives.accountsDirective
-        )
+                  pureDirectives.accountsDirective )
         .find('table')
         .dataTable()
+        .find('tr')
+        .each((index, ech) ->
+          
+          ###
+          # Nesting Row Views here
+          ###
+          arow = new AccountRow( { el: ech } )
+          ctx.accountRows.push(arow)
+        )
   )
-  EntriesView : Backbone.View.extend(
+  EntriesView = Backbone.View.extend(
     
     el: $('#right-col')
     initialize : (options) ->
@@ -73,13 +89,19 @@ define(['Backbone'], (bb) ->
       
       this.el
         .render(  { puredata : this.collection.toJSON() } ,
-                  pureDirectives.entriesDirective
-        )
+                  pureDirectives.entriesDirective)
         .find('table')
         .dataTable()
            
   )
   
+  ###
+  # return an object with the View classes
+  ###
+  AccountRow : AccountRow
+  EntryRow : EntryRow
+  AccountsView : AccountsView
+  EntriesView : EntriesView
 )
 
 

@@ -51,6 +51,9 @@ require( ['bkeeping/bkeeping']
       entries.fetchS()
     )
     
+    ###
+    # Load Footer
+    ###
     $('#footer').load("/include/footerPart.html")
 )
 
