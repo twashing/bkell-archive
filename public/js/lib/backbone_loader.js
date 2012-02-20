@@ -1,5 +1,5 @@
 
-define(['order!js/lib/jquery-1.7', 
+define(['order!js/lib/jquery-1.6.3', 
         'order!js/lib/underscore', 
         'order!js/lib/backbone'],
   function(){

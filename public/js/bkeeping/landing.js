@@ -6,7 +6,7 @@
       'order': 'lib/order',
       'domReady': 'lib/domReady',
       'use': 'lib/use',
-      'jQuery': 'lib/jquery-1.7',
+      'jQuery': 'lib/jquery-1.6.3',
       'json2': 'lib/json2',
       'Underscore': 'lib/underscore',
       'Backbone': 'lib/backbone_loader',
@@ -14,18 +14,20 @@
     }
   });
   require(['bkeeping/bkeeping'], function(bkeeping) {
-    var $, Backbone, accounts, accountsView, entries, entriesView, json2, models, pure, views, _;
+    var accounts, accountsView, entries, entriesView, models, views;
     console.log("landing LOADED / bkeeping[" + bkeeping.models + "]");
     /*
         # LIB imports 
         */
     models = bkeeping.models;
     views = bkeeping.views;
-    $ = bkeeping.jQuery;
-    json2 = bkeeping.json2;
-    _ = bkeeping.Underscore;
-    Backbone = bkeeping.Backbone;
-    pure = bkeeping.pure;
+    /*
+        $ = bkeeping.jQuery
+        json2 = bkeeping.json2
+        _ = bkeeping.Underscore
+        Backbone = bkeeping.Backbone
+        pure = bkeeping.pure
+        */
     /*
         # ACCOUNTS and ENTRIES objects 
         */
@@ -38,9 +40,9 @@
       collection: accounts
     });
     $('#accounts').load("/include/accounts.html", function() {
-      accounts.fetchS();
-      return $('#account').load('/include/account.html', function() {});
+      return accounts.fetchS();
     });
+    $('#account').load('/include/account.html', function() {});
     entriesView = new views.EntriesView({
       collection: entries
     });

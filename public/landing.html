@@ -9,7 +9,8 @@
     <![endif]-->
     <link href='/css/common.css' media='screen' rel='stylesheet' type='text/css' />
     <link href='/css/landing.css' media='screen' rel='stylesheet' type='text/css' />
-    <script data-main='js/bkeeping/landing' src='/js/lib/require.js'></script>
+    <script src='/js/lib/require.js'></script>
+    <!-- %script( src="/js/lib/require.js" data-main="js/bkeeping/landing" ) -->
     <!-- %script( src="/js/lib/require.js" data-main="test/run_tests" ) -->
     <script src='/js/lib/jquery-1.6.3.js'></script>
     <script src='/js/lib/jquery.easing.1.3.js'></script>
@@ -21,6 +22,14 @@
     <script src='/js/lib/underscore.js'></script>
     <script src='/js/lib/backbone.js'></script>
     <script src='/js/lib/md5.js'></script>
+    <script type='text/javascript'>
+      //<![CDATA[
+        $(document).ready(function() { 
+          
+          $.getScript('/js/bkeeping/landing.js')
+        })
+      //]]>
+    </script>
     <!--
       <script src='/js/bkeeping.js'></script>
       <script src='/js/bkeeping/domain.js'></script>

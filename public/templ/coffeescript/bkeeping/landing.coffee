@@ -5,7 +5,7 @@ require.config({
     'order' : 'lib/order'
     'domReady' : 'lib/domReady'
     'use' : 'lib/use'
-    'jQuery' : 'lib/jquery-1.7'
+    'jQuery' : 'lib/jquery-1.6.3'
     'json2' : 'lib/json2'
     'Underscore' : 'lib/underscore'
     'Backbone' : 'lib/backbone_loader'
@@ -24,11 +24,14 @@ require( ['bkeeping/bkeeping']
     ###
     models = bkeeping.models
     views = bkeeping.views
+
+    ###
     $ = bkeeping.jQuery
     json2 = bkeeping.json2
     _ = bkeeping.Underscore
     Backbone = bkeeping.Backbone
     pure = bkeeping.pure
+    ###
     
     
     ###
@@ -45,19 +48,18 @@ require( ['bkeeping/bkeeping']
     $('#accounts').load("/include/accounts.html", () ->
       
       accounts.fetchS()
+    )
+    
+    $('#account').load('/include/account.html', () ->
       
-      $('#account').load('/include/account.html', () ->
-        
-        # Basic usage 
-        #$('#left-col').scrollTo($('#account'), 500, {axis:'x'});
-  
-        # Working horizontal / serial scrolling 
-        #$('#left-col').serialScroll({ target: $('#left-col'), items: $('#accounts , #account'), duration: 500, })
-        
-        # Using this to toggle between views
-        # $('#left-col').trigger('next')
-        
-      )
+      # Basic usage 
+      #$('#left-content').scrollTo($('#account'), 500, {axis:'x'});
+      
+      # Working horizontal / serial scrolling 
+      #$('#left-col').serialScroll({ target: '#left-content', items: '#accounts , #account', duration: 500, axis: 'x', force: true })
+      
+      # Using this to toggle between views
+      #$('#left-content').trigger('next')
     )
     
     entriesView = new views.EntriesView( { collection: entries } )

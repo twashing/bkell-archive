@@ -5,8 +5,8 @@ define(['Backbone'], (bb) ->
   ###
   # Grab the Backbone object 
   ###
-  Backbone = bb.Backbone
-  _ = bb._
+  #Backbone = bb.Backbone
+  #_ = bb._
   
   
   ###
