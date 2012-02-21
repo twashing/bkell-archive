@@ -3,10 +3,12 @@
     /*
       # Grab the Backbone object 
       */
+    var AccountRow, AccountView, AccountsView, Backbone, EntriesView, EntryRow, EntryView, pureDirectives, _;
+    Backbone = bb.Backbone;
+    _ = bb._;
     /*
       # Pure Template DIRECTIVES
       */
-    var AccountRow, AccountView, AccountsView, EntriesView, EntryRow, EntryView, pureDirectives;
     pureDirectives = {
       accountsDirective: {
         "tbody tr": {
