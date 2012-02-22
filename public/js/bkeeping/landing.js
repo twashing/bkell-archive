@@ -2,15 +2,7 @@
   require.config({
     baseUrl: "/js",
     paths: {
-      'js': '/js/',
-      'order': 'lib/order',
-      'domReady': 'lib/domReady',
-      'use': 'lib/use',
-      'jQuery': 'lib/jquery-1.6.3',
-      'json2': 'lib/json2',
-      'Underscore': 'lib/underscore',
-      'Backbone': 'lib/backbone_loader',
-      'pure': 'lib/pure'
+      'js': '/js/'
     }
   });
   require(['bkeeping/bkeeping'], function(bkeeping) {

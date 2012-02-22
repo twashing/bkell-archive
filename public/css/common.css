@@ -23,31 +23,31 @@ html, body {
   height: 150px;
 }
 
-/* line 5, ../sass/_utils.sass */
+/* line 5, ../templ/sass/_utils.sass */
 .debug {
   border-style: solid;
   border-width: 1px;
 }
 
-/* line 8, ../sass/_utils.sass */
+/* line 8, ../templ/sass/_utils.sass */
 .text-curly, #header #title-wrapper #title, #header #title-wrapper #subtitle, #legal {
   font-style: italic;
   font-family: Palatino, sans-serif;
 }
 
-/* line 12, ../sass/_utils.sass */
+/* line 12, ../templ/sass/_utils.sass */
 .text-default {
   font: Verdana, Arial, sans-serif;
 }
 
-/* line 14, ../sass/common.sass */
+/* line 14, ../templ/sass/common.sass */
 html, body {
   min-height: 400px;
   min-width: 800px;
   height: 100%;
 }
 
-/* line 19, ../sass/common.sass */
+/* line 19, ../templ/sass/common.sass */
 .common-wrapper, #header #title-wrapper, #legal {
   float: none;
   position: relative;
@@ -56,7 +56,7 @@ html, body {
   top: 10px;
 }
 
-/* line 26, ../sass/common.sass */
+/* line 26, ../templ/sass/common.sass */
 #header {
   background-color: #999999;
   height: 70px;
@@ -64,7 +64,7 @@ html, body {
   z-index: 10;
   box-shadow: 0 4px 6px #554433;
 }
-/* line 39, ../sass/common.sass */
+/* line 39, ../templ/sass/common.sass */
 #header #title-wrapper #title {
   position: relative;
   float: left;
@@ -72,30 +72,30 @@ html, body {
   font-weight: bold;
   margin: 0 10;
 }
-/* line 46, ../sass/common.sass */
+/* line 46, ../templ/sass/common.sass */
 #header #title-wrapper #subtitle {
   top: 20px;
   float: left;
   margin: 26 10 0 10;
   float: left;
 }
-/* line 52, ../sass/common.sass */
+/* line 52, ../templ/sass/common.sass */
 #header #title-wrapper #subtitle #subtitle-default {
   float: left;
   color: #666666;
 }
-/* line 55, ../sass/common.sass */
+/* line 55, ../templ/sass/common.sass */
 #header #title-wrapper #subtitle #subtitle-black {
   float: left;
   font-weight: bold;
 }
-/* line 60, ../sass/common.sass */
+/* line 60, ../templ/sass/common.sass */
 #header #title-wrapper #account-chooser {
   float: right;
   margin: 10 0 0 0;
 }
 
-/* line 65, ../sass/common.sass */
+/* line 65, ../templ/sass/common.sass */
 #footer {
   background-color: #999999;
   clear: both;
@@ -103,7 +103,7 @@ html, body {
   height: 150px;
 }
 
-/* line 71, ../sass/common.sass */
+/* line 71, ../templ/sass/common.sass */
 .container {
   zoom: 1;
   margin-right: auto;
@@ -130,7 +130,7 @@ html, body {
   clear: both;
 }
 
-/* line 78, ../sass/common.sass */
+/* line 78, ../templ/sass/common.sass */
 #main-content {
   display: -moz-box;
   display: -webkit-box;
@@ -144,7 +144,7 @@ html, body {
   background-image: url("/images/paper_2.png");
 }
 
-/* line 83, ../sass/common.sass */
+/* line 83, ../templ/sass/common.sass */
 #legal {
   color: #666666;
 }

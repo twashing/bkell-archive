@@ -2,14 +2,14 @@ require.config({
   baseUrl: "/js",
   paths:
     'js' : '/js/'
-    'order' : 'lib/order'
-    'domReady' : 'lib/domReady'
-    'use' : 'lib/use'
-    'jQuery' : 'lib/jquery-1.6.3'
-    'json2' : 'lib/json2'
-    'Underscore' : 'lib/underscore'
-    'Backbone' : 'lib/backbone_loader'
-    'pure' : 'lib/pure'
+    #'order' : 'lib/order'
+    #'domReady' : 'lib/domReady'
+    #'use' : 'lib/use'
+    #'jQuery' : 'lib/jquery-1.6.3'
+    #'json2' : 'lib/json2'
+    #'Underscore' : 'lib/underscore'
+    #'Backbone' : 'lib/backbone_loader'
+    #'pure' : 'lib/pure'
 })
 
 
@@ -52,14 +52,14 @@ require( ['bkeeping/bkeeping']
     
     $('#account').load('/include/account.html', () ->
       
-      # Basic usage 
-      #$('#left-content').scrollTo($('#account'), 500, {axis:'x'});
-      
       # Working horizontal / serial scrolling 
-      #$('#left-col').serialScroll({ target: '#left-content', items: '#accounts , #account', duration: 500, axis: 'x', force: true })
+      #$('#left-col').serialScroll({ target: '#left-wrapper', items: '#accounts , #account', duration: 500, axis: 'x', force: true })
+      
+      # Basic usage 
+      #$('#left-wrapper').scrollTo($('#account'), 500, {axis:'x'})
       
       # Using this to toggle between views
-      #$('#left-content').trigger('next')
+      #$('#left-col').trigger('next')
     )
     
     entriesView = new views.EntriesView( { collection: entries } )

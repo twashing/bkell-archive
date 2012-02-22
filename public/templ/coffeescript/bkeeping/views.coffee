@@ -1,12 +1,13 @@
 
-define(['Backbone'], (bb) ->
+#define(['Backbone'], (bb) ->
+define([], () ->
   
   
   ###
   # Grab the Backbone object 
   ###
-  Backbone = bb.Backbone
-  _ = bb._
+  #Backbone = bb.Backbone
+  #_ = bb._
   
   
   ###

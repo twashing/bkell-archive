@@ -1,14 +1,12 @@
 (function() {
-  define(['Backbone'], function(bb) {
+  define([], function() {
     /*
       # Grab the Backbone object 
       */
-    var AbstractK, AbstractL, Backbone, commonFetch, _;
-    Backbone = bb.Backbone;
-    _ = bb._;
     /*
       # Setup an Abstract Class & Collection that accepts success and error callbacks
       */
+    var AbstractK, AbstractL, commonFetch;
     commonFetch = function(options) {
       var errorC, successC;
       successC = options && options.success ? options.success : (function(model, response) {

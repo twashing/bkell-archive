@@ -27,13 +27,14 @@ $grid-gutter-width: 1px
   float: left
   width: $left-content-width + $left-content-margin
   height: 500
-  overflow-x: hidden
-  overflow-y: hidden
+  overflow: hidden
+  position: relative
   
 #left-content
   //@extend .stretched
   white-space: nowrap
-  width: 1000
+  //width: 1000
+  position: absolute
 
 #accounts , #account
   width: $left-content-width
