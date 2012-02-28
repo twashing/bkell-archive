@@ -5,8 +5,8 @@
       'js': '/js/'
     }
   });
-  require(['bkeeping/bkeeping'], function(bkeeping) {
-    var accounts, accountsView, entries, entriesView, models, views;
+  require(['bkeeping/bkeeping', 'bkeeping/bindings'], function(bkeeping, bindings) {
+    var accounts, accountsView, asm, entries, entriesView, models, views;
     console.log("landing LOADED / bkeeping[" + bkeeping.models + "]");
     /*
         # LIB imports 
@@ -19,13 +19,23 @@
     accounts = new models.Accounts();
     entries = new models.Entries();
     /*
-        # Load Accounts and Entries panes, then render
+        # STATE MACHINEs for Accounts and Entries 
+        */
+    asm = bindings.asm;
+    /*
+        # VIEWs: Load Accounts and Entries panes, then render
         */
     accountsView = new views.AccountsView({
       collection: accounts
     });
     $('#accounts').load("/include/accounts.html", function() {
-      return accounts.fetchS();
+      return accounts.fetchS({
+        success: function() {
+          return _.each(accountsView['accountRows'], function(ech) {
+            return ech.el.find('.editaccount').unbind('click').bind('click', _.bind(asm.AsA, asm));
+          });
+        }
+      });
     });
     $('#account').load('/include/account.html', function() {});
     entriesView = new views.EntriesView({

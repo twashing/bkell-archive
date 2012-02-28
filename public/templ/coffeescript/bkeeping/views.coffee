@@ -18,8 +18,8 @@ define([], () ->
       {
         "tbody tr" : {
           "each<-puredata" : {
-            "a.editaccount@href" : (arg) ->
-              return "/accounts/account/"+ arg.each.item.id
+            #"a.editaccount@href" : (arg) ->
+            #  return "/accounts/account/"+ arg.each.item.id
             "td.name" : "each.name"
             "td.type" : "each.type"
             "td.weight" : "each.counterWeight"
@@ -108,7 +108,7 @@ define([], () ->
                   pureDirectives.accountsDirective )
         .find('table')
         .dataTable()    # using dataTables to render accounts tabular data
-        .find('tr')
+        .find('tbody > tr')
         .each((index, ech) ->
           
           ###

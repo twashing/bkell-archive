@@ -11,9 +11,6 @@
       accountsDirective: {
         "tbody tr": {
           "each<-puredata": {
-            "a.editaccount@href": function(arg) {
-              return "/accounts/account/" + arg.each.item.id;
-            },
             "td.name": "each.name",
             "td.type": "each.type",
             "td.weight": "each.counterWeight"
@@ -81,7 +78,7 @@
         ctx = this;
         return this.el.render({
           puredata: this.collection.toJSON()
-        }, pureDirectives.accountsDirective).find('table').dataTable().find('tr').each(function(index, ech) {
+        }, pureDirectives.accountsDirective).find('table').dataTable().find('tbody > tr').each(function(index, ech) {
           /*
                     # Nesting Row Views here
                     */

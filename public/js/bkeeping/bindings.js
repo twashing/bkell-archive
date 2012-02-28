@@ -5,13 +5,20 @@
         initial: 'As',
         events: [
           {
-            name: 'As->A',
+            name: 'AsA',
             from: 'As',
             to: 'A'
           }, {
-            name: 'A->As',
+            name: 'AAs',
             from: 'A',
             to: 'As'
+          }
+        ],
+        callbacks: [
+          {
+            onbeforeAsA: function(event, from, to, args) {
+              return console.log('START Transition from As->A');
+            }
           }
         ]
       })

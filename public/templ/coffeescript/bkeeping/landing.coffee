@@ -13,8 +13,8 @@ require.config({
 })
 
 
-require( ['bkeeping/bkeeping']
-  (bkeeping) ->
+require( ['bkeeping/bkeeping', 'bkeeping/bindings']
+  (bkeeping, bindings) ->
     
     console.log("landing LOADED / bkeeping[#{bkeeping.models}]")
     
@@ -34,12 +34,29 @@ require( ['bkeeping/bkeeping']
     
     
     ###
-    # Load Accounts and Entries panes, then render
+    # STATE MACHINEs for Accounts and Entries 
+    ###
+    asm = bindings.asm
+    
+    
+    ###
+    # VIEWs: Load Accounts and Entries panes, then render
     ###
     accountsView = new views.AccountsView( { collection: accounts } )
     $('#accounts').load("/include/accounts.html", () ->
       
-      accounts.fetchS()
+      accounts.fetchS(
+        success: () ->
+          
+          # bind account row to the Accounts State Machine
+          _.each(accountsView['accountRows'], (ech) ->
+            #ech.el.find('.editaccount').bind('click', _.bind(asm.AsA, ech))
+            ech.el
+              .find('.editaccount')
+              .unbind('click')
+              .bind('click', _.bind(asm.AsA, asm))
+          )
+      )
     )
     
     $('#account').load('/include/account.html', () ->
