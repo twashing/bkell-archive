@@ -24,14 +24,6 @@ require( ['bkeeping/bkeeping']
     ###
     models = bkeeping.models
     views = bkeeping.views
-
-    ###
-    $ = bkeeping.jQuery
-    json2 = bkeeping.json2
-    _ = bkeeping.Underscore
-    Backbone = bkeeping.Backbone
-    pure = bkeeping.pure
-    ###
     
     
     ###
