@@ -50,7 +50,6 @@ require( ['bkeeping/bkeeping', 'bkeeping/bindings']
           
           # bind account row to the Accounts State Machine
           _.each(accountsView['accountRows'], (ech) ->
-            #ech.el.find('.editaccount').bind('click', _.bind(asm.AsA, ech))
             ech.el
               .find('.editaccount')
               .unbind('click')

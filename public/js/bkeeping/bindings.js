@@ -14,13 +14,11 @@
             to: 'As'
           }
         ],
-        callbacks: [
-          {
-            onbeforeAsA: function(event, from, to, args) {
-              return console.log('START Transition from As->A');
-            }
+        callbacks: {
+          onbeforeAsA: function(event, from, to, args) {
+            return console.log('START Transition from As->A');
           }
-        ]
+        }
       })
     };
   });
