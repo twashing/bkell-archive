@@ -36,10 +36,10 @@
       */
     AccountView = Backbone.View.extend({
       initialize: function(options) {
-        return console('AccountView initialize CALLED');
+        return console.log('AccountView initialize CALLED');
       },
       render: function(options) {
-        return console('AccountView render CALLED');
+        return console.log('AccountView render CALLED');
       }
     });
     EntryView = Backbone.View.extend({});

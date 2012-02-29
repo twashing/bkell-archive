@@ -47,12 +47,12 @@ define([], () ->
   AccountView = Backbone.View.extend({
     
     initialize : (options) ->
-      console('AccountView initialize CALLED')
+      console.log('AccountView initialize CALLED')
 
       # TODO - handle i) data updates ii) transition back to AccountsView
     
     render : (options) ->
-      console('AccountView render CALLED')
+      console.log('AccountView render CALLED')
   })
   EntryView = Backbone.View.extend({})
   

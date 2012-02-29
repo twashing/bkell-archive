@@ -43,6 +43,13 @@ require( ['bkeeping/bkeeping', 'bkeeping/bindings']
     # VIEWs: Load Accounts and Entries panes, then render
     ###
     accountsView = new views.AccountsView( { collection: accounts } )
+    accountView = new views.AccountView()
+    entriesView = new views.EntriesView( { collection: entries } )
+
+
+    ###
+    # Load the actual pages
+    ###
     $('#accounts').load("/include/accounts.html", () ->
       
       accounts.fetchS(
@@ -53,24 +60,20 @@ require( ['bkeeping/bkeeping', 'bkeeping/bindings']
             ech.el
               .find('.editaccount')
               .unbind('click')
-              .bind('click', { accounts: accounts, accountsView: accountsView}, _.bind(asm.AsA, asm))  # trigger the transition when edit clicked
+              .bind(  'click',
+                      { accounts: accounts, accountsView: accountsView, accountView: accountView },
+                      _.bind(asm.AsA, asm))  # trigger the transition when edit clicked
           )
       )
     )
     
     $('#account').load('/include/account.html', () ->
       
-      # Working horizontal / serial scrolling 
+      # Initialize horizontal / serial scrolling 
       $('#left-col').serialScroll({ target: '#left-wrapper', items: '#accounts , #account', duration: 500, axis: 'x', force: true })
       
-      # Basic usage 
-      #$('#left-wrapper').scrollTo($('#account'), 500, {axis:'x'})
-      
-      # Using this to toggle between views
-      #$('#left-col').trigger('next')
     )
     
-    entriesView = new views.EntriesView( { collection: entries } )
     $('#right-col').load("/include/entries.html", () ->
       entries.fetchS()
     )

@@ -16,11 +16,9 @@ define([], () ->
                                   account = args.data.accounts.get( args.target.dataset['aid'] )
                                   
                                   # 2. load the account into the UI
+                                  _.extend(account, Backbone.Events)
+                                  account.bind('change', args.data.accountView.render)  # bind Backbone event
                                   account.trigger('change')   # this should trigger the accountView to render
-                                  
-                                  #aview = _.find( args.data.accountsView['accountRows'], (ech) ->
-                                  #  return (ech.model.id == account.get('id')) )
-                                  #aview.render(account)
                                   
                                   # 3. scroll the UI to the right pane (horizontal serialScroll lib)
                                   $('#left-wrapper').scrollTo($('#account'), 500, {axis:'x'})

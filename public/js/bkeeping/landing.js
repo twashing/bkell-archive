@@ -6,7 +6,7 @@
     }
   });
   require(['bkeeping/bkeeping', 'bkeeping/bindings'], function(bkeeping, bindings) {
-    var accounts, accountsView, asm, entries, entriesView, models, views;
+    var accountView, accounts, accountsView, asm, entries, entriesView, models, views;
     console.log("landing LOADED / bkeeping[" + bkeeping.models + "]");
     /*
         # LIB imports 
@@ -28,13 +28,21 @@
     accountsView = new views.AccountsView({
       collection: accounts
     });
+    accountView = new views.AccountView();
+    entriesView = new views.EntriesView({
+      collection: entries
+    });
+    /*
+        # Load the actual pages
+        */
     $('#accounts').load("/include/accounts.html", function() {
       return accounts.fetchS({
         success: function() {
           return _.each(accountsView['accountRows'], function(ech) {
             return ech.el.find('.editaccount').unbind('click').bind('click', {
               accounts: accounts,
-              accountsView: accountsView
+              accountsView: accountsView,
+              accountView: accountView
             }, _.bind(asm.AsA, asm));
           });
         }
@@ -48,9 +56,6 @@
         axis: 'x',
         force: true
       });
-    });
-    entriesView = new views.EntriesView({
-      collection: entries
     });
     $('#right-col').load("/include/entries.html", function() {
       return entries.fetchS();
