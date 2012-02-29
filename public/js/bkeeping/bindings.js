@@ -16,7 +16,13 @@
         ],
         callbacks: {
           onbeforeAsA: function(event, from, to, args) {
-            return console.log('START Transition from As->A');
+            var account;
+            console.log('START Transition from As->A');
+            account = args.data.accounts.get(args.target.dataset['aid']);
+            account.trigger('change');
+            return $('#left-wrapper').scrollTo($('#account'), 500, {
+              axis: 'x'
+            });
           }
         }
       })

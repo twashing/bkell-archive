@@ -11,6 +11,7 @@
       accountsDirective: {
         "tbody tr": {
           "each<-puredata": {
+            "a.editaccount@data-aid": "each.id",
             "td.name": "each.name",
             "td.type": "each.type",
             "td.weight": "each.counterWeight"

@@ -53,7 +53,7 @@ require( ['bkeeping/bkeeping', 'bkeeping/bindings']
             ech.el
               .find('.editaccount')
               .unbind('click')
-              .bind('click', _.bind(asm.AsA, asm))
+              .bind('click', { accounts: accounts, accountsView: accountsView}, _.bind(asm.AsA, asm))  # trigger the transition when edit clicked
           )
       )
     )
@@ -61,7 +61,7 @@ require( ['bkeeping/bkeeping', 'bkeeping/bindings']
     $('#account').load('/include/account.html', () ->
       
       # Working horizontal / serial scrolling 
-      #$('#left-col').serialScroll({ target: '#left-wrapper', items: '#accounts , #account', duration: 500, axis: 'x', force: true })
+      $('#left-col').serialScroll({ target: '#left-wrapper', items: '#accounts , #account', duration: 500, axis: 'x', force: true })
       
       # Basic usage 
       #$('#left-wrapper').scrollTo($('#account'), 500, {axis:'x'})

@@ -32,12 +32,23 @@
       return accounts.fetchS({
         success: function() {
           return _.each(accountsView['accountRows'], function(ech) {
-            return ech.el.find('.editaccount').unbind('click').bind('click', _.bind(asm.AsA, asm));
+            return ech.el.find('.editaccount').unbind('click').bind('click', {
+              accounts: accounts,
+              accountsView: accountsView
+            }, _.bind(asm.AsA, asm));
           });
         }
       });
     });
-    $('#account').load('/include/account.html', function() {});
+    $('#account').load('/include/account.html', function() {
+      return $('#left-col').serialScroll({
+        target: '#left-wrapper',
+        items: '#accounts , #account',
+        duration: 500,
+        axis: 'x',
+        force: true
+      });
+    });
     entriesView = new views.EntriesView({
       collection: entries
     });

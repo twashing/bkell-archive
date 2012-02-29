@@ -20,6 +20,7 @@ define([], () ->
           "each<-puredata" : {
             #"a.editaccount@href" : (arg) ->
             #  return "/accounts/account/"+ arg.each.item.id
+            "a.editaccount@data-aid" : "each.id"
             "td.name" : "each.name"
             "td.type" : "each.type"
             "td.weight" : "each.counterWeight"
@@ -69,10 +70,6 @@ define([], () ->
     
     editClicked : () ->
       console.log('edit CLICKED')
-    
-      # TODO - transition to Account Detail pane
-      # 1. transition out then load
-      # 2. use Workflow ??
     
     deleteClicked : () ->
       console.log('delete CLICKED')
