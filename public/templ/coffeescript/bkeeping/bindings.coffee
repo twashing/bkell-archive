@@ -17,7 +17,7 @@ define([], () ->
                                   
                                   # 2. load the account into the UI
                                   _.extend(account, Backbone.Events)
-                                  account.bind('change', args.data.accountView.render)  # bind Backbone event
+                                  account.bind('change', args.data.accountView.render, { model: account, view: args.data.accountView })  # bind Backbone event
                                   account.trigger('change')   # this should trigger the accountView to render
                                   
                                   # 3. scroll the UI to the right pane (horizontal serialScroll lib)

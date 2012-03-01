@@ -1,5 +1,4 @@
 
-#define(['Backbone'], (bb) ->
 define([], () ->
   
   
@@ -18,8 +17,6 @@ define([], () ->
       {
         "tbody tr" : {
           "each<-puredata" : {
-            #"a.editaccount@href" : (arg) ->
-            #  return "/accounts/account/"+ arg.each.item.id
             "a.editaccount@data-aid" : "each.id"
             "td.name" : "each.name"
             "td.type" : "each.type"
@@ -27,8 +24,14 @@ define([], () ->
           }
         }
       }
-    entriesDirective:
+    accountDirective:
       {
+        "#account-name@value" : "id"
+        #"#account-type option@selected": (a) ->
+        #  return ( (a.context.type == '.') ? 'selected' : '' )
+        #"#account-counterWeight" : "id"
+      }
+    entriesDirective: {
         "tbody tr" : {
           "each<-puredata" : {
             "a.editentry@href" : (arg) ->
@@ -48,11 +51,17 @@ define([], () ->
     
     initialize : (options) ->
       console.log('AccountView initialize CALLED')
-
-      # TODO - handle i) data updates ii) transition back to AccountsView
+      this.el = $(options.el)
     
     render : (options) ->
       console.log('AccountView render CALLED')
+      this.view.el.render( this.model.toJSON(), pureDirectives.accountDirective )
+
+      # hack to render the select dropdowns
+      $("#account-type > option[value='#{ this.model.get('type') }']").attr('selected', 'selected')
+      $("#account-counterWeight > option[value='#{ this.model.get('counterWeight') }']").attr('selected', 'selected')
+
+      return null
   })
   EntryView = Backbone.View.extend({})
   
@@ -84,7 +93,7 @@ define([], () ->
   ###
   # Accounts and Entries VIEWs
   ###
-  # TODO - create and bind i) add event
+  # TODO - create and bind i. add event
   AccountsView = Backbone.View.extend(
     
     el: $('#accounts')

@@ -12,17 +12,17 @@
         .account_content
           %div 
             %label Name
-            %input{ :type => "text" }
+            %input{ :type => "text", :id => "account-name" }
           %div 
             %label Category
-            %select
+            %select{ :id => "account-type" }
               %option{ :value => "asset"} asset
               %option{ :value => "liability" } liability
               %option{ :value => "revenue" } revenue
               %option{ :value => "expense"  } expense
           %div 
             %label Type
-            %select
+            %select{ :id => "account-counterWeight" }
               %option{ :value => "debit" } debit
               %option{ :value => "credit" } credit
           %div

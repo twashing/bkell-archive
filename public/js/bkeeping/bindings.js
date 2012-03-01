@@ -20,7 +20,10 @@
             console.log('START Transition from As->A');
             account = args.data.accounts.get(args.target.dataset['aid']);
             _.extend(account, Backbone.Events);
-            account.bind('change', args.data.accountView.render);
+            account.bind('change', args.data.accountView.render, {
+              model: account,
+              view: args.data.accountView
+            });
             account.trigger('change');
             return $('#left-wrapper').scrollTo($('#account'), 500, {
               axis: 'x'

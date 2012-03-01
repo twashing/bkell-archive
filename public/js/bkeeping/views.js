@@ -18,6 +18,9 @@
           }
         }
       },
+      accountDirective: {
+        "#account-name@value": "id"
+      },
       entriesDirective: {
         "tbody tr": {
           "each<-puredata": {
@@ -36,10 +39,15 @@
       */
     AccountView = Backbone.View.extend({
       initialize: function(options) {
-        return console.log('AccountView initialize CALLED');
+        console.log('AccountView initialize CALLED');
+        return this.el = $(options.el);
       },
       render: function(options) {
-        return console.log('AccountView render CALLED');
+        console.log('AccountView render CALLED');
+        this.view.el.render(this.model.toJSON(), pureDirectives.accountDirective);
+        $("#account-type > option[value='" + (this.model.get('type')) + "']").attr('selected', 'selected');
+        $("#account-counterWeight > option[value='" + (this.model.get('counterWeight')) + "']").attr('selected', 'selected');
+        return null;
       }
     });
     EntryView = Backbone.View.extend({});

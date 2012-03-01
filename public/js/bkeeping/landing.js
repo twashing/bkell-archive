@@ -28,7 +28,9 @@
     accountsView = new views.AccountsView({
       collection: accounts
     });
-    accountView = new views.AccountView();
+    accountView = new views.AccountView({
+      el: '#account'
+    });
     entriesView = new views.EntriesView({
       collection: entries
     });

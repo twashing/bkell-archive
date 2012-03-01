@@ -43,10 +43,10 @@ require( ['bkeeping/bkeeping', 'bkeeping/bindings']
     # VIEWs: Load Accounts and Entries panes, then render
     ###
     accountsView = new views.AccountsView( { collection: accounts } )
-    accountView = new views.AccountView()
+    accountView = new views.AccountView( { el: '#account' } )
     entriesView = new views.EntriesView( { collection: entries } )
-
-
+    
+    
     ###
     # Load the actual pages
     ###
