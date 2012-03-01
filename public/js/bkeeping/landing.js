@@ -51,13 +51,18 @@
       });
     });
     $('#account').load('/include/account.html', function() {
-      return $('#left-col').serialScroll({
+      $('#left-col').serialScroll({
         target: '#left-wrapper',
         items: '#accounts , #account',
         duration: 500,
         axis: 'x',
         force: true
       });
+      return accountView.el.find('#account-ok').unbind('click').bind('click', {
+        accounts: accounts,
+        accountsView: accountsView,
+        accountView: accountView
+      }, _.bind(asm.AAs, asm));
     });
     $('#right-col').load("/include/entries.html", function() {
       return entries.fetchS();

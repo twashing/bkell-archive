@@ -28,6 +28,12 @@
             return $('#left-wrapper').scrollTo($('#account'), 500, {
               axis: 'x'
             });
+          },
+          onbeforeAAs: function(event, from, to, args) {
+            console.log('START Transition from A->As');
+            return $('#left-wrapper').scrollTo($('#accounts'), 500, {
+              axis: 'x'
+            });
           }
         }
       })

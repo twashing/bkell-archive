@@ -72,6 +72,12 @@ require( ['bkeeping/bkeeping', 'bkeeping/bindings']
       # Initialize horizontal / serial scrolling 
       $('#left-col').serialScroll({ target: '#left-wrapper', items: '#accounts , #account', duration: 500, axis: 'x', force: true })
       
+      # bind actions to 'Ok' and 'Cancel' buttons
+      accountView.el.find('#account-ok')
+        .unbind('click')
+        .bind('click',
+              { accounts: accounts, accountsView: accountsView, accountView: accountView },
+              _.bind(asm.AAs, asm)) # transition back to Accounts pane
     )
     
     $('#right-col').load("/include/entries.html", () ->

@@ -21,7 +21,22 @@ define([], () ->
                                   account.trigger('change')   # this should trigger the accountView to render
                                   
                                   # 3. scroll the UI to the right pane (horizontal serialScroll lib)
-                                  $('#left-wrapper').scrollTo($('#account'), 500, {axis:'x'})
+                                  $('#left-wrapper').scrollTo($('#account'), 500, { axis:'x' })
+
+                                  
+                                onbeforeAAs: (event, from, to, args) ->
+                                  
+                                  console.log('START Transition from A->As')
+                                  
+                                  # 1. updaate Backbone model (wait for callback) 
+                                  
+                                  # 2. ensure Accounts list is updated -> list UI should be re-rendered 
+                                  
+                                  # 3. scroll to Accounts pane 
+                                  $('#left-wrapper').scrollTo($('#accounts'), 500, { axis:'x' })
+                                  
+                                  # 4. clear previous Account UI ; unbind account Backbone model
+                                  
                             }
   )
 
