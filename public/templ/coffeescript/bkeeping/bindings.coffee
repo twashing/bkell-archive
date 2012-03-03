@@ -22,8 +22,18 @@ define([], () ->
                                   
                                   # 3. scroll the UI to the right pane (horizontal serialScroll lib)
                                   $('#left-wrapper').scrollTo($('#account'), 500, { axis:'x' })
-
+                                
+                                onafterAsA: (event, from, to, args) ->
                                   
+                                  console.log('END Transition from As->A')
+                                  
+                                  # bind actions to 'Ok' and 'Cancel' buttons
+                                  $('#account-ok')
+                                    .unbind('click')
+                                    .bind('click',
+                                          { accounts: args.data.accounts, accountsView: args.data.accountsView, accountView: args.data.accountView, asm: args.data.asm },
+                                          _.bind(args.data.asm.AAs, args.data.asm)) # transition back to Accounts pane
+                                
                                 onbeforeAAs: (event, from, to, args) ->
                                   
                                   console.log('START Transition from A->As')

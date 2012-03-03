@@ -44,25 +44,29 @@
             return ech.el.find('.editaccount').unbind('click').bind('click', {
               accounts: accounts,
               accountsView: accountsView,
-              accountView: accountView
+              accountView: accountView,
+              asm: asm
             }, _.bind(asm.AsA, asm));
           });
         }
       });
     });
     $('#account').load('/include/account.html', function() {
-      $('#left-col').serialScroll({
+      return $('#left-col').serialScroll({
         target: '#left-wrapper',
         items: '#accounts , #account',
         duration: 500,
         axis: 'x',
         force: true
       });
-      return accountView.el.find('#account-ok').unbind('click').bind('click', {
-        accounts: accounts,
-        accountsView: accountsView,
-        accountView: accountView
-      }, _.bind(asm.AAs, asm));
+      /*
+            # bind actions to 'Ok' and 'Cancel' buttons
+            $('#account-ok')
+              .unbind('click')
+              .bind('click',
+                    { accounts: accounts, accountsView: accountsView, accountView: accountView, asm: asm },
+                    _.bind(asm.AAs, asm)) # transition back to Accounts pane
+            */
     });
     $('#right-col').load("/include/entries.html", function() {
       return entries.fetchS();
