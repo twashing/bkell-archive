@@ -33,31 +33,43 @@
             var account;
             console.log('END Transition from As->A');
             account = args.data.accounts.get(args.target.dataset['aid']);
-            return $('#account-ok').unbind('click').bind('click', {
+            $('#account-ok').unbind('click').bind('click', {
               accounts: args.data.accounts,
               account: account,
               accountsView: args.data.accountsView,
               accountView: args.data.accountView,
               asm: args.data.asm
             }, _.bind(args.data.asm.AAs, args.data.asm));
+            return $('#account-cancel').unbind('click').bind('click', {
+              cancel: true,
+              asm: args.data.asm
+            }, _.bind(args.data.asm.AAs, args.data.asm));
           },
           onleaveA: function(event, from, to, args) {
             console.log('START Transition from A->As');
-            args.data.account.saveS({
-              name: $("#account-name").attr('value'),
-              type: $("#account-type").attr("value"),
-              counterWeight: $("#account-counterWeight").attr("value")
-            }, {
-              wait: true,
-              type: "POST",
-              success: function() {
-                console.log("successful save");
-                $('#left-wrapper').scrollTo($('#accounts'), 500, {
-                  axis: 'x'
-                });
-                return args.data.asm.transition();
-              }
-            });
+            if (args.data.cancel) {
+              console.log("Accounts cancel");
+              $('#left-wrapper').scrollTo($('#accounts'), 500, {
+                axis: 'x'
+              });
+              args.data.asm.transition();
+            } else {
+              args.data.account.saveS({
+                name: $("#account-name").attr('value'),
+                type: $("#account-type").attr("value"),
+                counterWeight: $("#account-counterWeight").attr("value")
+              }, {
+                wait: true,
+                type: "POST",
+                success: function() {
+                  console.log("successful save");
+                  $('#left-wrapper').scrollTo($('#accounts'), 500, {
+                    axis: 'x'
+                  });
+                  return args.data.asm.transition();
+                }
+              });
+            }
             return StateMachine.ASYNC;
           }
         }

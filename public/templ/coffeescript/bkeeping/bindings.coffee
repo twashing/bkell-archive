@@ -37,32 +37,49 @@ define([], () ->
                                           { accounts: args.data.accounts, account: account, accountsView: args.data.accountsView, accountView: args.data.accountView, asm: args.data.asm },
                                           _.bind(args.data.asm.AAs, args.data.asm)) # transition back to Accounts pane
                                 
+                                  $('#account-cancel')
+                                    .unbind('click')
+                                    .bind('click',
+                                          { cancel: true, asm: args.data.asm },
+                                          _.bind(args.data.asm.AAs, args.data.asm)) # transition back to Accounts pane
+                                
                                 onleaveA: (event, from, to, args) ->
                                   
                                   console.log('START Transition from A->As')
                                   
-                                  # 1. updaate Backbone model (wait for callback) 
-                                  args.data.account.saveS(
-                                                          {
-                                                            name: $("#account-name").attr('value'),
-                                                            type: $("#account-type").attr("value"),
-                                                            counterWeight: $("#account-counterWeight").attr("value")
-                                                          },
-                                                          {
-                                                            wait: true,
-                                                            type: "POST",
-                                                            success: () ->
+                                  if(args.data.cancel)
+                                    
+                                    console.log("Accounts cancel")
+                                    
+                                    # 1. scroll to Accounts pane 
+                                    $('#left-wrapper').scrollTo($('#accounts'), 500, { axis:'x' })
+                                    
+                                    args.data.asm.transition() # now fire off the transition 
+                                  
+                                  else
+                                    
+                                    # 1. updaate Backbone model (wait for callback) 
+                                    args.data.account.saveS(
+                                                            {
+                                                              name: $("#account-name").attr('value'),
+                                                              type: $("#account-type").attr("value"),
+                                                              counterWeight: $("#account-counterWeight").attr("value")
+                                                            },
+                                                            {
+                                                              wait: true,
+                                                              type: "POST",
+                                                              success: () ->
+                                                                
+                                                                console.log("successful save")
+                                                                
+                                                                # 2. ensure Accounts list is updated -> list UI should be re-rendered ... "change" event should fire 
+                                                                
+                                                                # 3. scroll to Accounts pane 
+                                                                $('#left-wrapper').scrollTo($('#accounts'), 500, { axis:'x' })
+                                                                
+                                                                args.data.asm.transition() # now fire off the transition 
                                                               
-                                                              console.log("successful save")
-                                                              
-                                                              # 2. ensure Accounts list is updated -> list UI should be re-rendered ... "change" event should fire 
-                                                              
-                                                              # 3. scroll to Accounts pane 
-                                                              $('#left-wrapper').scrollTo($('#accounts'), 500, { axis:'x' })
-                                                              
-                                                              args.data.asm.transition() # now fire off the transition 
-                                                            
-                                                          })
+                                                            })
                                   
                                   return StateMachine.ASYNC; # tell StateMachine to defer next state until we call transition (in fadeOut callback above)
                             }
