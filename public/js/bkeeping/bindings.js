@@ -41,7 +41,7 @@
               asm: args.data.asm
             }, _.bind(args.data.asm.AAs, args.data.asm));
           },
-          onbeforeAAs: function(event, from, to, args) {
+          onleaveA: function(event, from, to, args) {
             console.log('START Transition from A->As');
             args.data.account.saveS({
               name: $("#account-name").attr('value'),
