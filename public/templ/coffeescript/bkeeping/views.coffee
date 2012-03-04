@@ -57,9 +57,10 @@ define([], () ->
       console.log('AccountView render CALLED')
 
       # render pane with PURE
-      this.view.el.render( this.model.toJSON(), pureDirectives.accountDirective )
+      #this.view.el.render( this.model.toJSON(), pureDirectives.accountDirective )
       
       # hack together a jquery render of the select dropdowns
+      $("#account-name").attr('value', this.model.get('name'))
       $("#account-type > option[value='#{ this.model.get('type') }']").attr('selected', 'selected')
       $("#account-counterWeight > option[value='#{ this.model.get('counterWeight') }']").attr('selected', 'selected')
   })

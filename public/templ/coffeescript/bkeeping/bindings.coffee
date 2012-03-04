@@ -8,6 +8,7 @@ define([], () ->
                                 { name: 'AAs', from: 'A', to: 'As' }    # transition from Account, back to the Accounts pane
                               ]
                               callbacks:
+                                
                                 onbeforeAsA: (event, from, to, args) ->
                                   
                                   console.log('START Transition from As->A')
@@ -36,7 +37,6 @@ define([], () ->
                                           { accounts: args.data.accounts, account: account, accountsView: args.data.accountsView, accountView: args.data.accountView, asm: args.data.asm },
                                           _.bind(args.data.asm.AAs, args.data.asm)) # transition back to Accounts pane
                                 
-                                #onbeforeAAs: (event, from, to, args) ->
                                 onleaveA: (event, from, to, args) ->
                                   
                                   console.log('START Transition from A->As')
