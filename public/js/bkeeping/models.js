@@ -6,7 +6,7 @@
     /*
       # Setup an Abstract Class & Collection that accepts success and error callbacks
       */
-    var AbstractK, AbstractL, commonFetch;
+    var AbstractK, AbstractL, Account, Accounts, Entries, Entry, commonFetch;
     commonFetch = function(options) {
       var errorC, successC;
       successC = options && options.success ? options.success : (function(model, response) {
@@ -53,32 +53,44 @@
           success: successC,
           error: errorC
         }));
+      },
+      parse: function(data) {
+        console.log("AbstractK > parse fn CALLED");
+        return data;
       }
     });
     AbstractL = Backbone.Collection.extend({
-      fetchS: commonFetch
+      fetchS: commonFetch,
+      parse: function(data) {
+        console.log("AbstractL > parse fn CALLED");
+        return data;
+      }
+    });
+    /*
+      # Account & Entry
+      */
+    Account = AbstractK.extend({
+      urlRoot: "/account"
+    });
+    Entry = AbstractK.extend({
+      urlRoot: "/entry"
+    });
+    /*
+      # Collections
+      */
+    Accounts = AbstractL.extend({
+      url: '/accounts',
+      model: this.Account
+    });
+    Entries = AbstractL.extend({
+      url: '/entries',
+      model: this.Entry
     });
     return {
-      /*
-        # Account & Entry
-        */
-      Account: AbstractK.extend({
-        urlRoot: "/account"
-      }),
-      Entry: AbstractK.extend({
-        urlRoot: "/entry"
-      }),
-      /*
-        # Collections
-        */
-      Accounts: AbstractL.extend({
-        url: '/accounts',
-        model: this.Account
-      }),
-      Entries: AbstractL.extend({
-        url: '/entries',
-        model: this.Entry
-      })
+      Account: Account,
+      Entry: Entry,
+      Accounts: Accounts,
+      Entries: Entries
     };
   });
 }).call(this);

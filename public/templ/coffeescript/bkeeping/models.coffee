@@ -76,22 +76,28 @@ define([], () ->
                   )
       )
     
+    parse : (data) ->
+      console.log("AbstractK > parse fn CALLED")
+      return data
   })
   
   AbstractL = Backbone.Collection.extend({
+    
     fetchS : commonFetch
+    
+    parse : (data) ->
+      console.log("AbstractL > parse fn CALLED")
+      return data
   })
   
-  
-  # return an object with the following object classes
   
   ###
   # Account & Entry
   ###
-  Account : AbstractK.extend(
+  Account = AbstractK.extend(
     urlRoot : "/account",
   )
-  Entry : AbstractK.extend(
+  Entry = AbstractK.extend(
     urlRoot : "/entry",
   )
   
@@ -99,15 +105,20 @@ define([], () ->
   ###
   # Collections
   ###
-  Accounts : AbstractL.extend(
+  Accounts = AbstractL.extend(
     url: '/accounts',
     model: this.Account,
   )
-  Entries : AbstractL.extend(
+  Entries = AbstractL.extend(
     url: '/entries',
     model: this.Entry,
   )
   
+  # return an object with the following object classes
+  Account : Account
+  Entry : Entry
+  Accounts : Accounts
+  Entries : Entries
 )
 
 

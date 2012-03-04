@@ -83,6 +83,7 @@
       accountRows: [],
       render: function() {
         var ctx;
+        console.log("AccountsView.render CALLED");
         ctx = this;
         return this.el.render({
           puredata: this.collection.toJSON()

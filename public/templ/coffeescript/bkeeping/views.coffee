@@ -108,6 +108,8 @@ define([], () ->
     accountRows: []
     render: () ->
       
+      console.log("AccountsView.render CALLED")
+      
       ctx = this
       this.el      # the HTML context should be passed in as an argument
         .render(  { puredata : this.collection.toJSON() } ,   # i) using PURE templ lib, ii) returning raw JSON object (instead of BB models) for pure templ
