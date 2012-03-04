@@ -95,6 +95,12 @@ define([], () ->
   # Account & Entry
   ###
   Account = AbstractK.extend(
+    url : () ->
+      base = this.urlRoot || getUrl(this.collection) || urlError()  # look for the urlRoot first
+      if (this.isNew())
+        return base
+      return base + `(base.charAt(base.length - 1) == '/' ? '' : '/')` + encodeURIComponent(this.id)  # inlining the .JS, otherwise coffeescript does weirdness
+    
     urlRoot : "/account",
   )
   Entry = AbstractK.extend(
@@ -107,11 +113,11 @@ define([], () ->
   ###
   Accounts = AbstractL.extend(
     url: '/accounts',
-    model: this.Account,
+    model: Account,
   )
   Entries = AbstractL.extend(
     url: '/entries',
-    model: this.Entry,
+    model: Entry,
   )
   
   # return an object with the following object classes

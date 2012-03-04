@@ -41,13 +41,16 @@ define([], () ->
                                   console.log('START Transition from A->As')
                                   
                                   # 1. updaate Backbone model (wait for callback) 
-                                  args.data.account.save(
+                                  args.data.account.saveS(
                                                           {
                                                             name: $("#account-name").attr('value'),
                                                             type: $("#account-type").attr("value"),
                                                             counterWeight: $("#account-counterWeight").attr("value")
                                                           },
-                                                          { success: () ->
+                                                          {
+                                                            wait: true,
+                                                            type: "POST",
+                                                            success: () ->
                                                               
                                                               console.log("successful save")
                                                               
@@ -57,6 +60,7 @@ define([], () ->
                                                               $('#left-wrapper').scrollTo($('#accounts'), 500, { axis:'x' })
                                                               
                                                               args.data.asm.transition() # now fire off the transition 
+                                                            
                                                           })
                                   
                                   return StateMachine.ASYNC; # tell StateMachine to defer next state until we call transition (in fadeOut callback above)

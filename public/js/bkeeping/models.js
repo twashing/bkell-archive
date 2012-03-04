@@ -70,6 +70,14 @@
       # Account & Entry
       */
     Account = AbstractK.extend({
+      url: function() {
+        var base;
+        base = this.urlRoot || getUrl(this.collection) || urlError();
+        if (this.isNew()) {
+          return base;
+        }
+        return base + (base.charAt(base.length - 1) == '/' ? '' : '/') + encodeURIComponent(this.id);
+      },
       urlRoot: "/account"
     });
     Entry = AbstractK.extend({
@@ -80,11 +88,11 @@
       */
     Accounts = AbstractL.extend({
       url: '/accounts',
-      model: this.Account
+      model: Account
     });
     Entries = AbstractL.extend({
       url: '/entries',
-      model: this.Entry
+      model: Entry
     });
     return {
       Account: Account,

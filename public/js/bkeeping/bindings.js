@@ -43,11 +43,13 @@
           },
           onbeforeAAs: function(event, from, to, args) {
             console.log('START Transition from A->As');
-            args.data.account.save({
+            args.data.account.saveS({
               name: $("#account-name").attr('value'),
               type: $("#account-type").attr("value"),
               counterWeight: $("#account-counterWeight").attr("value")
             }, {
+              wait: true,
+              type: "POST",
               success: function() {
                 console.log("successful save");
                 $('#left-wrapper').scrollTo($('#accounts'), 500, {
