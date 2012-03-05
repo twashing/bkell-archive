@@ -73,6 +73,48 @@
             return StateMachine.ASYNC;
           }
         }
+      }),
+      esm: StateMachine.create({
+        initial: 'Es',
+        events: [
+          {
+            name: 'EsE',
+            from: 'Es',
+            to: 'E'
+          }, {
+            name: 'EEpart',
+            from: 'E',
+            to: 'Epart'
+          }, {
+            name: 'EpartE',
+            from: 'Epart',
+            to: 'E'
+          }, {
+            name: 'EEs',
+            from: 'E',
+            to: 'Es'
+          }
+        ],
+        callbacks: {
+          onbeforeEsE: function(event, from, to, args) {
+            return console.log('START Transition from Es->E');
+          },
+          onafterEsE: function(event, from, to, args) {
+            return console.log('END Transition from Es->E');
+          },
+          onbeforeEEpart: function(event, from, to, args) {
+            return console.log('START Transition from E->Epart');
+          },
+          onafterEEpart: function(event, from, to, args) {
+            return console.log('END Transition from E->Epart');
+          },
+          onleaveEpart: function(event, from, to, args) {
+            return console.log('START Transition from Epart->E');
+          },
+          onleaveE: function(event, from, to, args) {
+            return console.log('START Transition from E->Es');
+          }
+        }
       })
     };
   });

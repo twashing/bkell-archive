@@ -6,7 +6,7 @@
     }
   });
   require(['bkeeping/bkeeping', 'bkeeping/bindings'], function(bkeeping, bindings) {
-    var accountView, accounts, accountsView, asm, entries, entriesView, models, views;
+    var accountView, accounts, accountsView, asm, entries, entriesView, esm, models, views;
     console.log("landing LOADED / bkeeping[" + bkeeping.models + "]");
     /*
         # LIB imports 
@@ -22,6 +22,7 @@
         # STATE MACHINEs for Accounts and Entries 
         */
     asm = bindings.asm;
+    esm = bindings.esm;
     /*
         # VIEWs: Load Accounts and Entries panes, then render
         */
@@ -59,17 +60,20 @@
         axis: 'x',
         force: true
       });
-      /*
-            # bind actions to 'Ok' and 'Cancel' buttons
-            $('#account-ok')
-              .unbind('click')
-              .bind('click',
-                    { accounts: accounts, accountsView: accountsView, accountView: accountView, asm: asm },
-                    _.bind(asm.AAs, asm)) # transition back to Accounts pane
-            */
     });
     $('#right-col').load("/include/entries.html", function() {
-      return entries.fetchS();
+      return entries.fetchS({
+        success: function() {
+          return _.each(entriesView['accountRows'], function(ech) {
+            return ech.el.find('.editaccount').unbind('click').bind('click', {
+              entries: entries,
+              entriesView: entriesView,
+              entryView: entryView,
+              esm: esm
+            }, _.bind(esm.AsA, esm));
+          });
+        }
+      });
     });
     /*
         # Load Footer

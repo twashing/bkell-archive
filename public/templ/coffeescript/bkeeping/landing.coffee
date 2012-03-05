@@ -37,6 +37,7 @@ require( ['bkeeping/bkeeping', 'bkeeping/bindings']
     # STATE MACHINEs for Accounts and Entries 
     ###
     asm = bindings.asm
+    esm = bindings.esm
     
     
     ###
@@ -71,19 +72,22 @@ require( ['bkeeping/bkeeping', 'bkeeping/bindings']
       
       # Initialize horizontal / serial scrolling 
       $('#left-col').serialScroll({ target: '#left-wrapper', items: '#accounts , #account', duration: 500, axis: 'x', force: true })
-      
-      ###
-      # bind actions to 'Ok' and 'Cancel' buttons
-      $('#account-ok')
-        .unbind('click')
-        .bind('click',
-              { accounts: accounts, accountsView: accountsView, accountView: accountView, asm: asm },
-              _.bind(asm.AAs, asm)) # transition back to Accounts pane
-      ###
     )
     
     $('#right-col').load("/include/entries.html", () ->
-      entries.fetchS()
+      entries.fetchS(
+        success: () ->
+          
+          # bind account row to the Accounts State Machine
+          _.each(entriesView['accountRows'], (ech) ->
+            ech.el
+              .find('.editaccount')
+              .unbind('click')
+              .bind(  'click',
+                      { entries: entries, entriesView: entriesView, entryView: entryView, esm: esm },
+                      _.bind(esm.AsA, esm))  # trigger the transition when edit clicked
+          )
+      )
     )
     
     ###

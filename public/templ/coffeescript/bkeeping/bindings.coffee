@@ -83,6 +83,39 @@ define([], () ->
                                   
                                   return StateMachine.ASYNC; # tell StateMachine to defer next state until we call transition (in fadeOut callback above)
                             }
+  ),
+  esm : StateMachine.create({
+                              initial:  'Es',
+                              events: [
+                                { name: 'EsE', from: 'Es', to: 'E' },   # transition from the Entries to the Entry pane
+                                { name: 'EEpart', from: 'E', to: 'Epart' },
+                                
+                                { name: 'EpartE', from: 'Epart', to: 'E' }
+                                { name: 'EEs', from: 'E', to: 'Es' }
+                              ]
+                              callbacks:
+                                
+                                # EVENT callbacks from Entries, and from Entry
+                                onbeforeEsE: (event, from, to, args) ->
+                                  console.log('START Transition from Es->E')
+                                  
+                                onafterEsE: (event, from, to, args) ->
+                                  console.log('END Transition from Es->E')
+                                  
+                                onbeforeEEpart: (event, from, to, args) ->
+                                  console.log('START Transition from E->Epart')
+                                  
+                                onafterEEpart: (event, from, to, args) ->
+                                  console.log('END Transition from E->Epart')
+                                  
+                                # STATE callbacks from EntryPart, and from Entry
+                                onleaveEpart: (event, from, to, args) ->
+                                  console.log('START Transition from Epart->E')
+                                  
+                                onleaveE: (event, from, to, args) ->
+                                  console.log('START Transition from E->Es')
+                                  
+                            }
   )
 
 )
