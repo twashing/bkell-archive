@@ -65,7 +65,7 @@
       return entries.fetchS({
         success: function() {
           return _.each(entriesView['accountRows'], function(ech) {
-            return ech.el.find('.editaccount').unbind('click').bind('click', {
+            return ech.el.find('.editentry').unbind('click').bind('click', {
               entries: entries,
               entriesView: entriesView,
               entryView: entryView,

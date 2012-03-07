@@ -81,7 +81,7 @@ require( ['bkeeping/bkeeping', 'bkeeping/bindings']
           # bind account row to the Accounts State Machine
           _.each(entriesView['accountRows'], (ech) ->
             ech.el
-              .find('.editaccount')
+              .find('.editentry')
               .unbind('click')
               .bind(  'click',
                       { entries: entries, entriesView: entriesView, entryView: entryView, esm: esm },

@@ -64,7 +64,7 @@ define([], () ->
       $("#account-type > option[value='#{ this.model.get('type') }']").attr('selected', 'selected')
       $("#account-counterWeight > option[value='#{ this.model.get('counterWeight') }']").attr('selected', 'selected')
   })
-  EntryView = Backbone.View.extend({})
+  EntryView = Backbone.View.extend()
   
   
   ###
@@ -88,7 +88,27 @@ define([], () ->
       console.log('account has been CHANGED')
     
   })
-  EntryRow = Backbone.View.extend({})
+  EntryRow = Backbone.View.extend({
+     
+    initialize : (options) ->
+      this.el = $(options.el)
+      this.el.bind('change', this.entryChanged)     # listening for changes to a particular account
+      this.el.find('.editentry').bind('click', _.bind(this.editClicked, this))      # handling edit and delete click events
+      this.el.find('.deleteentry').bind('click', _.bind(this.deleteClicked, this))
+    
+    editClicked : () ->
+      console.log('edit entry CLICKED')
+      return false
+    
+    deleteClicked : () ->
+      console.log('delete entry CLICKED')
+      return false
+    
+    entryChanged : () ->
+      console.log('entry has been CHANGED')
+      return false
+    
+  })
   
   
   ###
@@ -134,13 +154,26 @@ define([], () ->
       this.collection = options.collection
       this.collection.bind('reset', _.bind(this.render, this))
     
+    entryRows: []
     render: () ->
       
+      console.log("EntriesView.render CALLED")
+      
+      ctx = this
       this.el
         .render(  { puredata : this.collection.toJSON() } ,
                   pureDirectives.entriesDirective)
         .find('table')
         .dataTable()
+        .find('tbody > tr')
+        .each((index, ech) ->
+          
+          ###
+          # Nesting Row Views here
+          ###
+          arow = new EntryRow( { el: ech } )
+          ctx.entryRows.push(arow)
+        )
            
   )
   

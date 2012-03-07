@@ -49,7 +49,7 @@
         return $("#account-counterWeight > option[value='" + (this.model.get('counterWeight')) + "']").attr('selected', 'selected');
       }
     });
-    EntryView = Backbone.View.extend({});
+    EntryView = Backbone.View.extend();
     /*
       # Row VIEWs
       */
@@ -70,7 +70,26 @@
         return console.log('account has been CHANGED');
       }
     });
-    EntryRow = Backbone.View.extend({});
+    EntryRow = Backbone.View.extend({
+      initialize: function(options) {
+        this.el = $(options.el);
+        this.el.bind('change', this.entryChanged);
+        this.el.find('.editentry').bind('click', _.bind(this.editClicked, this));
+        return this.el.find('.deleteentry').bind('click', _.bind(this.deleteClicked, this));
+      },
+      editClicked: function() {
+        console.log('edit entry CLICKED');
+        return false;
+      },
+      deleteClicked: function() {
+        console.log('delete entry CLICKED');
+        return false;
+      },
+      entryChanged: function() {
+        console.log('entry has been CHANGED');
+        return false;
+      }
+    });
     /*
       # Accounts and Entries VIEWs
       */
@@ -105,10 +124,23 @@
         this.collection = options.collection;
         return this.collection.bind('reset', _.bind(this.render, this));
       },
+      entryRows: [],
       render: function() {
+        var ctx;
+        console.log("EntriesView.render CALLED");
+        ctx = this;
         return this.el.render({
           puredata: this.collection.toJSON()
-        }, pureDirectives.entriesDirective).find('table').dataTable();
+        }, pureDirectives.entriesDirective).find('table').dataTable().find('tbody > tr').each(function(index, ech) {
+          /*
+                    # Nesting Row Views here
+                    */
+          var arow;
+          arow = new EntryRow({
+            el: ech
+          });
+          return ctx.entryRows.push(arow);
+        });
       }
     });
     return {
