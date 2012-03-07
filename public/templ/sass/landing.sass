@@ -17,11 +17,13 @@ $grid-gutter-width: 1px
 @import utils
 
 
+/******
+ * Left / Accounts Pane 
+ ******/
 #left-col
   position: relative
   width: $left-content-width + $left-content-margin + $left-toggler-width
   background-image: url('/images/paper_2.png')
-
 
 #left-wrapper
   float: left
@@ -31,9 +33,7 @@ $grid-gutter-width: 1px
   position: relative
   
 #left-content
-  //@extend .stretched
   white-space: nowrap
-  //width: 1000
   position: absolute
 
 #accounts , #account
@@ -42,7 +42,6 @@ $grid-gutter-width: 1px
   margin: $left-content-margin
   padding: 0px
 
-
 #left-toggler
   width: $left-toggler-width
   height: 20px
@@ -50,9 +49,24 @@ $grid-gutter-width: 1px
   float: right
   position: relative
 
+
+/******
+ * Right / Entries Pane 
+ ******/
 #right-col
-  //@extend .stretched
-  +grid(9)
-  +box-flex(5)
-  position: relative
+  //position: relative
+  //overflow: hidden
+
+#right-wrapper
+  //overflow: hidden
+  //position: relative
+
+#right-content
+  //white-space: nowrap
+  //position: absolute
+
+#entries , #entry, #entry-part
+  float: left
+  //margin: $left-content-margin
+  //padding: 0px
 

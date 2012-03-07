@@ -408,14 +408,17 @@
   font: Verdana, Arial, sans-serif;
 }
 
-/* line 20, ../templ/sass/landing.sass */
+/*****
+ * Left / Accounts Pane 
+ ***** */
+/* line 23, ../templ/sass/landing.sass */
 #left-col {
   position: relative;
   width: 308;
   background-image: url("/images/paper_2.png");
 }
 
-/* line 26, ../templ/sass/landing.sass */
+/* line 28, ../templ/sass/landing.sass */
 #left-wrapper {
   float: left;
   width: 288;
@@ -424,7 +427,7 @@
   position: relative;
 }
 
-/* line 33, ../templ/sass/landing.sass */
+/* line 35, ../templ/sass/landing.sass */
 #left-content {
   white-space: nowrap;
   position: absolute;
@@ -438,7 +441,7 @@
   padding: 0px;
 }
 
-/* line 46, ../templ/sass/landing.sass */
+/* line 45, ../templ/sass/landing.sass */
 #left-toggler {
   width: 20;
   height: 20px;
@@ -447,37 +450,10 @@
   position: relative;
 }
 
-/* line 53, ../templ/sass/landing.sass */
-#right-col {
-  width: 548px;
-  zoom: 1;
-  -moz-box-sizing: border-box;
-  -webkit-box-sizing: border-box;
-  -ms-box-sizing: border-box;
-  box-sizing: border-box;
-  display: inline;
+/*****
+ * Right / Entries Pane 
+ ***** */
+/* line 68, ../templ/sass/landing.sass */
+#entries, #entry, #entry-part {
   float: left;
-  position: relative;
-  margin-right: 0.5px;
-  margin-left: 0.5px;
-  -moz-box-flex: 5;
-  -webkit-box-flex: 5;
-  -ms-box-flex: 5;
-  box-flex: 5;
-  position: relative;
-}
-/* line 10, ../../../../.rvm/gems/ruby-1.9.2-p290/gems/grid-coordinates-1.2.0/stylesheets/modules/_bulletproof-clearfix.sass */
-#right-col:before, #right-col:after {
-  content: ".";
-  display: block;
-  overflow: hidden;
-  visibility: hidden;
-  font-size: 0;
-  line-height: 0;
-  width: 0;
-  height: 0;
-}
-/* line 19, ../../../../.rvm/gems/ruby-1.9.2-p290/gems/grid-coordinates-1.2.0/stylesheets/modules/_bulletproof-clearfix.sass */
-#right-col:after {
-  clear: both;
 }
