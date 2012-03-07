@@ -46,6 +46,7 @@ require( ['bkeeping/bkeeping', 'bkeeping/bindings']
     accountsView = new views.AccountsView( { collection: accounts } )
     accountView = new views.AccountView( { el: '#account' } )
     entriesView = new views.EntriesView( { collection: entries } )
+    entryView = new views.EntryView( { el: '#entry' } )
     
     
     ###
@@ -67,14 +68,13 @@ require( ['bkeeping/bkeeping', 'bkeeping/bindings']
           )
       )
     )
-    
     $('#account').load('/include/account.html', () ->
       
       # Initialize horizontal / serial scrolling 
       $('#left-col').serialScroll({ target: '#left-wrapper', items: '#accounts , #account', duration: 500, axis: 'x', force: true })
     )
     
-    $('#right-col').load("/include/entries.html", () ->
+    $('#entries').load("/include/entries.html", () ->
       entries.fetchS(
         success: () ->
           
@@ -84,10 +84,15 @@ require( ['bkeeping/bkeeping', 'bkeeping/bindings']
               .find('.editentry')
               .unbind('click')
               .bind(  'click',
-                      { entries: entries, entriesView: entriesView, esm: esm },
+                      { entries: entries, entriesView: entriesView, entryView: entryView, esm: esm },
                       _.bind(esm.EsE, esm))  # trigger the transition when edit clicked
           )
       )
+    )
+    $('#entry').load('/include/entry.html', () ->
+      
+      # Initialize horizontal / serial scrolling 
+      $('#right-col').serialScroll({ target: '#right-wrapper', items: '#entries , #entry, #entry-part', duration: 500, axis: 'x', force: true })
     )
     
     ###

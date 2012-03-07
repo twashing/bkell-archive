@@ -6,7 +6,7 @@
     }
   });
   require(['bkeeping/bkeeping', 'bkeeping/bindings'], function(bkeeping, bindings) {
-    var accountView, accounts, accountsView, asm, entries, entriesView, esm, models, views;
+    var accountView, accounts, accountsView, asm, entries, entriesView, entryView, esm, models, views;
     console.log("landing LOADED / bkeeping[" + bkeeping.models + "]");
     /*
         # LIB imports 
@@ -35,6 +35,9 @@
     entriesView = new views.EntriesView({
       collection: entries
     });
+    entryView = new views.EntryView({
+      el: '#entry'
+    });
     /*
         # Load the actual pages
         */
@@ -61,17 +64,27 @@
         force: true
       });
     });
-    $('#right-col').load("/include/entries.html", function() {
+    $('#entries').load("/include/entries.html", function() {
       return entries.fetchS({
         success: function() {
           return _.each(entriesView['entryRows'], function(ech) {
             return ech.el.find('.editentry').unbind('click').bind('click', {
               entries: entries,
               entriesView: entriesView,
+              entryView: entryView,
               esm: esm
             }, _.bind(esm.EsE, esm));
           });
         }
+      });
+    });
+    $('#entry').load('/include/entry.html', function() {
+      return $('#right-col').serialScroll({
+        target: '#right-wrapper',
+        items: '#entries , #entry, #entry-part',
+        duration: 500,
+        axis: 'x',
+        force: true
       });
     });
     /*

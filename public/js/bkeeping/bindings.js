@@ -97,7 +97,18 @@
         ],
         callbacks: {
           onbeforeEsE: function(event, from, to, args) {
-            return console.log('START Transition from Es->E');
+            var entry;
+            console.log('START Transition from Es->E');
+            entry = args.data.entries.get(args.target.dataset['eid']);
+            _.extend(entry, Backbone.Events);
+            entry.bind('change', args.data.entryView.render, {
+              model: entry,
+              view: args.data.entryView
+            });
+            entry.trigger('change');
+            return $('#right-wrapper').scrollTo($('#entry'), 500, {
+              axis: 'x'
+            });
           },
           onafterEsE: function(event, from, to, args) {
             return console.log('END Transition from Es->E');

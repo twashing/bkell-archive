@@ -9,7 +9,6 @@
     <![endif]-->
     <link href='/css/common.css' media='screen' rel='stylesheet' type='text/css' />
     <link href='/css/landing.css' media='screen' rel='stylesheet' type='text/css' />
-    <!-- %script( src="/js/lib/require.js" ) -->
     <script data-main='js/bkeeping/landing' src='/js/lib/require.js'></script>
     <!-- %script( src="/js/lib/require.js" data-main="test/run_tests" ) -->
     <script src='/js/lib/jquery-1.6.3.js'></script>
@@ -55,10 +54,13 @@
           </div>
           <div id='left-toggler'></div>
         </div>
-        <div class='debug' id='right-col'>
-          <div id='right-content'>
-            <div id='entries'></div>
-            <div id='entry'></div>
+        <div id='right-col'>
+          <div id='right-wrapper'>
+            <div id='right-content'>
+              <div id='entries'></div>
+              <div id='entry'></div>
+              <div id='entry-part'></div>
+            </div>
           </div>
         </div>
       </div>

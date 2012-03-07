@@ -100,10 +100,16 @@ define([], () ->
                                   console.log('START Transition from Es->E')
                                   
                                   # 1. create / edit an entry 
+                                  entry = args.data.entries.get( args.target.dataset['eid'] )
                                   
                                   # 2. load the UI 
+                                  _.extend(entry, Backbone.Events)
+                                  entry.bind('change', args.data.entryView.render, { model: entry, view: args.data.entryView })  # bind Backbone event
+                                  entry.trigger('change')   # this should trigger the entryView to render
                                   
                                   # 3. scroll to the relevant pane 
+                                  $('#right-wrapper').scrollTo($('#entry'), 500, { axis:'x' })
+                                  
                                   
                                 onafterEsE: (event, from, to, args) ->
                                   console.log('END Transition from Es->E')

@@ -10,7 +10,6 @@
     %link{ :href => "/css/common.css", :media => "screen", :rel => "stylesheet", :type => "text/css" }
     %link{ :href => "/css/landing.css", :media => "screen", :rel => "stylesheet", :type => "text/css" }
     
-    /%script( src="/js/lib/require.js" )
     %script( src="/js/lib/require.js" data-main="js/bkeeping/landing" )
     /%script( src="/js/lib/require.js" data-main="test/run_tests" )
     
@@ -50,10 +49,12 @@
               #accounts
               #account
           #left-toggler
-        #right-col.debug 
-          #right-content
-            #entries
-            #entry
+        #right-col
+          #right-wrapper
+            #right-content
+              #entries
+              #entry
+              #entry-part
     #footer 
       Footer
 

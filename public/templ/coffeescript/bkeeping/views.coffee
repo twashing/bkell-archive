@@ -34,8 +34,7 @@ define([], () ->
     entriesDirective: {
         "tbody tr" : {
           "each<-puredata" : {
-            "a.editentry@href" : (arg) ->
-              return "/entries/entry/"+ arg.each.item.id
+            "a.editentry@data-eid" : "each.id"
             "td.date" : "each.date"
             "td.name" : "each.id"
             "td.balance" : ""
@@ -149,7 +148,7 @@ define([], () ->
   )
   EntriesView = Backbone.View.extend(
     
-    el: $('#right-col')
+    el: $('#entries')
     initialize : (options) ->
       this.collection = options.collection
       this.collection.bind('reset', _.bind(this.render, this))
