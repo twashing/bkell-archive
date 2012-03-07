@@ -64,13 +64,12 @@
     $('#right-col').load("/include/entries.html", function() {
       return entries.fetchS({
         success: function() {
-          return _.each(entriesView['accountRows'], function(ech) {
+          return _.each(entriesView['entryRows'], function(ech) {
             return ech.el.find('.editentry').unbind('click').bind('click', {
               entries: entries,
               entriesView: entriesView,
-              entryView: entryView,
               esm: esm
-            }, _.bind(esm.AsA, esm));
+            }, _.bind(esm.EsE, esm));
           });
         }
       });

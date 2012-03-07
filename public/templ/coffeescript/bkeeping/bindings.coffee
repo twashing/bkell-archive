@@ -99,14 +99,30 @@ define([], () ->
                                 onbeforeEsE: (event, from, to, args) ->
                                   console.log('START Transition from Es->E')
                                   
+                                  # 1. create / edit an entry 
+                                  
+                                  # 2. load the UI 
+                                  
+                                  # 3. scroll to the relevant pane 
+                                  
                                 onafterEsE: (event, from, to, args) ->
                                   console.log('END Transition from Es->E')
+                                  
+                                  # bind actions to 'Ok' and 'Cancel' buttons
                                   
                                 onbeforeEEpart: (event, from, to, args) ->
                                   console.log('START Transition from E->Epart')
                                   
+                                  # 1. create / edit an entry part
+                                  
+                                  # 2. load the UI 
+                                  
+                                  # 3. scroll to the relevant pane 
+                                  
                                 onafterEEpart: (event, from, to, args) ->
                                   console.log('END Transition from E->Epart')
+                                  
+                                  # bind actions to 'Ok' and 'Cancel' buttons
                                   
                                 # STATE callbacks from EntryPart, and from Entry
                                 onleaveEpart: (event, from, to, args) ->

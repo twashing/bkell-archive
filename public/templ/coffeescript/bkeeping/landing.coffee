@@ -79,13 +79,13 @@ require( ['bkeeping/bkeeping', 'bkeeping/bindings']
         success: () ->
           
           # bind account row to the Accounts State Machine
-          _.each(entriesView['accountRows'], (ech) ->
+          _.each(entriesView['entryRows'], (ech) ->
             ech.el
               .find('.editentry')
               .unbind('click')
               .bind(  'click',
-                      { entries: entries, entriesView: entriesView, entryView: entryView, esm: esm },
-                      _.bind(esm.AsA, esm))  # trigger the transition when edit clicked
+                      { entries: entries, entriesView: entriesView, esm: esm },
+                      _.bind(esm.EsE, esm))  # trigger the transition when edit clicked
           )
       )
     )
