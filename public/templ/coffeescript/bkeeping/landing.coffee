@@ -50,7 +50,7 @@ require( ['bkeeping/bkeeping', 'bkeeping/bindings']
     
     
     ###
-    # Load the actual pages
+    # Load Account pages
     ###
     $('#accounts').load("/include/accounts.html", () ->
       
@@ -67,13 +67,16 @@ require( ['bkeeping/bkeeping', 'bkeeping/bindings']
                       _.bind(asm.AsA, asm))  # trigger the transition when edit clicked
           )
       )
-    )
-    $('#account').load('/include/account.html', () ->
       
       # Initialize horizontal / serial scrolling 
       $('#left-col').serialScroll({ target: '#left-wrapper', items: '#accounts , #account', duration: 500, axis: 'x', force: true })
     )
+    $('#account').load('/include/account.html')
     
+    
+    ###
+    # Load Entry pages
+    ###
     $('#entries').load("/include/entries.html", () ->
       entries.fetchS(
         success: () ->
@@ -88,12 +91,12 @@ require( ['bkeeping/bkeeping', 'bkeeping/bindings']
                       _.bind(esm.EsE, esm))  # trigger the transition when edit clicked
           )
       )
-    )
-    $('#entry').load('/include/entry.html', () ->
       
       # Initialize horizontal / serial scrolling 
       $('#right-col').serialScroll({ target: '#right-wrapper', items: '#entries , #entry, #entry-part', duration: 500, axis: 'x', force: true })
     )
+    $('#entry').load('/include/entry.html')
+    $('#entry-part').load('/include/entryPart.html')
     
     ###
     # Load Footer

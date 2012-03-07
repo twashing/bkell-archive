@@ -39,10 +39,10 @@
       el: '#entry'
     });
     /*
-        # Load the actual pages
+        # Load Account pages
         */
     $('#accounts').load("/include/accounts.html", function() {
-      return accounts.fetchS({
+      accounts.fetchS({
         success: function() {
           return _.each(accountsView['accountRows'], function(ech) {
             return ech.el.find('.editaccount').unbind('click').bind('click', {
@@ -54,8 +54,6 @@
           });
         }
       });
-    });
-    $('#account').load('/include/account.html', function() {
       return $('#left-col').serialScroll({
         target: '#left-wrapper',
         items: '#accounts , #account',
@@ -64,8 +62,12 @@
         force: true
       });
     });
+    $('#account').load('/include/account.html');
+    /*
+        # Load Entry pages
+        */
     $('#entries').load("/include/entries.html", function() {
-      return entries.fetchS({
+      entries.fetchS({
         success: function() {
           return _.each(entriesView['entryRows'], function(ech) {
             return ech.el.find('.editentry').unbind('click').bind('click', {
@@ -77,8 +79,6 @@
           });
         }
       });
-    });
-    $('#entry').load('/include/entry.html', function() {
       return $('#right-col').serialScroll({
         target: '#right-wrapper',
         items: '#entries , #entry, #entry-part',
@@ -87,6 +87,8 @@
         force: true
       });
     });
+    $('#entry').load('/include/entry.html');
+    $('#entry-part').load('/include/entryPart.html');
     /*
         # Load Footer
         */

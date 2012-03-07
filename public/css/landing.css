@@ -456,4 +456,5 @@
 /* line 68, ../templ/sass/landing.sass */
 #entries, #entry, #entry-part {
   float: left;
+  width: 100%;
 }
