@@ -22,6 +22,7 @@ $grid-gutter-width: 1px
  ******/
 #left-col
   position: relative
+  float: left
   width: $left-content-width + $left-content-margin + $left-toggler-width
   background-image: url('/images/paper_2.png')
 
@@ -54,20 +55,25 @@ $grid-gutter-width: 1px
  * Right / Entries Pane 
  ******/
 #right-col
-  //position: relative
-  //overflow: hidden
+  position: relative
+  float: left
+  width: 100% 
+  border: dashed 1px #000
 
 #right-wrapper
-  //overflow: hidden
-  //position: relative
+  float: left
+  overflow: hidden
+  position: relative
+  width: 85%
+  height: 100%
+  border: solid 3px #000
 
 #right-content
-  //white-space: nowrap
-  //position: absolute
+  white-space: nowrap
+  position: absolute
+  border: dotted 1px blue
 
 #entries , #entry, #entry-part
   float: left
-  width: 100%
-  //margin: $left-content-margin
-  //padding: 0px
+  width: 800px
 

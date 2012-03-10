@@ -414,11 +414,12 @@
 /* line 23, ../templ/sass/landing.sass */
 #left-col {
   position: relative;
+  float: left;
   width: 308;
   background-image: url("/images/paper_2.png");
 }
 
-/* line 28, ../templ/sass/landing.sass */
+/* line 29, ../templ/sass/landing.sass */
 #left-wrapper {
   float: left;
   width: 288;
@@ -427,13 +428,13 @@
   position: relative;
 }
 
-/* line 35, ../templ/sass/landing.sass */
+/* line 36, ../templ/sass/landing.sass */
 #left-content {
   white-space: nowrap;
   position: absolute;
 }
 
-/* line 39, ../templ/sass/landing.sass */
+/* line 40, ../templ/sass/landing.sass */
 #accounts, #account {
   width: 280;
   float: left;
@@ -441,7 +442,7 @@
   padding: 0px;
 }
 
-/* line 45, ../templ/sass/landing.sass */
+/* line 46, ../templ/sass/landing.sass */
 #left-toggler {
   width: 20;
   height: 20px;
@@ -453,8 +454,33 @@
 /*****
  * Right / Entries Pane 
  ***** */
-/* line 68, ../templ/sass/landing.sass */
-#entries, #entry, #entry-part {
+/* line 57, ../templ/sass/landing.sass */
+#right-col {
+  position: relative;
   float: left;
   width: 100%;
+  border: dashed 1px black;
+}
+
+/* line 63, ../templ/sass/landing.sass */
+#right-wrapper {
+  float: left;
+  overflow: hidden;
+  position: relative;
+  width: 85%;
+  height: 100%;
+  border: solid 3px black;
+}
+
+/* line 71, ../templ/sass/landing.sass */
+#right-content {
+  white-space: nowrap;
+  position: absolute;
+  border: dotted 1px blue;
+}
+
+/* line 76, ../templ/sass/landing.sass */
+#entries, #entry, #entry-part {
+  float: left;
+  width: 800px;
 }
