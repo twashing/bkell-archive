@@ -454,10 +454,11 @@
 #right-col {
   position: relative;
   float: left;
-  width: 85%;
+  width: 100%;
   border: dashed 1px black;
+  right: 310px;
 }
-/* line 63, ../templ/sass/landing.sass */
+/* line 64, ../templ/sass/landing.sass */
 #right-col #right-wrapper {
   float: left;
   overflow: hidden;
@@ -465,14 +466,15 @@
   width: 100%;
   height: 100%;
   border: solid 3px black;
+  margin-left: 310px;
 }
-/* line 71, ../templ/sass/landing.sass */
+/* line 73, ../templ/sass/landing.sass */
 #right-col #right-wrapper #right-content {
   white-space: nowrap;
   position: absolute;
   border: dotted 1px blue;
 }
-/* line 76, ../templ/sass/landing.sass */
+/* line 78, ../templ/sass/landing.sass */
 #right-col #right-wrapper #right-content #entries, #right-col #right-wrapper #right-content #entry, #right-col #right-wrapper #right-content #entry-part {
   float: left;
   width: 800px;
