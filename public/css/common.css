@@ -60,11 +60,12 @@ html, body {
 #header {
   background-color: #999999;
   height: 70px;
+  z-index: 20;
   position: relative;
   z-index: 10;
   box-shadow: 0 4px 6px #554433;
 }
-/* line 39, ../templ/sass/common.sass */
+/* line 40, ../templ/sass/common.sass */
 #header #title-wrapper #title {
   position: relative;
   float: left;
@@ -72,30 +73,30 @@ html, body {
   font-weight: bold;
   margin: 0 10;
 }
-/* line 46, ../templ/sass/common.sass */
+/* line 47, ../templ/sass/common.sass */
 #header #title-wrapper #subtitle {
   top: 20px;
   float: left;
   margin: 26 10 0 10;
   float: left;
 }
-/* line 52, ../templ/sass/common.sass */
+/* line 53, ../templ/sass/common.sass */
 #header #title-wrapper #subtitle #subtitle-default {
   float: left;
   color: #666666;
 }
-/* line 55, ../templ/sass/common.sass */
+/* line 56, ../templ/sass/common.sass */
 #header #title-wrapper #subtitle #subtitle-black {
   float: left;
   font-weight: bold;
 }
-/* line 60, ../templ/sass/common.sass */
+/* line 61, ../templ/sass/common.sass */
 #header #title-wrapper #account-chooser {
   float: right;
   margin: 10 0 0 0;
 }
 
-/* line 65, ../templ/sass/common.sass */
+/* line 66, ../templ/sass/common.sass */
 #footer {
   background-color: #999999;
   clear: both;
@@ -103,7 +104,7 @@ html, body {
   height: 150px;
 }
 
-/* line 71, ../templ/sass/common.sass */
+/* line 72, ../templ/sass/common.sass */
 .container {
   zoom: 1;
   margin-right: auto;
@@ -130,7 +131,7 @@ html, body {
   clear: both;
 }
 
-/* line 78, ../templ/sass/common.sass */
+/* line 79, ../templ/sass/common.sass */
 #main-content {
   display: -moz-box;
   display: -webkit-box;
@@ -144,7 +145,7 @@ html, body {
   background-image: url("/images/paper_2.png");
 }
 
-/* line 83, ../templ/sass/common.sass */
+/* line 84, ../templ/sass/common.sass */
 #legal {
   color: #666666;
 }
