@@ -94,9 +94,17 @@ require( ['bkeeping/bkeeping', 'bkeeping/bindings']
       
       # Initialize horizontal / serial scrolling 
       $('#right-col').serialScroll({ target: '#right-wrapper', items: '#entries , #entry, #entry-part', duration: 500, axis: 'x', force: true })
+      
+
+      # set adjustible entry panes > parent width, minus the left pane
+      # ... hoping 2 other panes are loaded at this point
+      adjustEntryPanes()
     )
     $('#entry').load('/include/entry.html')
     $('#entry-part').load('/include/entryPart.html')
+    
+    
+    
     
     ###
     # Load Footer

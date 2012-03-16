@@ -79,13 +79,14 @@
           });
         }
       });
-      return $('#right-col').serialScroll({
+      $('#right-col').serialScroll({
         target: '#right-wrapper',
         items: '#entries , #entry, #entry-part',
         duration: 500,
         axis: 'x',
         force: true
       });
+      return adjustEntryPanes();
     });
     $('#entry').load('/include/entry.html');
     $('#entry-part').load('/include/entryPart.html');

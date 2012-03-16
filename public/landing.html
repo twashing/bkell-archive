@@ -26,7 +26,20 @@
       //<![CDATA[
         $(document).ready(function() { 
           
-          //$.getScript('/js/bkeeping/landing.js');
+          /***
+           * Adjust Entry panes based on right width
+           ***/
+          adjustEntryPanes = function() { 
+            
+            $('#entries, #entry, #entry-part')
+              .css('width', ( $('#right-wrapper').width() - $('#left-col').width() ) + "px");
+          };
+        
+          /*** 
+           * Bootstrap pane sizes
+           ***/
+          $(window).resize(function() { adjustEntryPanes(); });
+          
         })
       //]]>
     </script>
