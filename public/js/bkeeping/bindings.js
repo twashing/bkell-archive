@@ -96,6 +96,9 @@
           }
         ],
         callbacks: {
+          /* 
+          # PART 1
+          */
           onbeforeEsE: function(event, from, to, args) {
             var entry;
             console.log('START Transition from Es->E');
@@ -111,19 +114,46 @@
             });
           },
           onafterEsE: function(event, from, to, args) {
-            return console.log('END Transition from Es->E');
+            console.log('END Transition from Es->E');
+            $('#entry-ok').unbind('click').bind('click', {
+              esm: args.data.esm
+            }, _.bind(args.data.esm.EEs, args.data.esm));
+            return $('#entry-cancel').unbind('click').bind('click', {
+              cancel: true,
+              esm: args.data.esm
+            }, _.bind(args.data.esm.EEs, args.data.esm));
           },
+          /* 
+          # PART 2
+          */
           onbeforeEEpart: function(event, from, to, args) {
             return console.log('START Transition from E->Epart');
           },
           onafterEEpart: function(event, from, to, args) {
             return console.log('END Transition from E->Epart');
           },
+          /*
+                                          # STATE callbacks from EntryPart, and from Entry
+                                          */
           onleaveEpart: function(event, from, to, args) {
             return console.log('START Transition from Epart->E');
           },
           onleaveE: function(event, from, to, args) {
-            return console.log('START Transition from E->Es');
+            console.log('START Transition from E->Es');
+            if (args.data.cancel) {
+              console.log("Entriess cancel");
+              $('#right-wrapper').scrollTo($('#entries'), 500, {
+                axis: 'x'
+              });
+              args.data.asm.transition();
+            } else {
+              console.log("Entriess ok");
+              $('#right-wrapper').scrollTo($('#entries'), 500, {
+                axis: 'x'
+              });
+              args.data.asm.transition();
+            }
+            return StateMachine.ASYNC;
           }
         }
       })

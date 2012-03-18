@@ -96,6 +96,10 @@ define([], () ->
                               callbacks:
                                 
                                 # EVENT callbacks from Entries, and from Entry
+                                
+                                ### 
+                                # PART 1
+                                ###
                                 onbeforeEsE: (event, from, to, args) ->
                                   console.log('START Transition from Es->E')
                                   
@@ -115,7 +119,24 @@ define([], () ->
                                   console.log('END Transition from Es->E')
                                   
                                   # bind actions to 'Ok' and 'Cancel' buttons
+                                  # bind actions to 'Ok' and 'Cancel' buttons
+                                  $('#entry-ok')
+                                    .unbind('click')
+                                    .bind('click',
+                                          #{ accounts: args.data.accounts, account: account, accountsView: args.data.accountsView, accountView: args.data.accountView, asm: args.data.asm },
+                                          { esm: args.data.esm },
+                                          _.bind(args.data.esm.EEs, args.data.esm)) # transition back to Accounts pane
+                                   
+                                  $('#entry-cancel')
+                                    .unbind('click')
+                                    .bind('click',
+                                          { cancel: true, esm: args.data.esm },
+                                          _.bind(args.data.esm.EEs, args.data.esm)) # transition back to Accounts pane
+                                
                                   
+                                ### 
+                                # PART 2
+                                ###
                                 onbeforeEEpart: (event, from, to, args) ->
                                   console.log('START Transition from E->Epart')
                                   
@@ -130,13 +151,36 @@ define([], () ->
                                   
                                   # bind actions to 'Ok' and 'Cancel' buttons
                                   
+
+                                ###
                                 # STATE callbacks from EntryPart, and from Entry
+                                ###
                                 onleaveEpart: (event, from, to, args) ->
                                   console.log('START Transition from Epart->E')
                                   
                                 onleaveE: (event, from, to, args) ->
+                                  
                                   console.log('START Transition from E->Es')
                                   
+                                  if(args.data.cancel)
+                                    
+                                    console.log("Entriess cancel")
+                                    
+                                    # 1. scroll to Accounts pane 
+                                    $('#right-wrapper').scrollTo($('#entries'), 500, { axis:'x' })
+                                    
+                                    args.data.asm.transition() # now fire off the transition 
+                                     
+                                  else
+                                    
+                                    console.log("Entriess ok")
+                                    
+                                    # 1. scroll to Accounts pane 
+                                    $('#right-wrapper').scrollTo($('#entries'), 500, { axis:'x' })
+                                    
+                                    args.data.asm.transition() # now fire off the transition 
+                                     
+                                  return StateMachine.ASYNC; # tell StateMachine to defer next state until we call transition (in fadeOut callback above)
                             }
   )
 
