@@ -133,7 +133,7 @@
             return console.log('END Transition from E->Epart');
           },
           /*
-                                          # STATE callbacks from EntryPart, and from Entry
+                                          # BACK > STATE callbacks from EntryPart, and from Entry
                                           */
           onleaveEpart: function(event, from, to, args) {
             return console.log('START Transition from Epart->E');
@@ -145,13 +145,13 @@
               $('#right-wrapper').scrollTo($('#entries'), 500, {
                 axis: 'x'
               });
-              args.data.asm.transition();
+              args.data.esm.transition();
             } else {
               console.log("Entriess ok");
               $('#right-wrapper').scrollTo($('#entries'), 500, {
                 axis: 'x'
               });
-              args.data.asm.transition();
+              args.data.esm.transition();
             }
             return StateMachine.ASYNC;
           }

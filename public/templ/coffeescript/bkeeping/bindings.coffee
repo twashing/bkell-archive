@@ -151,9 +151,9 @@ define([], () ->
                                   
                                   # bind actions to 'Ok' and 'Cancel' buttons
                                   
-
+                                
                                 ###
-                                # STATE callbacks from EntryPart, and from Entry
+                                # BACK > STATE callbacks from EntryPart, and from Entry
                                 ###
                                 onleaveEpart: (event, from, to, args) ->
                                   console.log('START Transition from Epart->E')
@@ -169,7 +169,7 @@ define([], () ->
                                     # 1. scroll to Accounts pane 
                                     $('#right-wrapper').scrollTo($('#entries'), 500, { axis:'x' })
                                     
-                                    args.data.asm.transition() # now fire off the transition 
+                                    args.data.esm.transition() # now fire off the transition 
                                      
                                   else
                                     
@@ -178,7 +178,7 @@ define([], () ->
                                     # 1. scroll to Accounts pane 
                                     $('#right-wrapper').scrollTo($('#entries'), 500, { axis:'x' })
                                     
-                                    args.data.asm.transition() # now fire off the transition 
+                                    args.data.esm.transition() # now fire off the transition 
                                      
                                   return StateMachine.ASYNC; # tell StateMachine to defer next state until we call transition (in fadeOut callback above)
                             }
