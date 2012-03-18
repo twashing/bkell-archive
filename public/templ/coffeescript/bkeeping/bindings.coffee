@@ -116,9 +116,17 @@ define([], () ->
                                   
                                   
                                 onafterEsE: (event, from, to, args) ->
+                                  
                                   console.log('END Transition from Es->E')
                                   
-                                  # bind actions to 'Ok' and 'Cancel' buttons
+                                  # i. handle edit CLICKs and ii. bind entry row to the Entries State Machine
+                                  $(args.data.entryView.el)
+                                    .find('.editentrypart')
+                                    .unbind('click')
+                                    .bind(  'click',
+                                            { entries: args.data.entries, entriesView: args.data.entriesView, entryView: args.data.entryView, esm: args.data.esm },
+                                            _.bind(args.data.esm.EEpart, args.data.esm))  # trigger the transition when edit clicked
+                                  
                                   # bind actions to 'Ok' and 'Cancel' buttons
                                   $('#entry-ok')
                                     .unbind('click')
@@ -145,6 +153,7 @@ define([], () ->
                                   # 2. load the UI 
                                   
                                   # 3. scroll to the relevant pane 
+                                  $('#right-wrapper').scrollTo($('#entry-part'), 500, { axis:'x' })
                                   
                                 onafterEEpart: (event, from, to, args) ->
                                   console.log('END Transition from E->Epart')
@@ -171,7 +180,7 @@ define([], () ->
                                     
                                     args.data.esm.transition() # now fire off the transition 
                                      
-                                  else
+                                  else if(args.data.ok)
                                     
                                     console.log("Entriess ok")
                                     

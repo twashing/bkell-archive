@@ -13,8 +13,7 @@ define([], () ->
   # Pure Template DIRECTIVES
   ###
   pureDirectives =
-    accountsDirective:
-      {
+    accountsDirective: {
         "tbody tr" : {
           "each<-puredata" : {
             "a.editaccount@data-aid" : "each.id"
@@ -24,8 +23,7 @@ define([], () ->
           }
         }
       }
-    accountDirective:
-      {
+    accountDirective: {
         "#account-name@value" : "id"
         #"#account-type option@selected": (a) ->
         #  return ( (a.context.type == '.') ? 'selected' : '' )

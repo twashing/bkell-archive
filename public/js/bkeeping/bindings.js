@@ -115,6 +115,12 @@
           },
           onafterEsE: function(event, from, to, args) {
             console.log('END Transition from Es->E');
+            $(args.data.entryView.el).find('.editentrypart').unbind('click').bind('click', {
+              entries: args.data.entries,
+              entriesView: args.data.entriesView,
+              entryView: args.data.entryView,
+              esm: args.data.esm
+            }, _.bind(args.data.esm.EEpart, args.data.esm));
             $('#entry-ok').unbind('click').bind('click', {
               esm: args.data.esm
             }, _.bind(args.data.esm.EEs, args.data.esm));
@@ -127,7 +133,10 @@
           # PART 2
           */
           onbeforeEEpart: function(event, from, to, args) {
-            return console.log('START Transition from E->Epart');
+            console.log('START Transition from E->Epart');
+            return $('#right-wrapper').scrollTo($('#entry-part'), 500, {
+              axis: 'x'
+            });
           },
           onafterEEpart: function(event, from, to, args) {
             return console.log('END Transition from E->Epart');
@@ -146,7 +155,7 @@
                 axis: 'x'
               });
               args.data.esm.transition();
-            } else {
+            } else if (args.data.ok) {
               console.log("Entriess ok");
               $('#right-wrapper').scrollTo($('#entries'), 500, {
                 axis: 'x'
