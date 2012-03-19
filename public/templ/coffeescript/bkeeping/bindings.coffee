@@ -116,7 +116,6 @@ define([], () ->
                                   
                                   
                                 onafterEsE: (event, from, to, args) ->
-                                  
                                   console.log('END Transition from Es->E')
                                   
                                   # i. handle edit CLICKs and ii. bind entry row to the Entries State Machine

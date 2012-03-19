@@ -30,6 +30,36 @@
             "td.balance": ""
           }
         }
+      },
+      entryDirective: {
+        "tbody tr": {
+          "each<-puredata": {
+            "td.debitAccount": function(arg) {
+              return pureDirectives.determineAccountDtCt(this, "debit");
+            },
+            "td.debitAmount": function(arg) {
+              return pureDirectives.determineAmountDtCt(this, "debit");
+            },
+            "td.creditAccount": function(arg) {
+              return pureDirectives.determineAccountDtCt(this, "credit");
+            },
+            "td.creditAmount": function(arg) {
+              return pureDirectives.determineAmountDtCt(this, "credit");
+            }
+          }
+        }
+      },
+      determineCommon: function(arg, weight, attribute) {
+        if (arg["tag"] === weight) {
+          return arg[attribute];
+        }
+        return "&nbsp;";
+      },
+      determineAccountDtCt: function(arg, weight) {
+        return pureDirectives.determineCommon(arg, weight, "accountid");
+      },
+      determineAmountDtCt: function(arg, weight) {
+        return pureDirectives.determineCommon(arg, weight, "amount");
       }
     };
     /*
@@ -47,7 +77,18 @@
         return $("#account-counterWeight > option[value='" + (this.model.get('counterWeight')) + "']").attr('selected', 'selected');
       }
     });
-    EntryView = Backbone.View.extend();
+    EntryView = Backbone.View.extend({
+      initialize: function(options) {
+        console.log('EntryView initialize CALLED');
+        return this.el = $(options.el);
+      },
+      render: function(options) {
+        console.log('EntryView render CALLED');
+        return $(".entry_container").render({
+          puredata: this.model.get('content')
+        }, pureDirectives.entryDirective);
+      }
+    });
     /*
       # Row VIEWs
       */

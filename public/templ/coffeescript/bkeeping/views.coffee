@@ -39,6 +39,22 @@ define([], () ->
           }
         }
       }
+    entryDirective: {
+      "tbody tr" : {
+        "each<-puredata" : {
+          "td.debitAccount" : (arg) -> return pureDirectives.determineAccountDtCt(this, "debit")
+          "td.debitAmount" : (arg) -> return pureDirectives.determineAmountDtCt(this, "debit")
+          "td.creditAccount" : (arg) -> return pureDirectives.determineAccountDtCt(this, "credit")
+          "td.creditAmount" : (arg) -> return pureDirectives.determineAmountDtCt(this, "credit")
+        }
+      }
+    }
+    determineCommon : (arg, weight, attribute) ->
+      if(arg["tag"] == weight)
+        return arg[attribute]
+      return "&nbsp;"
+    determineAccountDtCt : (arg, weight) -> return pureDirectives.determineCommon(arg, weight, "accountid")
+    determineAmountDtCt : (arg, weight) -> return pureDirectives.determineCommon(arg, weight, "amount")
   
   
   ###
@@ -52,7 +68,7 @@ define([], () ->
     
     render : (options) ->
       console.log('AccountView render CALLED')
-
+      
       # render pane with PURE
       #this.view.el.render( this.model.toJSON(), pureDirectives.accountDirective )
       
@@ -61,7 +77,18 @@ define([], () ->
       $("#account-type > option[value='#{ this.model.get('type') }']").attr('selected', 'selected')
       $("#account-counterWeight > option[value='#{ this.model.get('counterWeight') }']").attr('selected', 'selected')
   })
-  EntryView = Backbone.View.extend()
+  EntryView = Backbone.View.extend({
+    
+    initialize : (options) ->
+      console.log('EntryView initialize CALLED')
+      this.el = $(options.el)
+    
+    render : (options) ->
+      console.log('EntryView render CALLED')
+      
+      $(".entry_container").render( { puredata : this.model.get('content') } , pureDirectives.entryDirective )
+      
+  })
   
   
   ###
