@@ -1,12 +1,9 @@
 (function() {
   define([], function() {
     /*
-      # Grab the Backbone object 
-      */
-    /*
       # Pure Template DIRECTIVES
       */
-    var AccountRow, AccountView, AccountsView, EntriesView, EntryRow, EntryView, pureDirectives;
+    var AccountRow, AccountView, AccountsView, EntriesView, EntryPartView, EntryRow, EntryView, pureDirectives;
     pureDirectives = {
       accountsDirective: {
         "tbody tr": {
@@ -34,6 +31,8 @@
       entryDirective: {
         "tbody tr": {
           "each<-puredata": {
+            "a.editentrypart@data-eid": "each.id",
+            "a.editentrypart@data-type": "each.tag",
             "td.debitAccount": function(arg) {
               return pureDirectives.determineAccountDtCt(this, "debit");
             },
@@ -60,6 +59,14 @@
       },
       determineAmountDtCt: function(arg, weight) {
         return pureDirectives.determineCommon(arg, weight, "amount");
+      },
+      entryPartDirective: {
+        "select#entry-part-account option": {
+          "each<-puredata": {
+            ".@value": "each.id",
+            ".": "each.name"
+          }
+        }
       }
     };
     /*
@@ -87,6 +94,21 @@
         return $(".entry_container").render({
           puredata: this.model.get('content')
         }, pureDirectives.entryDirective);
+      }
+    });
+    EntryPartView = Backbone.View.extend({
+      initialize: function(options) {
+        console.log('EntryPartView initialize CALLED');
+        return this.el = $(options.el);
+      },
+      render: function(options) {
+        console.log('EntryPartView render CALLED');
+        $(".entryPart_container .entryPart_content").render({
+          puredata: this.accounts.toJSON()
+        }, pureDirectives.entryPartDirective);
+        $("#entry-part-amount").attr('value', this.model['amount']);
+        $("#entry-part-account > option[value='" + this.model['accountid'] + "']").attr('selected', 'selected');
+        return $("#entry-part-type > option[value='" + this.model['tag'] + "']").attr('selected', 'selected');
       }
     });
     /*
@@ -188,6 +210,7 @@
         */
       AccountView: AccountView,
       EntryView: EntryView,
+      EntryPartView: EntryPartView,
       AccountRow: AccountRow,
       EntryRow: EntryRow,
       AccountsView: AccountsView,

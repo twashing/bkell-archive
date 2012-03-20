@@ -123,7 +123,15 @@ define([], () ->
                                     .find('.editentrypart')
                                     .unbind('click')
                                     .bind(  'click',
-                                            { entries: args.data.entries, entriesView: args.data.entriesView, entryView: args.data.entryView, esm: args.data.esm },
+                                            {
+                                              entriesView: args.data.entriesView,
+                                              entryView: args.data.entryView,
+                                              entryPartView: args.data.entryPartView,
+                                              entries: args.data.entries,
+                                              accounts: args.data.accounts,
+                                              entry : args.data.entries.get( args.target.dataset['eid'] ),
+                                              esm: args.data.esm
+                                            },
                                             _.bind(args.data.esm.EEpart, args.data.esm))  # trigger the transition when edit clicked
                                   
                                   # bind actions to 'Ok' and 'Cancel' buttons
@@ -148,8 +156,14 @@ define([], () ->
                                   console.log('START Transition from E->Epart')
                                   
                                   # 1. create / edit an entry part
-                                  
                                   # 2. load the UI 
+                                  epart = _.find(args.data.entry.get('content'), (ech) -> return ech.id == args.target.dataset['eid'] )
+                                  _.extend(epart, Backbone.Events)
+                                  epart
+                                    .unbind('change')
+                                    .bind('change', args.data.entryPartView.render, { model: epart, view: args.data.entryPartView, accounts: args.data.accounts })  # bind Backbone event
+                                    .trigger('change')   # this should trigger the entryView to render
+                                  
                                   
                                   # 3. scroll to the relevant pane 
                                   $('#right-wrapper').scrollTo($('#entry-part'), 500, { axis:'x' })

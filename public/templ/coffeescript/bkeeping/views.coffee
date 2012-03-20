@@ -3,45 +3,40 @@ define([], () ->
   
   
   ###
-  # Grab the Backbone object 
-  ###
-  #Backbone = bb.Backbone
-  #_ = bb._
-  
-  
-  ###
   # Pure Template DIRECTIVES
   ###
   pureDirectives =
     accountsDirective: {
-        "tbody tr" : {
-          "each<-puredata" : {
-            "a.editaccount@data-aid" : "each.id"
-            "td.name" : "each.name"
-            "td.type" : "each.type"
-            "td.weight" : "each.counterWeight"
-          }
+      "tbody tr" : {
+        "each<-puredata" : {
+          "a.editaccount@data-aid" : "each.id"
+          "td.name" : "each.name"
+          "td.type" : "each.type"
+          "td.weight" : "each.counterWeight"
         }
       }
+    }
     accountDirective: {
-        "#account-name@value" : "id"
-        #"#account-type option@selected": (a) ->
-        #  return ( (a.context.type == '.') ? 'selected' : '' )
-        #"#account-counterWeight" : "id"
-      }
+      "#account-name@value" : "id"
+      #"#account-type option@selected": (a) ->
+      #  return ( (a.context.type == '.') ? 'selected' : '' )
+      #"#account-counterWeight" : "id"
+    }
     entriesDirective: {
-        "tbody tr" : {
-          "each<-puredata" : {
-            "a.editentry@data-eid" : "each.id"
-            "td.date" : "each.date"
-            "td.name" : "each.id"
-            "td.balance" : ""
-          }
+      "tbody tr" : {
+        "each<-puredata" : {
+          "a.editentry@data-eid" : "each.id"
+          "td.date" : "each.date"
+          "td.name" : "each.id"
+          "td.balance" : ""
         }
       }
+    }
     entryDirective: {
       "tbody tr" : {
         "each<-puredata" : {
+          "a.editentrypart@data-eid" : "each.id"
+          "a.editentrypart@data-type" : "each.tag"
           "td.debitAccount" : (arg) -> return pureDirectives.determineAccountDtCt(this, "debit")
           "td.debitAmount" : (arg) -> return pureDirectives.determineAmountDtCt(this, "debit")
           "td.creditAccount" : (arg) -> return pureDirectives.determineAccountDtCt(this, "credit")
@@ -55,6 +50,15 @@ define([], () ->
       return "&nbsp;"
     determineAccountDtCt : (arg, weight) -> return pureDirectives.determineCommon(arg, weight, "accountid")
     determineAmountDtCt : (arg, weight) -> return pureDirectives.determineCommon(arg, weight, "amount")
+    
+    entryPartDirective: {   # this is just meant to list out accounts, for now
+      "select#entry-part-account option" : {
+        "each<-puredata" : {
+          ".@value" : "each.id"
+          "." : "each.name"
+        }
+      }
+    }
   
   
   ###
@@ -89,7 +93,22 @@ define([], () ->
       $(".entry_container").render( { puredata : this.model.get('content') } , pureDirectives.entryDirective )
       
   })
-  
+  EntryPartView = Backbone.View.extend({
+    
+    initialize : (options) ->
+      console.log('EntryPartView initialize CALLED')
+      this.el = $(options.el)
+    
+    render : (options) ->
+      console.log('EntryPartView render CALLED')
+      
+      # render with PURE - just populate the accounts for now
+      $(".entryPart_container .entryPart_content").render( { puredata : this.accounts.toJSON() } , pureDirectives.entryPartDirective )
+      
+      $("#entry-part-amount").attr('value', this.model['amount'])
+      $("#entry-part-account > option[value='#{ this.model['accountid'] }']").attr('selected', 'selected')
+      $("#entry-part-type > option[value='#{ this.model['tag'] }']").attr('selected', 'selected')
+  })
   
   ###
   # Row VIEWs
@@ -206,6 +225,7 @@ define([], () ->
   ###
   AccountView : AccountView
   EntryView : EntryView
+  EntryPartView : EntryPartView
   AccountRow : AccountRow
   EntryRow : EntryRow
   AccountsView : AccountsView

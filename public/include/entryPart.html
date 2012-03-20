@@ -1,14 +1,16 @@
 <html lang='en'>
   <head>
     <meta charset='utf-8' />
-    <script src='/js/pureentry.js'></script>
-    <script type='text/javascript'>
-      //<![CDATA[
-        $(document).ready(function() {
-          $(".entry_container").render(pd, directive);
-        });
-      //]]>
-    </script>
+    <!--
+      <script src='/js/pureentry.js'></script>
+      <script type='text/javascript'>
+        //<![CDATA[
+          $(document).ready(function() {
+            $(".entry_container").render(pd, directive);
+          });
+        //]]>
+      </script>
+    -->
   </head>
   <body>
     <article>
@@ -19,22 +21,24 @@
         <div class='entryPart_content'>
           <div>
             <label>Amount</label>
-            <input type='text' />
+            <input id='entry-part-amount' type='text' />
           </div>
           <div>
             <label>Account</label>
-            <select></select>
+            <select id='entry-part-account'>
+              <option label='' value=''></option>
+            </select>
           </div>
           <div>
             <label>Type</label>
-            <select>
+            <select id='entry-part-type'>
               <option value='debit'>debit</option>
               <option value='credit'>credit</option>
             </select>
           </div>
           <div>
-            <input type='button' value='ok' />
-            <input type='button' value='cancel' />
+            <input id='entry-part-ok' type='button' value='ok' />
+            <input id='entry-part-cancel' type='button' value='cancel' />
           </div>
         </div>
       </div>

@@ -3,11 +3,12 @@
   
   %head
     %meta{ :charset => "utf-8" }
-    %script{ :src => "/js/pureentry.js" }
-    :javascript 
-      $(document).ready(function() {
-        $(".entry_container").render(pd, directive);
-      });
+    /
+      %script{ :src => "/js/pureentry.js" }
+      :javascript 
+        $(document).ready(function() {
+          $(".entry_container").render(pd, directive);
+        });
   
   %body
     %article 
@@ -18,16 +19,17 @@
         .entryPart_content
           %div 
             %label Amount
-            %input{ :type => "text" }
+            %input#entry-part-amount{ :type => "text" }
           %div 
             %label Account
-            %select
+            %select#entry-part-account
+              %option{ :value => "" , :label => "" }
           %div 
             %label Type
-            %select
+            %select#entry-part-type
               %option{ :value => "debit" } debit
               %option{ :value => "credit" } credit
           %div
-            %input{ :type => "button" , :value => "ok" }
-            %input{ :type => "button" , :value => "cancel" }
+            %input#entry-part-ok{ :type => "button" , :value => "ok" }
+            %input#entry-part-cancel{ :type => "button" , :value => "cancel" }
 

@@ -47,6 +47,7 @@ require( ['bkeeping/bkeeping', 'bkeeping/bindings']
     accountView = new views.AccountView( { el: '#account' } )
     entriesView = new views.EntriesView( { collection: entries } )
     entryView = new views.EntryView( { el: '#entry' } )
+    entryPartView = new views.EntryPartView( { el: '#entry-part' } )
     
     
     ###
@@ -87,7 +88,7 @@ require( ['bkeeping/bkeeping', 'bkeeping/bindings']
               .find('.editentry')
               .unbind('click')
               .bind(  'click',
-                      { entries: entries, entriesView: entriesView, entryView: entryView, esm: esm },
+                      { entries: entries, entriesView: entriesView, entryView: entryView, entryPartView: entryPartView, accounts: accounts, esm: esm },
                       _.bind(esm.EsE, esm))  # trigger the transition when edit clicked
           )
       )

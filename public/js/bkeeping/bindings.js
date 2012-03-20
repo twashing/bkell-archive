@@ -116,9 +116,12 @@
           onafterEsE: function(event, from, to, args) {
             console.log('END Transition from Es->E');
             $(args.data.entryView.el).find('.editentrypart').unbind('click').bind('click', {
-              entries: args.data.entries,
               entriesView: args.data.entriesView,
               entryView: args.data.entryView,
+              entryPartView: args.data.entryPartView,
+              entries: args.data.entries,
+              accounts: args.data.accounts,
+              entry: args.data.entries.get(args.target.dataset['eid']),
               esm: args.data.esm
             }, _.bind(args.data.esm.EEpart, args.data.esm));
             $('#entry-ok').unbind('click').bind('click', {
@@ -133,7 +136,17 @@
           # PART 2
           */
           onbeforeEEpart: function(event, from, to, args) {
+            var epart;
             console.log('START Transition from E->Epart');
+            epart = _.find(args.data.entry.get('content'), function(ech) {
+              return ech.id === args.target.dataset['eid'];
+            });
+            _.extend(epart, Backbone.Events);
+            epart.unbind('change').bind('change', args.data.entryPartView.render, {
+              model: epart,
+              view: args.data.entryPartView,
+              accounts: args.data.accounts
+            }).trigger('change');
             return $('#right-wrapper').scrollTo($('#entry-part'), 500, {
               axis: 'x'
             });

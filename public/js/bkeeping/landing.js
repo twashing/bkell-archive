@@ -6,7 +6,7 @@
     }
   });
   require(['bkeeping/bkeeping', 'bkeeping/bindings'], function(bkeeping, bindings) {
-    var accountView, accounts, accountsView, asm, entries, entriesView, entryView, esm, models, views;
+    var accountView, accounts, accountsView, asm, entries, entriesView, entryPartView, entryView, esm, models, views;
     console.log("landing LOADED / bkeeping[" + bkeeping.models + "]");
     /*
         # LIB imports 
@@ -37,6 +37,9 @@
     });
     entryView = new views.EntryView({
       el: '#entry'
+    });
+    entryPartView = new views.EntryPartView({
+      el: '#entry-part'
     });
     /*
         # Load Account pages
@@ -74,6 +77,8 @@
               entries: entries,
               entriesView: entriesView,
               entryView: entryView,
+              entryPartView: entryPartView,
+              accounts: accounts,
               esm: esm
             }, _.bind(esm.EsE, esm));
           });
