@@ -23,8 +23,7 @@
             account.bind('change', args.data.accountView.render, {
               model: account,
               view: args.data.accountView
-            });
-            account.trigger('change');
+            }).trigger('change');
             return $('#left-wrapper').scrollTo($('#account'), 500, {
               axis: 'x'
             });
@@ -146,30 +145,50 @@
               model: epart,
               view: args.data.entryPartView,
               accounts: args.data.accounts
-            }).trigger('change');
+            });
+            epart.trigger('change');
             return $('#right-wrapper').scrollTo($('#entry-part'), 500, {
               axis: 'x'
             });
           },
           onafterEEpart: function(event, from, to, args) {
-            return console.log('END Transition from E->Epart');
+            console.log('END Transition from E->Epart');
+            $('#entry-part-ok').unbind('click').bind('click', {
+              ok: true,
+              entriesView: args.data.entriesView,
+              entryView: args.data.entryView,
+              entryPartView: args.data.entryPartView,
+              entries: args.data.entries,
+              accounts: args.data.accounts,
+              entry: args.data.entry,
+              esm: args.data.esm
+            }, _.bind(args.data.esm.EpartE, args.data.esm));
+            return $('#entry-part-cancel').unbind('click').bind('click', {
+              cancel: true,
+              esm: args.data.esm
+            }, _.bind(args.data.esm.EpartE, args.data.esm));
           },
           /*
                                           # BACK > STATE callbacks from EntryPart, and from Entry
                                           */
           onleaveEpart: function(event, from, to, args) {
-            return console.log('START Transition from Epart->E');
+            console.log('START Transition from Epart->E');
+            if (args.data.ok) {
+              console.log("#entry-part > ok clicked");
+            }
+            return $('#right-wrapper').scrollTo($('#entry'), 500, {
+              axis: 'x'
+            });
           },
           onleaveE: function(event, from, to, args) {
-            console.log('START Transition from E->Es');
             if (args.data.cancel) {
-              console.log("Entriess cancel");
+              console.log("START Transition from E->Es > Entriess cancel");
               $('#right-wrapper').scrollTo($('#entries'), 500, {
                 axis: 'x'
               });
               args.data.esm.transition();
             } else if (args.data.ok) {
-              console.log("Entriess ok");
+              console.log("START Transition from E->Es > Entriess ok");
               $('#right-wrapper').scrollTo($('#entries'), 500, {
                 axis: 'x'
               });

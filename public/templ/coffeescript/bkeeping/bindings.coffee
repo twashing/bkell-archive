@@ -10,7 +10,6 @@ define([], () ->
                               callbacks:
                                 
                                 onbeforeAsA: (event, from, to, args) ->
-                                  
                                   console.log('START Transition from As->A')
                                   
                                   # 1. edit / retrieve the account
@@ -18,14 +17,14 @@ define([], () ->
                                   
                                   # 2. load the account into the UI
                                   _.extend(account, Backbone.Events)
-                                  account.bind('change', args.data.accountView.render, { model: account, view: args.data.accountView })  # bind Backbone event
-                                  account.trigger('change')   # this should trigger the accountView to render
+                                  account
+                                    .bind('change', args.data.accountView.render, { model: account, view: args.data.accountView })  # bind Backbone event
+                                    .trigger('change')   # this should trigger the accountView to render
                                   
                                   # 3. scroll the UI to the right pane (horizontal serialScroll lib)
                                   $('#left-wrapper').scrollTo($('#account'), 500, { axis:'x' })
                                 
                                 onafterAsA: (event, from, to, args) ->
-                                  
                                   console.log('END Transition from As->A')
                                   
                                   account = args.data.accounts.get( args.target.dataset['aid'] )
@@ -44,11 +43,9 @@ define([], () ->
                                           _.bind(args.data.asm.AAs, args.data.asm)) # transition back to Accounts pane
                                 
                                 onleaveA: (event, from, to, args) ->
-                                  
                                   console.log('START Transition from A->As')
                                   
                                   if(args.data.cancel)
-                                    
                                     console.log("Accounts cancel")
                                     
                                     # 1. scroll to Accounts pane 
@@ -69,7 +66,6 @@ define([], () ->
                                                               wait: true,
                                                               type: "POST",
                                                               success: () ->
-                                                                
                                                                 console.log("successful save")
                                                                 
                                                                 # 2. ensure Accounts list is updated -> list UI should be re-rendered ... "change" event should fire 
@@ -90,7 +86,7 @@ define([], () ->
                                 { name: 'EsE', from: 'Es', to: 'E' },   # transition from the Entries to the Entry pane
                                 { name: 'EEpart', from: 'E', to: 'Epart' },
                                 
-                                { name: 'EpartE', from: 'Epart', to: 'E' }
+                                { name: 'EpartE', from: 'Epart', to: 'E' },
                                 { name: 'EEs', from: 'E', to: 'Es' }
                               ]
                               callbacks:
@@ -159,19 +155,41 @@ define([], () ->
                                   # 2. load the UI 
                                   epart = _.find(args.data.entry.get('content'), (ech) -> return ech.id == args.target.dataset['eid'] )
                                   _.extend(epart, Backbone.Events)
+                                  
                                   epart
                                     .unbind('change')
-                                    .bind('change', args.data.entryPartView.render, { model: epart, view: args.data.entryPartView, accounts: args.data.accounts })  # bind Backbone event
-                                    .trigger('change')   # this should trigger the entryView to render
+                                    .bind('change', args.data.entryPartView.render, { model: epart, view: args.data.entryPartView, accounts: args.data.accounts });  # bind Backbone event
                                   
+                                  epart.trigger('change')   # this should trigger the entryView to render
                                   
                                   # 3. scroll to the relevant pane 
                                   $('#right-wrapper').scrollTo($('#entry-part'), 500, { axis:'x' })
-                                  
+                                 
+                                
                                 onafterEEpart: (event, from, to, args) ->
                                   console.log('END Transition from E->Epart')
                                   
                                   # bind actions to 'Ok' and 'Cancel' buttons
+                                  $('#entry-part-ok')
+                                    .unbind('click')
+                                    .bind('click',
+                                          {
+                                            ok: true,
+                                            entriesView: args.data.entriesView,
+                                            entryView: args.data.entryView,
+                                            entryPartView: args.data.entryPartView,
+                                            entries: args.data.entries,
+                                            accounts: args.data.accounts,
+                                            entry : args.data.entry,
+                                            esm: args.data.esm
+                                          }
+                                          _.bind(args.data.esm.EpartE, args.data.esm)) # transition back to Entries pane
+                                
+                                  $('#entry-part-cancel')
+                                    .unbind('click')
+                                    .bind('click',
+                                          { cancel: true, esm: args.data.esm },
+                                          _.bind(args.data.esm.EpartE, args.data.esm)) # transition back to Entries pane
                                   
                                 
                                 ###
@@ -179,14 +197,20 @@ define([], () ->
                                 ###
                                 onleaveEpart: (event, from, to, args) ->
                                   console.log('START Transition from Epart->E')
+
+                                  # 1. update the model inline 
+                                  if(args.data.ok)
+                                    console.log("#entry-part > ok clicked")
+
+                                  # 2. scroll back to #entry
+                                  $('#right-wrapper').scrollTo($('#entry'), 500, { axis:'x' })
+                                  
                                   
                                 onleaveE: (event, from, to, args) ->
                                   
-                                  console.log('START Transition from E->Es')
-                                  
                                   if(args.data.cancel)
                                     
-                                    console.log("Entriess cancel")
+                                    console.log("START Transition from E->Es > Entriess cancel")
                                     
                                     # 1. scroll to Accounts pane 
                                     $('#right-wrapper').scrollTo($('#entries'), 500, { axis:'x' })
@@ -195,7 +219,7 @@ define([], () ->
                                      
                                   else if(args.data.ok)
                                     
-                                    console.log("Entriess ok")
+                                    console.log("START Transition from E->Es > Entriess ok")
                                     
                                     # 1. scroll to Accounts pane 
                                     $('#right-wrapper').scrollTo($('#entries'), 500, { axis:'x' })

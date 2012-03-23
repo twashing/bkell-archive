@@ -3,12 +3,6 @@
   
   %head
     %meta{ :charset => "utf-8" }
-    /
-      %script{ :src => "/js/pureentry.js" }
-      :javascript 
-        $(document).ready(function() {
-          $(".entry_container").render(pd, directive);
-        });
   
   %body
     %article 
@@ -30,6 +24,6 @@
               %option{ :value => "debit" } debit
               %option{ :value => "credit" } credit
           %div
-            %input#entry-part-ok{ :type => "button" , :value => "ok" }
-            %input#entry-part-cancel{ :type => "button" , :value => "cancel" }
+            %input#entry-part-ok{ :type => "button" , :value => "Save" }
+            %input#entry-part-cancel{ :type => "button" , :value => "Cancel" }
 
