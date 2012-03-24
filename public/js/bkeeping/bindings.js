@@ -109,8 +109,9 @@
             return options.entry.trigger('change');
           },
           commonEntryInstrument: function(options) {
+            var bindObjects;
             console.log('commonEntryInstrument CALLED');
-            $(options.entryView.el).find('.editentrypart').unbind('click').bind('click', {
+            bindObjects = {
               entriesView: options.entriesView,
               entryView: options.entryView,
               entryPartView: options.entryPartView,
@@ -118,14 +119,14 @@
               accounts: options.accounts,
               entry: options.entry,
               esm: options.esm
-            }, _.bind(options.esm.EEpart, options.esm));
-            $('#entry-ok').unbind('click').bind('click', {
-              esm: options.esm
-            }, _.bind(options.esm.EEs, options.esm));
-            return $('#entry-cancel').unbind('click').bind('click', {
-              cancel: true,
-              esm: options.esm
-            }, _.bind(options.esm.EEs, options.esm));
+            };
+            $(options.entryView.el).find('.editentrypart').unbind('click').bind('click', bindObjects, _.bind(options.esm.EEpart, options.esm));
+            $('#entry-ok').unbind('click').bind('click', _.extend({
+              ok: true
+            }, bindObjects), _.bind(options.esm.EEs, options.esm));
+            return $('#entry-cancel').unbind('click').bind('click', _.extend({
+              cancel: true
+            }, bindObjects), _.bind(options.esm.EEs, options.esm));
           },
           /* 
           # PART 1
@@ -209,7 +210,7 @@
             if (args.data.ok) {
               console.log("#entry-part > ok clicked");
               args.data.epart.accountid = $("#entry-part-account").val();
-              args.data.epart.amount = $("#entry-part-amount").val();
+              args.data.epart.amount = parseFloat($("#entry-part-amount").val());
               args.data.epart.tag = $("#entry-part-type").val();
               _.map(args.data.entry.get("contents"), function(ech) {
                 if (ech.id === args.data.epart.id) {
@@ -235,6 +236,7 @@
             });
           },
           onleaveE: function(event, from, to, args) {
+            var bal;
             if (args.data.cancel) {
               console.log("START Transition from E->Es > Entriess cancel");
               $('#right-wrapper').scrollTo($('#entries'), 500, {
@@ -243,6 +245,8 @@
               args.data.esm.transition();
             } else if (args.data.ok) {
               console.log("START Transition from E->Es > Entriess ok");
+              bal = args.data.entry.balances(args.data.accounts);
+              console.log("entry balances? [" + bal + "]");
               $('#right-wrapper').scrollTo($('#entries'), 500, {
                 axis: 'x'
               });

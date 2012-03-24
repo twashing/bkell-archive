@@ -107,36 +107,38 @@ define([], () ->
                                 commonEntryInstrument: (options) ->
                                   console.log('commonEntryInstrument CALLED')
                                   
+                                  bindObjects = {
+                                    entriesView: options.entriesView,
+                                    entryView: options.entryView,
+                                    entryPartView: options.entryPartView,
+                                    entries: options.entries,
+                                    accounts: options.accounts,
+                                    entry : options.entry,
+                                    esm: options.esm
+                                  }
+                                  
                                   # i. handle edit CLICKs and ii. bind entry row to the Entries State Machine
                                   $(options.entryView.el)
                                     .find('.editentrypart')
                                     .unbind('click')
                                     .bind(  'click',
-                                            {
-                                              entriesView: options.entriesView,
-                                              entryView: options.entryView,
-                                              entryPartView: options.entryPartView,
-                                              entries: options.entries,
-                                              accounts: options.accounts,
-                                              entry : options.entry,
-                                              esm: options.esm
-                                            },
+                                            bindObjects,
                                             _.bind(options.esm.EEpart, options.esm))  # trigger the transition when edit clicked
                                   
                                   # bind actions to 'Ok' and 'Cancel' buttons
                                   $('#entry-ok')
                                     .unbind('click')
                                     .bind('click',
-                                          { esm: options.esm },
+                                          _.extend( { ok: true }, bindObjects ),
                                           _.bind(options.esm.EEs, options.esm)) # transition back to Accounts pane
                                    
                                   $('#entry-cancel')
                                     .unbind('click')
                                     .bind('click',
-                                          { cancel: true, esm: options.esm },
+                                          _.extend( { cancel: true }, bindObjects ),
                                           _.bind(options.esm.EEs, options.esm)) # transition back to Accounts pane
                                 
-
+                                
                                 # EVENT callbacks from Entries, and from Entry
                                 
                                 ### 
@@ -153,13 +155,13 @@ define([], () ->
                                     entry: args.data.entries.get( args.target.dataset['eid'] )
                                     entryView: args.data.entryView
                                   })
-
+                                  
                                   ###
                                   # scroll to the relevant pane 
                                   ###
                                   $('#right-wrapper').scrollTo($('#entry'), 500, { axis:'x' })
                                   
-                                  
+                                
                                 onafterEsE: (event, from, to, args) ->
                                   console.log('END Transition from Es->E')
                                   
@@ -239,7 +241,7 @@ define([], () ->
                                     console.log("#entry-part > ok clicked")
                                     
                                     args.data.epart.accountid = $("#entry-part-account").val()
-                                    args.data.epart.amount = $("#entry-part-amount").val()
+                                    args.data.epart.amount = parseFloat($("#entry-part-amount").val())
                                     args.data.epart.tag = $("#entry-part-type").val()
 
                                     _.map(args.data.entry.get("contents"), (ech) ->
@@ -281,8 +283,14 @@ define([], () ->
                                   else if(args.data.ok)
                                     
                                     console.log("START Transition from E->Es > Entriess ok")
+
+                                    # 1. validate balance 
+                                    bal = args.data.entry.balances(args.data.accounts)
+                                    console.log("entry balances? [#{bal}]")
                                     
-                                    # 1. scroll to Accounts pane 
+                                    # 2. update entry 
+                                    
+                                    # 3. scroll to Accounts pane 
                                     $('#right-wrapper').scrollTo($('#entries'), 500, { axis:'x' })
                                     
                                     args.data.esm.transition() # now fire off the transition 

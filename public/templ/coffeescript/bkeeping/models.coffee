@@ -105,6 +105,26 @@ define([], () ->
   )
   Entry = AbstractK.extend(
     urlRoot : "/entry",
+    balances : (accounts) ->
+      
+      result = _.reduce( this.get("content"),
+                ((tally, ech) ->
+                  
+                  console.log("tally[#{tally}] > ech[#{ech}]")
+                  
+                  account = _.find(accounts.models, (act) -> return (act.get("id") == ech.accountid))
+                  
+                  if (((ech.tag == "debit") and (account.get("counterWeight") == "debit")) or (ech.tag == "credit") and (account.get("counterWeight") == "debit"))
+                    tally.lhs += parseFloat(ech.amount)
+                  else
+                    tally.rhs += parseFloat(ech.amount)
+
+                  return tally
+                ),
+                { lhs: 0, rhs: 0 }
+      )
+      
+      return _.extend( `{ balances: result.lhs == result.rhs }`, result )
   )
   
   

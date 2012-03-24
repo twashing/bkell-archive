@@ -81,7 +81,27 @@
       urlRoot: "/account"
     });
     Entry = AbstractK.extend({
-      urlRoot: "/entry"
+      urlRoot: "/entry",
+      balances: function(accounts) {
+        var result;
+        result = _.reduce(this.get("content"), (function(tally, ech) {
+          var account;
+          console.log("tally[" + tally + "] > ech[" + ech + "]");
+          account = _.find(accounts.models, function(act) {
+            return act.get("id") === ech.accountid;
+          });
+          if (((ech.tag === "debit") && (account.get("counterWeight") === "debit")) || (ech.tag === "credit") && (account.get("counterWeight") === "debit")) {
+            tally.lhs += parseFloat(ech.amount);
+          } else {
+            tally.rhs += parseFloat(ech.amount);
+          }
+          return tally;
+        }), {
+          lhs: 0,
+          rhs: 0
+        });
+        return _.extend({ balances: result.lhs == result.rhs }, result);
+      }
     });
     /*
       # Collections
