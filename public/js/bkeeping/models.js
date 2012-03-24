@@ -21,6 +21,14 @@
       }));
     };
     AbstractK = Backbone.Model.extend({
+      url: function() {
+        var base;
+        base = this.urlRoot || getUrl(this.collection) || urlError();
+        if (this.isNew()) {
+          return base;
+        }
+        return base + (base.charAt(base.length - 1) == '/' ? '' : '/') + encodeURIComponent(this.id);
+      },
       fetchS: commonFetch,
       saveS: function(valueMap, options) {
         var errorC, statusC, successC;
@@ -70,14 +78,6 @@
       # Account & Entry
       */
     Account = AbstractK.extend({
-      url: function() {
-        var base;
-        base = this.urlRoot || getUrl(this.collection) || urlError();
-        if (this.isNew()) {
-          return base;
-        }
-        return base + (base.charAt(base.length - 1) == '/' ? '' : '/') + encodeURIComponent(this.id);
-      },
       urlRoot: "/account"
     });
     Entry = AbstractK.extend({
@@ -86,7 +86,6 @@
         var result;
         result = _.reduce(this.get("content"), (function(tally, ech) {
           var account;
-          console.log("tally[" + tally + "] > ech[" + ech + "]");
           account = _.find(accounts.models, function(act) {
             return act.get("id") === ech.accountid;
           });

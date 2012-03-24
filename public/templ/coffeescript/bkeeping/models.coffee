@@ -31,6 +31,12 @@ define([], () ->
   
   AbstractK = Backbone.Model.extend({
     
+    url : () ->
+      base = this.urlRoot || getUrl(this.collection) || urlError()  # look for the urlRoot first
+      if (this.isNew())
+        return base
+      return base + `(base.charAt(base.length - 1) == '/' ? '' : '/')` + encodeURIComponent(this.id)  # inlining the .JS, otherwise coffeescript does weirdness
+    
     fetchS : commonFetch
     
     saveS : (valueMap, options) ->
@@ -95,12 +101,6 @@ define([], () ->
   # Account & Entry
   ###
   Account = AbstractK.extend(
-    url : () ->
-      base = this.urlRoot || getUrl(this.collection) || urlError()  # look for the urlRoot first
-      if (this.isNew())
-        return base
-      return base + `(base.charAt(base.length - 1) == '/' ? '' : '/')` + encodeURIComponent(this.id)  # inlining the .JS, otherwise coffeescript does weirdness
-    
     urlRoot : "/account",
   )
   Entry = AbstractK.extend(
@@ -110,7 +110,7 @@ define([], () ->
       result = _.reduce( this.get("content"),
                 ((tally, ech) ->
                   
-                  console.log("tally[#{tally}] > ech[#{ech}]")
+                  #console.log("tally[#{tally}] > ech[#{ech}]")
                   
                   account = _.find(accounts.models, (act) -> return (act.get("id") == ech.accountid))
                   

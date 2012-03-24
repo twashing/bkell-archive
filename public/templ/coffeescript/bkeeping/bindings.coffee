@@ -278,7 +278,7 @@ define([], () ->
                                     # 1. scroll to Accounts pane 
                                     $('#right-wrapper').scrollTo($('#entries'), 500, { axis:'x' })
                                     
-                                    args.data.esm.transition() # now fire off the transition 
+                                    #args.data.esm.transition() # now fire off the transition 
                                      
                                   else if(args.data.ok)
                                     
@@ -288,15 +288,27 @@ define([], () ->
                                     bal = args.data.entry.balances(args.data.accounts)
                                     console.log("entry balances? [#{bal}]")
                                     
-                                    # 2. update entry 
-                                    
-                                    # 3. scroll to Accounts pane 
-                                    $('#right-wrapper').scrollTo($('#entries'), 500, { axis:'x' })
-                                    
-                                    args.data.esm.transition() # now fire off the transition 
+                                    if(bal.balances)
+                                      
+                                      # 2. update entry 
+                                      args.data.entry.saveS( {}, {success: (model, response) ->
+                                      
+                                        console.log("success on CUSTOM Entry CALLED > model[ #{model} ] > response[ #{response} ]")
+                                        
+                                        # 3. scroll to Accounts pane 
+                                        $('#right-wrapper').scrollTo($('#entries'), 500, { axis:'x' })
+                                        args.data.esm.transition() # now fire off the transition 
+                                      })
+                                      return StateMachine.ASYNC; # tell StateMachine to defer next state until we call transition (in fadeOut callback above)
+                                      
+                                    else
+                                      
+                                      # 3. throw error condition
+                                      # .. http://docs.jquery.com/UI/Effects/Shake
+                                      # .. http://stackoverflow.com/questions/4399005/implementing-jquerys-shake-effect-with-animate
                                      
-                                  if( args.data.cancel or args.data.ok)
-                                    return StateMachine.ASYNC; # tell StateMachine to defer next state until we call transition (in fadeOut callback above)
+                                  #if( args.data.cancel or args.data.ok)
+                                  #  return StateMachine.ASYNC; # tell StateMachine to defer next state until we call transition (in fadeOut callback above)
                             }
   )
 

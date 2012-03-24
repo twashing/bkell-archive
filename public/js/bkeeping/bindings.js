@@ -239,21 +239,27 @@
             var bal;
             if (args.data.cancel) {
               console.log("START Transition from E->Es > Entriess cancel");
-              $('#right-wrapper').scrollTo($('#entries'), 500, {
+              return $('#right-wrapper').scrollTo($('#entries'), 500, {
                 axis: 'x'
               });
-              args.data.esm.transition();
             } else if (args.data.ok) {
               console.log("START Transition from E->Es > Entriess ok");
               bal = args.data.entry.balances(args.data.accounts);
               console.log("entry balances? [" + bal + "]");
-              $('#right-wrapper').scrollTo($('#entries'), 500, {
-                axis: 'x'
-              });
-              args.data.esm.transition();
-            }
-            if (args.data.cancel || args.data.ok) {
-              return StateMachine.ASYNC;
+              if (bal.balances) {
+                args.data.entry.saveS({}, {
+                  success: function(model, response) {
+                    console.log("success on CUSTOM Entry CALLED > model[ " + model + " ] > response[ " + response + " ]");
+                    $('#right-wrapper').scrollTo($('#entries'), 500, {
+                      axis: 'x'
+                    });
+                    return args.data.esm.transition();
+                  }
+                });
+                return StateMachine.ASYNC;
+              } else {
+
+              }
             }
           }
         }
