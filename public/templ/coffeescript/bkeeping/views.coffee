@@ -90,7 +90,18 @@ define([], () ->
     render : (options) ->
       console.log('EntryView render CALLED')
       
-      $(".entry_container").render( { puredata : this.model.get('content') } , pureDirectives.entryDirective )
+      ###
+      # clear the container each time - don't want to incrementally add
+      ###
+      
+      template = $("<tr> <td> <a class='editentrypart' href='#'>edit</a> </td> <td class='debitAccount'>Debit Account</td> <td class='debitAmount'>Debit Amount</td> <td>&nbsp;</td> <td class='creditAccount'>Credit Account</td> <td class='creditAmount'>Credit Amount</td> <td> <a class='deleteentrypart' href='#'>delete</a> </td> </tr>")
+      
+      $(".entry_container tbody")
+        .empty()
+        .append(template)
+      
+      $(".entry_container")
+        .render( { puredata : this.model.get('content') } , pureDirectives.entryDirective )
       
   })
   EntryPartView = Backbone.View.extend({
