@@ -95,26 +95,62 @@
           }
         ],
         callbacks: {
+          commonEntryRender: function(options) {
+            console.log('commonEntryRender CALLED');
+            /*
+                                              # load the UI 
+                                              */
+            _.extend(options.entry, Backbone.Events);
+            options.entry.bind('change', options.entryView.render, {
+              model: options.entry,
+              view: options.entryView
+            });
+            return options.entry.trigger('change');
+          },
+          commonEntryInstrument: function(options) {
+            console.log('commonEntryInstrument CALLED');
+            $(options.entryView.el).find('.editentrypart').unbind('click').bind('click', {
+              entriesView: options.entriesView,
+              entryView: options.entryView,
+              entryPartView: options.entryPartView,
+              entries: options.entries,
+              accounts: options.accounts,
+              entry: options.entry,
+              esm: options.esm
+            }, _.bind(options.esm.EEpart, options.esm));
+            $('#entry-ok').unbind('click').bind('click', {
+              esm: options.esm
+            }, _.bind(options.esm.EEs, options.esm));
+            return $('#entry-cancel').unbind('click').bind('click', {
+              cancel: true,
+              esm: options.esm
+            }, _.bind(options.esm.EEs, options.esm));
+          },
           /* 
           # PART 1
           */
           onbeforeEsE: function(event, from, to, args) {
-            var entry;
             console.log('START Transition from Es->E');
-            entry = args.data.entries.get(args.target.dataset['eid']);
-            _.extend(entry, Backbone.Events);
-            entry.bind('change', args.data.entryView.render, {
-              model: entry,
-              view: args.data.entryView
+            /*
+                                              # render Entry Pane
+                                              */
+            this.commonEntryRender({
+              entry: args.data.entries.get(args.target.dataset['eid']),
+              entryView: args.data.entryView
             });
-            entry.trigger('change');
+            /*
+                                              # scroll to the relevant pane 
+                                              */
             return $('#right-wrapper').scrollTo($('#entry'), 500, {
               axis: 'x'
             });
           },
           onafterEsE: function(event, from, to, args) {
             console.log('END Transition from Es->E');
-            $(args.data.entryView.el).find('.editentrypart').unbind('click').bind('click', {
+            /*
+                                              # instrument the Entry Pane
+                                              */
+            return this.commonEntryInstrument({
               entriesView: args.data.entriesView,
               entryView: args.data.entryView,
               entryPartView: args.data.entryPartView,
@@ -122,14 +158,7 @@
               accounts: args.data.accounts,
               entry: args.data.entries.get(args.target.dataset['eid']),
               esm: args.data.esm
-            }, _.bind(args.data.esm.EEpart, args.data.esm));
-            $('#entry-ok').unbind('click').bind('click', {
-              esm: args.data.esm
-            }, _.bind(args.data.esm.EEs, args.data.esm));
-            return $('#entry-cancel').unbind('click').bind('click', {
-              cancel: true,
-              esm: args.data.esm
-            }, _.bind(args.data.esm.EEs, args.data.esm));
+            });
           },
           /* 
           # PART 2
@@ -159,8 +188,11 @@
               entryView: args.data.entryView,
               entryPartView: args.data.entryPartView,
               entries: args.data.entries,
-              accounts: args.data.accounts,
               entry: args.data.entry,
+              epart: _.find(args.data.entry.get('content'), function(ech) {
+                return ech.id === args.target.dataset['eid'];
+              }),
+              accounts: args.data.accounts,
               esm: args.data.esm
             }, _.bind(args.data.esm.EpartE, args.data.esm));
             return $('#entry-part-cancel').unbind('click').bind('click', {
@@ -175,7 +207,28 @@
             console.log('START Transition from Epart->E');
             if (args.data.ok) {
               console.log("#entry-part > ok clicked");
+              args.data.epart.accountid = $("#entry-part-account").val();
+              args.data.epart.amount = $("#entry-part-amount").val();
+              args.data.epart.tag = $("#entry-part-type").val();
+              _.map(args.data.entry.get("contents"), function(ech) {
+                if (ech.id === args.data.epart.id) {
+                  return ech = args.data.epart;
+                }
+              });
             }
+            this.commonEntryRender({
+              entry: args.data.entry,
+              entryView: args.data.entryView
+            });
+            this.commonEntryInstrument({
+              entriesView: args.data.entriesView,
+              entryView: args.data.entryView,
+              entryPartView: args.data.entryPartView,
+              entries: args.data.entries,
+              entry: args.data.entry,
+              accounts: args.data.accounts,
+              esm: args.data.esm
+            });
             return $('#right-wrapper').scrollTo($('#entry'), 500, {
               axis: 'x'
             });
