@@ -194,7 +194,9 @@
               });
               args.data.esm.transition();
             }
-            return StateMachine.ASYNC;
+            if (args.data.cancel || args.data.ok) {
+              return StateMachine.ASYNC;
+            }
           }
         }
       })

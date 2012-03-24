@@ -226,7 +226,8 @@ define([], () ->
                                     
                                     args.data.esm.transition() # now fire off the transition 
                                      
-                                  return StateMachine.ASYNC; # tell StateMachine to defer next state until we call transition (in fadeOut callback above)
+                                  if( args.data.cancel or args.data.ok)
+                                    return StateMachine.ASYNC; # tell StateMachine to defer next state until we call transition (in fadeOut callback above)
                             }
   )
 
