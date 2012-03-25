@@ -223,7 +223,17 @@ define([], () ->
                                   $('#entry-part-cancel')
                                     .unbind('click')
                                     .bind('click',
-                                          { cancel: true, esm: args.data.esm },
+                                          {
+                                            cancel: true,
+                                            entriesView: args.data.entriesView,
+                                            entryView: args.data.entryView,
+                                            entryPartView: args.data.entryPartView,
+                                            entries: args.data.entries,
+                                            entry : args.data.entry,
+                                            epart : _.find(args.data.entry.get('content'), (ech) -> return ech.id == args.target.dataset['eid'] )
+                                            accounts: args.data.accounts,
+                                            esm: args.data.esm
+                                          },
                                           _.bind(args.data.esm.EpartE, args.data.esm)) # transition back to Entries pane
                                   
                                 
