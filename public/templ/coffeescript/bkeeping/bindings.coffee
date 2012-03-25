@@ -202,38 +202,29 @@ define([], () ->
                                 
                                 onafterEEpart: (event, from, to, args) ->
                                   console.log('END Transition from E->Epart')
+
+                                  bindObjects = {
+                                    entriesView: args.data.entriesView,
+                                    entryView: args.data.entryView,
+                                    entryPartView: args.data.entryPartView,
+                                    entries: args.data.entries,
+                                    entry : args.data.entry,
+                                    epart : _.find(args.data.entry.get('content'), (ech) -> return ech.id == args.target.dataset['eid'] )
+                                    accounts: args.data.accounts,
+                                    esm: args.data.esm
+                                  }
                                   
                                   # bind actions to 'Ok' and 'Cancel' buttons
                                   $('#entry-part-ok')
                                     .unbind('click')
                                     .bind('click',
-                                          {
-                                            ok: true,
-                                            entriesView: args.data.entriesView,
-                                            entryView: args.data.entryView,
-                                            entryPartView: args.data.entryPartView,
-                                            entries: args.data.entries,
-                                            entry : args.data.entry,
-                                            epart : _.find(args.data.entry.get('content'), (ech) -> return ech.id == args.target.dataset['eid'] )
-                                            accounts: args.data.accounts,
-                                            esm: args.data.esm
-                                          }
+                                          _.extend({ ok: true, }, bindObjects),
                                           _.bind(args.data.esm.EpartE, args.data.esm)) # transition back to Entries pane
                                 
                                   $('#entry-part-cancel')
                                     .unbind('click')
                                     .bind('click',
-                                          {
-                                            cancel: true,
-                                            entriesView: args.data.entriesView,
-                                            entryView: args.data.entryView,
-                                            entryPartView: args.data.entryPartView,
-                                            entries: args.data.entries,
-                                            entry : args.data.entry,
-                                            epart : _.find(args.data.entry.get('content'), (ech) -> return ech.id == args.target.dataset['eid'] )
-                                            accounts: args.data.accounts,
-                                            esm: args.data.esm
-                                          },
+                                          _.extend({ cancel: true, }, bindObjects),
                                           _.bind(args.data.esm.EpartE, args.data.esm)) # transition back to Entries pane
                                   
                                 

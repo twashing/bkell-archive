@@ -183,9 +183,9 @@
             });
           },
           onafterEEpart: function(event, from, to, args) {
+            var bindObjects;
             console.log('END Transition from E->Epart');
-            $('#entry-part-ok').unbind('click').bind('click', {
-              ok: true,
+            bindObjects = {
               entriesView: args.data.entriesView,
               entryView: args.data.entryView,
               entryPartView: args.data.entryPartView,
@@ -196,20 +196,13 @@
               }),
               accounts: args.data.accounts,
               esm: args.data.esm
-            }, _.bind(args.data.esm.EpartE, args.data.esm));
-            return $('#entry-part-cancel').unbind('click').bind('click', {
-              cancel: true,
-              entriesView: args.data.entriesView,
-              entryView: args.data.entryView,
-              entryPartView: args.data.entryPartView,
-              entries: args.data.entries,
-              entry: args.data.entry,
-              epart: _.find(args.data.entry.get('content'), function(ech) {
-                return ech.id === args.target.dataset['eid'];
-              }),
-              accounts: args.data.accounts,
-              esm: args.data.esm
-            }, _.bind(args.data.esm.EpartE, args.data.esm));
+            };
+            $('#entry-part-ok').unbind('click').bind('click', _.extend({
+              ok: true
+            }, bindObjects), _.bind(args.data.esm.EpartE, args.data.esm));
+            return $('#entry-part-cancel').unbind('click').bind('click', _.extend({
+              cancel: true
+            }, bindObjects), _.bind(args.data.esm.EpartE, args.data.esm));
           },
           /*
                                           # BACK > STATE callbacks from EntryPart, and from Entry
