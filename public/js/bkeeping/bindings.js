@@ -258,7 +258,10 @@
                 });
                 return StateMachine.ASYNC;
               } else {
-
+                $(".entry_content > table").effect("shake", {
+                  times: 2
+                }, 50);
+                return false;
               }
             }
           }

@@ -303,12 +303,14 @@ define([], () ->
                                       
                                     else
                                       
-                                      # 3. throw error condition
-                                      # .. http://docs.jquery.com/UI/Effects/Shake
-                                      # .. http://stackoverflow.com/questions/4399005/implementing-jquerys-shake-effect-with-animate
-                                     
-                                  #if( args.data.cancel or args.data.ok)
-                                  #  return StateMachine.ASYNC; # tell StateMachine to defer next state until we call transition (in fadeOut callback above)
+                                      # 3. shake to notify user of imbalance error 
+                                      # http://docs.jquery.com/UI/Effects/Shake
+                                      # http://stackoverflow.com/questions/4399005/implementing-jquerys-shake-effect-with-animate
+                                      $(".entry_content > table").effect("shake", { times:2 }, 50)
+                                      
+                                      # don't transition - this should cancel the transition
+                                      return false
+                                      
                             }
   )
 

@@ -214,7 +214,7 @@
   (let [result  (reduce (fn [a b] 
                           (let [acct (find-linked-account uname b)]
                           (if (or (and (= "debit" (:counterWeight acct)) (= :debit (keyword (:tag b))) ) 
-                                  (and (= "credit" (:counterWeight acct)) (= :credit (keyword (:tag b)))))
+                                  (and (= "debit" (:counterWeight acct)) (= :credit (keyword (:tag b)))))
                             (merge a { :lhs (+ (:lhs a) (:amount b)) } )     ;; increase :lhs if debit(ing) a debit account OR credit(ing) a credit account 
                             (merge a { :rhs (+ (:rhs a) (:amount b)) } ))))
                   { :lhs 0.0 :rhs 0.0 }   ;; beginning tally 
