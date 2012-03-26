@@ -42,7 +42,7 @@
       el: '#entry-part'
     });
     /*
-        # Load Account pages
+        # Load Accounts pages
         */
     $('#accounts').load("/include/accounts.html", function() {
       accounts.fetchS({
@@ -57,15 +57,19 @@
           });
         }
       });
-      return $('#left-col').serialScroll({
-        target: '#left-wrapper',
-        items: '#accounts , #account',
-        duration: 500,
-        axis: 'x',
-        force: true
+      /*
+            # Load Account pages
+            */
+      return $('#account').load('/include/account.html', function() {
+        return $('#left-col').serialScroll({
+          target: '#left-wrapper',
+          items: '#accounts , #account',
+          duration: 500,
+          axis: 'x',
+          force: true
+        });
       });
     });
-    $('#account').load('/include/account.html');
     /*
         # Load Entry pages
         */
@@ -84,17 +88,22 @@
           });
         }
       });
-      $('#right-col').serialScroll({
-        target: '#right-wrapper',
-        items: '#entries , #entry, #entry-part',
-        duration: 500,
-        axis: 'x',
-        force: true
+      /*
+            # Sequentially loading inner panes
+            */
+      return $('#entry').load('/include/entry.html', function() {
+        return $('#entry-part').load('/include/entryPart.html', function() {
+          $('#right-col').serialScroll({
+            target: '#right-wrapper',
+            items: '#entries , #entry, #entry-part',
+            duration: 500,
+            axis: 'x',
+            force: true
+          });
+          return adjustEntryPanes();
+        });
       });
-      return adjustEntryPanes();
     });
-    $('#entry').load('/include/entry.html');
-    $('#entry-part').load('/include/entryPart.html');
     /*
         # Load Footer
         */

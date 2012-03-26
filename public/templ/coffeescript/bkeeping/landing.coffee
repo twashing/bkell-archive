@@ -51,7 +51,7 @@ require( ['bkeeping/bkeeping', 'bkeeping/bindings']
     
     
     ###
-    # Load Account pages
+    # Load Accounts pages
     ###
     $('#accounts').load("/include/accounts.html", () ->
       
@@ -69,10 +69,15 @@ require( ['bkeeping/bkeeping', 'bkeeping/bindings']
           )
       )
       
-      # Initialize horizontal / serial scrolling 
-      $('#left-col').serialScroll({ target: '#left-wrapper', items: '#accounts , #account', duration: 500, axis: 'x', force: true })
+      ###
+      # Load Account pages
+      ###
+      $('#account').load('/include/account.html', () ->
+      
+        # Initialize horizontal / serial scrolling 
+        $('#left-col').serialScroll({ target: '#left-wrapper', items: '#accounts , #account', duration: 500, axis: 'x', force: true })
+      )
     )
-    $('#account').load('/include/account.html')
     
     
     ###
@@ -93,18 +98,23 @@ require( ['bkeeping/bkeeping', 'bkeeping/bindings']
           )
       )
       
-      # Initialize horizontal / serial scrolling 
-      $('#right-col').serialScroll({ target: '#right-wrapper', items: '#entries , #entry, #entry-part', duration: 500, axis: 'x', force: true })
       
-
-      # set adjustible entry panes > parent width, minus the left pane
-      # ... hoping 2 other panes are loaded at this point
-      adjustEntryPanes()
+      ###
+      # Sequentially loading inner panes
+      ###
+      $('#entry').load('/include/entry.html', () ->
+      
+        $('#entry-part').load('/include/entryPart.html', () ->
+        
+          # Initialize horizontal / serial scrolling 
+          $('#right-col').serialScroll({ target: '#right-wrapper', items: '#entries , #entry, #entry-part', duration: 500, axis: 'x', force: true })
+          
+          # set adjustible entry panes > parent width, minus the left pane
+          # ... hoping 2 other panes are loaded at this point
+          adjustEntryPanes()
+        )
+      )
     )
-    $('#entry').load('/include/entry.html')
-    $('#entry-part').load('/include/entryPart.html')
-    
-    
     
     
     ###
