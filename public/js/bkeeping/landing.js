@@ -47,7 +47,7 @@
     $('#accounts').load("/include/accounts.html", function() {
       accounts.fetchS({
         success: function() {
-          return _.each(accountsView['accountRows'], function(ech) {
+          _.each(accountsView['accountRows'], function(ech) {
             return ech.el.find('.editaccount').unbind('click').bind('click', {
               accounts: accounts,
               accountsView: accountsView,
@@ -55,6 +55,13 @@
               asm: asm
             }, _.bind(asm.AsA, asm));
           });
+          return $("#account-add").unbind("click").bind("click", {
+            accounts: accounts,
+            account: new models.Account(),
+            accountsView: accountsView,
+            accountView: accountView,
+            asm: asm
+          }, _.bind(asm.AsA, asm));
         }
       });
       /*

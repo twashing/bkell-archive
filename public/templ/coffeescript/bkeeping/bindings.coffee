@@ -1,5 +1,5 @@
 
-define([], () ->
+define( [ "bkeeping/util", ], (util) ->
   
   asm : StateMachine.create({
                               initial:  'As',
@@ -12,8 +12,10 @@ define([], () ->
                                 onbeforeAsA: (event, from, to, args) ->
                                   console.log('START Transition from As->A')
                                   
-                                  # 1. edit / retrieve the account
+                                  # 1. add OR edit / retrieve the account
                                   account = args.data.accounts.get( args.target.dataset['aid'] )
+                                  if(not util.exists(account))
+                                    account = args.data.account
                                   
                                   # 2. load the account into the UI
                                   _.extend(account, Backbone.Events)
@@ -28,6 +30,9 @@ define([], () ->
                                   console.log('END Transition from As->A')
                                   
                                   account = args.data.accounts.get( args.target.dataset['aid'] )
+                                  if(not util.exists(account))
+                                    account = args.data.account
+                                  
                                   
                                   # bind actions to 'Ok' and 'Cancel' buttons
                                   $('#account-ok')
@@ -64,7 +69,7 @@ define([], () ->
                                                             },
                                                             {
                                                               wait: true,
-                                                              type: "POST",
+                                                              type: if args.data.account.isNew() then "PUT" else "POST",
                                                               success: () ->
                                                                 console.log("successful save")
                                                                 

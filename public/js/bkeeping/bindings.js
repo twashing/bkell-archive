@@ -1,5 +1,5 @@
 (function() {
-  define([], function() {
+  define(["bkeeping/util"], function(util) {
     return {
       asm: StateMachine.create({
         initial: 'As',
@@ -19,6 +19,9 @@
             var account;
             console.log('START Transition from As->A');
             account = args.data.accounts.get(args.target.dataset['aid']);
+            if (!util.exists(account)) {
+              account = args.data.account;
+            }
             _.extend(account, Backbone.Events);
             account.bind('change', args.data.accountView.render, {
               model: account,
@@ -32,6 +35,9 @@
             var account;
             console.log('END Transition from As->A');
             account = args.data.accounts.get(args.target.dataset['aid']);
+            if (!util.exists(account)) {
+              account = args.data.account;
+            }
             $('#account-ok').unbind('click').bind('click', {
               accounts: args.data.accounts,
               account: account,
@@ -59,7 +65,7 @@
                 counterWeight: $("#account-counterWeight").attr("value")
               }, {
                 wait: true,
-                type: "POST",
+                type: args.data.account.isNew() ? "PUT" : "POST",
                 success: function() {
                   console.log("successful save");
                   $('#left-wrapper').scrollTo($('#accounts'), 500, {

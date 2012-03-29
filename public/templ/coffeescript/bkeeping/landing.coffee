@@ -67,6 +67,13 @@ require( ['bkeeping/bkeeping', 'bkeeping/bindings']
                       { accounts: accounts, accountsView: accountsView, accountView: accountView, asm: asm },
                       _.bind(asm.AsA, asm))  # trigger the transition when edit clicked
           )
+
+          $("#account-add")
+            .unbind("click")
+            .bind("click",
+                  { accounts: accounts, account: new models.Account(), accountsView: accountsView, accountView: accountView, asm: asm },
+                  _.bind(asm.AsA, asm)  # trigger the transition when add clicked
+            )
       )
       
       ###
@@ -110,7 +117,6 @@ require( ['bkeeping/bkeeping', 'bkeeping/bindings']
           $('#right-col').serialScroll({ target: '#right-wrapper', items: '#entries , #entry, #entry-part', duration: 500, axis: 'x', force: true })
           
           # set adjustible entry panes > parent width, minus the left pane
-          # ... hoping 2 other panes are loaded at this point
           adjustEntryPanes()
         )
       )
