@@ -187,8 +187,16 @@ define([], () ->
       
       console.log("AccountsView.render CALLED")
       
+      # ensure we don't re-render the accounts
+      template = $("<table id='accounts-table'> <thead> <tr> <th></th> <th>Name</th> <th>Category</th> <th>Type</th> <th></th> </tr> </thead> <tbody> <tr> <td> <a class='editaccount' href='#'>edit</a> </td> <td class='name'>My Name</td> <td class='type'>My Type</td> <td class='weight'>My Weight</td> <td> <a class='deleteaccount' href='#'>delete</a> </td> </tr> </tbody> <tfoot> <tr> <td> <input id='account-add' type='button' value='Add' /> </td> <td>&nbsp;</td> <td>&nbsp;</td> <td>&nbsp;</td> <td>&nbsp;</td> </tr> </tfoot> </table>")
+      
+      $("#accounts-pane > .tab_container > .tab_content > .dataTables_wrapper")   # empty generated DataTable divs
+        .empty()
+        .append(template)
+      
+      
       ctx = this
-      this.el      # the HTML context should be passed in as an argument
+      $("#accounts")
         .render(  { puredata : this.collection.toJSON() } ,   # i) using PURE templ lib, ii) returning raw JSON object (instead of BB models) for pure templ
                   pureDirectives.accountsDirective )
         .find('table')

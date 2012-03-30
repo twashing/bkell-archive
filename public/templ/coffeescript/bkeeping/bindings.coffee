@@ -78,7 +78,7 @@ define( [ "bkeeping/util", ], (util) ->
                                                                   console.log("successful save")
                                                                   
                                                                   # 2. ensure Accounts list is updated -> list UI should be re-rendered ... "change" event should fire 
-                                                                  args.data.accountsView.collection.reset( args.data.accounts )
+                                                                  #args.data.accountsView.collection.trigger("change")
                                                                   
                                                                   # 3. scroll to Accounts pane 
                                                                   $('#left-wrapper').scrollTo($('#accounts'), 500, { axis:'x' })
