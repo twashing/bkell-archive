@@ -30,7 +30,6 @@
 )
 
 
-
 (defn add-currency [currency uname default]
   
   { :pre  [ (not (nil? uname)) 

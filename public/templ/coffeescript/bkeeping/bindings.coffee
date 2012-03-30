@@ -60,28 +60,45 @@ define( [ "bkeeping/util", ], (util) ->
                                   
                                   else
                                     
-                                    # 1. updaate Backbone model (wait for callback) 
-                                    args.data.account.saveS(
-                                                            {
-                                                              name: $("#account-name").attr('value'),
-                                                              type: $("#account-type").attr("value"),
-                                                              counterWeight: $("#account-counterWeight").attr("value")
-                                                            },
-                                                            {
-                                                              wait: true,
-                                                              type: if args.data.account.isNew() then "PUT" else "POST",
-                                                              success: () ->
-                                                                console.log("successful save")
+                                    saveAccount = (fdata) ->
+                                      
+                                      # 1. updaate Backbone model (wait for callback) 
+                                      args.data.account.saveS(
+                                                              _.extend( fdata,
+                                                                {
+                                                                  name: $("#account-name").attr('value'),
+                                                                  type: $("#account-type").attr("value"),
+                                                                  counterWeight: $("#account-counterWeight").attr("value")
+                                                                }
+                                                              ),
+                                                              {
+                                                                wait: true,
+                                                                type: if args.data.account.isNew() then "PUT" else "POST",
+                                                                success: () ->
+                                                                  console.log("successful save")
+                                                                  
+                                                                  # 2. ensure Accounts list is updated -> list UI should be re-rendered ... "change" event should fire 
+                                                                  
+                                                                  # 3. scroll to Accounts pane 
+                                                                  $('#left-wrapper').scrollTo($('#accounts'), 500, { axis:'x' })
+                                                                  
+                                                                  args.data.asm.transition() # now fire off the transition 
                                                                 
-                                                                # 2. ensure Accounts list is updated -> list UI should be re-rendered ... "change" event should fire 
-                                                                
-                                                                # 3. scroll to Accounts pane 
-                                                                $('#left-wrapper').scrollTo($('#accounts'), 500, { axis:'x' })
-                                                                
-                                                                args.data.asm.transition() # now fire off the transition 
-                                                              
-                                                            })
+                                                              })
                                   
+                                    fdata = {}
+                                    if args.data.account.isNew()
+                                      $.get("/generateid", (result, status, obj) ->
+                                        
+                                        console.log("Generated account ID[#{result}]")
+                                        fdata.id = result
+                                        fdata.tag = "account"
+                                        
+                                        saveAccount(fdata)
+                                      )
+                                    else
+                                      saveAccount(fdata)
+                                    
                                   return StateMachine.ASYNC; # tell StateMachine to defer next state until we call transition (in fadeOut callback above)
                             }
   ),

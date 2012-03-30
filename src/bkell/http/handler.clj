@@ -321,6 +321,7 @@
     (println (str "POST ; /account/:id ; " raw-req))
     (let [body (InputStreamReader. (:body raw-req))
           lin-user (authenticatek/logged-in-user)]
+      
       (->      ;; JSON of MongoDB WriteResult; 
         body (bjell/update (:username lin-user) ) (handle-errors 400) substitute-body) 
     )
@@ -394,6 +395,15 @@
     (->      ;; JSON of MongoDB WriteResult; TODO - make a proper JSON string for client 
       (bkell/remove { :tag :entry :id id } (:username lin-user) ) (handle-errors 400) ) ;; TODO - stubbing in 'stub' user for now
     { :tag :entry :id id }
+  )
+)
+
+(noir/defpage [ :get "/generateid" ] [:as req] 
+
+  (println (str "GET ; /generateid ; " req))
+  (let [lin-user (authenticatek/logged-in-user)]
+    
+    (util/generate-id)
   )
 )
 

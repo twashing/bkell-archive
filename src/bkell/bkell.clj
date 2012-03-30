@@ -22,6 +22,7 @@
   
   (let [  logged-in-user (authenticatek/logged-in-user)]
 
+    (println "bkell.add CALLED / artifact-p["+ artifact-p +"]")
     (if (-> logged-in-user nil?)  ;; we want to see a logged-in-user 
       (if (-> artifact-p :tag (= :user) not) ;; you do not have to be authenticated to add a user 
         (bkell.util/generate-error-response "User is not authenticated")

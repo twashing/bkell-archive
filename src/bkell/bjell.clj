@@ -24,14 +24,13 @@
 (defn add [artifact & etal]
   "artifact - input can be JSON String or Reader"
   
-  (let  [ artifact-p (-> artifact clojure.data.json/read-json bkell.domain/keywordize-tags generate-id)]
+  (let  [ artifact-p (bkell.domain/keywordize-tags (clojure.data.json/read-json artifact))]
 
       (bkell.domain/bsonid-to-id
         (eval `(bkell.bkell/add ~artifact-p ~@etal)) )
   )
 )
-
-;; java.rmi.dgc.VMID iid = new java.rmi.dgc.VMID();
+  
 
 (defn get [akey & etal]
   "akey - input is a String"

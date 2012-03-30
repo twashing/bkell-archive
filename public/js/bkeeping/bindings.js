@@ -51,6 +51,7 @@
             }, _.bind(args.data.asm.AAs, args.data.asm));
           },
           onleaveA: function(event, from, to, args) {
+            var fdata, saveAccount;
             console.log('START Transition from A->As');
             if (args.data.cancel) {
               console.log("Accounts cancel");
@@ -59,21 +60,34 @@
               });
               args.data.asm.transition();
             } else {
-              args.data.account.saveS({
-                name: $("#account-name").attr('value'),
-                type: $("#account-type").attr("value"),
-                counterWeight: $("#account-counterWeight").attr("value")
-              }, {
-                wait: true,
-                type: args.data.account.isNew() ? "PUT" : "POST",
-                success: function() {
-                  console.log("successful save");
-                  $('#left-wrapper').scrollTo($('#accounts'), 500, {
-                    axis: 'x'
-                  });
-                  return args.data.asm.transition();
-                }
-              });
+              saveAccount = function(fdata) {
+                return args.data.account.saveS(_.extend(fdata, {
+                  name: $("#account-name").attr('value'),
+                  type: $("#account-type").attr("value"),
+                  counterWeight: $("#account-counterWeight").attr("value")
+                }), {
+                  wait: true,
+                  type: args.data.account.isNew() ? "PUT" : "POST",
+                  success: function() {
+                    console.log("successful save");
+                    $('#left-wrapper').scrollTo($('#accounts'), 500, {
+                      axis: 'x'
+                    });
+                    return args.data.asm.transition();
+                  }
+                });
+              };
+              fdata = {};
+              if (args.data.account.isNew()) {
+                $.get("/generateid", function(result, status, obj) {
+                  console.log("Generated account ID[" + result + "]");
+                  fdata.id = result;
+                  fdata.tag = "account";
+                  return saveAccount(fdata);
+                });
+              } else {
+                saveAccount(fdata);
+              }
             }
             return StateMachine.ASYNC;
           }
