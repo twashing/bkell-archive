@@ -70,6 +70,7 @@
                   type: args.data.account.isNew() ? "PUT" : "POST",
                   success: function() {
                     console.log("successful save");
+                    args.data.accountsView.collection.reset(args.data.accounts);
                     $('#left-wrapper').scrollTo($('#accounts'), 500, {
                       axis: 'x'
                     });

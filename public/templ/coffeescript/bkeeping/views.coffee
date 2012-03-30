@@ -179,6 +179,8 @@ define([], () ->
       # doing a double bind so that render has proper context. See: 
       # http://stackoverflow.com/questions/7254290/passing-context-with-bind-in-backbone-js
       this.collection.bind('reset', _.bind(this.render, this))
+      this.collection.bind('add', _.bind(this.render, this))
+      this.collection.bind('change', _.bind(this.render, this))
    
     accountRows: []
     render: () ->

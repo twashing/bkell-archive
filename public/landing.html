@@ -23,11 +23,15 @@
     <script src='/js/lib/backbone.js'></script>
     <script src='/js/lib/md5.js'></script>
     <script src='/js/lib/state-machine.js'></script>
-    <!-- %script( src="/js/lib/underscore-data.js" ) -->
     <script type='text/javascript'>
       //<![CDATA[
         $(document).ready(function() { 
           
+          /*** 
+           * a GLOBAL namespace
+           */
+          bkeeping = {}; 
+        
           /***
            * Adjust Entry panes based on right width
            ***/

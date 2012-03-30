@@ -164,7 +164,9 @@
       el: $('#accounts'),
       initialize: function(options) {
         this.collection = options.collection;
-        return this.collection.bind('reset', _.bind(this.render, this));
+        this.collection.bind('reset', _.bind(this.render, this));
+        this.collection.bind('add', _.bind(this.render, this));
+        return this.collection.bind('change', _.bind(this.render, this));
       },
       accountRows: [],
       render: function() {
