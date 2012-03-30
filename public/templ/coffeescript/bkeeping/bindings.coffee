@@ -88,6 +88,9 @@ define( [ "bkeeping/util", ], (util) ->
                                   
                                     fdata = {}
                                     if args.data.account.isNew()
+                                      
+                                      args.data.accounts.add( args.data.account )   # add to the Accounts list
+                                      
                                       $.get("/generateid", (result, status, obj) ->
                                         
                                         console.log("Generated account ID[#{result}]")

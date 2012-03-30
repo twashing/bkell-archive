@@ -79,6 +79,7 @@
               };
               fdata = {};
               if (args.data.account.isNew()) {
+                args.data.accounts.add(args.data.account);
                 $.get("/generateid", function(result, status, obj) {
                   console.log("Generated account ID[" + result + "]");
                   fdata.id = result;
