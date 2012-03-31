@@ -32,29 +32,35 @@
             });
           },
           onafterAsA: function(event, from, to, args) {
-            var account;
+            var account, binds;
             console.log('END Transition from As->A');
             account = args.data.accounts.get(args.target.dataset['aid']);
             if (!util.exists(account)) {
               account = args.data.account;
             }
-            $('#account-ok').unbind('click').bind('click', {
+            binds = {
               accounts: args.data.accounts,
               account: account,
               accountsView: args.data.accountsView,
               accountView: args.data.accountView,
               asm: args.data.asm
-            }, _.bind(args.data.asm.AAs, args.data.asm));
-            return $('#account-cancel').unbind('click').bind('click', {
-              cancel: true,
-              asm: args.data.asm
-            }, _.bind(args.data.asm.AAs, args.data.asm));
+            };
+            $('#account-ok').unbind('click').bind('click', binds, _.bind(args.data.asm.AAs, args.data.asm));
+            return $('#account-cancel').unbind('click').bind('click', _.extend({
+              cancel: true
+            }, binds), _.bind(args.data.asm.AAs, args.data.asm));
           },
           onleaveA: function(event, from, to, args) {
             var fdata, saveAccount;
             console.log('START Transition from A->As');
             if (args.data.cancel) {
               console.log("Accounts cancel");
+              args.data.accountsView.instrumentAccounts($("#accounts-table"), {
+                accounts: args.data.accounts,
+                accountsView: args.data.accountsView,
+                accountView: args.data.accountView,
+                asm: args.data.asm
+              }, args.data.asm);
               $('#left-wrapper').scrollTo($('#accounts'), 500, {
                 axis: 'x'
               });
@@ -70,6 +76,12 @@
                   type: args.data.account.isNew() ? "PUT" : "POST",
                   success: function() {
                     console.log("successful save");
+                    args.data.accountsView.instrumentAccounts($("#accounts-table"), {
+                      accounts: args.data.accounts,
+                      accountsView: args.data.accountsView,
+                      accountView: args.data.accountView,
+                      asm: args.data.asm
+                    }, args.data.asm);
                     $('#left-wrapper').scrollTo($('#accounts'), 500, {
                       axis: 'x'
                     });

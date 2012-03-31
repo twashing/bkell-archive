@@ -59,10 +59,8 @@ require( ['bkeeping/bkeeping', 'bkeeping/bindings']
         success: () ->
           
           # bind account row to the Accounts State Machine
-          _.each(accountsView['accountRows'], (ech) ->
-            ech.el
-            accountsView.instrumentAccounts(ech.el, { accounts: accounts, accountsView: accountsView, accountView: accountView, asm: asm }, asm)
-          )
+          accountsView.instrumentAccounts($("#accounts-table"), { accounts: accounts, accountsView: accountsView, accountView: accountView, asm: asm }, asm)
+          
       )
       
       ###

@@ -33,18 +33,19 @@ define( [ "bkeeping/util", ], (util) ->
                                   if(not util.exists(account))
                                     account = args.data.account
                                   
+                                  binds = { accounts: args.data.accounts, account: account, accountsView: args.data.accountsView, accountView: args.data.accountView, asm: args.data.asm }
                                   
                                   # bind actions to 'Ok' and 'Cancel' buttons
                                   $('#account-ok')
                                     .unbind('click')
                                     .bind('click',
-                                          { accounts: args.data.accounts, account: account, accountsView: args.data.accountsView, accountView: args.data.accountView, asm: args.data.asm },
+                                          binds,
                                           _.bind(args.data.asm.AAs, args.data.asm)) # transition back to Accounts pane
                                 
                                   $('#account-cancel')
                                     .unbind('click')
                                     .bind('click',
-                                          { cancel: true, asm: args.data.asm },
+                                          _.extend( { cancel: true }, binds )
                                           _.bind(args.data.asm.AAs, args.data.asm)) # transition back to Accounts pane
                                 
                                 onleaveA: (event, from, to, args) ->
@@ -53,6 +54,14 @@ define( [ "bkeeping/util", ], (util) ->
                                   if(args.data.cancel)
                                     console.log("Accounts cancel")
                                     
+                                    args.data.accountsView.instrumentAccounts($("#accounts-table"),
+                                                                              {
+                                                                                accounts: args.data.accounts,
+                                                                                accountsView: args.data.accountsView,
+                                                                                accountView: args.data.accountView,
+                                                                                asm: args.data.asm
+                                                                              },
+                                                                              args.data.asm)
                                     # 1. scroll to Accounts pane 
                                     $('#left-wrapper').scrollTo($('#accounts'), 500, { axis:'x' })
                                     
@@ -78,7 +87,14 @@ define( [ "bkeeping/util", ], (util) ->
                                                                   console.log("successful save")
                                                                   
                                                                   # 2. ensure Accounts list is updated -> list UI should be re-rendered ... "change" event should fire 
-                                                                  #args.data.accountsView.collection.trigger("change")
+                                                                  args.data.accountsView.instrumentAccounts($("#accounts-table"),
+                                                                                                            {
+                                                                                                              accounts: args.data.accounts,
+                                                                                                              accountsView: args.data.accountsView,
+                                                                                                              accountView: args.data.accountView,
+                                                                                                              asm: args.data.asm
+                                                                                                            },
+                                                                                                            args.data.asm)
                                                                   
                                                                   # 3. scroll to Accounts pane 
                                                                   $('#left-wrapper').scrollTo($('#accounts'), 500, { axis:'x' })

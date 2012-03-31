@@ -47,15 +47,12 @@
     $('#accounts').load("/include/accounts.html", function() {
       accounts.fetchS({
         success: function() {
-          return _.each(accountsView['accountRows'], function(ech) {
-            ech.el;
-            return accountsView.instrumentAccounts(ech.el, {
-              accounts: accounts,
-              accountsView: accountsView,
-              accountView: accountView,
-              asm: asm
-            }, asm);
-          });
+          return accountsView.instrumentAccounts($("#accounts-table"), {
+            accounts: accounts,
+            accountsView: accountsView,
+            accountView: accountView,
+            asm: asm
+          }, asm);
         }
       });
       /*
