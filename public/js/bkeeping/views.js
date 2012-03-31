@@ -188,9 +188,12 @@
           return ctx.accountRows.push(arow);
         });
       },
+      /*
+          # instrument Accounts pane with actions
+          */
       instrumentAccounts: function(elem, bindings, asm) {
         elem.find('.editaccount').unbind('click').bind('click', bindings, _.bind(asm.AsA, asm));
-        return $("#account-add").unbind("click").bind("click", _.extend({
+        return elem.find("#account-add").unbind("click").bind("click", _.extend({
           account: new bkeeping.models.Account()
         }, bindings), _.bind(asm.AsA, asm));
       }

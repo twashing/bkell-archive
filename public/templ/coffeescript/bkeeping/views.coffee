@@ -211,6 +211,9 @@ define( ['js/bkeeping/bkeeping'], (bkeeping) ->
           ctx.accountRows.push(arow)
         )
     
+    ###
+    # instrument Accounts pane with actions
+    ###
     instrumentAccounts: (elem, bindings, asm) ->
           
       # bind account row to the Accounts State Machine
@@ -219,7 +222,8 @@ define( ['js/bkeeping/bkeeping'], (bkeeping) ->
         .unbind('click')
         .bind(  'click', bindings, _.bind(asm.AsA, asm))  # trigger the transition when edit clicked
       
-      $("#account-add")
+      elem
+        .find("#account-add")
         .unbind("click")
         .bind("click",
               _.extend( { account: new bkeeping.models.Account() }, bindings ),

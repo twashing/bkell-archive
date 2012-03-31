@@ -37,8 +37,6 @@ define([], () ->
         return base
       return base + `(base.charAt(base.length - 1) == '/' ? '' : '/')` + encodeURIComponent(this.id)  # inlining the .JS, otherwise coffeescript does weirdness
     
-    fetchS : commonFetch
-    
     saveS : (valueMap, options) ->
       
       # assigning default success, error and options unless user passes one in
@@ -87,15 +85,6 @@ define([], () ->
       return data
   })
   
-  AbstractL = Backbone.Collection.extend({
-    
-    fetchS : commonFetch
-    
-    parse : (data) ->
-      console.log("AbstractL > parse fn CALLED")
-      return data
-  })
-  
   
   ###
   # Account & Entry
@@ -131,13 +120,17 @@ define([], () ->
   ###
   # Collections
   ###
-  Accounts = AbstractL.extend(
+  Accounts = Backbone.Collection.extend(
     url: '/accounts',
     model: Account,
+    fetchS : commonFetch
+    
   )
-  Entries = AbstractL.extend(
+  Entries = Backbone.Collection.extend(
     url: '/entries',
     model: Entry,
+    fetchS : commonFetch
+    
   )
   
   # return an object with the following object classes

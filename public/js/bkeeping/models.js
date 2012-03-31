@@ -6,7 +6,7 @@
     /*
       # Setup an Abstract Class & Collection that accepts success and error callbacks
       */
-    var AbstractK, AbstractL, Account, Accounts, Entries, Entry, commonFetch;
+    var AbstractK, Account, Accounts, Entries, Entry, commonFetch;
     commonFetch = function(options) {
       var errorC, successC;
       successC = options && options.success ? options.success : (function(model, response) {
@@ -29,7 +29,6 @@
         }
         return base + (base.charAt(base.length - 1) == '/' ? '' : '/') + encodeURIComponent(this.id);
       },
-      fetchS: commonFetch,
       saveS: function(valueMap, options) {
         var errorC, statusC, successC;
         successC = options && options.success ? options.success : (function(model, response) {
@@ -67,13 +66,6 @@
         return data;
       }
     });
-    AbstractL = Backbone.Collection.extend({
-      fetchS: commonFetch,
-      parse: function(data) {
-        console.log("AbstractL > parse fn CALLED");
-        return data;
-      }
-    });
     /*
       # Account & Entry
       */
@@ -105,13 +97,15 @@
     /*
       # Collections
       */
-    Accounts = AbstractL.extend({
+    Accounts = Backbone.Collection.extend({
       url: '/accounts',
-      model: Account
+      model: Account,
+      fetchS: commonFetch
     });
-    Entries = AbstractL.extend({
+    Entries = Backbone.Collection.extend({
       url: '/entries',
-      model: Entry
+      model: Entry,
+      fetchS: commonFetch
     });
     return {
       Account: Account,
