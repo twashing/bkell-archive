@@ -47,21 +47,15 @@
     $('#accounts').load("/include/accounts.html", function() {
       accounts.fetchS({
         success: function() {
-          _.each(accountsView['accountRows'], function(ech) {
-            return ech.el.find('.editaccount').unbind('click').bind('click', {
+          return _.each(accountsView['accountRows'], function(ech) {
+            ech.el;
+            return accountsView.instrumentAccounts(ech.el, {
               accounts: accounts,
               accountsView: accountsView,
               accountView: accountView,
               asm: asm
-            }, _.bind(asm.AsA, asm));
+            }, asm);
           });
-          return $("#account-add").unbind("click").bind("click", {
-            accounts: accounts,
-            account: new models.Account(),
-            accountsView: accountsView,
-            accountView: accountView,
-            asm: asm
-          }, _.bind(asm.AsA, asm));
         }
       });
       /*

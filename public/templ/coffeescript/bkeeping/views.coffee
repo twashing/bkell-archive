@@ -1,5 +1,5 @@
 
-define([], () ->
+define( ['js/bkeeping/bkeeping'], (bkeeping) ->
   
   
   ###
@@ -209,6 +209,21 @@ define([], () ->
           ###
           arow = new AccountRow( { el: ech } )
           ctx.accountRows.push(arow)
+        )
+    
+    instrumentAccounts: (elem, bindings, asm) ->
+          
+      # bind account row to the Accounts State Machine
+      elem
+        .find('.editaccount')
+        .unbind('click')
+        .bind(  'click', bindings, _.bind(asm.AsA, asm))  # trigger the transition when edit clicked
+      
+      $("#account-add")
+        .unbind("click")
+        .bind("click",
+              _.extend( { account: new bkeeping.models.Account() }, bindings ),
+              _.bind(asm.AsA, asm)  # trigger the transition when add clicked
         )
   )
   EntriesView = Backbone.View.extend(

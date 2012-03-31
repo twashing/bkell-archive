@@ -1,5 +1,5 @@
 (function() {
-  define([], function() {
+  define(['js/bkeeping/bkeeping'], function(bkeeping) {
     /*
       # Pure Template DIRECTIVES
       */
@@ -187,6 +187,12 @@
           });
           return ctx.accountRows.push(arow);
         });
+      },
+      instrumentAccounts: function(elem, bindings, asm) {
+        elem.find('.editaccount').unbind('click').bind('click', bindings, _.bind(asm.AsA, asm));
+        return $("#account-add").unbind("click").bind("click", _.extend({
+          account: new bkeeping.models.Account()
+        }, bindings), _.bind(asm.AsA, asm));
       }
     });
     EntriesView = Backbone.View.extend({

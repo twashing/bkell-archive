@@ -61,19 +61,8 @@ require( ['bkeeping/bkeeping', 'bkeeping/bindings']
           # bind account row to the Accounts State Machine
           _.each(accountsView['accountRows'], (ech) ->
             ech.el
-              .find('.editaccount')
-              .unbind('click')
-              .bind(  'click',
-                      { accounts: accounts, accountsView: accountsView, accountView: accountView, asm: asm },
-                      _.bind(asm.AsA, asm))  # trigger the transition when edit clicked
+            accountsView.instrumentAccounts(ech.el, { accounts: accounts, accountsView: accountsView, accountView: accountView, asm: asm }, asm)
           )
-
-          $("#account-add")
-            .unbind("click")
-            .bind("click",
-                  { accounts: accounts, account: new models.Account(), accountsView: accountsView, accountView: accountView, asm: asm },
-                  _.bind(asm.AsA, asm)  # trigger the transition when add clicked
-            )
       )
       
       ###
