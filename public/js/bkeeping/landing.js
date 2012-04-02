@@ -60,18 +60,13 @@
                         # Load Account pages
                         */
             return $('#account').load('/include/account.html', function() {
-              $('#left-col').serialScroll({
+              return $('#left-col').serialScroll({
                 target: '#left-wrapper',
                 items: '#accounts , #account',
                 duration: 500,
                 axis: 'x',
                 force: true
               });
-              /* 
-              # Simultaneous Ajax calls are mixing Accounts and Entries results. So we have to call sequentially. 
-              # ... now load the ENTRIES
-              */
-              return loadEntries();
             });
           }
         });
@@ -114,9 +109,10 @@
       });
     };
     /* 
-    # LOAD Accounts 
+    # LOAD Accounts & Entries
     */
     loadAccounts();
+    loadEntries();
     /*
         # Load Footer
         */

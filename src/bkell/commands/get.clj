@@ -37,7 +37,7 @@
 			  }
 			};")
         r   "function(k,vals) { return { result : vals } ; }"
-        result (map-reduce :bookkeeping m r :result-collection)]
+        result (map-reduce :bookkeeping m r {:inline 1})]
     
     (vec (map bkell.domain/keywordize-tags 
       (-> result first :value :result)))  ;; dig in and get the currency list 
@@ -58,7 +58,7 @@
 			  }
 			};")
         r   "function(k,vals) { return { result : vals } ; }"
-        result (map-reduce :bookkeeping m r :result-collection)]
+        result (map-reduce :bookkeeping m r {:inline 1})]
 
     (if (-> result empty? not)
       (-> result first :value bkell.domain/keywordize-tags) ;; dig in and get the currency
@@ -81,7 +81,7 @@
 			  }
 			};")
         r   "function(k,vals) { return { result : vals } ; }"
-        result (map-reduce :bookkeeping m r :result-collection)]
+        result (map-reduce :bookkeeping m r {:inline 1})]
     
     ;;(println (str "get-accounts > result[" (first result) "]"))
     (vec (map bkell.domain/keywordize-tags 
@@ -104,7 +104,7 @@
 			  }
 			};")
         r   "function(k,vals) { return { result : vals } ; }"
-        result (map-reduce :bookkeeping m r :result-collection)]
+        result (map-reduce :bookkeeping m r {:inline 1})]
     
     (if (-> result empty? not)
       (-> result first :value bkell.domain/keywordize-tags) ;; dig in and get the currency
@@ -129,7 +129,7 @@
 			  }
 			};" )
         r   "function(k,vals) { return { result : vals } ; }"
-        result (map-reduce :bookkeeping m r :result-collection)]
+        result (map-reduce :bookkeeping m r {:inline 1})]
     
     (vec (map bkell.domain/keywordize-tags 
       (-> result first :value :result)))  ;; dig in and get the currency list 
@@ -151,7 +151,7 @@
 			  }
 			};")
         r   "function(k,vals) { return { result : vals } ; }"
-        result (map-reduce :bookkeeping m r :result-collection)]
+        result (map-reduce :bookkeeping m r {:inline 1})]
 
     (if (-> result empty? not)
       (-> result first :value bkell.domain/keywordize-tags)  ;; dig in and get the account

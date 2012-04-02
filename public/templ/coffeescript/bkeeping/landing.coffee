@@ -73,12 +73,6 @@ require( ['bkeeping/bkeeping', 'bkeeping/bindings']
               # Initialize horizontal / serial scrolling 
               $('#left-col').serialScroll({ target: '#left-wrapper', items: '#accounts , #account', duration: 500, axis: 'x', force: true })
 
-
-              ### 
-              # Simultaneous Ajax calls are mixing Accounts and Entries results. So we have to call sequentially. 
-              # ... now load the ENTRIES
-              ###
-              loadEntries()
             )
         )
       )
@@ -120,9 +114,10 @@ require( ['bkeeping/bkeeping', 'bkeeping/bindings']
       )
     
     ### 
-    # LOAD Accounts 
+    # LOAD Accounts & Entries
     ###
     loadAccounts()
+    loadEntries()
     
     
     ###
