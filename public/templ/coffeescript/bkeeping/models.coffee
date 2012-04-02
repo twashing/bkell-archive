@@ -123,13 +123,41 @@ define([], () ->
   Accounts = Backbone.Collection.extend(
     url: '/accounts',
     model: Account,
-    fetchS : commonFetch
-    
+    fetchS : (options) ->
+      
+      # assigning default success, error and options unless user passes one in
+      successC = if(options && options.success) then (options.success) else ((model, response) ->
+        console.log("success [commonFetch] CALLED > model[ #{model} ] > response[ #{response} ]")
+      )
+      errorC = if(options && options.error) then (options.error) else ((model, response) ->
+        console.log("error CALLED > model["+ model +"] > response["+ response.responseText +"]")
+      )
+      
+      this.fetch( _.extend((if(options) then (options) else ({})),
+                    success : successC,
+                    error : errorC
+                  )
+      )
+       
   )
   Entries = Backbone.Collection.extend(
     url: '/entries',
     model: Entry,
-    fetchS : commonFetch
+    fetchS : (options) ->
+      
+      # assigning default success, error and options unless user passes one in
+      successC = if(options && options.success) then (options.success) else ((model, response) ->
+        console.log("success [commonFetch] CALLED > model[ #{model} ] > response[ #{response} ]")
+      )
+      errorC = if(options && options.error) then (options.error) else ((model, response) ->
+        console.log("error CALLED > model["+ model +"] > response["+ response.responseText +"]")
+      )
+      
+      this.fetch( _.extend((if(options) then (options) else ({})),
+                    success : successC,
+                    error : errorC
+                  )
+      )
     
   )
   

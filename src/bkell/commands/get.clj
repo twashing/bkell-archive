@@ -83,7 +83,7 @@
         r   "function(k,vals) { return { result : vals } ; }"
         result (map-reduce :bookkeeping m r :result-collection)]
     
-    ;;(println (str "get-accounts > result[" (first result) "]"))
+    (println (str "-- commands.get-accounts[" (first result) "]"))
     (vec (map bkell.domain/keywordize-tags 
       (-> result first :value :result)))  ;; dig in and get the currency list 
     
@@ -131,6 +131,7 @@
         r   "function(k,vals) { return { result : vals } ; }"
         result (map-reduce :bookkeeping m r :result-collection)]
     
+    (println (str "-- commands.get-entries[" (first result) "]"))
     (vec (map bkell.domain/keywordize-tags 
       (-> result first :value :result)))  ;; dig in and get the currency list 
     

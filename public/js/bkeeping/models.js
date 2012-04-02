@@ -100,12 +100,36 @@
     Accounts = Backbone.Collection.extend({
       url: '/accounts',
       model: Account,
-      fetchS: commonFetch
+      fetchS: function(options) {
+        var errorC, successC;
+        successC = options && options.success ? options.success : (function(model, response) {
+          return console.log("success [commonFetch] CALLED > model[ " + model + " ] > response[ " + response + " ]");
+        });
+        errorC = options && options.error ? options.error : (function(model, response) {
+          return console.log("error CALLED > model[" + model(+"] > response[" + response.responseText(+"]")));
+        });
+        return this.fetch(_.extend((options ? options : {}), {
+          success: successC,
+          error: errorC
+        }));
+      }
     });
     Entries = Backbone.Collection.extend({
       url: '/entries',
       model: Entry,
-      fetchS: commonFetch
+      fetchS: function(options) {
+        var errorC, successC;
+        successC = options && options.success ? options.success : (function(model, response) {
+          return console.log("success [commonFetch] CALLED > model[ " + model + " ] > response[ " + response + " ]");
+        });
+        errorC = options && options.error ? options.error : (function(model, response) {
+          return console.log("error CALLED > model[" + model(+"] > response[" + response.responseText(+"]")));
+        });
+        return this.fetch(_.extend((options ? options : {}), {
+          success: successC,
+          error: errorC
+        }));
+      }
     });
     return {
       Account: Account,
