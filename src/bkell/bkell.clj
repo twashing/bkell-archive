@@ -36,20 +36,9 @@
 (defn get [akey & etal]
   
   (let [  logged-in-user (authenticatek/logged-in-user)]
-
-    (let [result 
     (if (-> logged-in-user nil?)  ;; we want to see a logged-in-user 
       (bkell.util/generate-error-response "User is not authenticated")
-      (do 
-        ;;(println (str "-- bkell.get[" akey etal "]"))
-        ;;(eval `(getk/get ~akey ~@etal))  ;; ensure result is not nil before returning
-        (getk/get akey (first etal))  ;; ensure result is not nil before returning
-      )
-    )
-        ]
-        
-        ;;(println (str "-- bkell.get RESULT[" result "]"))
-        result
+      (eval `(getk/get ~akey ~@etal))  ;; ensure result is not nil before returning
     )
   )
 )

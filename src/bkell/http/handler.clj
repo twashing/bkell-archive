@@ -302,15 +302,8 @@
   (println (str "GET ; /accounts ; " req))
   (let [lin-user (authenticatek/logged-in-user)]
     
-    (let  [result 
     (->      ;; JSON of MongoDB WriteResult; 
       (bkell/get :accounts (:username lin-user)) (handle-errors 400) substitute-body) 
-          
-          
-          ]
-          (println (str "GET accounts result[" result "]"))
-          result
-    )
   )
 )
 (noir/defpage [ :get "/account/:id" ] { :keys [id] }
@@ -367,17 +360,8 @@
   (println (str "GET ; /entries ; " req))
   (let [lin-user (authenticatek/logged-in-user)]
     
-    (let  [result
-    
-    
     (->      ;; JSON of MongoDB WriteResult; 
       (bkell/get :entries (:username lin-user)) (handle-errors 400) substitute-body) 
-          
-          
-          ]
-          (println (str "GET entries result[" result "]"))
-          result
-    )
   )
 )
 (noir/defpage [ :get "/entry/:id" ] { :keys [id] } 

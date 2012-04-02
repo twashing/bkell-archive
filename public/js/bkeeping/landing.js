@@ -6,7 +6,7 @@
     }
   });
   require(['bkeeping/bkeeping', 'bkeeping/bindings'], function(bkeeping, bindings) {
-    var accountView, accounts, accountsView, asm, entries, entriesView, entryPartView, entryView, esm, models, views;
+    var accountView, accounts, accountsView, asm, entries, entriesView, entryPartView, entryView, esm, loadAccounts, loadEntries, models, views;
     console.log("landing LOADED / bkeeping[" + bkeeping.models + "]");
     /*
         # LIB imports 
@@ -44,64 +44,79 @@
     /*
         # Load Accounts pages
         */
-    $('#accounts').load("/include/accounts.html", function() {
-      accounts.fetchS({
-        success: function() {
-          return accountsView.instrumentAccounts($("#accounts-table"), {
-            accounts: accounts,
-            accountsView: accountsView,
-            accountView: accountView,
-            asm: asm
-          }, asm);
-        }
-      });
-      /*
-            # Load Account pages
-            */
-      return $('#account').load('/include/account.html', function() {
-        return $('#left-col').serialScroll({
-          target: '#left-wrapper',
-          items: '#accounts , #account',
-          duration: 500,
-          axis: 'x',
-          force: true
+    loadAccounts = function() {
+      return $('#accounts').load("/include/accounts.html", function() {
+        return accounts.fetchS({
+          success: function() {
+            /*
+                        # bind account row to the Accounts State Machine
+                        */            accountsView.instrumentAccounts($("#accounts-table"), {
+              accounts: accounts,
+              accountsView: accountsView,
+              accountView: accountView,
+              asm: asm
+            }, asm);
+            /*
+                        # Load Account pages
+                        */
+            return $('#account').load('/include/account.html', function() {
+              $('#left-col').serialScroll({
+                target: '#left-wrapper',
+                items: '#accounts , #account',
+                duration: 500,
+                axis: 'x',
+                force: true
+              });
+              /* 
+              # Simultaneous Ajax calls are mixing Accounts and Entries results. So we have to call sequentially. 
+              # ... now load the ENTRIES
+              */
+              return loadEntries();
+            });
+          }
         });
       });
-    });
+    };
     /*
         # Load Entry pages
         */
-    $('#entries').load("/include/entries.html", function() {
-      entries.fetchS({
-        success: function() {
-          return _.each(entriesView['entryRows'], function(ech) {
-            return ech.el.find('.editentry').unbind('click').bind('click', {
-              entries: entries,
-              entriesView: entriesView,
-              entryView: entryView,
-              entryPartView: entryPartView,
-              accounts: accounts,
-              esm: esm
-            }, _.bind(esm.EsE, esm));
-          });
-        }
-      });
-      /*
-            # Sequentially loading inner panes
-            */
-      return $('#entry').load('/include/entry.html', function() {
-        return $('#entry-part').load('/include/entryPart.html', function() {
-          $('#right-col').serialScroll({
-            target: '#right-wrapper',
-            items: '#entries , #entry, #entry-part',
-            duration: 500,
-            axis: 'x',
-            force: true
-          });
-          return adjustEntryPanes();
+    loadEntries = function() {
+      return $('#entries').load("/include/entries.html", function() {
+        return entries.fetchS({
+          success: function() {
+            _.each(entriesView['entryRows'], function(ech) {
+              return ech.el.find('.editentry').unbind('click').bind('click', {
+                entries: entries,
+                entriesView: entriesView,
+                entryView: entryView,
+                entryPartView: entryPartView,
+                accounts: accounts,
+                esm: esm
+              }, _.bind(esm.EsE, esm));
+            });
+            /*
+                        # Sequentially loading inner panes
+                        */
+            return $('#entry').load('/include/entry.html', function() {
+              return $('#entry-part').load('/include/entryPart.html', function() {
+                $('#right-col').serialScroll({
+                  target: '#right-wrapper',
+                  items: '#entries , #entry, #entry-part',
+                  duration: 500,
+                  axis: 'x',
+                  force: true
+                });
+                return adjustEntryPanes();
+              });
+            });
+          }
         });
       });
-    });
+    };
+    /* 
+    # LOAD Accounts 
+    */
+    loadAccounts();
     /*
         # Load Footer
         */

@@ -53,61 +53,76 @@ require( ['bkeeping/bkeeping', 'bkeeping/bindings']
     ###
     # Load Accounts pages
     ###
-    $('#accounts').load("/include/accounts.html", () ->
+    loadAccounts = () ->
       
-      accounts.fetchS(
-        success: () ->
-          
-          # bind account row to the Accounts State Machine
-          accountsView.instrumentAccounts($("#accounts-table"), { accounts: accounts, accountsView: accountsView, accountView: accountView, asm: asm }, asm)
-          
+      $('#accounts').load("/include/accounts.html", () ->
+        
+        accounts.fetchS(
+          success: () ->
+            
+            ###
+            # bind account row to the Accounts State Machine
+            ###
+            accountsView.instrumentAccounts($("#accounts-table"), { accounts: accounts, accountsView: accountsView, accountView: accountView, asm: asm }, asm)
+            
+            ###
+            # Load Account pages
+            ###
+            $('#account').load('/include/account.html', () ->
+            
+              # Initialize horizontal / serial scrolling 
+              $('#left-col').serialScroll({ target: '#left-wrapper', items: '#accounts , #account', duration: 500, axis: 'x', force: true })
+
+
+              ### 
+              # Simultaneous Ajax calls are mixing Accounts and Entries results. So we have to call sequentially. 
+              # ... now load the ENTRIES
+              ###
+              loadEntries()
+            )
+        )
       )
-      
-      ###
-      # Load Account pages
-      ###
-      $('#account').load('/include/account.html', () ->
-      
-        # Initialize horizontal / serial scrolling 
-        $('#left-col').serialScroll({ target: '#left-wrapper', items: '#accounts , #account', duration: 500, axis: 'x', force: true })
-      )
-    )
     
     
     ###
     # Load Entry pages
     ###
-    $('#entries').load("/include/entries.html", () ->
-      entries.fetchS(
-        success: () ->
-          
-          # bind account row to the Accounts State Machine
-          _.each(entriesView['entryRows'], (ech) ->
-            ech.el
-              .find('.editentry')
-              .unbind('click')
-              .bind(  'click',
-                      { entries: entries, entriesView: entriesView, entryView: entryView, entryPartView: entryPartView, accounts: accounts, esm: esm },
-                      _.bind(esm.EsE, esm))  # trigger the transition when edit clicked
-          )
-      )
-      
-      
-      ###
-      # Sequentially loading inner panes
-      ###
-      $('#entry').load('/include/entry.html', () ->
-      
-        $('#entry-part').load('/include/entryPart.html', () ->
-        
-          # Initialize horizontal / serial scrolling 
-          $('#right-col').serialScroll({ target: '#right-wrapper', items: '#entries , #entry, #entry-part', duration: 500, axis: 'x', force: true })
-          
-          # set adjustible entry panes > parent width, minus the left pane
-          adjustEntryPanes()
+    loadEntries = () ->
+      $('#entries').load("/include/entries.html", () ->
+        entries.fetchS(
+          success: () ->
+            
+            # bind account row to the Accounts State Machine
+            _.each(entriesView['entryRows'], (ech) ->
+              ech.el
+                .find('.editentry')
+                .unbind('click')
+                .bind(  'click',
+                        { entries: entries, entriesView: entriesView, entryView: entryView, entryPartView: entryPartView, accounts: accounts, esm: esm },
+                        _.bind(esm.EsE, esm))  # trigger the transition when edit clicked
+            )
+  
+            ###
+            # Sequentially loading inner panes
+            ###
+            $('#entry').load('/include/entry.html', () ->
+            
+              $('#entry-part').load('/include/entryPart.html', () ->
+              
+                # Initialize horizontal / serial scrolling 
+                $('#right-col').serialScroll({ target: '#right-wrapper', items: '#entries , #entry, #entry-part', duration: 500, axis: 'x', force: true })
+                
+                # set adjustible entry panes > parent width, minus the left pane
+                adjustEntryPanes()
+              )
+            )
         )
       )
-    )
+    
+    ### 
+    # LOAD Accounts 
+    ###
+    loadAccounts()
     
     
     ###
