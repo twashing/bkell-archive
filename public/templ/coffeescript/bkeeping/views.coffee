@@ -234,8 +234,12 @@ define( ['js/bkeeping/bkeeping'], (bkeeping) ->
     
     el: $('#entries')
     initialize : (options) ->
+    
       this.collection = options.collection
+      
       this.collection.bind('reset', _.bind(this.render, this))
+      this.collection.bind('add', _.bind(this.render, this))
+      this.collection.bind('change', _.bind(this.render, this))
     
     entryRows: []
     render: () ->
@@ -258,6 +262,20 @@ define( ['js/bkeeping/bkeeping'], (bkeeping) ->
           ctx.entryRows.push(arow)
         )
            
+    instrumentEntries: (elem, bindings, esm) ->
+        
+      elem
+        .find('.editentry')
+        .unbind('click')
+        .bind(  'click',
+                bindings,
+                _.bind(esm.EsE, esm))  # trigger the transition when edit clicked
+      elem
+        .find('#entry-add')
+        .unbind('click')
+        .bind(  'click',
+                _.extend( { entry: new bkeeping.models.Entry() }, bindings ),
+                _.bind(esm.EsE, esm))  # trigger the transition when add clicked
   )
   
   ###

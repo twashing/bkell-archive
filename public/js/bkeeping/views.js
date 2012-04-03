@@ -202,7 +202,9 @@
       el: $('#entries'),
       initialize: function(options) {
         this.collection = options.collection;
-        return this.collection.bind('reset', _.bind(this.render, this));
+        this.collection.bind('reset', _.bind(this.render, this));
+        this.collection.bind('add', _.bind(this.render, this));
+        return this.collection.bind('change', _.bind(this.render, this));
       },
       entryRows: [],
       render: function() {
@@ -221,6 +223,12 @@
           });
           return ctx.entryRows.push(arow);
         });
+      },
+      instrumentEntries: function(elem, bindings, esm) {
+        elem.find('.editentry').unbind('click').bind('click', bindings, _.bind(esm.EsE, esm));
+        return elem.find('#entry-add').unbind('click').bind('click', _.extend({
+          entry: new bkeeping.models.Entry()
+        }, bindings), _.bind(esm.EsE, esm));
       }
     });
     return {

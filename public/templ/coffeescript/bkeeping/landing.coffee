@@ -86,16 +86,20 @@ require( ['bkeeping/bkeeping', 'bkeeping/bindings']
         entries.fetchS(
           success: () ->
             
-            # bind account row to the Accounts State Machine
-            _.each(entriesView['entryRows'], (ech) ->
-              ech.el
-                .find('.editentry')
-                .unbind('click')
-                .bind(  'click',
-                        { entries: entries, entriesView: entriesView, entryView: entryView, entryPartView: entryPartView, accounts: accounts, esm: esm },
-                        _.bind(esm.EsE, esm))  # trigger the transition when edit clicked
-            )
-  
+            ###
+            # bind entry row to the Entries State Machine
+            ###
+            entriesView.instrumentEntries($("#entries-table"),
+                                          {
+                                            entries: entries,
+                                            entriesView: entriesView,
+                                            entryView: entryView,
+                                            entryPartView: entryPartView,
+                                            accounts: accounts,
+                                            esm: esm
+                                          },
+                                          esm)
+            
             ###
             # Sequentially loading inner panes
             ###

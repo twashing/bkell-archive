@@ -189,7 +189,6 @@ define( [ "bkeeping/util", ], (util) ->
                                 onbeforeEsE: (event, from, to, args) ->
                                   console.log('START Transition from Es->E')
                                   
-                                  
                                   ###
                                   # render Entry Pane
                                   ###
@@ -216,7 +215,7 @@ define( [ "bkeeping/util", ], (util) ->
                                     entryPartView: args.data.entryPartView,
                                     entries: args.data.entries,
                                     accounts: args.data.accounts,
-                                    entry : args.data.entries.get( args.target.dataset['eid'] ),
+                                    entry : args.data.entries.get( args.target.dataset['eid'] ),  # ... new entry insertion point
                                     esm: args.data.esm
                                   })
                                 
@@ -356,7 +355,6 @@ define( [ "bkeeping/util", ], (util) ->
                                       
                             }
   )
-
 )
 
 

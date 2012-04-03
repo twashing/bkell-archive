@@ -79,16 +79,16 @@
       return $('#entries').load("/include/entries.html", function() {
         return entries.fetchS({
           success: function() {
-            _.each(entriesView['entryRows'], function(ech) {
-              return ech.el.find('.editentry').unbind('click').bind('click', {
-                entries: entries,
-                entriesView: entriesView,
-                entryView: entryView,
-                entryPartView: entryPartView,
-                accounts: accounts,
-                esm: esm
-              }, _.bind(esm.EsE, esm));
-            });
+            /*
+                        # bind entry row to the Entries State Machine
+                        */            entriesView.instrumentEntries($("#entries-table"), {
+              entries: entries,
+              entriesView: entriesView,
+              entryView: entryView,
+              entryPartView: entryPartView,
+              accounts: accounts,
+              esm: esm
+            }, esm);
             /*
                         # Sequentially loading inner panes
                         */
