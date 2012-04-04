@@ -134,52 +134,6 @@ define( [ "bkeeping/util", ], (util) ->
                               
                               callbacks:
                                 
-                                commonEntryRender: (options) ->
-                                  console.log('commonEntryRender CALLED')
-                                  
-                                  ###
-                                  # load the UI 
-                                  ###
-                                  _.extend(options.entry, Backbone.Events)
-                                  options.entry.unbind('change')
-                                  options.entry.bind('change', options.entryView.render, { model: options.entry, view: options.entryView })  # bind Backbone event
-                                  options.entry.trigger('change')   # this should trigger the entryView to render
-                                  
-                                  
-                                commonEntryInstrument: (options) ->
-                                  console.log('commonEntryInstrument CALLED')
-                                  
-                                  bindObjects = {
-                                    entriesView: options.entriesView,
-                                    entryView: options.entryView,
-                                    entryPartView: options.entryPartView,
-                                    entries: options.entries,
-                                    accounts: options.accounts,
-                                    entry : options.entry,
-                                    esm: options.esm
-                                  }
-                                  
-                                  # i. handle edit CLICKs and ii. bind entry row to the Entries State Machine
-                                  $(options.entryView.el)
-                                    .find('.editentrypart')
-                                    .unbind('click')
-                                    .bind(  'click',
-                                            bindObjects,
-                                            _.bind(options.esm.EEpart, options.esm))  # trigger the transition when edit clicked
-                                  
-                                  # bind actions to 'Ok' and 'Cancel' buttons
-                                  $('#entry-ok')
-                                    .unbind('click')
-                                    .bind('click',
-                                          _.extend( { ok: true }, bindObjects ),
-                                          _.bind(options.esm.EEs, options.esm)) # transition back to Accounts pane
-                                   
-                                  $('#entry-cancel')
-                                    .unbind('click')
-                                    .bind('click',
-                                          _.extend( { cancel: true }, bindObjects ),
-                                          _.bind(options.esm.EEs, options.esm)) # transition back to Accounts pane
-                                
                                 
                                 # EVENT callbacks from Entries, and from Entry
                                 
@@ -192,7 +146,7 @@ define( [ "bkeeping/util", ], (util) ->
                                   ###
                                   # render Entry Pane
                                   ###
-                                  this.commonEntryRender({
+                                  args.data.entryView.renderEntry({
                                     entry: if args.data.entry then args.data.entry else args.data.entries.get( args.target.dataset['eid'] )
                                     entryView: args.data.entryView
                                   })
@@ -209,7 +163,7 @@ define( [ "bkeeping/util", ], (util) ->
                                   ###
                                   # instrument the Entry Pane
                                   ###
-                                  this.commonEntryInstrument({
+                                  args.data.entryView.instrumentEntry({
                                     entriesView: args.data.entriesView,
                                     entryView: args.data.entryView,
                                     entryPartView: args.data.entryPartView,
@@ -291,13 +245,13 @@ define( [ "bkeeping/util", ], (util) ->
                                     )
                                   
                                   # 2. render Entry Pane
-                                  this.commonEntryRender({
+                                  args.data.entryView.renderEntry({
                                     entry: args.data.entry,
                                     entryView: args.data.entryView
                                   })
                                   
                                   # 3. render entry pane
-                                  this.commonEntryInstrument({
+                                  args.data.entryView.instrumentEntry({
                                     entriesView: args.data.entriesView,
                                     entryView: args.data.entryView,
                                     entryPartView: args.data.entryPartView,
@@ -357,6 +311,7 @@ define( [ "bkeeping/util", ], (util) ->
                                             
                                             console.log("success on CUSTOM Entry CALLED > model[ #{model} ] > response[ #{response} ]")
                                             
+                                            # re-instrument Entries pane
                                             args.data.entriesView.instrumentEntries(
                                               $("#entries-table"),
                                               {
@@ -401,7 +356,7 @@ define( [ "bkeeping/util", ], (util) ->
                                       ###
                                       return StateMachine.ASYNC; # tell StateMachine to defer next state until we call transition (in fadeOut callback above)
                                     
-                                    else    # entry doesn't balance
+                                    else    # entry doesn't BALANCE
                                       
                                       # 3. shake to notify user of imbalance error 
                                       # http://docs.jquery.com/UI/Effects/Shake

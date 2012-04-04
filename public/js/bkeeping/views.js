@@ -100,6 +100,39 @@
         return $(".entry_container").render({
           puredata: this.model.get('content')
         }, pureDirectives.entryDirective);
+      },
+      renderEntry: function(options) {
+        console.log('commonEntryRender CALLED');
+        /*
+              # load the UI 
+              */
+        _.extend(options.entry, Backbone.Events);
+        options.entry.unbind('change');
+        options.entry.bind('change', options.entryView.render, {
+          model: options.entry,
+          view: options.entryView
+        });
+        return options.entry.trigger('change');
+      },
+      instrumentEntry: function(options) {
+        var bindObjects;
+        console.log('instrumentEntry CALLED');
+        bindObjects = {
+          entriesView: options.entriesView,
+          entryView: options.entryView,
+          entryPartView: options.entryPartView,
+          entries: options.entries,
+          accounts: options.accounts,
+          entry: options.entry,
+          esm: options.esm
+        };
+        $(options.entryView.el).find('.editentrypart').unbind('click').bind('click', bindObjects, _.bind(options.esm.EEpart, options.esm));
+        $('#entry-ok').unbind('click').bind('click', _.extend({
+          ok: true
+        }, bindObjects), _.bind(options.esm.EEs, options.esm));
+        return $('#entry-cancel').unbind('click').bind('click', _.extend({
+          cancel: true
+        }, bindObjects), _.bind(options.esm.EEs, options.esm));
       }
     });
     EntryPartView = Backbone.View.extend({

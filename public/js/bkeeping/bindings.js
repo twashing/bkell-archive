@@ -128,39 +128,6 @@
           }
         ],
         callbacks: {
-          commonEntryRender: function(options) {
-            console.log('commonEntryRender CALLED');
-            /*
-                                              # load the UI 
-                                              */
-            _.extend(options.entry, Backbone.Events);
-            options.entry.unbind('change');
-            options.entry.bind('change', options.entryView.render, {
-              model: options.entry,
-              view: options.entryView
-            });
-            return options.entry.trigger('change');
-          },
-          commonEntryInstrument: function(options) {
-            var bindObjects;
-            console.log('commonEntryInstrument CALLED');
-            bindObjects = {
-              entriesView: options.entriesView,
-              entryView: options.entryView,
-              entryPartView: options.entryPartView,
-              entries: options.entries,
-              accounts: options.accounts,
-              entry: options.entry,
-              esm: options.esm
-            };
-            $(options.entryView.el).find('.editentrypart').unbind('click').bind('click', bindObjects, _.bind(options.esm.EEpart, options.esm));
-            $('#entry-ok').unbind('click').bind('click', _.extend({
-              ok: true
-            }, bindObjects), _.bind(options.esm.EEs, options.esm));
-            return $('#entry-cancel').unbind('click').bind('click', _.extend({
-              cancel: true
-            }, bindObjects), _.bind(options.esm.EEs, options.esm));
-          },
           /* 
           # PART 1
           */
@@ -169,7 +136,7 @@
             /*
                                               # render Entry Pane
                                               */
-            this.commonEntryRender({
+            args.data.entryView.renderEntry({
               entry: args.data.entry ? args.data.entry : args.data.entries.get(args.target.dataset['eid']),
               entryView: args.data.entryView
             });
@@ -185,7 +152,7 @@
             /*
                                               # instrument the Entry Pane
                                               */
-            return this.commonEntryInstrument({
+            return args.data.entryView.instrumentEntry({
               entriesView: args.data.entriesView,
               entryView: args.data.entryView,
               entryPartView: args.data.entryPartView,
@@ -253,11 +220,11 @@
                 }
               });
             }
-            this.commonEntryRender({
+            args.data.entryView.renderEntry({
               entry: args.data.entry,
               entryView: args.data.entryView
             });
-            this.commonEntryInstrument({
+            args.data.entryView.instrumentEntry({
               entriesView: args.data.entriesView,
               entryView: args.data.entryView,
               entryPartView: args.data.entryPartView,

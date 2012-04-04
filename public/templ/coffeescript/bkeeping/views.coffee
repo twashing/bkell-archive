@@ -103,6 +103,52 @@ define( ['js/bkeeping/bkeeping'], (bkeeping) ->
       $(".entry_container")
         .render( { puredata : this.model.get('content') } , pureDirectives.entryDirective )
       
+    renderEntry: (options) ->
+      console.log('commonEntryRender CALLED')
+      
+      ###
+      # load the UI 
+      ###
+      _.extend(options.entry, Backbone.Events)
+      options.entry.unbind('change')
+      options.entry.bind('change', options.entryView.render, { model: options.entry, view: options.entryView })  # bind Backbone event
+      options.entry.trigger('change')   # this should trigger the entryView to render
+                                  
+    instrumentEntry: (options) ->
+      
+      console.log('instrumentEntry CALLED')
+      
+      bindObjects = {
+        entriesView: options.entriesView,
+        entryView: options.entryView,
+        entryPartView: options.entryPartView,
+        entries: options.entries,
+        accounts: options.accounts,
+        entry : options.entry,
+        esm: options.esm
+      }
+      
+      # i. handle edit CLICKs and ii. bind entry row to the Entries State Machine
+      $(options.entryView.el)
+        .find('.editentrypart')
+        .unbind('click')
+        .bind(  'click',
+                bindObjects,
+                _.bind(options.esm.EEpart, options.esm))  # trigger the transition when edit clicked
+      
+      # bind actions to 'Ok' and 'Cancel' buttons
+      $('#entry-ok')
+        .unbind('click')
+        .bind('click',
+              _.extend( { ok: true }, bindObjects ),
+              _.bind(options.esm.EEs, options.esm)) # transition back to Accounts pane
+       
+      $('#entry-cancel')
+        .unbind('click')
+        .bind('click',
+              _.extend( { cancel: true }, bindObjects ),
+              _.bind(options.esm.EEs, options.esm)) # transition back to Accounts pane
+                                
   })
   EntryPartView = Backbone.View.extend({
     
