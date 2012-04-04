@@ -193,7 +193,7 @@ define( [ "bkeeping/util", ], (util) ->
                                   # render Entry Pane
                                   ###
                                   this.commonEntryRender({
-                                    entry: args.data.entries.get( args.target.dataset['eid'] )
+                                    entry: if args.data.entry then args.data.entry else args.data.entries.get( args.target.dataset['eid'] )
                                     entryView: args.data.entryView
                                   })
                                   
@@ -215,7 +215,7 @@ define( [ "bkeeping/util", ], (util) ->
                                     entryPartView: args.data.entryPartView,
                                     entries: args.data.entries,
                                     accounts: args.data.accounts,
-                                    entry : args.data.entries.get( args.target.dataset['eid'] ),  # ... new entry insertion point
+                                    entry: if args.data.entry then args.data.entry else args.data.entries.get( args.target.dataset['eid'] )
                                     esm: args.data.esm
                                   })
                                 
@@ -332,18 +332,49 @@ define( [ "bkeeping/util", ], (util) ->
                                     
                                     if(bal.balances)
                                       
-                                      # 2. update entry 
-                                      args.data.entry.saveS( {}, {success: (model, response) ->
-                                      
-                                        console.log("success on CUSTOM Entry CALLED > model[ #{model} ] > response[ #{response} ]")
+                                      ###
+                                      # common saveEntry function
+                                      ###
+                                      saveEntry = (fdata) ->
                                         
-                                        # 3. scroll to Accounts pane 
-                                        $('#right-wrapper').scrollTo($('#entries'), 500, { axis:'x' })
-                                        args.data.esm.transition() # now fire off the transition 
-                                      })
-                                      return StateMachine.ASYNC; # tell StateMachine to defer next state until we call transition (in fadeOut callback above)
+                                        args.data.entry.saveS( fdata, {
+                                          wait: true,
+                                          type: if args.data.entry.isNew() then "PUT" else "POST",
+                                          success: (model, response) ->
+                                            
+                                            console.log("success on CUSTOM Entry CALLED > model[ #{model} ] > response[ #{response} ]")
+                                            
+                                            # 3. scroll to Accounts pane 
+                                            $('#right-wrapper').scrollTo($('#entries'), 500, { axis:'x' })
+                                            args.data.esm.transition() # now fire off the transition 
+                                        })
                                       
-                                    else
+                                      ###
+                                      # 2. update entry 
+                                      ###
+                                      fdata = {}
+                                      if args.data.entry.isNew()
+                                        
+                                        args.data.entries.add( args.data.entry )   # add to the Accounts list
+                                        
+                                        $.get("/generateid", (result, status, obj) ->
+                                          
+                                          console.log("Generated entry ID[#{result}]")
+                                          fdata.id = result
+                                          fdata.tag = "entry"
+                                          fdata.date = new Date(Date.now()).toString()
+                                          
+                                          saveEntry(fdata)
+                                        )
+                                      else
+                                        saveEntry(fdata)
+                                      
+                                      ###
+                                      # last statement in IF block
+                                      ###
+                                      return StateMachine.ASYNC; # tell StateMachine to defer next state until we call transition (in fadeOut callback above)
+                                    
+                                    else    # entry doesn't balance
                                       
                                       # 3. shake to notify user of imbalance error 
                                       # http://docs.jquery.com/UI/Effects/Shake

@@ -170,7 +170,7 @@
                                               # render Entry Pane
                                               */
             this.commonEntryRender({
-              entry: args.data.entries.get(args.target.dataset['eid']),
+              entry: args.data.entry ? args.data.entry : args.data.entries.get(args.target.dataset['eid']),
               entryView: args.data.entryView
             });
             /*
@@ -191,7 +191,7 @@
               entryPartView: args.data.entryPartView,
               entries: args.data.entries,
               accounts: args.data.accounts,
-              entry: args.data.entries.get(args.target.dataset['eid']),
+              entry: args.data.entry ? args.data.entry : args.data.entries.get(args.target.dataset['eid']),
               esm: args.data.esm
             });
           },
@@ -271,7 +271,7 @@
             });
           },
           onleaveE: function(event, from, to, args) {
-            var bal;
+            var bal, fdata, saveEntry;
             if (args.data.cancel) {
               console.log("START Transition from E->Es > Entriess cancel");
               return $('#right-wrapper').scrollTo($('#entries'), 500, {
@@ -282,15 +282,41 @@
               bal = args.data.entry.balances(args.data.accounts);
               console.log("entry balances? [" + bal + "]");
               if (bal.balances) {
-                args.data.entry.saveS({}, {
-                  success: function(model, response) {
-                    console.log("success on CUSTOM Entry CALLED > model[ " + model + " ] > response[ " + response + " ]");
-                    $('#right-wrapper').scrollTo($('#entries'), 500, {
-                      axis: 'x'
-                    });
-                    return args.data.esm.transition();
-                  }
-                });
+                /*
+                                                      # common saveEntry function
+                                                      */
+                saveEntry = function(fdata) {
+                  return args.data.entry.saveS(fdata, {
+                    wait: true,
+                    type: args.data.entry.isNew() ? "PUT" : "POST",
+                    success: function(model, response) {
+                      console.log("success on CUSTOM Entry CALLED > model[ " + model + " ] > response[ " + response + " ]");
+                      $('#right-wrapper').scrollTo($('#entries'), 500, {
+                        axis: 'x'
+                      });
+                      return args.data.esm.transition();
+                    }
+                  });
+                };
+                /*
+                                                      # 2. update entry 
+                                                      */
+                fdata = {};
+                if (args.data.entry.isNew()) {
+                  args.data.entries.add(args.data.entry);
+                  $.get("/generateid", function(result, status, obj) {
+                    console.log("Generated entry ID[" + result + "]");
+                    fdata.id = result;
+                    fdata.tag = "entry";
+                    fdata.date = new Date(Date.now()).toString();
+                    return saveEntry(fdata);
+                  });
+                } else {
+                  saveEntry(fdata);
+                }
+                /*
+                                                      # last statement in IF block
+                                                      */
                 return StateMachine.ASYNC;
               } else {
                 $(".entry_content > table").effect("shake", {
