@@ -208,10 +208,12 @@
       },
       entryRows: [],
       render: function() {
-        var ctx;
+        var ctx, template;
         console.log("EntriesView.render CALLED");
+        template = $("<table id='entries-table'> <thead> <tr> <th></th> <th>Date</th> <th>Name</th> <th>Balance</th> <th></th> </tr> </thead> <tbody> <tr> <td> <a class='editentry' href='#'>edit</a> </td> <td class='date'>My Date</td> <td class='name'>My Name</td> <td class='balance'>My Balance</td> <td> <a class='deleteentry' href='#'>delete</a> </td> </tr> </tbody> <tfoot> <tr> <td> <input id='entry-add' type='button' value='Add' /> </td> <td>&nbsp;</td> <td>&nbsp;</td> <td>&nbsp;</td> <td>&nbsp;</td> </tr> </tfoot> </table>");
+        $("#entries-pane > .entries_container > .entry_content > .dataTables_wrapper").empty().append(template);
         ctx = this;
-        return this.el.render({
+        return $("#entries").render({
           puredata: this.collection.toJSON()
         }, pureDirectives.entriesDirective).find('table').dataTable().find('tbody > tr').each(function(index, ech) {
           /*

@@ -303,7 +303,9 @@
                                                       */
                 fdata = {};
                 if (args.data.entry.isNew()) {
-                  args.data.entries.add(args.data.entry);
+                  args.data.entries.add(args.data.entry, {
+                    at: 0
+                  });
                   $.get("/generateid", function(result, status, obj) {
                     console.log("Generated entry ID[" + result + "]");
                     fdata.id = result;

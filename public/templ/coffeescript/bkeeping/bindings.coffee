@@ -355,7 +355,7 @@ define( [ "bkeeping/util", ], (util) ->
                                       fdata = {}
                                       if args.data.entry.isNew()
                                         
-                                        args.data.entries.add( args.data.entry )   # add to the Accounts list
+                                        args.data.entries.add( args.data.entry, { at: 0 } )   # add to the Accounts list
                                         
                                         $.get("/generateid", (result, status, obj) ->
                                           
