@@ -274,6 +274,14 @@
             var bal, fdata, saveEntry;
             if (args.data.cancel) {
               console.log("START Transition from E->Es > Entriess cancel");
+              args.data.entriesView.instrumentEntries($("#entries-table"), {
+                entries: args.data.entries,
+                entriesView: args.data.entriesView,
+                entryView: args.data.entryView,
+                entryPartView: args.data.entryPartView,
+                accounts: args.data.accounts,
+                esm: args.data.esm
+              }, args.data.esm);
               return $('#right-wrapper').scrollTo($('#entries'), 500, {
                 axis: 'x'
               });
@@ -291,6 +299,14 @@
                     type: args.data.entry.isNew() ? "PUT" : "POST",
                     success: function(model, response) {
                       console.log("success on CUSTOM Entry CALLED > model[ " + model + " ] > response[ " + response + " ]");
+                      args.data.entriesView.instrumentEntries($("#entries-table"), {
+                        entries: args.data.entries,
+                        entriesView: args.data.entriesView,
+                        entryView: args.data.entryView,
+                        entryPartView: args.data.entryPartView,
+                        accounts: args.data.accounts,
+                        esm: args.data.esm
+                      }, args.data.esm);
                       $('#right-wrapper').scrollTo($('#entries'), 500, {
                         axis: 'x'
                       });

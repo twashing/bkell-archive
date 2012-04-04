@@ -317,6 +317,19 @@ define( [ "bkeeping/util", ], (util) ->
                                     
                                     console.log("START Transition from E->Es > Entriess cancel")
                                     
+                                    args.data.entriesView.instrumentEntries(
+                                      $("#entries-table"),
+                                      {
+                                        entries: args.data.entries,
+                                        entriesView: args.data.entriesView,
+                                        entryView: args.data.entryView,
+                                        entryPartView: args.data.entryPartView,
+                                        accounts: args.data.accounts,
+                                        esm: args.data.esm
+                                      },
+                                      args.data.esm
+                                    )
+                                    
                                     # 1. scroll to Accounts pane 
                                     $('#right-wrapper').scrollTo($('#entries'), 500, { axis:'x' })
                                     
@@ -344,8 +357,22 @@ define( [ "bkeeping/util", ], (util) ->
                                             
                                             console.log("success on CUSTOM Entry CALLED > model[ #{model} ] > response[ #{response} ]")
                                             
+                                            args.data.entriesView.instrumentEntries(
+                                              $("#entries-table"),
+                                              {
+                                                entries: args.data.entries,
+                                                entriesView: args.data.entriesView,
+                                                entryView: args.data.entryView,
+                                                entryPartView: args.data.entryPartView,
+                                                accounts: args.data.accounts,
+                                                esm: args.data.esm
+                                              },
+                                              args.data.esm
+                                            )
+                                            
                                             # 3. scroll to Accounts pane 
                                             $('#right-wrapper').scrollTo($('#entries'), 500, { axis:'x' })
+                                            
                                             args.data.esm.transition() # now fire off the transition 
                                         })
                                       
