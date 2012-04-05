@@ -209,6 +209,10 @@
                                           */
           onleaveEpart: function(event, from, to, args) {
             console.log('START Transition from Epart->E');
+            /*
+                                              # this is cause a circular JSON error - unbind
+                                              */
+            args.data.epart.unbind("change");
             if (args.data.ok) {
               console.log("#entry-part > ok clicked");
               args.data.epart.accountid = $("#entry-part-account").val();
@@ -297,7 +301,7 @@
                     return saveEntry(fdata);
                   });
                 } else {
-                  saveEntry(fdata);
+                  saveEntry(args.data.entry.toJSON());
                 }
                 /*
                                                       # last statement in IF block

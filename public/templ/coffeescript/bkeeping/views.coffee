@@ -110,9 +110,10 @@ define( ['js/bkeeping/bkeeping'], (bkeeping) ->
       # load the UI 
       ###
       _.extend(options.entry, Backbone.Events)
-      options.entry.unbind('change')
-      options.entry.bind('change', options.entryView.render, { model: options.entry, view: options.entryView })  # bind Backbone event
-      options.entry.trigger('change')   # this should trigger the entryView to render
+      options.entry
+        .unbind('change')
+        .bind('change', options.entryView.render, { model: options.entry, view: options.entryView })  # bind Backbone event
+        .trigger('change')   # this should trigger the entryView to render
                                   
     instrumentEntry: (options) ->
       

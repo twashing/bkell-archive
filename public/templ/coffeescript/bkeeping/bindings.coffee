@@ -231,6 +231,12 @@ define( [ "bkeeping/util", ], (util) ->
                                   
                                   console.log('START Transition from Epart->E')
                                   
+                                  ###
+                                  # this is cause a circular JSON error - unbind
+                                  ###
+                                  args.data.epart.unbind("change")
+                                  
+                                  
                                   if(args.data.ok)
                                     
                                     # 1. update the model inline 
@@ -349,7 +355,7 @@ define( [ "bkeeping/util", ], (util) ->
                                           saveEntry(fdata)
                                         )
                                       else
-                                        saveEntry(fdata)
+                                        saveEntry(args.data.entry.toJSON())
                                       
                                       ###
                                       # last statement in IF block
