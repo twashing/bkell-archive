@@ -182,9 +182,13 @@ define( [ "bkeeping/util", ], (util) ->
                                   
                                   # 1. create / edit an entry part
                                   # 2. load the UI 
-                                  epart = _.find(args.data.entry.get('content'), (ech) -> return ech.id == args.target.dataset['eid'] )
-                                  _.extend(epart, Backbone.Events)
+                                  epart = null
+                                  if args.target.dataset['eid']   # edit 
+                                    epart = _.find(args.data.entry.get('content'), (ech) -> return ech.id == args.target.dataset['eid'] )
+                                  else  # otherwise, new
+                                    epart = args.data.epart
                                   
+                                  _.extend(epart, Backbone.Events)
                                   epart
                                     .unbind('change')
                                     .bind('change', args.data.entryPartView.render, { model: epart, view: args.data.entryPartView, accounts: args.data.accounts });  # bind Backbone event
@@ -196,15 +200,23 @@ define( [ "bkeeping/util", ], (util) ->
                                 
                                 
                                 onafterEEpart: (event, from, to, args) ->
+                                  
                                   console.log('END Transition from E->Epart')
-
+                                  
+                                  epart = null
+                                  if args.target.dataset['eid']   # edit 
+                                    epart = _.find(args.data.entry.get('content'), (ech) -> return ech.id == args.target.dataset['eid'] )
+                                  else  # otherwise, new
+                                    epart = args.data.epart
+                                  
+                                  _.extend(epart, Backbone.Events)
                                   bindObjects = {
                                     entriesView: args.data.entriesView,
                                     entryView: args.data.entryView,
                                     entryPartView: args.data.entryPartView,
                                     entries: args.data.entries,
                                     entry : args.data.entry,
-                                    epart : _.find(args.data.entry.get('content'), (ech) -> return ech.id == args.target.dataset['eid'] )
+                                    epart : epart
                                     accounts: args.data.accounts,
                                     esm: args.data.esm
                                   }
@@ -245,10 +257,12 @@ define( [ "bkeeping/util", ], (util) ->
                                     args.data.epart.accountid = $("#entry-part-account").val()
                                     args.data.epart.amount = parseFloat($("#entry-part-amount").val())
                                     args.data.epart.tag = $("#entry-part-type").val()
-
-                                    _.map(args.data.entry.get("contents"), (ech) ->
-                                      ech = args.data.epart if ech.id == args.data.epart.id
+                                    
+                                    isNew = not _.any(args.data.entry.get("content"), (ech) ->
+                                      ech.id == args.data.epart.id
                                     )
+
+                                    if isNew then args.data.entry.get("content").push(args.data.epart)
                                   
                                   # 2. render Entry Pane
                                   args.data.entryView.renderEntry({
@@ -351,6 +365,7 @@ define( [ "bkeeping/util", ], (util) ->
                                           fdata.id = result
                                           fdata.tag = "entry"
                                           fdata.date = new Date(Date.now()).toString()
+                                          fdata.content = []
                                           
                                           saveEntry(fdata)
                                         )

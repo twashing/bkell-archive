@@ -168,9 +168,14 @@
           onbeforeEEpart: function(event, from, to, args) {
             var epart;
             console.log('START Transition from E->Epart');
-            epart = _.find(args.data.entry.get('content'), function(ech) {
-              return ech.id === args.target.dataset['eid'];
-            });
+            epart = null;
+            if (args.target.dataset['eid']) {
+              epart = _.find(args.data.entry.get('content'), function(ech) {
+                return ech.id === args.target.dataset['eid'];
+              });
+            } else {
+              epart = args.data.epart;
+            }
             _.extend(epart, Backbone.Events);
             epart.unbind('change').bind('change', args.data.entryPartView.render, {
               model: epart,
@@ -183,17 +188,24 @@
             });
           },
           onafterEEpart: function(event, from, to, args) {
-            var bindObjects;
+            var bindObjects, epart;
             console.log('END Transition from E->Epart');
+            epart = null;
+            if (args.target.dataset['eid']) {
+              epart = _.find(args.data.entry.get('content'), function(ech) {
+                return ech.id === args.target.dataset['eid'];
+              });
+            } else {
+              epart = args.data.epart;
+            }
+            _.extend(epart, Backbone.Events);
             bindObjects = {
               entriesView: args.data.entriesView,
               entryView: args.data.entryView,
               entryPartView: args.data.entryPartView,
               entries: args.data.entries,
               entry: args.data.entry,
-              epart: _.find(args.data.entry.get('content'), function(ech) {
-                return ech.id === args.target.dataset['eid'];
-              }),
+              epart: epart,
               accounts: args.data.accounts,
               esm: args.data.esm
             };
@@ -208,6 +220,7 @@
                                           # BACK > STATE callbacks from EntryPart, and from Entry
                                           */
           onleaveEpart: function(event, from, to, args) {
+            var isNew;
             console.log('START Transition from Epart->E');
             /*
                                               # this is cause a circular JSON error - unbind
@@ -218,11 +231,12 @@
               args.data.epart.accountid = $("#entry-part-account").val();
               args.data.epart.amount = parseFloat($("#entry-part-amount").val());
               args.data.epart.tag = $("#entry-part-type").val();
-              _.map(args.data.entry.get("contents"), function(ech) {
-                if (ech.id === args.data.epart.id) {
-                  return ech = args.data.epart;
-                }
+              isNew = !_.any(args.data.entry.get("content"), function(ech) {
+                return ech.id === args.data.epart.id;
               });
+              if (isNew) {
+                args.data.entry.get("content").push(args.data.epart);
+              }
             }
             args.data.entryView.renderEntry({
               entry: args.data.entry,
@@ -298,6 +312,7 @@
                     fdata.id = result;
                     fdata.tag = "entry";
                     fdata.date = new Date(Date.now()).toString();
+                    fdata.content = [];
                     return saveEntry(fdata);
                   });
                 } else {

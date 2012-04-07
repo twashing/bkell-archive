@@ -129,27 +129,37 @@ define( ['js/bkeeping/bkeeping'], (bkeeping) ->
         esm: options.esm
       }
       
-      # i. handle edit CLICKs and ii. bind entry row to the Entries State Machine
-      $(options.entryView.el)
-        .find('.editentrypart')
-        .unbind('click')
-        .bind(  'click',
-                bindObjects,
-                _.bind(options.esm.EEpart, options.esm))  # trigger the transition when edit clicked
+      $.get("/generateid", (result, status, obj) ->
+        
+        # make a new entryPart
+        $("#entrypart-add")
+          .unbind('click')
+          .bind(  'click',
+                  _.extend( { epart: { accountid: null, amount: null, id: result, tag: null } }, bindObjects ),   # creating a new epart
+                  _.bind(options.esm.EEpart, options.esm))  # trigger the transition when edit clicked
+        
+        # handle edit CLICKs and ii. bind entry row to the Entries State Machine
+        $(options.entryView.el)
+          .find('.editentrypart')
+          .unbind('click')
+          .bind(  'click',
+                  bindObjects,
+                  _.bind(options.esm.EEpart, options.esm))  # trigger the transition when edit clicked
+        
+        # bind actions to 'Ok' and 'Cancel' buttons
+        $('#entry-ok')
+          .unbind('click')
+          .bind('click',
+                _.extend( { ok: true }, bindObjects ),
+                _.bind(options.esm.EEs, options.esm)) # transition back to Accounts pane
+         
+        $('#entry-cancel')
+          .unbind('click')
+          .bind('click',
+                _.extend( { cancel: true }, bindObjects ),
+                _.bind(options.esm.EEs, options.esm)) # transition back to Accounts pane
+      )
       
-      # bind actions to 'Ok' and 'Cancel' buttons
-      $('#entry-ok')
-        .unbind('click')
-        .bind('click',
-              _.extend( { ok: true }, bindObjects ),
-              _.bind(options.esm.EEs, options.esm)) # transition back to Accounts pane
-       
-      $('#entry-cancel')
-        .unbind('click')
-        .bind('click',
-              _.extend( { cancel: true }, bindObjects ),
-              _.bind(options.esm.EEs, options.esm)) # transition back to Accounts pane
-                                
   })
   EntryPartView = Backbone.View.extend({
     

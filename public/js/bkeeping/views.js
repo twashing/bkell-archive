@@ -124,13 +124,23 @@
           entry: options.entry,
           esm: options.esm
         };
-        $(options.entryView.el).find('.editentrypart').unbind('click').bind('click', bindObjects, _.bind(options.esm.EEpart, options.esm));
-        $('#entry-ok').unbind('click').bind('click', _.extend({
-          ok: true
-        }, bindObjects), _.bind(options.esm.EEs, options.esm));
-        return $('#entry-cancel').unbind('click').bind('click', _.extend({
-          cancel: true
-        }, bindObjects), _.bind(options.esm.EEs, options.esm));
+        return $.get("/generateid", function(result, status, obj) {
+          $("#entrypart-add").unbind('click').bind('click', _.extend({
+            epart: {
+              accountid: null,
+              amount: null,
+              id: result,
+              tag: null
+            }
+          }, bindObjects), _.bind(options.esm.EEpart, options.esm));
+          $(options.entryView.el).find('.editentrypart').unbind('click').bind('click', bindObjects, _.bind(options.esm.EEpart, options.esm));
+          $('#entry-ok').unbind('click').bind('click', _.extend({
+            ok: true
+          }, bindObjects), _.bind(options.esm.EEs, options.esm));
+          return $('#entry-cancel').unbind('click').bind('click', _.extend({
+            cancel: true
+          }, bindObjects), _.bind(options.esm.EEs, options.esm));
+        });
       }
     });
     EntryPartView = Backbone.View.extend({
