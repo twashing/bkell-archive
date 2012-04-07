@@ -149,7 +149,10 @@
         return this.el = $(options.el);
       },
       render: function(options) {
+        var template;
         console.log('EntryPartView render CALLED');
+        template = "<div> <label>Amount</label> <input id='entry-part-amount' type='text' /> </div> <div> <label>Account</label> <select id='entry-part-account'> <option label='' value=''></option> </select> </div> <div> <label>Type</label> <select id='entry-part-type'> <option value='debit'>debit</option> <option value='credit'>credit</option> </select> </div> <div> <input id='entry-part-ok' type='button' value='Save' /> <input id='entry-part-cancel' type='button' value='Cancel' /> </div>";
+        $(".entryPart_container .entryPart_content").empty().append(template);
         $(".entryPart_container .entryPart_content").render({
           puredata: this.accounts.toJSON()
         }, pureDirectives.entryPartDirective);
