@@ -81,7 +81,7 @@
           account = _.find(accounts.models, function(act) {
             return act.get("id") === ech.accountid;
           });
-          if (((ech.tag === "debit") && (account.get("counterWeight") === "debit")) || (ech.tag === "credit") && (account.get("counterWeight") === "debit")) {
+          if (((ech.tag === "debit") && (account.get("counterWeight") === "debit")) || (ech.tag === "credit") && (account.get("counterWeight") === "credit")) {
             tally.lhs += parseFloat(ech.amount);
           } else {
             tally.rhs += parseFloat(ech.amount);
