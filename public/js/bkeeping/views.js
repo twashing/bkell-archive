@@ -249,7 +249,8 @@
         this.collection = options.collection;
         this.collection.bind('reset', _.bind(this.render, this));
         this.collection.bind('add', _.bind(this.render, this));
-        return this.collection.bind('change', _.bind(this.render, this));
+        this.collection.bind('change', _.bind(this.render, this));
+        return this.collection.bind('destroy', _.bind(this.render, this));
       },
       entryRows: [],
       render: function() {
@@ -273,8 +274,11 @@
       },
       instrumentEntries: function(elem, bindings, esm) {
         elem.find('.editentry').unbind('click').bind('click', bindings, _.bind(esm.EsE, esm));
-        elem.find('.deleteentry').unbind('click').bind('click', bindings, function() {
-          return console.log(".deleteentry");
+        elem.find('.deleteentry').unbind('click').bind('click', bindings, function(args) {
+          var eid;
+          console.log(".deleteentry");
+          eid = $(this).data("eid");
+          return args.data.entries.get(eid).destroy();
         });
         return elem.find('#entry-add').unbind('click').bind('click', _.extend({
           entry: new bkeeping.models.Entry()

@@ -305,6 +305,7 @@ define( ['js/bkeeping/bkeeping'], (bkeeping) ->
       this.collection.bind('reset', _.bind(this.render, this))
       this.collection.bind('add', _.bind(this.render, this))
       this.collection.bind('change', _.bind(this.render, this))
+      this.collection.bind('destroy', _.bind(this.render, this))
     
     entryRows: []
     render: () ->
@@ -348,8 +349,12 @@ define( ['js/bkeeping/bkeeping'], (bkeeping) ->
         .unbind('click')
         .bind(  'click',
                 bindings,
-                () ->
+                (args) ->
                   console.log(".deleteentry")
+
+                  eid = $(this).data("eid")
+                  args.data.entries.get(eid).destroy()
+                  
               )  # trigger the transition when edit clicked
       elem
         .find('#entry-add')
