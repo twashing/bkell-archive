@@ -209,11 +209,23 @@
     AccountsView = Backbone.View.extend({
       el: $('#accounts'),
       initialize: function(options) {
+        var bindInstrumentAccounts, bindObjects, bindRender;
         this.collection = options.collection;
         this.collection.bind('reset', _.bind(this.render, this));
         this.collection.bind('add', _.bind(this.render, this));
         this.collection.bind('change', _.bind(this.render, this));
-        return this.collection.bind('destroy', _.bind(this.render, this));
+        bindRender = _.bind(this.render, this);
+        bindInstrumentAccounts = _.bind(this.instrumentAccounts, this);
+        bindObjects = {
+          accounts: options.collection,
+          accountsView: this,
+          accountView: options.accountView,
+          asm: options.asm
+        };
+        return this.collection.bind('destroy', function() {
+          bindRender();
+          return bindInstrumentAccounts($("#accounts-table"), bindObjects, bindObjects.asm);
+        });
       },
       accountRows: [],
       render: function() {

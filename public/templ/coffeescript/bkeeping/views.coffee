@@ -247,8 +247,20 @@ define( ['js/bkeeping/bkeeping'], (bkeeping) ->
       this.collection.bind('reset', _.bind(this.render, this))
       this.collection.bind('add', _.bind(this.render, this))
       this.collection.bind('change', _.bind(this.render, this))
-      this.collection.bind('destroy', _.bind(this.render, this))
-   
+      
+      bindRender = _.bind(this.render, this)
+      bindInstrumentAccounts = _.bind(this.instrumentAccounts, this)
+      bindObjects = {
+                      accounts: options.collection,
+                      accountsView: this,
+                      accountView: options.accountView,
+                      asm: options.asm
+                    }
+      this.collection.bind('destroy', () ->
+        bindRender()
+        bindInstrumentAccounts($("#accounts-table"), bindObjects, bindObjects.asm)
+      )
+    
     accountRows: []
     render: () ->
       

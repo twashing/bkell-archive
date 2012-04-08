@@ -36,7 +36,9 @@
       el: '#entry-part'
     });
     accountsView = new views.AccountsView({
-      collection: accounts
+      collection: accounts,
+      accountView: accountView,
+      asm: asm
     });
     entriesView = new views.EntriesView({
       collection: entries,
