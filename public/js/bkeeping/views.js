@@ -11,7 +11,8 @@
             "a.editaccount@data-aid": "each.id",
             "td.name": "each.name",
             "td.type": "each.type",
-            "td.weight": "each.counterWeight"
+            "td.weight": "each.counterWeight",
+            "a.deleteaccount@data-aid": "each.id"
           }
         }
       },
@@ -211,7 +212,8 @@
         this.collection = options.collection;
         this.collection.bind('reset', _.bind(this.render, this));
         this.collection.bind('add', _.bind(this.render, this));
-        return this.collection.bind('change', _.bind(this.render, this));
+        this.collection.bind('change', _.bind(this.render, this));
+        return this.collection.bind('destroy', _.bind(this.render, this));
       },
       accountRows: [],
       render: function() {
@@ -238,6 +240,12 @@
           */
       instrumentAccounts: function(elem, bindings, asm) {
         elem.find('.editaccount').unbind('click').bind('click', bindings, _.bind(asm.AsA, asm));
+        elem.find('.deleteaccount').unbind('click').bind('click', bindings, function(args) {
+          var aid;
+          console.log(".deleteaccount");
+          aid = $(this).data("aid");
+          return args.data.accounts.get(aid).destroy();
+        });
         return elem.find("#account-add").unbind("click").bind("click", _.extend({
           account: new bkeeping.models.Account()
         }, bindings), _.bind(asm.AsA, asm));
@@ -246,11 +254,25 @@
     EntriesView = Backbone.View.extend({
       el: $('#entries'),
       initialize: function(options) {
+        var bindInstrumentEntries, bindObjects, bindRender;
         this.collection = options.collection;
         this.collection.bind('reset', _.bind(this.render, this));
         this.collection.bind('add', _.bind(this.render, this));
         this.collection.bind('change', _.bind(this.render, this));
-        return this.collection.bind('destroy', _.bind(this.render, this));
+        bindRender = _.bind(this.render, this);
+        bindInstrumentEntries = _.bind(this.instrumentEntries, this);
+        bindObjects = {
+          entries: options.collection,
+          entriesView: this,
+          entryView: options.entryView,
+          entryPartView: options.entryPartView,
+          accounts: options.accounts,
+          esm: options.esm
+        };
+        return this.collection.bind('destroy', function() {
+          bindRender();
+          return bindInstrumentEntries($("#entries-table"), bindObjects, bindObjects.esm);
+        });
       },
       entryRows: [],
       render: function() {

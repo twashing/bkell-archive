@@ -13,6 +13,7 @@ define( ['js/bkeeping/bkeeping'], (bkeeping) ->
           "td.name" : "each.name"
           "td.type" : "each.type"
           "td.weight" : "each.counterWeight"
+          "a.deleteaccount@data-aid" : "each.id"
         }
       }
     }
@@ -246,6 +247,7 @@ define( ['js/bkeeping/bkeeping'], (bkeeping) ->
       this.collection.bind('reset', _.bind(this.render, this))
       this.collection.bind('add', _.bind(this.render, this))
       this.collection.bind('change', _.bind(this.render, this))
+      this.collection.bind('destroy', _.bind(this.render, this))
    
     accountRows: []
     render: () ->
@@ -288,6 +290,18 @@ define( ['js/bkeeping/bkeeping'], (bkeeping) ->
         .bind(  'click', bindings, _.bind(asm.AsA, asm))  # trigger the transition when edit clicked
       
       elem
+        .find('.deleteaccount')
+        .unbind('click')
+        .bind(  'click',
+                bindings,
+                (args) ->
+                  console.log(".deleteaccount")
+                  
+                  aid = $(this).data("aid")
+                  args.data.accounts.get(aid).destroy()
+              )
+       
+      elem
         .find("#account-add")
         .unbind("click")
         .bind("click",
@@ -305,7 +319,21 @@ define( ['js/bkeeping/bkeeping'], (bkeeping) ->
       this.collection.bind('reset', _.bind(this.render, this))
       this.collection.bind('add', _.bind(this.render, this))
       this.collection.bind('change', _.bind(this.render, this))
-      this.collection.bind('destroy', _.bind(this.render, this))
+
+      bindRender = _.bind(this.render, this)
+      bindInstrumentEntries = _.bind(this.instrumentEntries, this)
+      bindObjects = {
+                      entries: options.collection,
+                      entriesView: this,
+                      entryView: options.entryView,
+                      entryPartView: options.entryPartView,
+                      accounts: options.accounts,
+                      esm: options.esm
+                    }
+      this.collection.bind('destroy', () ->
+        bindRender()
+        bindInstrumentEntries($("#entries-table"), bindObjects, bindObjects.esm)
+      )
     
     entryRows: []
     render: () ->
@@ -335,9 +363,9 @@ define( ['js/bkeeping/bkeeping'], (bkeeping) ->
           arow = new EntryRow( { el: ech } )
           ctx.entryRows.push(arow)
         )
-           
+     
     instrumentEntries: (elem, bindings, esm) ->
-        
+       
       elem
         .find('.editentry')
         .unbind('click')
@@ -351,7 +379,7 @@ define( ['js/bkeeping/bkeeping'], (bkeeping) ->
                 bindings,
                 (args) ->
                   console.log(".deleteentry")
-
+                  
                   eid = $(this).data("eid")
                   args.data.entries.get(eid).destroy()
                   
