@@ -24,7 +24,8 @@
             "a.editentry@data-eid": "each.id",
             "td.date": "each.date",
             "td.name": "each.id",
-            "td.balance": ""
+            "td.balance": "",
+            "a.deleteentry@data-eid": "each.id"
           }
         }
       },
@@ -272,6 +273,9 @@
       },
       instrumentEntries: function(elem, bindings, esm) {
         elem.find('.editentry').unbind('click').bind('click', bindings, _.bind(esm.EsE, esm));
+        elem.find('.deleteentry').unbind('click').bind('click', bindings, function() {
+          return console.log(".deleteentry");
+        });
         return elem.find('#entry-add').unbind('click').bind('click', _.extend({
           entry: new bkeeping.models.Entry()
         }, bindings), _.bind(esm.EsE, esm));

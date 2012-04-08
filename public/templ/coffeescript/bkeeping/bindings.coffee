@@ -280,11 +280,11 @@ define( [ "bkeeping/util", ], (util) ->
                                     accounts: args.data.accounts,
                                     esm: args.data.esm
                                   })
-                                
+                                  
                                   # 4. scroll back to #entry
                                   $('#right-wrapper').scrollTo($('#entry'), 500, { axis:'x' })
-                                
-                                
+                                  
+                                  
                                 onleaveE: (event, from, to, args) ->
                                   
                                   if(args.data.cancel)

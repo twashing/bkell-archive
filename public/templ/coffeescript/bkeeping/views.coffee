@@ -29,6 +29,7 @@ define( ['js/bkeeping/bkeeping'], (bkeeping) ->
           "td.date" : "each.date"
           "td.name" : "each.id"
           "td.balance" : ""
+          "a.deleteentry@data-eid" : "each.id"
         }
       }
     }
@@ -170,7 +171,7 @@ define( ['js/bkeeping/bkeeping'], (bkeeping) ->
     render : (options) ->
       console.log('EntryPartView render CALLED')
       
-      # render with PURE - just populate the accounts for now
+      # render with PURE - just populate entry part fields for now
       template = "<div> <label>Amount</label> <input id='entry-part-amount' type='text' /> </div> <div> <label>Account</label> <select id='entry-part-account'> <option label='' value=''></option> </select> </div> <div> <label>Type</label> <select id='entry-part-type'> <option value='debit'>debit</option> <option value='credit'>credit</option> </select> </div> <div> <input id='entry-part-ok' type='button' value='Save' /> <input id='entry-part-cancel' type='button' value='Cancel' /> </div>"
       
       
@@ -342,6 +343,14 @@ define( ['js/bkeeping/bkeeping'], (bkeeping) ->
         .bind(  'click',
                 bindings,
                 _.bind(esm.EsE, esm))  # trigger the transition when edit clicked
+      elem
+        .find('.deleteentry')
+        .unbind('click')
+        .bind(  'click',
+                bindings,
+                () ->
+                  console.log(".deleteentry")
+              )  # trigger the transition when edit clicked
       elem
         .find('#entry-add')
         .unbind('click')
