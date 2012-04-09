@@ -25,7 +25,7 @@
             "a.editentry@data-eid": "each.id",
             "td.date": "each.date",
             "td.name": "each.id",
-            "td.balance": "",
+            "td.balance": "each.balance",
             "a.deleteentry@data-eid": "each.id"
           }
         }
@@ -266,13 +266,7 @@
     EntriesView = Backbone.View.extend({
       el: $('#entries'),
       initialize: function(options) {
-        var bindInstrumentEntries, bindObjects, bindRender;
-        this.collection = options.collection;
-        this.collection.bind('reset', _.bind(this.render, this));
-        this.collection.bind('add', _.bind(this.render, this));
-        this.collection.bind('change', _.bind(this.render, this));
-        bindRender = _.bind(this.render, this);
-        bindInstrumentEntries = _.bind(this.instrumentEntries, this);
+        var bindFunction, bindInstrumentEntries, bindObjects, bindRender;
         bindObjects = {
           entries: options.collection,
           entriesView: this,
@@ -281,18 +275,30 @@
           accounts: options.accounts,
           esm: options.esm
         };
-        return this.collection.bind('destroy', function() {
+        this.collection = options.collection;
+        this.collection.bind('reset', _.bind(this.render, this), bindObjects);
+        this.collection.bind('add', _.bind(this.render, this), bindObjects);
+        this.collection.bind('change', _.bind(this.render, this), bindObjects);
+        bindRender = _.bind(this.render, this);
+        bindInstrumentEntries = _.bind(this.instrumentEntries, this);
+        bindFunction = function() {
           bindRender();
           return bindInstrumentEntries($("#entries-table"), bindObjects, bindObjects.esm);
-        });
+        };
+        return this.collection.bind('destroy', bindFunction, bindObjects);
       },
       entryRows: [],
-      render: function() {
+      render: function(args) {
         var ctx, template;
         console.log("EntriesView.render CALLED");
         template = $("<table id='entries-table'> <thead> <tr> <th></th> <th>Date</th> <th>Name</th> <th>Balance</th> <th></th> </tr> </thead> <tbody> <tr> <td> <a class='editentry' href='#'>edit</a> </td> <td class='date'>My Date</td> <td class='name'>My Name</td> <td class='balance'>My Balance</td> <td> <a class='deleteentry' href='#'>delete</a> </td> </tr> </tbody> <tfoot> <tr> <td> <input id='entry-add' type='button' value='Add' /> </td> <td>&nbsp;</td> <td>&nbsp;</td> <td>&nbsp;</td> <td>&nbsp;</td> </tr> </tfoot> </table>");
         $("#entries-pane > .entries_container > .entry_content").empty().append(template);
         ctx = this;
+        _.map(this.collection.models, function(ech) {
+          var bal;
+          bal = ech.balances(ctx.options.accounts);
+          return ech.attributes.balance = bal.lhs;
+        });
         return $("#entries").render({
           puredata: this.collection.toJSON()
         }, pureDirectives.entriesDirective).find('table').dataTable().find('tbody > tr').each(function(index, ech) {

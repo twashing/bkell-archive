@@ -29,7 +29,7 @@ define( ['js/bkeeping/bkeeping'], (bkeeping) ->
           "a.editentry@data-eid" : "each.id"
           "td.date" : "each.date"
           "td.name" : "each.id"
-          "td.balance" : ""
+          "td.balance" : "each.balance"
           "a.deleteentry@data-eid" : "each.id"
         }
       }
@@ -326,14 +326,6 @@ define( ['js/bkeeping/bkeeping'], (bkeeping) ->
     el: $('#entries')
     initialize : (options) ->
     
-      this.collection = options.collection
-      
-      this.collection.bind('reset', _.bind(this.render, this))
-      this.collection.bind('add', _.bind(this.render, this))
-      this.collection.bind('change', _.bind(this.render, this))
-
-      bindRender = _.bind(this.render, this)
-      bindInstrumentEntries = _.bind(this.instrumentEntries, this)
       bindObjects = {
                       entries: options.collection,
                       entriesView: this,
@@ -342,13 +334,22 @@ define( ['js/bkeeping/bkeeping'], (bkeeping) ->
                       accounts: options.accounts,
                       esm: options.esm
                     }
-      this.collection.bind('destroy', () ->
+      
+      this.collection = options.collection
+      
+      this.collection.bind('reset', _.bind(this.render, this), bindObjects)
+      this.collection.bind('add', _.bind(this.render, this), bindObjects)
+      this.collection.bind('change', _.bind(this.render, this), bindObjects)
+
+      bindRender = _.bind(this.render, this)
+      bindInstrumentEntries = _.bind(this.instrumentEntries, this)
+      bindFunction = () ->
         bindRender()
         bindInstrumentEntries($("#entries-table"), bindObjects, bindObjects.esm)
-      )
+      this.collection.bind('destroy', bindFunction, bindObjects)
     
     entryRows: []
-    render: () ->
+    render: (args) ->
       
       console.log("EntriesView.render CALLED")
       
@@ -361,6 +362,12 @@ define( ['js/bkeeping/bkeeping'], (bkeeping) ->
         .append(template)
       
       ctx = this
+      _.map(this.collection.models, (ech) ->
+        bal = ech.balances(ctx.options.accounts)
+        #ech.set("balance", bal.lhs)
+        ech.attributes.balance = bal.lhs
+      )
+      
       $("#entries")
         .render(  { puredata : this.collection.toJSON() } ,
                   pureDirectives.entriesDirective)

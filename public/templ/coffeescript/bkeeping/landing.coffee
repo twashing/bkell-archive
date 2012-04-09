@@ -63,7 +63,14 @@ require( ['bkeeping/bkeeping', 'bkeeping/bindings']
             ###
             # bind account row to the Accounts State Machine
             ###
-            accountsView.instrumentAccounts($("#accounts-table"), { accounts: accounts, accountsView: accountsView, accountView: accountView, asm: asm }, asm)
+            accountsView.instrumentAccounts($("#accounts-table"),
+                                            {
+                                              accounts: accounts,
+                                              accountsView: accountsView,
+                                              accountView: accountView,
+                                              asm: asm
+                                            },
+                                            asm)
             
             ###
             # Load Account pages
@@ -74,6 +81,8 @@ require( ['bkeeping/bkeeping', 'bkeeping/bindings']
               $('#left-col').serialScroll({ target: '#left-wrapper', items: '#accounts , #account', duration: 500, axis: 'x', force: true })
 
             )
+            
+            loadEntries()
         )
       )
     
@@ -121,7 +130,6 @@ require( ['bkeeping/bkeeping', 'bkeeping/bindings']
     # LOAD Accounts & Entries
     ###
     loadAccounts()
-    loadEntries()
     
     
     ###
@@ -129,6 +137,5 @@ require( ['bkeeping/bkeeping', 'bkeeping/bindings']
     ###
     $('#footer').load("/include/footerPart.html")
 )
-
 
 

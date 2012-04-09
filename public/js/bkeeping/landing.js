@@ -65,7 +65,7 @@
             /*
                         # Load Account pages
                         */
-            return $('#account').load('/include/account.html', function() {
+            $('#account').load('/include/account.html', function() {
               return $('#left-col').serialScroll({
                 target: '#left-wrapper',
                 items: '#accounts , #account',
@@ -74,6 +74,7 @@
                 force: true
               });
             });
+            return loadEntries();
           }
         });
       });
@@ -118,7 +119,6 @@
     # LOAD Accounts & Entries
     */
     loadAccounts();
-    loadEntries();
     /*
         # Load Footer
         */
