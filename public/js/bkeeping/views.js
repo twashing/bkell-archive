@@ -232,7 +232,7 @@
         var ctx, template;
         console.log("AccountsView.render CALLED");
         template = $("<table id='accounts-table'> <thead> <tr> <th></th> <th>Name</th> <th>Category</th> <th>Type</th> <th></th> </tr> </thead> <tbody> <tr> <td> <a class='editaccount' href='#'>edit</a> </td> <td class='name'>My Name</td> <td class='type'>My Type</td> <td class='weight'>My Weight</td> <td> <a class='deleteaccount' href='#'>delete</a> </td> </tr> </tbody> <tfoot> <tr> <td> <input id='account-add' type='button' value='Add' /> </td> <td>&nbsp;</td> <td>&nbsp;</td> <td>&nbsp;</td> <td>&nbsp;</td> </tr> </tfoot> </table>");
-        $("#accounts-pane > .tab_container > .tab_content > .dataTables_wrapper").empty().append(template);
+        $("#accounts-pane > .tab_container > .tab_content").empty().append(template);
         ctx = this;
         return $("#accounts").render({
           puredata: this.collection.toJSON()
@@ -291,7 +291,7 @@
         var ctx, template;
         console.log("EntriesView.render CALLED");
         template = $("<table id='entries-table'> <thead> <tr> <th></th> <th>Date</th> <th>Name</th> <th>Balance</th> <th></th> </tr> </thead> <tbody> <tr> <td> <a class='editentry' href='#'>edit</a> </td> <td class='date'>My Date</td> <td class='name'>My Name</td> <td class='balance'>My Balance</td> <td> <a class='deleteentry' href='#'>delete</a> </td> </tr> </tbody> <tfoot> <tr> <td> <input id='entry-add' type='button' value='Add' /> </td> <td>&nbsp;</td> <td>&nbsp;</td> <td>&nbsp;</td> <td>&nbsp;</td> </tr> </tfoot> </table>");
-        $("#entries-pane > .entries_container > .entry_content > .dataTables_wrapper").empty().append(template);
+        $("#entries-pane > .entries_container > .entry_content").empty().append(template);
         ctx = this;
         return $("#entries").render({
           puredata: this.collection.toJSON()
