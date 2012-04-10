@@ -102,7 +102,9 @@
         $(".entry_container").render({
           puredata: this.model.get('content')
         }, pureDirectives.entryDirective);
-        return $("#entry-date").datepicker();
+        $("#entry-date").datepicker();
+        $("#entry-date").val(this.model.get("date"));
+        return $("#entry-name").val(this.model.get("name"));
       },
       renderEntry: function(options) {
         console.log('commonEntryRender CALLED');
