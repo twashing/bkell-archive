@@ -364,6 +364,7 @@ define( [ "bkeeping/util", ], (util) ->
                                           console.log("Generated entry ID[#{result}]")
                                           fdata.id = result
                                           fdata.tag = "entry"
+                                          fdata.name = $("#entry-name").val()
                                           fdata.date = $("#entry-date").val()
                                           fdata.content = []
                                           
@@ -371,7 +372,10 @@ define( [ "bkeeping/util", ], (util) ->
                                         )
                                       else
                                         
-                                        args.data.entry.set( { "date" : $("#entry-date").val() } )
+                                        args.data.entry.set({
+                                                              "name" : $("#entry-name").val()
+                                                              "date" : $("#entry-date").val()
+                                                            })
                                         saveEntry(args.data.entry.toJSON())
                                       
                                       ###

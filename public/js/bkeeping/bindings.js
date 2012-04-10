@@ -311,12 +311,14 @@
                     console.log("Generated entry ID[" + result + "]");
                     fdata.id = result;
                     fdata.tag = "entry";
+                    fdata.name = $("#entry-name").val();
                     fdata.date = $("#entry-date").val();
                     fdata.content = [];
                     return saveEntry(fdata);
                   });
                 } else {
                   args.data.entry.set({
+                    "name": $("#entry-name").val(),
                     "date": $("#entry-date").val()
                   });
                   saveEntry(args.data.entry.toJSON());

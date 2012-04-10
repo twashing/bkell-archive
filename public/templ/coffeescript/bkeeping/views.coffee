@@ -28,7 +28,7 @@ define( ['js/bkeeping/bkeeping'], (bkeeping) ->
         "each<-puredata" : {
           "a.editentry@data-eid" : "each.id"
           "td.date" : "each.date"
-          "td.name" : "each.id"
+          "td.name" : "each.name"
           "td.balance" : "each.balance"
           "a.deleteentry@data-eid" : "each.id"
         }
