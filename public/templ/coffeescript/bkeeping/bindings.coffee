@@ -364,12 +364,14 @@ define( [ "bkeeping/util", ], (util) ->
                                           console.log("Generated entry ID[#{result}]")
                                           fdata.id = result
                                           fdata.tag = "entry"
-                                          fdata.date = new Date(Date.now()).toString()
+                                          fdata.date = $("#entry-date").val()
                                           fdata.content = []
                                           
                                           saveEntry(fdata)
                                         )
                                       else
+                                        
+                                        args.data.entry.set( { "date" : $("#entry-date").val() } )
                                         saveEntry(args.data.entry.toJSON())
                                       
                                       ###
