@@ -99,9 +99,10 @@
               */
         template = $("<tr> <td> <a class='editentrypart' href='#'>edit</a> </td> <td class='debitAccount'>Debit Account</td> <td class='debitAmount'>Debit Amount</td> <td>&nbsp;</td> <td class='creditAccount'>Credit Account</td> <td class='creditAmount'>Credit Amount</td> <td> <a class='deleteentrypart' href='#'>delete</a> </td> </tr>");
         $(".entry_container tbody").empty().append(template);
-        return $(".entry_container").render({
+        $(".entry_container").render({
           puredata: this.model.get('content')
         }, pureDirectives.entryDirective);
+        return $("#entry-date").datepicker();
       },
       renderEntry: function(options) {
         console.log('commonEntryRender CALLED');

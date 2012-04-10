@@ -104,6 +104,8 @@ define( ['js/bkeeping/bkeeping'], (bkeeping) ->
       
       $(".entry_container")
         .render( { puredata : this.model.get('content') } , pureDirectives.entryDirective )
+
+      $("#entry-date").datepicker()
       
     renderEntry: (options) ->
       console.log('commonEntryRender CALLED')
