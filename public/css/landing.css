@@ -1,13 +1,13 @@
-/* line 2, ../templ/sass/landing.sass */
+/* line 5, ../templ/sass/landing.sass */
 .sidebar-nav-fixed {
-  padding: 9px 0;
+  border: black 1px solid;
   position: fixed;
-  left: 20px;
-  top: 78px;
   width: 250px;
 }
 
-/* line 9, ../templ/sass/landing.sass */
-.row-fluid > .span-fixed-sidebar {
-  margin-left: 290px;
+/* line 10, ../templ/sass/landing.sass */
+.span-fixed-sidebar {
+  border: black 1px solid;
+  margin-left: 260px;
+  min-width: 800px;
 }

@@ -1,11 +1,14 @@
 
+@mixin debugM
+  border: black 1px solid
+
 .sidebar-nav-fixed 
-  padding: 9px 0
+  +debugM
   position: fixed
-  left: 20px
-  top: 78px
   width: 250px
 
-.row-fluid > .span-fixed-sidebar 
-  margin-left: 290px
+.span-fixed-sidebar
+  +debugM
+  margin-left: 260px
+  min-width: 800px
 
