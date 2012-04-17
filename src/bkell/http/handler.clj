@@ -413,8 +413,8 @@
 #_(GET "/bookkeeping/:id" [id])
 
 
-#_(route/files "/")
-#_(route/resources "/")
+(route/files "/")
+(route/resources "/")
 #_(route/not-found "Page not found")
 #_(ANY "/*" [path] )
 
