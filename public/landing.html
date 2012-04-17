@@ -1,96 +1,31 @@
 <html lang='en'>
   <head>
     <meta charset='utf-8' />
-    <!-- /%link{ :href => "/css/styles.css", :media => "screen", :rel => "stylesheet", :type => "text/css" } -->
-    <link href='/css/screen.css' media='screen, projection' rel='stylesheet' type='text/css' />
-    <link href='/css/print.css' media='print' rel='stylesheet' type='text/css' />
-    <!--[if IE]>
-      <link href='/css/ie.css' media='screen, projection' rel='stylesheet' type='text/css' />
-    <![endif]-->
-    <link href='/css/common.css' media='screen' rel='stylesheet' type='text/css' />
-    <link href='/css/landing.css' media='screen' rel='stylesheet' type='text/css' />
     <script src='/js/lib/jquery-1.6.3.js'></script>
-    <!-- %script( src="/js/lib/jquery-ui.min.js" ) -->
     <script src='/js/lib/jquery-ui-1.8.16.custom.min.js'></script>
     <link href='/css/jquery-ui.css' media='screen' rel='stylesheet' type='text/css' />
-    <script src='/js/lib/jquery.easing.1.3.js'></script>
-    <script src='/js/lib/pure.js'></script>
-    <script src='/js/lib/jquery.dataTables.js'></script>
-    <script src='/js/lib/jquery.serialScroll.js'></script>
-    <script src='/js/lib/jquery.scrollTo.js'></script>
-    <link href='/css/bootstrap.css' media='screen' rel='stylesheet' type='text/css' />
-    <link href='/css/bootstrap-responsive.css' media='screen' rel='stylesheet' type='text/css' />
-    <script src='/js/lib/bootstrap.js'></script>
-    <script data-main='js/bkeeping/landing' src='/js/lib/require.js'></script>
-    <!-- %script( src="/js/lib/require.js" data-main="test/run_tests" ) -->
     <script src='/js/lib/json2.js'></script>
     <script src='/js/lib/underscore.js'></script>
     <script src='/js/lib/backbone.js'></script>
-    <script src='/js/lib/md5.js'></script>
-    <script src='/js/lib/state-machine.js'></script>
-    <script type='text/javascript'>
-      //<![CDATA[
-        $(document).ready(function() { 
-          
-          /*** 
-           * a GLOBAL namespace
-           */
-          bkeeping = {}; 
-        
-          /***
-           * Adjust Entry panes based on right width
-           ***/
-          adjustEntryPanes = function() { 
-            
-            $('#entries, #entry, #entry-part')
-              .css('width', ( $('#right-wrapper').width() - $('#left-col').width() ) + "px");
-          };
-        
-          /*** 
-           * Bootstrap pane sizes
-           ***/
-          $(window).resize(function() { adjustEntryPanes(); });
-          
-        })
-      //]]>
-    </script>
+    <link href='/css/bootstrap.css' media='screen' rel='stylesheet' type='text/css' />
+    <link href='/css/bootstrap-responsive.css' media='screen' rel='stylesheet' type='text/css' />
+    <script src='/js/lib/bootstrap.js'></script>
+    <link href='/css/landing.css' media='screen' rel='stylesheet' type='text/css' />
   </head>
-  <body>
-    <div class='container'>
-      <div id='header'>
-        <div id='title-wrapper'>
-          <div id='title'>
-            bkeeping
-          </div>
-          <div id='subtitle'>
-            <div id='subtitle-default'>Your solution to simple &nbsp;</div>
-            <div id='subtitle-black'>online bookkeeping</div>
-          </div>
-        </div>
-      </div>
-      <div id='main-content'>
-        <div id='left-col'>
-          <div id='left-wrapper'>
-            <div id='left-content'>
-              <div id='accounts'></div>
-              <div id='account'></div>
-            </div>
-          </div>
-          <div id='left-toggler'></div>
-        </div>
-        <div id='right-col'>
-          <div id='right-wrapper'>
-            <div id='right-content'>
-              <div class='debug' id='entries'></div>
-              <div class='debug' id='entry'></div>
-              <div class='debug' id='entry-part'></div>
-            </div>
-          </div>
+  <div class='container-fluid'>
+    <div class='row-fluid row'>
+      <div class='span3'>
+        <div class='sidebar-nav-fixed'>
+          Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam facilisis laoreet tincidunt. Ut erat mi, sollicitudin id egestas sit amet, fringilla nec tellus. Aenean iaculis dignissim turpis id mattis. Nunc lacus tellus, vehicula in porttitor id, condimentum vitae enim. Nulla tortor nibh, gravida vel vulputate dictum, tincidunt et ante. Curabitur semper sodales bibendum. Proin eget ligula vitae odio laoreet tincidunt ac in diam. Vivamus at porta diam. Nunc et augue quis arcu dapibus pulvinar.
+          Fusce volutpat pharetra eros a tempus. Nam commodo elementum auctor. Proin eget libero non nisi lacinia condimentum eu vitae diam. Sed in orci quis nisl molestie iaculis. Quisque posuere dui sit amet risus euismod et pharetra neque mattis. Aliquam erat volutpat. Proin viverra, mauris ut eleifend scelerisque, odio sapien consectetur ligula, quis facilisis est odio at libero. Nunc sed mauris vel massa tristique fringilla.
+          Vivamus accumsan, tortor nec pulvinar condimentum, purus ligula egestas ligula, ut vestibulum lacus ipsum dapibus ligula. Cras euismod egestas nulla, non volutpat massa laoreet ut. Sed nisi nunc, volutpat ac laoreet eget, mattis ut tortor. Proin in augue quis magna consequat mattis. Curabitur mattis viverra turpis, a imperdiet odio tempus sit amet. Nam sit amet leo ac ligula vulputate volutpat. Nulla mauris metus, mattis et tincidunt non, sollicitudin nec felis. Duis sit amet libero turpis. Fusce tincidunt congue blandit. Donec a leo quis enim suscipit dapibus a sit amet eros. Vestibulum nec tristique mi. Quisque at ante arcu. Cras ac dolor odio, quis placerat quam. Maecenas et magna dolor, vel porta magna. Nunc urna lorem, pharetra id placerat nec, porttitor aliquam libero. Nullam nulla est, aliquam ut molestie in, tristique vitae leo.
         </div>
       </div>
     </div>
-    <div id='footer'>
-      Footer
+    <div class='span9 span-fixed-sidebar'>
+      Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam facilisis laoreet tincidunt. Ut erat mi, sollicitudin id egestas sit amet, fringilla nec tellus. Aenean iaculis dignissim turpis id mattis. Nunc lacus tellus, vehicula in porttitor id, condimentum vitae enim. Nulla tortor nibh, gravida vel vulputate dictum, tincidunt et ante. Curabitur semper sodales bibendum. Proin eget ligula vitae odio laoreet tincidunt ac in diam. Vivamus at porta diam. Nunc et augue quis arcu dapibus pulvinar.
+      Fusce volutpat pharetra eros a tempus. Nam commodo elementum auctor. Proin eget libero non nisi lacinia condimentum eu vitae diam. Sed in orci quis nisl molestie iaculis. Quisque posuere dui sit amet risus euismod et pharetra neque mattis. Aliquam erat volutpat. Proin viverra, mauris ut eleifend scelerisque, odio sapien consectetur ligula, quis facilisis est odio at libero. Nunc sed mauris vel massa tristique fringilla.
+      Vivamus accumsan, tortor nec pulvinar condimentum, purus ligula egestas ligula, ut vestibulum lacus ipsum dapibus ligula. Cras euismod egestas nulla, non volutpat massa laoreet ut. Sed nisi nunc, volutpat ac laoreet eget, mattis ut tortor. Proin in augue quis magna consequat mattis. Curabitur mattis viverra turpis, a imperdiet odio tempus sit amet. Nam sit amet leo ac ligula vulputate volutpat. Nulla mauris metus, mattis et tincidunt non, sollicitudin nec felis. Duis sit amet libero turpis. Fusce tincidunt congue blandit. Donec a leo quis enim suscipit dapibus a sit amet eros. Vestibulum nec tristique mi. Quisque at ante arcu. Cras ac dolor odio, quis placerat quam. Maecenas et magna dolor, vel porta magna. Nunc urna lorem, pharetra id placerat nec, porttitor aliquam libero. Nullam nulla est, aliquam ut molestie in, tristique vitae leo.
     </div>
-  </body>
+  </div>
 </html>

@@ -1,0 +1,87 @@
+%html{ :lang => "en" } 
+  
+  %head
+    %meta{ :charset => "utf-8" }
+    //%link{ :href => "/css/styles.css", :media => "screen", :rel => "stylesheet", :type => "text/css" }
+    %link{ :href => "/css/screen.css", :media => "screen, projection", :rel => "stylesheet", :type => "text/css" }
+    %link{ :href => "/css/print.css", :media => "print", :rel => "stylesheet", :type => "text/css" }
+    /[if IE]
+      %link{ :href => "/css/ie.css", :media => "screen, projection", :rel => "stylesheet", :type => "text/css" }
+    %link{ :href => "/css/common.css", :media => "screen", :rel => "stylesheet", :type => "text/css" }
+    %link{ :href => "/css/landing.css", :media => "screen", :rel => "stylesheet", :type => "text/css" }
+    
+    %script( src="/js/lib/jquery-1.6.3.js" )
+    /%script( src="/js/lib/jquery-ui.min.js" )
+    %script( src="/js/lib/jquery-ui-1.8.16.custom.min.js" )
+    %link{ :href => "/css/jquery-ui.css", :media => "screen", :rel => "stylesheet", :type => "text/css" }
+    
+    %script( src="/js/lib/jquery.easing.1.3.js" )
+    
+    %script( src="/js/lib/pure.js" )
+    %script( src="/js/lib/jquery.dataTables.js" )
+    %script( src="/js/lib/jquery.serialScroll.js" )
+    %script( src="/js/lib/jquery.scrollTo.js" )
+    
+    %link{ :href => "/css/bootstrap.css", :media => "screen", :rel => "stylesheet", :type => "text/css" }
+    %link{ :href => "/css/bootstrap-responsive.css", :media => "screen", :rel => "stylesheet", :type => "text/css" }
+    %script( src="/js/lib/bootstrap.js" )
+    
+    
+    %script( src="/js/lib/require.js" data-main="js/bkeeping/landing" )
+    /%script( src="/js/lib/require.js" data-main="test/run_tests" )
+    
+    %script( src="/js/lib/json2.js" )
+    %script( src="/js/lib/underscore.js" )
+    %script( src="/js/lib/backbone.js" )
+    %script( src="/js/lib/md5.js" )
+    %script( src="/js/lib/state-machine.js" )
+    :javascript
+      $(document).ready(function() { 
+        
+        /*** 
+         * a GLOBAL namespace
+         */
+        bkeeping = {}; 
+
+        /***
+         * Adjust Entry panes based on right width
+         ***/
+        adjustEntryPanes = function() { 
+          
+          $('#entries, #entry, #entry-part')
+            .css('width', ( $('#right-wrapper').width() - $('#left-col').width() ) + "px");
+        };
+
+        /*** 
+         * Bootstrap pane sizes
+         ***/
+        $(window).resize(function() { adjustEntryPanes(); });
+        
+      })
+   
+  %body 
+    .container
+      #header 
+        #title-wrapper
+          #title
+            bkeeping
+          #subtitle 
+            #subtitle-default Your solution to simple &nbsp;
+            #subtitle-black online bookkeeping 
+      
+      #main-content 
+        #left-col
+          #left-wrapper 
+            #left-content
+              #accounts
+              #account
+          #left-toggler
+        #right-col
+          #right-wrapper
+            #right-content
+              #entries.debug
+              #entry.debug
+              #entry-part.debug
+    #footer 
+      Footer
+
