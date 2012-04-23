@@ -20,6 +20,23 @@ require( ['bkeeping/bkeeping', 'bkeeping/bindings']
     
     
     ###
+    # Adjust Entry panes based on right width
+    ###
+    adjustEntryPanes = () ->
+      
+      
+      rightWidth = $(".bkell-container").width() - $("#left-col").width() - 10
+      
+      $("#right-col").css("width", rightWidth)
+      $('#entries, #entry, #entry-part').css('width', rightWidth)
+
+    ###
+    # Bootstrap pane sizes
+    ###
+    $(window).resize(() -> adjustEntryPanes() )
+    
+    
+    ###
     # LIB imports 
     ###
     models = bkeeping.models

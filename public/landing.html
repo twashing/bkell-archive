@@ -45,6 +45,9 @@
             
             $('#entries, #entry, #entry-part')
               .css('width', ( $('#right-wrapper').width() - $('#left-col').width() ) + "px");
+            
+            var rightWidth = $(".bkell-container").width() - $("#left-col").width();
+            $("#right-col").css("width", rightWidth);
           };
         
           /*** 
@@ -52,6 +55,7 @@
            ***/
           $(window).resize(function() { adjustEntryPanes(); });
           
+          adjustEntryPanes();
         })
       //]]>
     </script>
@@ -79,7 +83,7 @@
           </div>
           <div id='left-toggler'></div>
         </div>
-        <div id='right-col'>
+        <div class='debug' id='right-col'>
           <div id='right-wrapper'>
             <div id='right-content'>
               <div class='debug' id='entries'></div>

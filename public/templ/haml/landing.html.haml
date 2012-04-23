@@ -52,6 +52,9 @@
           
           $('#entries, #entry, #entry-part')
             .css('width', ( $('#right-wrapper').width() - $('#left-col').width() ) + "px");
+          
+          var rightWidth = $(".bkell-container").width() - $("#left-col").width();
+          $("#right-col").css("width", rightWidth);
         };
 
         /*** 
@@ -59,6 +62,7 @@
          ***/
         $(window).resize(function() { adjustEntryPanes(); });
         
+        adjustEntryPanes();
       })
    
   %body 
@@ -78,7 +82,7 @@
               #accounts
               #account
           #left-toggler
-        #right-col
+        #right-col.debug
           #right-wrapper
             #right-content
               #entries.debug

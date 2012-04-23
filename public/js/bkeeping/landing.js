@@ -6,8 +6,23 @@
     }
   });
   require(['bkeeping/bkeeping', 'bkeeping/bindings'], function(bkeeping, bindings) {
-    var accountView, accounts, accountsView, asm, entries, entriesView, entryPartView, entryView, esm, loadAccounts, loadEntries, models, views;
+    var accountView, accounts, accountsView, adjustEntryPanes, asm, entries, entriesView, entryPartView, entryView, esm, loadAccounts, loadEntries, models, views;
     console.log("landing LOADED / bkeeping[" + bkeeping.models + "]");
+    /*
+        # Adjust Entry panes based on right width
+        */
+    adjustEntryPanes = function() {
+      var rightWidth;
+      rightWidth = $(".bkell-container").width() - $("#left-col").width() - 10;
+      $("#right-col").css("width", rightWidth);
+      return $('#entries, #entry, #entry-part').css('width', rightWidth);
+    };
+    /*
+        # Bootstrap pane sizes
+        */
+    $(window).resize(function() {
+      return adjustEntryPanes();
+    });
     /*
         # LIB imports 
         */
