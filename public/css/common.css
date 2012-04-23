@@ -1,9 +1,9 @@
-/* line 10, ../../../../.rvm/gems/ruby-1.9.2-p290/gems/compass-0.11.5/frameworks/compass/stylesheets/compass/layout/_sticky-footer.scss */
+/* line 10, /home/webkell/.rvm/gems/ruby-1.9.2-p290/gems/compass-0.12.1/frameworks/compass/stylesheets/compass/layout/_sticky-footer.scss */
 html, body {
   height: 100%;
 }
 
-/* line 12, ../../../../.rvm/gems/ruby-1.9.2-p290/gems/compass-0.11.5/frameworks/compass/stylesheets/compass/layout/_sticky-footer.scss */
+/* line 12, /home/webkell/.rvm/gems/ruby-1.9.2-p290/gems/compass-0.12.1/frameworks/compass/stylesheets/compass/layout/_sticky-footer.scss */
 #container {
   clear: both;
   min-height: 100%;
@@ -11,31 +11,31 @@ html, body {
   height: 100%;
   margin-bottom: -150px;
 }
-/* line 18, ../../../../.rvm/gems/ruby-1.9.2-p290/gems/compass-0.11.5/frameworks/compass/stylesheets/compass/layout/_sticky-footer.scss */
+/* line 18, /home/webkell/.rvm/gems/ruby-1.9.2-p290/gems/compass-0.12.1/frameworks/compass/stylesheets/compass/layout/_sticky-footer.scss */
 #container #left-col {
   height: 150px;
 }
 
-/* line 20, ../../../../.rvm/gems/ruby-1.9.2-p290/gems/compass-0.11.5/frameworks/compass/stylesheets/compass/layout/_sticky-footer.scss */
+/* line 20, /home/webkell/.rvm/gems/ruby-1.9.2-p290/gems/compass-0.12.1/frameworks/compass/stylesheets/compass/layout/_sticky-footer.scss */
 #footer {
   clear: both;
   position: relative;
   height: 150px;
 }
 
-/* line 5, ../templ/sass/_utils.sass */
+/* line 5, /home/webkell/Projects/bkell/public/templ/sass/_utils.sass */
 .debug {
   border-style: solid;
   border-width: 1px;
 }
 
-/* line 8, ../templ/sass/_utils.sass */
+/* line 8, /home/webkell/Projects/bkell/public/templ/sass/_utils.sass */
 .text-curly, #header #title-wrapper #title, #header #title-wrapper #subtitle, #legal {
   font-style: italic;
   font-family: Palatino, sans-serif;
 }
 
-/* line 12, ../templ/sass/_utils.sass */
+/* line 12, /home/webkell/Projects/bkell/public/templ/sass/_utils.sass */
 .text-default {
   font: Verdana, Arial, sans-serif;
 }
@@ -115,7 +115,7 @@ html, body {
   min-height: 100%;
   margin: 0 auto -150px;
 }
-/* line 10, ../../../../.rvm/gems/ruby-1.9.2-p290/gems/grid-coordinates-1.2.0/stylesheets/modules/_bulletproof-clearfix.sass */
+/* line 10, /home/webkell/.rvm/gems/ruby-1.9.2-p290/gems/grid-coordinates-1.2.0/stylesheets/modules/_bulletproof-clearfix.sass */
 .container:before, .container:after {
   content: ".";
   display: block;
@@ -126,15 +126,15 @@ html, body {
   width: 0;
   height: 0;
 }
-/* line 19, ../../../../.rvm/gems/ruby-1.9.2-p290/gems/grid-coordinates-1.2.0/stylesheets/modules/_bulletproof-clearfix.sass */
+/* line 19, /home/webkell/.rvm/gems/ruby-1.9.2-p290/gems/grid-coordinates-1.2.0/stylesheets/modules/_bulletproof-clearfix.sass */
 .container:after {
   clear: both;
 }
 
 /* line 79, ../templ/sass/common.sass */
 #main-content {
-  display: -moz-box;
   display: -webkit-box;
+  display: -moz-box;
   display: -ms-box;
   display: box;
   position: absolute;
