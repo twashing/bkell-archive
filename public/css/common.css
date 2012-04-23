@@ -12,7 +12,7 @@ html, body {
   margin-bottom: -150px;
 }
 /* line 18, ../../../../.rvm/gems/ruby-1.9.2-p290/gems/compass-0.12.1/frameworks/compass/stylesheets/compass/layout/_sticky-footer.scss */
-.container-fluid .row-fluid {
+.container-fluid .span3 {
   height: 150px;
 }
 
