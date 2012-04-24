@@ -25,11 +25,12 @@ require( ['bkeeping/bkeeping', 'bkeeping/bindings']
     adjustEntryPanes = () ->
       
       
-      rightWidth = $(".bkell-container").width() - $("#left-col").width() - 10
+      rightWidth = $(".bkell-container").width() - $("#left-col").width() - 10  # adjustment to make the Entries layout work in FF
       
       $("#right-col").css("width", rightWidth)
-      $('#entries, #entry, #entry-part').css('width', rightWidth)
-
+      $('#entries, #entry, #entry-part').css("width", rightWidth)
+      $("#right-content").css("width", (rightWidth * 3) + 50)
+    
     ###
     # Bootstrap pane sizes
     ###

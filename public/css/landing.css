@@ -5332,15 +5332,16 @@ a.thumbnail:hover {
 #left-col #left-wrapper #left-content {
   white-space: nowrap;
   position: absolute;
+  width: 600;
 }
-/* line 68, ../templ/sass/landing.sass */
+/* line 71, ../templ/sass/landing.sass */
 #left-col #left-wrapper #left-content #accounts, #left-col #left-wrapper #left-content #account {
   width: 280;
   float: left;
   margin: 8;
   padding: 0px;
 }
-/* line 74, ../templ/sass/landing.sass */
+/* line 77, ../templ/sass/landing.sass */
 #left-col #left-wrapper #left-content #left-toggler {
   width: 20;
   height: 20px;
@@ -5352,14 +5353,14 @@ a.thumbnail:hover {
 /*****
  * Right / Entries Pane 
  ***** */
-/* line 85, ../templ/sass/landing.sass */
+/* line 88, ../templ/sass/landing.sass */
 #right-col {
   position: relative;
   float: left;
   width: 800;
   height: 800;
 }
-/* line 93, ../templ/sass/landing.sass */
+/* line 96, ../templ/sass/landing.sass */
 #right-col #right-wrapper {
   float: left;
   overflow: hidden;
@@ -5367,7 +5368,7 @@ a.thumbnail:hover {
   width: 100%;
   height: 70%;
 }
-/* line 102, ../templ/sass/landing.sass */
+/* line 105, ../templ/sass/landing.sass */
 #right-col #right-wrapper #right-content {
   white-space: nowrap;
   position: absolute;
@@ -5375,13 +5376,13 @@ a.thumbnail:hover {
   width: 100%;
   height: 500px;
 }
-/* line 109, ../templ/sass/landing.sass */
+/* line 112, ../templ/sass/landing.sass */
 #right-col #right-wrapper #right-content #entries, #right-col #right-wrapper #right-content #entry, #right-col #right-wrapper #right-content #entry-part {
   float: left;
   width: 800px;
 }
 
-/* line 113, ../templ/sass/landing.sass */
+/* line 116, ../templ/sass/landing.sass */
 #entry-date {
   position: relative;
 }

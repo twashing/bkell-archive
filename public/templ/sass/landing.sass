@@ -64,6 +64,9 @@ $grid-gutter-width: 1px
     #left-content
       white-space: nowrap
       position: absolute
+      
+      // adjustment to make layout in FF work
+      width: $left-content-width * 2 + 40 // adjustment to make layout in FF work
 
       #accounts , #account
         width: $left-content-width
