@@ -177,7 +177,8 @@
               epart = args.data.epart;
             }
             _.extend(epart, Backbone.Events);
-            epart.unbind('change').bind('change', args.data.entryPartView.render, {
+            epart.unbind('change');
+            epart.bind('change', args.data.entryPartView.render, {
               model: epart,
               view: args.data.entryPartView,
               accounts: args.data.accounts

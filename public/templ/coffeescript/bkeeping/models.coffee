@@ -94,6 +94,9 @@ define([], () ->
   )
   Entry = AbstractK.extend(
     urlRoot : "/entry",
+    initialize : () ->
+      this.set( { content: [] } )
+    ,
     balances : (accounts) ->
       
       result = _.reduce( this.get("content"),

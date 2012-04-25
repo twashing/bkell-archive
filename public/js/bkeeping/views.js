@@ -123,7 +123,8 @@
               # load the UI 
               */
         _.extend(options.entry, Backbone.Events);
-        return options.entry.unbind('change').bind('change', options.entryView.render, {
+        options.entry.unbind('change');
+        return options.entry.bind('change', options.entryView.render, {
           model: options.entry,
           view: options.entryView
         }).trigger('change');

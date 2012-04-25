@@ -191,6 +191,7 @@ define( [ "bkeeping/util", ], (util) ->
                                   _.extend(epart, Backbone.Events)
                                   epart
                                     .unbind('change')
+                                  epart
                                     .bind('change', args.data.entryPartView.render, { model: epart, view: args.data.entryPartView, accounts: args.data.accounts });  # bind Backbone event
                                   
                                   epart.trigger('change')   # this should trigger the entryView to render
