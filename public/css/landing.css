@@ -5478,7 +5478,7 @@ a.thumbnail:hover {
 /* line 57, ../templ/sass/landing.sass */
 #left-col #left-wrapper {
   float: left;
-  width: 288;
+  width: 308;
   height: 500;
   overflow: hidden;
   position: relative;
@@ -5487,13 +5487,12 @@ a.thumbnail:hover {
 #left-col #left-wrapper #left-content {
   white-space: nowrap;
   position: absolute;
-  width: 600;
+  width: 656;
 }
 /* line 71, ../templ/sass/landing.sass */
 #left-col #left-wrapper #left-content #accounts, #left-col #left-wrapper #left-content #account {
-  width: 280;
+  width: 308;
   float: left;
-  margin: 8;
   padding: 0px;
 }
 /* line 77, ../templ/sass/landing.sass */
