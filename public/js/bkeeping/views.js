@@ -8,11 +8,11 @@
       accountsDirective: {
         "tbody tr": {
           "each<-puredata": {
-            "a.editaccount@data-aid": "each.id",
+            "button.editaccount@data-aid": "each.id",
             "td.name": "each.name",
             "td.type": "each.type",
             "td.weight": "each.counterWeight",
-            "a.deleteaccount@data-aid": "each.id"
+            "button.deleteaccount@data-aid": "each.id"
           }
         }
       },
@@ -102,6 +102,7 @@
               */
         template = $("<tr> <td> <a class='editentrypart' href='#'>edit</a> </td> <td class='debitAccount'>Debit Account</td> <td class='debitAmount'>Debit Amount</td> <td>&nbsp;</td> <td class='creditAccount'>Credit Account</td> <td class='creditAmount'>Credit Amount</td> <td> <a class='deleteentrypart' href='#'>delete</a> </td> </tr>");
         $(".entry_container tbody").empty().append(template);
+        $(".entry_content > table").addClass("table").addClass("table-bordered").addClass("table-condensed");
         $(".entry_container").render({
           puredata: this.model.get('content')
         }, pureDirectives.entryDirective);
@@ -237,7 +238,11 @@
       render: function() {
         var ctx, template;
         console.log("AccountsView.render CALLED");
-        template = $("<table id='accounts-table'> <thead> <tr> <th></th> <th>Name</th> <th>Category</th> <th>Type</th> <th></th> </tr> </thead> <tbody> <tr> <td> <a class='editaccount' href='#'>edit</a> </td> <td class='name'>My Name</td> <td class='type'>My Type</td> <td class='weight'>My Weight</td> <td> <a class='deleteaccount' href='#'>delete</a> </td> </tr> </tbody> <tfoot> <tr> <td> <input id='account-add' type='button' value='Add' /> </td> <td>&nbsp;</td> <td>&nbsp;</td> <td>&nbsp;</td> <td>&nbsp;</td> </tr> </tfoot> </table>");
+        template = $("<table id='accounts-table'> <thead> <tr> <th></th> <th>Name</th> <th>Category</th> <th>Type</th> <th></th> </tr> </thead> <tbody> <tr> <td> <button class='editaccount' >edit</a> </td> <td class='name'>My Name</td> <td class='type'>My Type</td> <td class='weight'>My Weight</td> <td> <button class='deleteaccount' href='#'>delete</a> </td> </tr> </tbody> <tfoot> <tr> <td> <button id='account-add' >Add</button> </td> <td>&nbsp;</td> <td>&nbsp;</td> <td>&nbsp;</td> <td>&nbsp;</td> </tr> </tfoot> </table>");
+        template.addClass("table").addClass("table-bordered").addClass("table-condensed");
+        template.find(".editaccount").addClass("btn");
+        template.find(".deleteaccount").addClass("btn");
+        template.find("#account-add").addClass("btn btn-primary");
         $("#accounts-pane > .tab_container > .tab_content").empty().append(template);
         ctx = this;
         return $("#accounts").render({
@@ -298,6 +303,7 @@
         var ctx, template;
         console.log("EntriesView.render CALLED");
         template = $("<table id='entries-table'> <thead> <tr> <th></th> <th>Date</th> <th>Name</th> <th>Balance</th> <th></th> </tr> </thead> <tbody> <tr> <td> <a class='editentry' href='#'>edit</a> </td> <td class='date'>My Date</td> <td class='name'>My Name</td> <td class='balance'>My Balance</td> <td> <a class='deleteentry' href='#'>delete</a> </td> </tr> </tbody> <tfoot> <tr> <td> <input id='entry-add' type='button' value='Add' /> </td> <td>&nbsp;</td> <td>&nbsp;</td> <td>&nbsp;</td> <td>&nbsp;</td> </tr> </tfoot> </table>");
+        template.addClass("table").addClass("table-bordered").addClass("table-condensed");
         $("#entries-pane > .entries_container > .entry_content").empty().append(template);
         ctx = this;
         _.map(this.collection.models, function(ech) {
