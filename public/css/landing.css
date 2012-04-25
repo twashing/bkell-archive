@@ -5,7 +5,7 @@
 }
 
 /* line 8, ../templ/sass/_utils.sass */
-.text-curly {
+.text-curly, #header #title-wrapper #title, #header #title-wrapper #subtitle, #legal {
   font-style: italic;
   font-family: Palatino, sans-serif;
 }
@@ -13,6 +13,158 @@
 /* line 12, ../templ/sass/_utils.sass */
 .text-default {
   font: Verdana, Arial, sans-serif;
+}
+
+/* line 10, ../../../../.rvm/gems/ruby-1.9.2-p290/gems/compass-0.12.1/frameworks/compass/stylesheets/compass/layout/_sticky-footer.scss */
+html, body {
+  height: 100%;
+}
+
+/* line 12, ../../../../.rvm/gems/ruby-1.9.2-p290/gems/compass-0.12.1/frameworks/compass/stylesheets/compass/layout/_sticky-footer.scss */
+.container-fluid {
+  clear: both;
+  min-height: 100%;
+  height: auto !important;
+  height: 100%;
+  margin-bottom: -150px;
+}
+/* line 18, ../../../../.rvm/gems/ruby-1.9.2-p290/gems/compass-0.12.1/frameworks/compass/stylesheets/compass/layout/_sticky-footer.scss */
+.container-fluid .span3 {
+  height: 150px;
+}
+
+/* line 20, ../../../../.rvm/gems/ruby-1.9.2-p290/gems/compass-0.12.1/frameworks/compass/stylesheets/compass/layout/_sticky-footer.scss */
+#footer {
+  clear: both;
+  position: relative;
+  height: 150px;
+}
+
+/* line 5, ../templ/sass/_utils.sass */
+.debug {
+  border-style: solid;
+  border-width: 1px;
+}
+
+/* line 8, ../templ/sass/_utils.sass */
+.text-curly, #header #title-wrapper #title, #header #title-wrapper #subtitle, #legal {
+  font-style: italic;
+  font-family: Palatino, sans-serif;
+}
+
+/* line 12, ../templ/sass/_utils.sass */
+.text-default {
+  font: Verdana, Arial, sans-serif;
+}
+
+/* line 14, ../templ/sass/common.sass */
+html, body {
+  min-height: 400px;
+  min-width: 800px;
+  height: 100%;
+}
+
+/* line 19, ../templ/sass/common.sass */
+.common-wrapper, #header #title-wrapper, #legal {
+  float: none;
+  position: relative;
+  width: 95%;
+  margin: 0px auto;
+  top: 10px;
+}
+
+/* line 26, ../templ/sass/common.sass */
+#header {
+  background-color: #999999;
+  height: 70px;
+  z-index: 20;
+  position: relative;
+  z-index: 10;
+  box-shadow: 0 4px 6px #554433;
+}
+/* line 40, ../templ/sass/common.sass */
+#header #title-wrapper #title {
+  position: relative;
+  float: left;
+  font-size: 3em;
+  font-weight: bold;
+  margin: 0 10;
+}
+/* line 47, ../templ/sass/common.sass */
+#header #title-wrapper #subtitle {
+  top: 20px;
+  float: left;
+  margin: 26 10 0 10;
+  float: left;
+}
+/* line 53, ../templ/sass/common.sass */
+#header #title-wrapper #subtitle #subtitle-default {
+  float: left;
+  color: #666666;
+}
+/* line 56, ../templ/sass/common.sass */
+#header #title-wrapper #subtitle #subtitle-black {
+  float: left;
+  font-weight: bold;
+}
+/* line 61, ../templ/sass/common.sass */
+#header #title-wrapper #account-chooser {
+  float: right;
+  margin: 10 0 0 0;
+}
+
+/* line 66, ../templ/sass/common.sass */
+#footer {
+  background-color: #999999;
+  clear: both;
+  z-index: 10;
+  height: 150px;
+}
+
+/* line 72, ../templ/sass/common.sass */
+.bkell-container {
+  zoom: 1;
+  margin-right: auto;
+  margin-left: auto;
+  width: 960px;
+  padding: 0px;
+  width: 100%;
+  min-height: 100%;
+  margin: 0 auto -150px;
+}
+/* line 10, ../../../../.rvm/gems/ruby-1.9.2-p290/gems/grid-coordinates-1.2.0/stylesheets/modules/_bulletproof-clearfix.sass */
+.bkell-container:before, .bkell-container:after {
+  content: ".";
+  display: block;
+  overflow: hidden;
+  visibility: hidden;
+  font-size: 0;
+  line-height: 0;
+  width: 0;
+  height: 0;
+}
+/* line 19, ../../../../.rvm/gems/ruby-1.9.2-p290/gems/grid-coordinates-1.2.0/stylesheets/modules/_bulletproof-clearfix.sass */
+.bkell-container:after {
+  clear: both;
+}
+
+/* line 79, ../templ/sass/common.sass */
+#main-content {
+  display: -webkit-box;
+  display: -moz-box;
+  display: -ms-box;
+  display: box;
+  position: absolute;
+  top: 70px;
+  bottom: 150px;
+  left: 0;
+  right: 0;
+  background-image: url("/images/paper_2.png");
+}
+
+/* line 84, ../templ/sass/common.sass */
+#legal {
+  color: #666666;
 }
 
 /*
@@ -5283,25 +5435,25 @@ a.thumbnail:hover {
   left: -671px;
 }
 
-/* line 25, ../templ/sass/landing.sass */
+/* line 26, ../templ/sass/landing.sass */
 .container-fluid {
   padding: 0px;
 }
 
-/* line 29, ../templ/sass/landing.sass */
+/* line 30, ../templ/sass/landing.sass */
 .sidebar-nav-fixed {
   position: relative;
   padding: 0px;
   width: 250px;
 }
 
-/* line 35, ../templ/sass/landing.sass */
+/* line 36, ../templ/sass/landing.sass */
 .span-fixed-sidebar {
   margin-left: 260px;
   min-width: 800px;
 }
 
-/* line 41, ../templ/sass/landing.sass */
+/* line 42, ../templ/sass/landing.sass */
 #header {
   z-index: 20;
 }
@@ -5309,16 +5461,21 @@ a.thumbnail:hover {
 /*****
  * Left / Accounts Pane 
  ***** */
-/* line 47, ../templ/sass/landing.sass */
+/* line 48, ../templ/sass/landing.sass */
 #left-col {
-  position: relative;
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  position: absolute;
   float: left;
   width: 308;
   z-index: 10;
   background-image: url("/images/paper_2.png");
   box-shadow: 0 4px 6px #554433;
 }
-/* line 55, ../templ/sass/landing.sass */
+/* line 57, ../templ/sass/landing.sass */
 #left-col #left-wrapper {
   float: left;
   width: 288;
@@ -5326,20 +5483,20 @@ a.thumbnail:hover {
   overflow: hidden;
   position: relative;
 }
-/* line 62, ../templ/sass/landing.sass */
+/* line 64, ../templ/sass/landing.sass */
 #left-col #left-wrapper #left-content {
   white-space: nowrap;
   position: absolute;
   width: 600;
 }
-/* line 69, ../templ/sass/landing.sass */
+/* line 71, ../templ/sass/landing.sass */
 #left-col #left-wrapper #left-content #accounts, #left-col #left-wrapper #left-content #account {
   width: 280;
   float: left;
   margin: 8;
   padding: 0px;
 }
-/* line 75, ../templ/sass/landing.sass */
+/* line 77, ../templ/sass/landing.sass */
 #left-col #left-wrapper #left-content #left-toggler {
   width: 20;
   height: 20px;
@@ -5351,14 +5508,15 @@ a.thumbnail:hover {
 /*****
  * Right / Entries Pane 
  ***** */
-/* line 86, ../templ/sass/landing.sass */
+/* line 88, ../templ/sass/landing.sass */
 #right-col {
   position: relative;
   float: left;
   width: 800;
   height: 800;
+  margin-left: 310;
 }
-/* line 94, ../templ/sass/landing.sass */
+/* line 97, ../templ/sass/landing.sass */
 #right-col #right-wrapper {
   float: left;
   overflow: hidden;
@@ -5366,20 +5524,20 @@ a.thumbnail:hover {
   width: 100%;
   height: 70%;
 }
-/* line 103, ../templ/sass/landing.sass */
+/* line 106, ../templ/sass/landing.sass */
 #right-col #right-wrapper #right-content {
   white-space: nowrap;
   position: absolute;
   width: 100%;
   height: 500px;
 }
-/* line 110, ../templ/sass/landing.sass */
+/* line 113, ../templ/sass/landing.sass */
 #right-col #right-wrapper #right-content #entries, #right-col #right-wrapper #right-content #entry, #right-col #right-wrapper #right-content #entry-part {
   float: left;
   width: 800px;
 }
 
-/* line 114, ../templ/sass/landing.sass */
+/* line 117, ../templ/sass/landing.sass */
 #entry-date {
   position: relative;
 }

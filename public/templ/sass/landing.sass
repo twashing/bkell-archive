@@ -6,6 +6,7 @@
 @import grid-coordinates
 
 @import utils
+@import common
 @import compass_twitter_bootstrap
 
 $left-col-width : 250px
@@ -45,7 +46,8 @@ $grid-gutter-width: 1px
  * Left / Accounts Pane 
  ******/
 #left-col
-  position: relative
+  +stretch( $offset-top : 0, $offset-bottom : 0 )
+  position: absolute
   float: left
   width: $left-content-width + $left-content-margin + $left-toggler-width
   z-index: 10
@@ -88,6 +90,7 @@ $grid-gutter-width: 1px
   float: left
   width: 800
   height: 800
+  margin-left: 310
   //border: dashed 1px #000
   //right: 310px
 
