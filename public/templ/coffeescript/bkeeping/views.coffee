@@ -26,19 +26,19 @@ define( ['js/bkeeping/bkeeping'], (bkeeping) ->
     entriesDirective: {
       "tbody tr" : {
         "each<-puredata" : {
-          "a.editentry@data-eid" : "each.id"
+          "button.editentry@data-eid" : "each.id"
           "td.date" : "each.date"
           "td.name" : "each.name"
           "td.balance" : "each.balance"
-          "a.deleteentry@data-eid" : "each.id"
+          "button.deleteentry@data-eid" : "each.id"
         }
       }
     }
     entryDirective: {
       "tbody tr" : {
         "each<-puredata" : {
-          "a.editentrypart@data-eid" : "each.id"
-          "a.editentrypart@data-type" : "each.tag"
+          "button.editentrypart@data-eid" : "each.id"
+          "button.editentrypart@data-type" : "each.tag"
           "td.debitAccount" : (arg) -> return pureDirectives.determineAccountDtCt(this, "debit")
           "td.debitAmount" : (arg) -> return pureDirectives.determineAmountDtCt(this, "debit")
           "td.creditAccount" : (arg) -> return pureDirectives.determineAccountDtCt(this, "credit")
@@ -110,11 +110,32 @@ define( ['js/bkeeping/bkeeping'], (bkeeping) ->
       # clear the container each time - don't want to incrementally add
       ###
       
-      template = $("<tr> <td> <a class='editentrypart' href='#'>edit</a> </td> <td class='debitAccount'>Debit Account</td> <td class='debitAmount'>Debit Amount</td> <td>&nbsp;</td> <td class='creditAccount'>Credit Account</td> <td class='creditAmount'>Credit Amount</td> <td> <a class='deleteentrypart' href='#'>delete</a> </td> </tr>")
+      template = $("<tr> <td> <button class='editentrypart' >edit</button> </td> <td class='debitAccount'>Debit Account</td> <td class='debitAmount'>Debit Amount</td> <td>&nbsp;</td> <td class='creditAccount'>Credit Account</td> <td class='creditAmount'>Credit Amount</td> <td> <button class='deleteentrypart' >delete</button> </td> </tr>")
       
       $(".entry_container tbody")
         .empty()
         .append(template)
+
+      template
+        .find(".editentrypart")
+        .addClass("btn")
+      
+      template
+        .find(".deleteentrypart")
+        .addClass("btn")
+      
+      $("#entrypart-add")
+        .addClass("btn")
+        .addClass("btn-primary")
+      
+      $("#entry-ok")
+        .addClass("btn")
+        .addClass("btn-success")
+      
+      $("#entry-cancel")
+        .addClass("btn")
+        .addClass("btn-danger")
+      
       
       # adding twitter boostrap table styling
       $(".entry_content > table")
@@ -197,12 +218,20 @@ define( ['js/bkeeping/bkeeping'], (bkeeping) ->
       console.log('EntryPartView render CALLED')
       
       # render with PURE - just populate entry part fields for now
-      template = "<div> <label>Amount</label> <input id='entry-part-amount' type='text' /> </div> <div> <label>Account</label> <select id='entry-part-account'> <option label='' value=''></option> </select> </div> <div> <label>Type</label> <select id='entry-part-type'> <option value='debit'>debit</option> <option value='credit'>credit</option> </select> </div> <div> <input id='entry-part-ok' type='button' value='Save' /> <input id='entry-part-cancel' type='button' value='Cancel' /> </div>"
+      template = "<div> <label>Amount</label> <input id='entry-part-amount' type='text' /> </div> <div> <label>Account</label> <select id='entry-part-account'> <option label='' value=''></option> </select> </div> <div> <label>Type</label> <select id='entry-part-type'> <option value='debit'>debit</option> <option value='credit'>credit</option> </select> </div> <div> <button id='entry-part-ok' >Save</button> <button id='entry-part-cancel' >Cancel</button> </div>"
       
       
       $(".entryPart_container .entryPart_content")
         .empty()
         .append(template)
+      
+      $("#entry-part-ok")
+        .addClass("btn")
+        .addClass("btn-success")
+      
+      $("#entry-part-cancel")
+        .addClass("btn")
+        .addClass("btn-danger")
       
       $(".entryPart_container .entryPart_content").render( { puredata : this.accounts.toJSON() } , pureDirectives.entryPartDirective )
       
@@ -397,13 +426,25 @@ define( ['js/bkeeping/bkeeping'], (bkeeping) ->
       console.log("EntriesView.render CALLED")
       
       # ensure we don't re-render the accounts
-      template = $("<table id='entries-table'> <thead> <tr> <th></th> <th>Date</th> <th>Name</th> <th>Balance</th> <th></th> </tr> </thead> <tbody> <tr> <td> <a class='editentry' href='#'>edit</a> </td> <td class='date'>My Date</td> <td class='name'>My Name</td> <td class='balance'>My Balance</td> <td> <a class='deleteentry' href='#'>delete</a> </td> </tr> </tbody> <tfoot> <tr> <td> <input id='entry-add' type='button' value='Add' /> </td> <td>&nbsp;</td> <td>&nbsp;</td> <td>&nbsp;</td> <td>&nbsp;</td> </tr> </tfoot> </table>")
+      template = $("<table id='entries-table'> <thead> <tr> <th></th> <th>Date</th> <th>Name</th> <th>Balance</th> <th></th> </tr> </thead> <tbody> <tr> <td> <button class='editentry' >edit</a> </td> <td class='date'>My Date</td> <td class='name'>My Name</td> <td class='balance'>My Balance</td> <td> <button class='deleteentry' >delete</a> </td> </tr> </tbody> <tfoot> <tr> <td> <input id='entry-add' type='button' value='Add' /> </td> <td>&nbsp;</td> <td>&nbsp;</td> <td>&nbsp;</td> <td>&nbsp;</td> </tr> </tfoot> </table>")
       
       # adding twitter boostrap table styling
       template
         .addClass("table")
         .addClass("table-bordered")
         .addClass("table-condensed")
+      
+      template
+        .find(".editentry")
+        .addClass("btn")
+      
+      template
+        .find(".deleteentry")
+        .addClass("btn")
+      
+      template
+        .find("#entry-add")
+        .addClass("btn btn-primary")
       
       $("#entries-pane > .entries_container > .entry_content")   # empty generated DataTable divs
         .empty()
@@ -412,7 +453,6 @@ define( ['js/bkeeping/bkeeping'], (bkeeping) ->
       ctx = this
       _.map(this.collection.models, (ech) ->
         bal = ech.balances(ctx.options.accounts)
-        #ech.set("balance", bal.lhs)
         ech.attributes.balance = bal.lhs
       )
       
