@@ -497,7 +497,7 @@ define( ['js/bkeeping/bkeeping'], (bkeeping) ->
         .find('#entry-add')
         .unbind('click')
         .bind(  'click',
-                _.extend( { entry: new bkeeping.models.Entry() }, bindings ),
+                _.extend( { entry: new bkeeping.models.Entry({ content: [] }) }, bindings ),
                 _.bind(esm.EsE, esm))  # trigger the transition when add clicked
   )
   

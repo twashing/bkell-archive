@@ -74,11 +74,6 @@
     });
     Entry = AbstractK.extend({
       urlRoot: "/entry",
-      initialize: function() {
-        return this.set({
-          content: []
-        });
-      },
       balances: function(accounts) {
         var result;
         result = _.reduce(this.get("content"), (function(tally, ech) {

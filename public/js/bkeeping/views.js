@@ -346,7 +346,9 @@
           return args.data.entries.get(eid).destroy();
         });
         return elem.find('#entry-add').unbind('click').bind('click', _.extend({
-          entry: new bkeeping.models.Entry()
+          entry: new bkeeping.models.Entry({
+            content: []
+          })
         }, bindings), _.bind(esm.EsE, esm));
       }
     });
