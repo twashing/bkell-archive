@@ -78,11 +78,19 @@ define( ['js/bkeeping/bkeeping'], (bkeeping) ->
       # render pane with PURE
       #this.view.el.render( this.model.toJSON(), pureDirectives.accountDirective )
       
-      template = "<div class='account_content'> <div> <label>Name</label> <input id='account-name' type='text' /> </div> <div> <label>Category</label> <select id='account-type'> <option value='asset'>asset</option> <option value='liability'>liability</option> <option value='revenue'>revenue</option> <option value='expense'>expense</option> </select> </div> <div> <label>Type</label> <select id='account-counterWeight'> <option value='debit'>debit</option> <option value='credit'>credit</option> </select> </div> <div> <input id='account-ok' type='button' value='Save' /> <input id='account-cancel' type='button' value='Cancel' /> </div> </div>"
+      template = "<div class='account_content'> <div> <label>Name</label> <input id='account-name' type='text' /> </div> <div> <label>Category</label> <select id='account-type'> <option value='asset'>asset</option> <option value='liability'>liability</option> <option value='revenue'>revenue</option> <option value='expense'>expense</option> </select> </div> <div> <label>Type</label> <select id='account-counterWeight'> <option value='debit'>debit</option> <option value='credit'>credit</option> </select> </div> <div> <button id='account-ok' >Save</button> <button id='account-cancel' >Cancel</button> </div> </div>"
       
       $(".account_container")
         .empty()
         .append(template)
+      
+      $("#account-ok")
+        .addClass("btn")
+        .addClass("btn-success")
+      
+      $("#account-cancel")
+        .addClass("btn")
+        .addClass("btn-danger")
       
       # hack together a jquery render of the select dropdowns
       $("#account-name").attr('value', this.model.get('name'))

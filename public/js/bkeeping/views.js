@@ -82,8 +82,10 @@
       render: function(options) {
         var template;
         console.log('AccountView render CALLED');
-        template = "<div class='account_content'> <div> <label>Name</label> <input id='account-name' type='text' /> </div> <div> <label>Category</label> <select id='account-type'> <option value='asset'>asset</option> <option value='liability'>liability</option> <option value='revenue'>revenue</option> <option value='expense'>expense</option> </select> </div> <div> <label>Type</label> <select id='account-counterWeight'> <option value='debit'>debit</option> <option value='credit'>credit</option> </select> </div> <div> <input id='account-ok' type='button' value='Save' /> <input id='account-cancel' type='button' value='Cancel' /> </div> </div>";
+        template = "<div class='account_content'> <div> <label>Name</label> <input id='account-name' type='text' /> </div> <div> <label>Category</label> <select id='account-type'> <option value='asset'>asset</option> <option value='liability'>liability</option> <option value='revenue'>revenue</option> <option value='expense'>expense</option> </select> </div> <div> <label>Type</label> <select id='account-counterWeight'> <option value='debit'>debit</option> <option value='credit'>credit</option> </select> </div> <div> <button id='account-ok' >Save</button> <button id='account-cancel' >Cancel</button> </div> </div>";
         $(".account_container").empty().append(template);
+        $("#account-ok").addClass("btn").addClass("btn-success");
+        $("#account-cancel").addClass("btn").addClass("btn-danger");
         $("#account-name").attr('value', this.model.get('name'));
         $("#account-type > option[value='" + (this.model.get('type')) + "']").attr('selected', 'selected');
         return $("#account-counterWeight > option[value='" + (this.model.get('counterWeight')) + "']").attr('selected', 'selected');
