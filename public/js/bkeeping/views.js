@@ -109,7 +109,7 @@
         $("#entrypart-add").addClass("btn").addClass("btn-primary");
         $("#entry-ok").addClass("btn").addClass("btn-success");
         $("#entry-cancel").addClass("btn").addClass("btn-danger");
-        $(".entry_content > table").addClass("table").addClass("table-bordered").addClass("table-condensed");
+        $(".entry_content > table").addClass("table").addClass("table-condensed");
         $(".entry_container").render({
           puredata: this.model.get('content')
         }, pureDirectives.entryDirective);
@@ -249,7 +249,7 @@
         var ctx, template;
         console.log("AccountsView.render CALLED");
         template = $("<table id='accounts-table'> <thead> <tr> <th></th> <th>Name</th> <th>Category</th> <th>Type</th> <th></th> </tr> </thead> <tbody> <tr> <td> <button class='editaccount' >edit</a> </td> <td class='name'>My Name</td> <td class='type'>My Type</td> <td class='weight'>My Weight</td> <td> <button class='deleteaccount' href='#'>delete</a> </td> </tr> </tbody> <tfoot> <tr> <td> <button id='account-add' >Add</button> </td> <td>&nbsp;</td> <td>&nbsp;</td> <td>&nbsp;</td> <td>&nbsp;</td> </tr> </tfoot> </table>");
-        template.addClass("table").addClass("table-bordered").addClass("table-condensed");
+        template.addClass("table").addClass("table-condensed");
         template.find(".editaccount").addClass("btn");
         template.find(".deleteaccount").addClass("btn");
         template.find("#account-add").addClass("btn btn-primary");
@@ -313,7 +313,7 @@
         var ctx, template;
         console.log("EntriesView.render CALLED");
         template = $("<table id='entries-table'> <thead> <tr> <th></th> <th>Date</th> <th>Name</th> <th>Balance</th> <th></th> </tr> </thead> <tbody> <tr> <td> <button class='editentry' >edit</a> </td> <td class='date'>My Date</td> <td class='name'>My Name</td> <td class='balance'>My Balance</td> <td> <button class='deleteentry' >delete</a> </td> </tr> </tbody> <tfoot> <tr> <td> <input id='entry-add' type='button' value='Add' /> </td> <td>&nbsp;</td> <td>&nbsp;</td> <td>&nbsp;</td> <td>&nbsp;</td> </tr> </tfoot> </table>");
-        template.addClass("table").addClass("table-bordered").addClass("table-condensed");
+        template.addClass("table").addClass("table-condensed");
         template.find(".editentry").addClass("btn");
         template.find(".deleteentry").addClass("btn");
         template.find("#entry-add").addClass("btn btn-primary");

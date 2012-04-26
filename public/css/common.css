@@ -142,10 +142,10 @@ html, body {
   bottom: 150px;
   left: 0;
   right: 0;
-  background-image: url("/images/paper_2.png");
+  background: white;
 }
 
-/* line 84, ../templ/sass/common.sass */
+/* line 85, ../templ/sass/common.sass */
 #legal {
   color: #666666;
 }

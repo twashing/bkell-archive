@@ -140,7 +140,7 @@ define( ['js/bkeeping/bkeeping'], (bkeeping) ->
       # adding twitter boostrap table styling
       $(".entry_content > table")
         .addClass("table")
-        .addClass("table-bordered")
+        #.addClass("table-bordered")
         .addClass("table-condensed")
       
       $(".entry_container")
@@ -327,7 +327,7 @@ define( ['js/bkeeping/bkeeping'], (bkeeping) ->
       # adding twitter boostrap styling
       template
         .addClass("table")
-        .addClass("table-bordered")
+        #.addClass("table-bordered")
         .addClass("table-condensed")
       
       template
@@ -433,7 +433,7 @@ define( ['js/bkeeping/bkeeping'], (bkeeping) ->
       # adding twitter boostrap table styling
       template
         .addClass("table")
-        .addClass("table-bordered")
+        #.addClass("table-bordered")
         .addClass("table-condensed")
       
       template
