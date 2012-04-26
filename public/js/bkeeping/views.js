@@ -113,6 +113,18 @@
         $(".entry_container").render({
           puredata: this.model.get('content')
         }, pureDirectives.entryDirective);
+        $(".deleteentrypart").on("click", function(event) {
+          $(".modal-body").text("Are you sure you want to delete this entry part?");
+          $("#modal-delete-ok").on("click", function() {
+            console.log("OK delete clicked");
+            return $("#delete-confirm").modal("hide");
+          });
+          $("#modal-delete-cancel").on("click", function() {
+            console.log("CANCEL delete clicked");
+            return $("#delete-confirm").modal("hide");
+          });
+          return $("#delete-confirm").modal();
+        });
         $("td").css("border", 0);
         $("#entry-date").datepicker();
         $("#entry-date").val(this.model.get("date"));
@@ -249,7 +261,7 @@
       render: function() {
         var ctx, template;
         console.log("AccountsView.render CALLED");
-        template = $("<table id='accounts-table'> <thead> <tr> <th></th> <th>Name</th> <th>Category</th> <th>Type</th> <th></th> </tr> </thead> <tbody> <tr> <td> <button class='editaccount' >edit</a> </td> <td class='name'>My Name</td> <td class='type'>My Type</td> <td class='weight'>My Weight</td> <td> <button class='deleteaccount' href='#'>delete</a> </td> </tr> </tbody> <tfoot> <tr> <td> <button id='account-add' >Add</button> </td> <td>&nbsp;</td> <td>&nbsp;</td> <td>&nbsp;</td> <td>&nbsp;</td> </tr> </tfoot> </table>");
+        template = $("<table id='accounts-table'> <thead> <tr> <th></th> <th>Name</th> <th>Category</th> <th>Type</th> <th></th> </tr> </thead> <tbody> <tr> <td> <button class='editaccount' >edit</a> </td> <td class='name'>My Name</td> <td class='type'>My Type</td> <td class='weight'>My Weight</td> <td> <button class='deleteaccount' data-toggle='modal' data-target='#delete-confirm' >delete</a> </td> </tr> </tbody> <tfoot> <tr> <td> <button id='account-add' >Add</button> </td> <td>&nbsp;</td> <td>&nbsp;</td> <td>&nbsp;</td> <td>&nbsp;</td> </tr> </tfoot> </table>");
         template.addClass("table").addClass("table-condensed");
         template.find(".editaccount").addClass("btn");
         template.find(".deleteaccount").addClass("btn");
@@ -314,7 +326,7 @@
       render: function(args) {
         var ctx, template;
         console.log("EntriesView.render CALLED");
-        template = $("<table id='entries-table'> <thead> <tr> <th></th> <th>Date</th> <th>Name</th> <th>Balance</th> <th></th> </tr> </thead> <tbody> <tr> <td> <button class='editentry' >edit</a> </td> <td class='date'>My Date</td> <td class='name'>My Name</td> <td class='balance'>My Balance</td> <td> <button class='deleteentry' >delete</a> </td> </tr> </tbody> <tfoot> <tr> <td> <input id='entry-add' type='button' value='Add' /> </td> <td>&nbsp;</td> <td>&nbsp;</td> <td>&nbsp;</td> <td>&nbsp;</td> </tr> </tfoot> </table>");
+        template = $("<table id='entries-table'> <thead> <tr> <th></th> <th>Date</th> <th>Name</th> <th>Balance</th> <th></th> </tr> </thead> <tbody> <tr> <td> <button class='editentry' >edit</a> </td> <td class='date'>My Date</td> <td class='name'>My Name</td> <td class='balance'>My Balance</td> <td> <button class='deleteentry' data-toggle='modal' href='#delete-confirm' >delete</a> </td> </tr> </tbody> <tfoot> <tr> <td> <input id='entry-add' type='button' value='Add' /> </td> <td>&nbsp;</td> <td>&nbsp;</td> <td>&nbsp;</td> <td>&nbsp;</td> </tr> </tfoot> </table>");
         template.addClass("table");
         template.find(".editentry").addClass("btn");
         template.find(".deleteentry").addClass("btn");

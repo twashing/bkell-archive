@@ -7,7 +7,8 @@
     <!--[if IE]>
       <link href='/css/ie.css' media='screen, projection' rel='stylesheet' type='text/css' />
     <![endif]-->
-    <script src='/js/lib/jquery-1.6.3.js'></script>
+    <!-- %script( src="/js/lib/jquery-1.6.3.js" ) -->
+    <script src='/js/lib/jquery-1.7.2.min.js'></script>
     <!-- %script( src="/js/lib/jquery-ui.min.js" ) -->
     <script src='/js/lib/jquery-ui-1.8.16.custom.min.js'></script>
     <link href='/css/jquery-ui.css' media='screen' rel='stylesheet' type='text/css' />
@@ -25,7 +26,8 @@
     <script src='/js/lib/backbone.js'></script>
     <script src='/js/lib/md5.js'></script>
     <script src='/js/lib/state-machine.js'></script>
-    <!-- %script( src="/js/lib/bootstrap.js" ) -->
+    <script src='/js/lib/bootstrap.js'></script>
+    <script src='/js/lib/bootstrap-modal.js'></script>
     <link href='/css/common.css' media='screen' rel='stylesheet' type='text/css' />
     <link href='/css/landing.css' media='screen' rel='stylesheet' type='text/css' />
     <script data-main='js/bkeeping/landing' src='/js/lib/require.js'></script>
@@ -61,6 +63,19 @@
     </script>
   </head>
   <body>
+    <div class='modal fade' id='delete-confirm'>
+      <div class='modal-body'>
+        Modal Message
+      </div>
+      <div class='modal-footer'>
+        <button class='btn btn-primary' id='modal-delete-ok'>
+          Ok
+        </button>
+        <button class='btn' id='modal-delete-cancel'>
+          cancel
+        </button>
+      </div>
+    </div>
     <div class='bkell-container'>
       <div id='header'>
         <div id='title-wrapper'>
