@@ -141,10 +141,14 @@ define( ['js/bkeeping/bkeeping'], (bkeeping) ->
       $(".entry_content > table")
         .addClass("table")
         #.addClass("table-bordered")
-        .addClass("table-condensed")
+        #.addClass("table-condensed")
       
       $(".entry_container")
         .render( { puredata : this.model.get('content') } , pureDirectives.entryDirective )
+      
+      # removing table row borders 
+      $("td").css("border", 0)
+      
       
       $("#entry-date").datepicker()
       $("#entry-date").val(this.model.get("date"))
@@ -364,6 +368,9 @@ define( ['js/bkeeping/bkeeping'], (bkeeping) ->
           ctx.accountRows.push(arow)
         )
     
+      # removing table row borders 
+      $("td").css("border", 0)
+      
     ###
     # instrument Accounts pane with actions
     ###
@@ -434,7 +441,7 @@ define( ['js/bkeeping/bkeeping'], (bkeeping) ->
       template
         .addClass("table")
         #.addClass("table-bordered")
-        .addClass("table-condensed")
+        #.addClass("table-condensed")
       
       template
         .find(".editentry")
@@ -473,6 +480,9 @@ define( ['js/bkeeping/bkeeping'], (bkeeping) ->
           ctx.entryRows.push(arow)
         )
      
+      # removing table row borders 
+      $("td").css("border", 0)
+      
     instrumentEntries: (elem, bindings, esm) ->
        
       elem
