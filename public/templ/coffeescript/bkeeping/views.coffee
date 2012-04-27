@@ -187,16 +187,16 @@ define( ['js/bkeeping/bkeeping', 'js/bkeeping/util'], (bkeeping, util) ->
         
         # make a new entryPart
         $("#entrypart-add")
-          .unbind('click')
-          .bind(  'click',
+          .unbind("click")
+          .bind(  "click",
                   _.extend( { epart: { accountid: null, amount: null, id: result, tag: null } }, bindObjects ),   # creating a new epart
                   _.bind(options.esm.EEpart, options.esm))  # trigger the transition when edit clicked
         
         # handle edit CLICKs and ii. bind entry row to the Entries State Machine
         $(options.entryView.el)
-          .find('.editentrypart')
-          .unbind('click')
-          .bind(  'click',
+          .find(".editentrypart")
+          .unbind("click")
+          .bind(  "click",
                   bindObjects,
                   _.bind(options.esm.EEpart, options.esm))  # trigger the transition when edit clicked
         
@@ -206,14 +206,30 @@ define( ['js/bkeeping/bkeeping', 'js/bkeeping/util'], (bkeeping, util) ->
           .bind(  "click",
                   bindObjects,
                   (event) ->
-            
+                     
+                     # needed objects for the "util.makeGenericDialog" call
+                    bobjs =
+                      entriesView: event.data.entriesView,
+                      entryView: event.data.entryView,
+                      entryPartView: event.data.entryPartView,
+                      entries: event.data.entries,
+                      accounts: event.data.accounts,
+                      entry : event.data.entry,
+                      esm: event.data.esm
                     epId = event.target.dataset['eid']
                     entry = event.data.entry
+                    entryView = event.data.entryView
+                    
+                    # bring up the dialog
                     util.makeGenericDialog("Are you sure you want to delete this entry part?", () ->
                       
                       console.log("ok fn")
                       
+                      # remove entryPart
                       entry.removeEntryPart(epId)
+                      
+                      # re-"instrumentEntry"
+                      entryView.instrumentEntry(bobjs)
                     )
           )
       

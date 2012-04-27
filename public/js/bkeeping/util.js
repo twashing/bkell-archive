@@ -12,14 +12,12 @@
       },
       makeGenericDialog: function(message, okfn) {
         $(".modal-body").text(message);
-        $("#modal-delete-ok").off("click");
-        $("#modal-delete-ok").on("click", function() {
+        $("#modal-delete-ok").unbind("click").bind("click", function() {
           console.log("OK delete clicked");
           $("#delete-confirm").modal("hide");
           return okfn.apply();
         });
-        $("#modal-delete-cancel").off("click");
-        $("#modal-delete-cancel").on("click", function() {
+        $("#modal-delete-cancel").unbind("click").bind("click", function() {
           console.log("CANCEL delete clicked");
           return $("#delete-confirm").modal("hide");
         });

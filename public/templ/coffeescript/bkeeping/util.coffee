@@ -17,21 +17,23 @@ define([], () ->
     # confirm the delete 
     $(".modal-body").text(message)
     
-    $("#modal-delete-ok").off("click")
-    $("#modal-delete-ok").on("click", () ->
+    $("#modal-delete-ok")
+      .unbind("click")
+      .bind("click", () ->
       
-      console.log("OK delete clicked")
-      $("#delete-confirm").modal("hide")
-
-      okfn.apply()
+        console.log("OK delete clicked")
+        $("#delete-confirm").modal("hide")
+        
+        okfn.apply()
     )
     
     
-    $("#modal-delete-cancel").off("click")
-    $("#modal-delete-cancel").on("click", () ->
-      
-      console.log("CANCEL delete clicked")
-      $("#delete-confirm").modal("hide")
+    $("#modal-delete-cancel")
+      .unbind("click")
+      .bind("click", () ->
+        
+        console.log("CANCEL delete clicked")
+        $("#delete-confirm").modal("hide")
     )
     
     $("#delete-confirm").modal()

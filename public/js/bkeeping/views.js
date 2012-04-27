@@ -144,7 +144,7 @@
           esm: options.esm
         };
         return $.get("/generateid", function(result, status, obj) {
-          $("#entrypart-add").unbind('click').bind('click', _.extend({
+          $("#entrypart-add").unbind("click").bind("click", _.extend({
             epart: {
               accountid: null,
               amount: null,
@@ -152,14 +152,25 @@
               tag: null
             }
           }, bindObjects), _.bind(options.esm.EEpart, options.esm));
-          $(options.entryView.el).find('.editentrypart').unbind('click').bind('click', bindObjects, _.bind(options.esm.EEpart, options.esm));
+          $(options.entryView.el).find(".editentrypart").unbind("click").bind("click", bindObjects, _.bind(options.esm.EEpart, options.esm));
           $(options.entryView.el).find(".deleteentrypart").unbind("click").bind("click", bindObjects, function(event) {
-            var entry, epId;
+            var bobjs, entry, entryView, epId;
+            bobjs = {
+              entriesView: event.data.entriesView,
+              entryView: event.data.entryView,
+              entryPartView: event.data.entryPartView,
+              entries: event.data.entries,
+              accounts: event.data.accounts,
+              entry: event.data.entry,
+              esm: event.data.esm
+            };
             epId = event.target.dataset['eid'];
             entry = event.data.entry;
+            entryView = event.data.entryView;
             return util.makeGenericDialog("Are you sure you want to delete this entry part?", function() {
               console.log("ok fn");
-              return entry.removeEntryPart(epId);
+              entry.removeEntryPart(epId);
+              return entryView.instrumentEntry(bobjs);
             });
           });
           $('#entry-ok').unbind('click').bind('click', _.extend({
