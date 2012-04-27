@@ -106,7 +106,9 @@ define([], () ->
                   
                   account = _.find(accounts.models, (act) -> return (act.get("id") == ech.accountid))
                   
-                  if (((ech.tag == "debit") and (account.get("counterWeight") == "debit")) or (ech.tag == "credit") and (account.get("counterWeight") == "credit"))
+                  if(not account)
+                    # basically do nothing
+                  else if(((ech.tag == "debit") and (account.get("counterWeight") == "debit")) or (ech.tag == "credit") and (account.get("counterWeight") == "credit"))
                     tally.lhs += parseFloat(ech.amount)
                   else
                     tally.rhs += parseFloat(ech.amount)
