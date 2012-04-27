@@ -314,7 +314,7 @@
                     fdata.tag = "entry";
                     fdata.name = $("#entry-name").val();
                     fdata.date = $("#entry-date").val();
-                    fdata.content = [];
+                    fdata.content = args.data.entry.get("content");
                     return saveEntry(fdata);
                   });
                 } else {
