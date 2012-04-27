@@ -269,7 +269,7 @@
       render: function() {
         var ctx, template;
         console.log("AccountsView.render CALLED");
-        template = $("<table id='accounts-table'> <thead> <tr> <th></th> <th>Name</th> <th>Category</th> <th>Type</th> <th></th> </tr> </thead> <tbody> <tr> <td> <button class='editaccount' >edit</a> </td> <td class='name'>My Name</td> <td class='type'>My Type</td> <td class='weight'>My Weight</td> <td> <button class='deleteaccount' data-toggle='modal' data-target='#delete-confirm' >delete</a> </td> </tr> </tbody> <tfoot> <tr> <td> <button id='account-add' >Add</button> </td> <td>&nbsp;</td> <td>&nbsp;</td> <td>&nbsp;</td> <td>&nbsp;</td> </tr> </tfoot> </table>");
+        template = $("<table id='accounts-table'> <thead> <tr> <th></th> <th>Name</th> <th>Category</th> <th>Type</th> <th></th> </tr> </thead> <tbody> <tr> <td> <button class='editaccount' >edit</a> </td> <td class='name'>My Name</td> <td class='type'>My Type</td> <td class='weight'>My Weight</td> <td> <button class='deleteaccount' >delete</a> </td> </tr> </tbody> <tfoot> <tr> <td> <button id='account-add' >Add</button> </td> <td>&nbsp;</td> <td>&nbsp;</td> <td>&nbsp;</td> <td>&nbsp;</td> </tr> </tfoot> </table>");
         template.addClass("table").addClass("table-condensed");
         template.find(".editaccount").addClass("btn");
         template.find(".deleteaccount").addClass("btn");
@@ -296,10 +296,13 @@
       instrumentAccounts: function(elem, bindings, asm) {
         elem.find('.editaccount').unbind('click').bind('click', bindings, _.bind(asm.AsA, asm));
         elem.find('.deleteaccount').unbind('click').bind('click', bindings, function(args) {
-          var aid;
+          var account, aid;
           console.log(".deleteaccount");
           aid = $(this).data("aid");
-          return args.data.accounts.get(aid).destroy();
+          account = args.data.accounts.get(aid);
+          return util.makeGenericDialog("Are you sure you want to delete this account?", function() {
+            return account.destroy();
+          });
         });
         return elem.find("#account-add").unbind("click").bind("click", _.extend({
           account: new bkeeping.models.Account()
