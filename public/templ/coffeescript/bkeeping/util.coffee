@@ -25,7 +25,7 @@ define([], () ->
         $("#delete-confirm").modal("hide")
         
         okfn.apply()
-    )
+      )
     
     
     $("#modal-delete-cancel")
@@ -34,9 +34,10 @@ define([], () ->
         
         console.log("CANCEL delete clicked")
         $("#delete-confirm").modal("hide")
-    )
+      )
     
     $("#delete-confirm").modal()
+    true
 )
 
 

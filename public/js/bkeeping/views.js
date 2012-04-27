@@ -168,7 +168,6 @@
             entry = event.data.entry;
             entryView = event.data.entryView;
             return util.makeGenericDialog("Are you sure you want to delete this entry part?", function() {
-              console.log("ok fn");
               entry.removeEntryPart(epId);
               return entryView.instrumentEntry(bobjs);
             });
@@ -335,7 +334,7 @@
       render: function(args) {
         var ctx, template;
         console.log("EntriesView.render CALLED");
-        template = $("<table id='entries-table'> <thead> <tr> <th></th> <th>Date</th> <th>Name</th> <th>Balance</th> <th></th> </tr> </thead> <tbody> <tr> <td> <button class='editentry' >edit</a> </td> <td class='date'>My Date</td> <td class='name'>My Name</td> <td class='balance'>My Balance</td> <td> <button class='deleteentry' data-toggle='modal' href='#delete-confirm' >delete</a> </td> </tr> </tbody> <tfoot> <tr> <td> <input id='entry-add' type='button' value='Add' /> </td> <td>&nbsp;</td> <td>&nbsp;</td> <td>&nbsp;</td> <td>&nbsp;</td> </tr> </tfoot> </table>");
+        template = $("<table id='entries-table'> <thead> <tr> <th></th> <th>Date</th> <th>Name</th> <th>Balance</th> <th></th> </tr> </thead> <tbody> <tr> <td> <button class='editentry' >edit</a> </td> <td class='date'>My Date</td> <td class='name'>My Name</td> <td class='balance'>My Balance</td> <td> <button class='deleteentry' >delete</a> </td> </tr> </tbody> <tfoot> <tr> <td> <input id='entry-add' type='button' value='Add' /> </td> <td>&nbsp;</td> <td>&nbsp;</td> <td>&nbsp;</td> <td>&nbsp;</td> </tr> </tfoot> </table>");
         template.addClass("table");
         template.find(".editentry").addClass("btn");
         template.find(".deleteentry").addClass("btn");
@@ -364,10 +363,13 @@
       instrumentEntries: function(elem, bindings, esm) {
         elem.find('.editentry').unbind('click').bind('click', bindings, _.bind(esm.EsE, esm));
         elem.find('.deleteentry').unbind('click').bind('click', bindings, function(args) {
-          var eid;
+          var eid, entry;
           console.log(".deleteentry");
           eid = $(this).data("eid");
-          return args.data.entries.get(eid).destroy();
+          entry = args.data.entries.get(eid);
+          return util.makeGenericDialog("Are you sure you want to delete this entry?", function() {
+            return entry.destroy();
+          });
         });
         return elem.find('#entry-add').unbind('click').bind('click', _.extend({
           entry: new bkeeping.models.Entry({

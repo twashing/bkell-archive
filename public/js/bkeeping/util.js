@@ -21,7 +21,8 @@
           console.log("CANCEL delete clicked");
           return $("#delete-confirm").modal("hide");
         });
-        return $("#delete-confirm").modal();
+        $("#delete-confirm").modal();
+        return true;
       }
     };
   });

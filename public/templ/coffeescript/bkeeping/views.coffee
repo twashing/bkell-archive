@@ -223,8 +223,6 @@ define( ['js/bkeeping/bkeeping', 'js/bkeeping/util'], (bkeeping, util) ->
                     # bring up the dialog
                     util.makeGenericDialog("Are you sure you want to delete this entry part?", () ->
                       
-                      console.log("ok fn")
-                      
                       # remove entryPart
                       entry.removeEntryPart(epId)
                       
@@ -469,7 +467,7 @@ define( ['js/bkeeping/bkeeping', 'js/bkeeping/util'], (bkeeping, util) ->
       console.log("EntriesView.render CALLED")
       
       # ensure we don't re-render the accounts
-      template = $("<table id='entries-table'> <thead> <tr> <th></th> <th>Date</th> <th>Name</th> <th>Balance</th> <th></th> </tr> </thead> <tbody> <tr> <td> <button class='editentry' >edit</a> </td> <td class='date'>My Date</td> <td class='name'>My Name</td> <td class='balance'>My Balance</td> <td> <button class='deleteentry' data-toggle='modal' href='#delete-confirm' >delete</a> </td> </tr> </tbody> <tfoot> <tr> <td> <input id='entry-add' type='button' value='Add' /> </td> <td>&nbsp;</td> <td>&nbsp;</td> <td>&nbsp;</td> <td>&nbsp;</td> </tr> </tfoot> </table>")
+      template = $("<table id='entries-table'> <thead> <tr> <th></th> <th>Date</th> <th>Name</th> <th>Balance</th> <th></th> </tr> </thead> <tbody> <tr> <td> <button class='editentry' >edit</a> </td> <td class='date'>My Date</td> <td class='name'>My Name</td> <td class='balance'>My Balance</td> <td> <button class='deleteentry' >delete</a> </td> </tr> </tbody> <tfoot> <tr> <td> <input id='entry-add' type='button' value='Add' /> </td> <td>&nbsp;</td> <td>&nbsp;</td> <td>&nbsp;</td> <td>&nbsp;</td> </tr> </tfoot> </table>")
       
       # adding twitter boostrap table styling
       template
@@ -525,6 +523,10 @@ define( ['js/bkeeping/bkeeping', 'js/bkeeping/util'], (bkeeping, util) ->
         .bind(  'click',
                 bindings,
                 _.bind(esm.EsE, esm))  # trigger the transition when edit clicked
+      
+
+
+      
       elem
         .find('.deleteentry')
         .unbind('click')
@@ -534,8 +536,12 @@ define( ['js/bkeeping/bkeeping', 'js/bkeeping/util'], (bkeeping, util) ->
                   console.log(".deleteentry")
                   
                   eid = $(this).data("eid")
-                  args.data.entries.get(eid).destroy()
-                  
+                  entry = args.data.entries.get(eid)
+          
+                  # show the confirm dialog
+                  util.makeGenericDialog( "Are you sure you want to delete this entry?", () ->
+                    entry.destroy()
+                  )
               )  # trigger the transition when edit clicked
       elem
         .find('#entry-add')
