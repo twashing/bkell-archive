@@ -117,6 +117,19 @@ define([], () ->
       )
       
       return _.extend( `{ balances: result.lhs == result.rhs }`, result )
+      
+    findEntryPart: (eid) ->
+      
+      _.find( this.get("content"), (ech) ->
+        (ech.id == eid)
+      )
+    
+    removeEntryPart: (eid) ->
+      
+      filteredContentList = _.reject( this.get("content"), (ech) ->
+        (ech.id == eid)
+      )
+      this.set( { "content" : filteredContentList } )
   )
   
   

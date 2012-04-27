@@ -1,5 +1,5 @@
 
-define( ['js/bkeeping/bkeeping'], (bkeeping) ->
+define( ['js/bkeeping/bkeeping', 'js/bkeeping/util'], (bkeeping, util) ->
   
   
   ###
@@ -43,6 +43,7 @@ define( ['js/bkeeping/bkeeping'], (bkeeping) ->
           "td.debitAmount" : (arg) -> return pureDirectives.determineAmountDtCt(this, "debit")
           "td.creditAccount" : (arg) -> return pureDirectives.determineAccountDtCt(this, "credit")
           "td.creditAmount" : (arg) -> return pureDirectives.determineAmountDtCt(this, "credit")
+          "button.deleteentrypart@data-eid" : "each.id"
         }
       }
     }
@@ -146,26 +147,6 @@ define( ['js/bkeeping/bkeeping'], (bkeeping) ->
       $(".entry_container")
         .render( { puredata : this.model.get('content') } , pureDirectives.entryDirective )
       
-      $(".deleteentrypart")
-        .on("click", (event) ->
-          
-
-          # confirm the delete 
-          $(".modal-body").text("Are you sure you want to delete this entry part?")
-          $("#modal-delete-ok").on("click", () ->
-            
-            console.log("OK delete clicked")
-            $("#delete-confirm").modal("hide")
-          )
-          $("#modal-delete-cancel").on("click", () ->
-            
-            console.log("CANCEL delete clicked")
-            $("#delete-confirm").modal("hide")
-          )
-          
-          $("#delete-confirm").modal()
-        )
-      
       # removing table row borders 
       $("td").css("border", 0)
       
@@ -219,6 +200,23 @@ define( ['js/bkeeping/bkeeping'], (bkeeping) ->
                   bindObjects,
                   _.bind(options.esm.EEpart, options.esm))  # trigger the transition when edit clicked
         
+        $(options.entryView.el)
+          .find(".deleteentrypart")
+          .unbind("click")
+          .bind(  "click",
+                  bindObjects,
+                  (event) ->
+            
+                    epId = event.target.dataset['eid']
+                    entry = event.data.entry
+                    util.makeGenericDialog("Are you sure you want to delete this entry part?", () ->
+                      
+                      console.log("ok fn")
+                      
+                      entry.removeEntryPart(epId)
+                    )
+          )
+      
         # bind actions to 'Ok' and 'Cancel' buttons
         $('#entry-ok')
           .unbind('click')

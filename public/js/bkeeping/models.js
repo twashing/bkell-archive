@@ -92,6 +92,20 @@
           rhs: 0
         });
         return _.extend({ balances: result.lhs == result.rhs }, result);
+      },
+      findEntryPart: function(eid) {
+        return _.find(this.get("content"), function(ech) {
+          return ech.id === eid;
+        });
+      },
+      removeEntryPart: function(eid) {
+        var filteredContentList;
+        filteredContentList = _.reject(this.get("content"), function(ech) {
+          return ech.id === eid;
+        });
+        return this.set({
+          "content": filteredContentList
+        });
       }
     });
     /*

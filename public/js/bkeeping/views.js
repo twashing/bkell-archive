@@ -1,5 +1,5 @@
 (function() {
-  define(['js/bkeeping/bkeeping'], function(bkeeping) {
+  define(['js/bkeeping/bkeeping', 'js/bkeeping/util'], function(bkeeping, util) {
     /*
       # Pure Template DIRECTIVES
       */
@@ -46,7 +46,8 @@
             },
             "td.creditAmount": function(arg) {
               return pureDirectives.determineAmountDtCt(this, "credit");
-            }
+            },
+            "button.deleteentrypart@data-eid": "each.id"
           }
         }
       },
@@ -113,18 +114,6 @@
         $(".entry_container").render({
           puredata: this.model.get('content')
         }, pureDirectives.entryDirective);
-        $(".deleteentrypart").on("click", function(event) {
-          $(".modal-body").text("Are you sure you want to delete this entry part?");
-          $("#modal-delete-ok").on("click", function() {
-            console.log("OK delete clicked");
-            return $("#delete-confirm").modal("hide");
-          });
-          $("#modal-delete-cancel").on("click", function() {
-            console.log("CANCEL delete clicked");
-            return $("#delete-confirm").modal("hide");
-          });
-          return $("#delete-confirm").modal();
-        });
         $("td").css("border", 0);
         $("#entry-date").datepicker();
         $("#entry-date").val(this.model.get("date"));
@@ -164,6 +153,15 @@
             }
           }, bindObjects), _.bind(options.esm.EEpart, options.esm));
           $(options.entryView.el).find('.editentrypart').unbind('click').bind('click', bindObjects, _.bind(options.esm.EEpart, options.esm));
+          $(options.entryView.el).find(".deleteentrypart").unbind("click").bind("click", bindObjects, function(event) {
+            var entry, epId;
+            epId = event.target.dataset['eid'];
+            entry = event.data.entry;
+            return util.makeGenericDialog("Are you sure you want to delete this entry part?", function() {
+              console.log("ok fn");
+              return entry.removeEntryPart(epId);
+            });
+          });
           $('#entry-ok').unbind('click').bind('click', _.extend({
             ok: true
           }, bindObjects), _.bind(options.esm.EEs, options.esm));
