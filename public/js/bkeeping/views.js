@@ -26,6 +26,7 @@
             "td.date": "each.date",
             "td.name": "each.name",
             "td.balance": "each.balance",
+            "td.currency": "each.currency",
             "button.deleteentry@data-eid": "each.id"
           }
         }
@@ -354,7 +355,7 @@
       render: function(args) {
         var ctx, template;
         console.log("EntriesView.render CALLED");
-        template = $("<table id='entries-table'> <thead> <tr> <th></th> <th>Date</th> <th>Name</th> <th>Balance</th> <th></th> </tr> </thead> <tbody> <tr> <td> <button class='editentry' >edit</a> </td> <td class='date'>My Date</td> <td class='name'>My Name</td> <td class='balance'>My Balance</td> <td> <button class='deleteentry' >delete</a> </td> </tr> </tbody> <tfoot> <tr> <td> <input id='entry-add' type='button' value='Add' /> </td> <td>&nbsp;</td> <td>&nbsp;</td> <td>&nbsp;</td> <td>&nbsp;</td> </tr> </tfoot> </table>");
+        template = $("<table id='entries-table'> <thead> <tr> <th></th> <th>Date</th> <th>Name</th> <th>Balance</th> <th>Currency</th> <th></th> </tr> </thead> <tbody> <tr> <td> <button class='editentry' >edit</a> </td> <td class='date'>My Date</td> <td class='name'>My Name</td> <td class='balance'>My Balance</td> <td class='currency'>My Currency</td> <td> <button class='deleteentry' >delete</a> </td> </tr> </tbody> <tfoot> <tr> <td> <input id='entry-add' type='button' value='Add' /> </td> <td>&nbsp;</td> <td>&nbsp;</td> <td>&nbsp;</td> <td>&nbsp;</td> </tr> </tfoot> </table>");
         template.addClass("table");
         template.find(".editentry").addClass("btn");
         template.find(".deleteentry").addClass("btn");
