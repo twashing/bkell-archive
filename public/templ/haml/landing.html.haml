@@ -43,8 +43,10 @@
         /*** 
          * a GLOBAL namespace
          */
-        bkeeping = {}; 
-
+        global = {}; 
+        global.CURRENT_ENTRY_PANE = "#entries";
+        global.timerEntry = -1;
+        
         /***
          * Adjust Entry panes based on right width
          ***/
@@ -56,11 +58,24 @@
           var rightWidth = $(".bkell-container").width() - $("#left-col").width();
           $("#right-col").css("width", rightWidth);
         };
-
+        
+        
+        var scrollFn = function() { 
+          $('#right-wrapper').scrollTo($(global.CURRENT_ENTRY_PANE), 500, { axis:'x' });
+        }
+        
         /*** 
          * Bootstrap pane sizes
          ***/
-        $(window).resize(function() { adjustEntryPanes(); });
+        $(window).resize(function() { 
+          
+          //console.log("resizing window > args ["+ arguments +"]")
+          adjustEntryPanes(); 
+          
+          clearTimeout(global.timerEntry);
+          global.timerEntry = setTimeout(scrollFn, 500);
+          
+        });
         
         adjustEntryPanes();
       })

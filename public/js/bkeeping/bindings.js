@@ -143,9 +143,10 @@
             /*
                                               # scroll to the relevant pane 
                                               */
-            return $('#right-wrapper').scrollTo($('#entry'), 500, {
+            $('#right-wrapper').scrollTo($('#entry'), 500, {
               axis: 'x'
             });
+            return global.CURRENT_ENTRY_PANE = "#entry";
           },
           onafterEsE: function(event, from, to, args) {
             console.log('END Transition from Es->E');
@@ -184,6 +185,7 @@
               accounts: args.data.accounts
             });
             epart.trigger('change');
+            global.CURRENT_ENTRY_PANE = "#entry-part";
             return $('#right-wrapper').scrollTo($('#entry-part'), 500, {
               axis: 'x'
             });
@@ -252,9 +254,10 @@
               accounts: args.data.accounts,
               esm: args.data.esm
             });
-            return $('#right-wrapper').scrollTo($('#entry'), 500, {
+            $('#right-wrapper').scrollTo($('#entry'), 500, {
               axis: 'x'
             });
+            return global.CURRENT_ENTRY_PANE = "#entry";
           },
           onleaveE: function(event, from, to, args) {
             var bal, fdata, saveEntry;
@@ -268,9 +271,10 @@
                 accounts: args.data.accounts,
                 esm: args.data.esm
               }, args.data.esm);
-              return $('#right-wrapper').scrollTo($('#entries'), 500, {
+              $('#right-wrapper').scrollTo($('#entries'), 500, {
                 axis: 'x'
               });
+              return global.CURRENT_ENTRY_PANE = "#entries";
             } else if (args.data.ok) {
               console.log("START Transition from E->Es > Entriess ok");
               bal = args.data.entry.balances(args.data.accounts);
@@ -296,6 +300,7 @@
                       $('#right-wrapper').scrollTo($('#entries'), 500, {
                         axis: 'x'
                       });
+                      global.CURRENT_ENTRY_PANE = "#entries";
                       return args.data.esm.transition();
                     }
                   });

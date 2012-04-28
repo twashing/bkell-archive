@@ -155,6 +155,7 @@ define( [ "bkeeping/util", ], (util) ->
                                   # scroll to the relevant pane 
                                   ###
                                   $('#right-wrapper').scrollTo($('#entry'), 500, { axis:'x' })
+                                  global.CURRENT_ENTRY_PANE = "#entry"
                                   
                                 
                                 onafterEsE: (event, from, to, args) ->
@@ -197,6 +198,7 @@ define( [ "bkeeping/util", ], (util) ->
                                   epart.trigger('change')   # this should trigger the entryView to render
                                   
                                   # 3. scroll to the relevant pane 
+                                  global.CURRENT_ENTRY_PANE = "#entry-part"
                                   $('#right-wrapper').scrollTo($('#entry-part'), 500, { axis:'x' })
                                 
                                 
@@ -284,6 +286,7 @@ define( [ "bkeeping/util", ], (util) ->
                                   
                                   # 4. scroll back to #entry
                                   $('#right-wrapper').scrollTo($('#entry'), 500, { axis:'x' })
+                                  global.CURRENT_ENTRY_PANE = "#entry"
                                   
                                   
                                 onleaveE: (event, from, to, args) ->
@@ -307,6 +310,7 @@ define( [ "bkeeping/util", ], (util) ->
                                     
                                     # 1. scroll to Accounts pane 
                                     $('#right-wrapper').scrollTo($('#entries'), 500, { axis:'x' })
+                                    global.CURRENT_ENTRY_PANE = "#entries"
                                     
                                     #args.data.esm.transition() # now fire off the transition 
                                      
@@ -348,6 +352,7 @@ define( [ "bkeeping/util", ], (util) ->
                                             
                                             # 3. scroll to Accounts pane 
                                             $('#right-wrapper').scrollTo($('#entries'), 500, { axis:'x' })
+                                            global.CURRENT_ENTRY_PANE = "#entries"
                                             
                                             args.data.esm.transition() # now fire off the transition 
                                         })
