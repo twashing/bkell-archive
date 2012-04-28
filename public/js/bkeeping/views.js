@@ -51,6 +51,14 @@
           }
         }
       },
+      entryCurrencyDirective: {
+        "select#entry-currency > option": {
+          "each<-puredata": {
+            ".@value": "each.id",
+            ".": "each.name"
+          }
+        }
+      },
       determineCommon: function(arg, weight, attribute) {
         if (arg["tag"] === weight) {
           return arg[attribute];
@@ -117,7 +125,7 @@
         $("td").css("border", 0);
         $("#entry-date").datepicker();
         $("#entry-date").val(this.model.get("date"));
-        return $("#entry-name").val(this.model.get("name"));
+        return $("#entry-currency > option[value='" + (this.model.get('currency')) + "']").attr('selected', 'selected');
       },
       renderEntry: function(options) {
         console.log('commonEntryRender CALLED');

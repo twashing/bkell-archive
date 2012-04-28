@@ -66,7 +66,7 @@ require( ['bkeeping/bkeeping', 'bkeeping/bindings']
     entryPartView = new views.EntryPartView( { el: '#entry-part' } )
     
     accountsView = new views.AccountsView( { collection: accounts, accountView: accountView, asm: asm } )
-    entriesView = new views.EntriesView( { collection: entries, entryView: entryView, entryPartView: entryPartView, accounts: accounts, esm: esm} )
+    entriesView = new views.EntriesView( { collection: entries, entryView: entryView, entryPartView: entryPartView, accounts: accounts, currencies: [], esm: esm} )
     
     ###
     # Load Accounts pages

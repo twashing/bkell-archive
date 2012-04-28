@@ -27,7 +27,7 @@
 ;; get currency 
 (defn get-currencies [uname] 
 
-  (let [m (str "function(){ 
+  #_(let [m (str "function(){ 
 			  if( this.owner == '"uname"' ) { 
 			    this.content[0].content.forEach( 
 			      function(x) { 
@@ -42,6 +42,7 @@
     (vec (map bkell.domain/keywordize-tags 
       (-> result first :value :result)))  ;; dig in and get the currency list 
   )
+  (fetch "currencies")
 )
 (defn get-currency [uname currency]
 

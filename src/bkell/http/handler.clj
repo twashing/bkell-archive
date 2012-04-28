@@ -415,6 +415,22 @@
   )
 )
 
+(noir/defpage [ :get "/currencies" ] [:as req] 
+
+  (println (str "GET ; /currencies ; " req))
+  (let [lin-user (authenticatek/logged-in-user)]
+    
+
+    (let  [ cur (bkell/get :currencies (:username lin-user))
+            fcur (map #(dissoc %1 :_id) cur)    ;; removing ObjectId
+          ]
+
+      (->      ;; JSON of MongoDB WriteResult; 
+        fcur (handle-errors 400) substitute-body) 
+    )
+  )
+)
+
 
 ;; ======
 ;; CRUD on Bookkeeping

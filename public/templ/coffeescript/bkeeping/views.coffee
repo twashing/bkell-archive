@@ -47,6 +47,14 @@ define( ['js/bkeeping/bkeeping', 'js/bkeeping/util'], (bkeeping, util) ->
         }
       }
     }
+    entryCurrencyDirective: {   # this is just meant to list out accounts, for now
+      "select#entry-currency > option" : {
+        "each<-puredata" : {
+          ".@value" : "each.id"
+          "." : "each.name"
+        }
+      }
+    }
     determineCommon : (arg, weight, attribute) ->
       if(arg["tag"] == weight)
         return arg[attribute]
@@ -116,7 +124,7 @@ define( ['js/bkeeping/bkeeping', 'js/bkeeping/util'], (bkeeping, util) ->
       $(".entry_container tbody")
         .empty()
         .append(template)
-
+      
       template
         .find(".editentrypart")
         .addClass("btn")
@@ -144,16 +152,17 @@ define( ['js/bkeeping/bkeeping', 'js/bkeeping/util'], (bkeeping, util) ->
         #.addClass("table-bordered")
         #.addClass("table-condensed")
       
-      $(".entry_container")
-        .render( { puredata : this.model.get('content') } , pureDirectives.entryDirective )
+      
+      $(".entry_container").render( { puredata : this.model.get('content') } , pureDirectives.entryDirective )
+      # $(".entry_container").render( { puredata : this.currencies.toJSON() } , pureDirectives.entryCurrencyDirective )
+      
       
       # removing table row borders 
       $("td").css("border", 0)
       
-      
       $("#entry-date").datepicker()
       $("#entry-date").val(this.model.get("date"))
-      $("#entry-name").val(this.model.get("name"))
+      $("#entry-currency > option[value='#{ this.model.get('currency') }']").attr('selected', 'selected')
       
     renderEntry: (options) ->
       console.log('commonEntryRender CALLED')

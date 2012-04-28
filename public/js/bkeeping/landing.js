@@ -61,6 +61,7 @@
       entryView: entryView,
       entryPartView: entryPartView,
       accounts: accounts,
+      currencies: [],
       esm: esm
     });
     /*
