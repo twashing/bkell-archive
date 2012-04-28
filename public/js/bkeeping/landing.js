@@ -6,7 +6,7 @@
     }
   });
   require(['bkeeping/bkeeping', 'bkeeping/bindings'], function(bkeeping, bindings) {
-    var accountView, accounts, accountsView, adjustEntryPanes, asm, entries, entriesView, entryPartView, entryView, esm, loadAccounts, loadEntries, models, views;
+    var accountView, accounts, accountsView, adjustEntryPanes, asm, currencies, entries, entriesView, entryPartView, entryView, esm, loadAccounts, loadEntries, models, views;
     console.log("landing LOADED / bkeeping[" + bkeeping.models + "]");
     /*
         # Adjust Entry panes based on right width
@@ -34,6 +34,7 @@
         */
     accounts = new models.Accounts();
     entries = new models.Entries();
+    currencies = null;
     /*
         # STATE MACHINEs for Accounts and Entries 
         */
@@ -45,9 +46,7 @@
     accountView = new views.AccountView({
       el: '#account'
     });
-    entryView = new views.EntryView({
-      el: '#entry'
-    });
+    entryView = null;
     entryPartView = new views.EntryPartView({
       el: '#entry-part'
     });
@@ -56,14 +55,7 @@
       accountView: accountView,
       asm: asm
     });
-    entriesView = new views.EntriesView({
-      collection: entries,
-      entryView: entryView,
-      entryPartView: entryPartView,
-      accounts: accounts,
-      currencies: [],
-      esm: esm
-    });
+    entriesView = null;
     /*
         # Load Accounts pages
         */
@@ -100,35 +92,50 @@
         # Load Entry pages
         */
     loadEntries = function() {
-      return $('#entries').load("/include/entries.html", function() {
-        return entries.fetchS({
-          success: function() {
-            /*
-                        # bind entry row to the Entries State Machine
-                        */            entriesView.instrumentEntries($("#entries-table"), {
-              entries: entries,
-              entriesView: entriesView,
-              entryView: entryView,
-              entryPartView: entryPartView,
-              accounts: accounts,
-              esm: esm
-            }, esm);
-            /*
-                        # Sequentially loading inner panes
-                        */
-            return $('#entry').load('/include/entry.html', function() {
-              return $('#entry-part').load('/include/entryPart.html', function() {
-                $('#right-col').serialScroll({
-                  target: '#right-wrapper',
-                  items: '#entries , #entry, #entry-part',
-                  duration: 500,
-                  axis: 'x',
-                  force: true
+      return $.get("/currencies", function(result, status, obj) {
+        currencies = $.parseJSON(result);
+        entryView = new views.EntryView({
+          el: '#entry',
+          currencies: currencies
+        });
+        entriesView = new views.EntriesView({
+          collection: entries,
+          entryView: entryView,
+          entryPartView: entryPartView,
+          accounts: accounts,
+          currencies: currencies,
+          esm: esm
+        });
+        return $('#entries').load("/include/entries.html", function() {
+          return entries.fetchS({
+            success: function() {
+              /*
+                            # bind entry row to the Entries State Machine
+                            */              entriesView.instrumentEntries($("#entries-table"), {
+                entries: entries,
+                entriesView: entriesView,
+                entryView: entryView,
+                entryPartView: entryPartView,
+                accounts: accounts,
+                esm: esm
+              }, esm);
+              /*
+                            # Sequentially loading inner panes
+                            */
+              return $('#entry').load('/include/entry.html', function() {
+                return $('#entry-part').load('/include/entryPart.html', function() {
+                  $('#right-col').serialScroll({
+                    target: '#right-wrapper',
+                    items: '#entries , #entry, #entry-part',
+                    duration: 500,
+                    axis: 'x',
+                    force: true
+                  });
+                  return adjustEntryPanes();
                 });
-                return adjustEntryPanes();
               });
-            });
-          }
+            }
+          });
         });
       });
     };

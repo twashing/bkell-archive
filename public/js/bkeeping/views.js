@@ -103,7 +103,8 @@
     EntryView = Backbone.View.extend({
       initialize: function(options) {
         console.log('EntryView initialize CALLED');
-        return this.el = $(options.el);
+        this.el = $(options.el);
+        return this.currencies = options.currencies;
       },
       render: function(options) {
         var template;
@@ -122,7 +123,11 @@
         $(".entry_container").render({
           puredata: this.model.get('content')
         }, pureDirectives.entryDirective);
+        $("#entry").render({
+          puredata: this.currencies
+        }, pureDirectives.entryCurrencyDirective);
         $("td").css("border", 0);
+        $("#entry-name").val(this.model.get("name"));
         $("#entry-date").datepicker();
         $("#entry-date").val(this.model.get("date"));
         return $("#entry-currency > option[value='" + (this.model.get('currency')) + "']").attr('selected', 'selected');
@@ -136,7 +141,8 @@
         options.entry.unbind('change');
         return options.entry.bind('change', options.entryView.render, {
           model: options.entry,
-          view: options.entryView
+          view: options.entryView,
+          currencies: this.currencies
         }).trigger('change');
       },
       instrumentEntry: function(options) {
@@ -148,6 +154,7 @@
           entryPartView: options.entryPartView,
           entries: options.entries,
           accounts: options.accounts,
+          currencies: options.currencies,
           entry: options.entry,
           esm: options.esm
         };
@@ -327,6 +334,7 @@
           entryView: options.entryView,
           entryPartView: options.entryPartView,
           accounts: options.accounts,
+          currencies: options.currencies,
           esm: options.esm
         };
         this.collection = options.collection;

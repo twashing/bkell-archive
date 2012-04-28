@@ -111,6 +111,7 @@ define( ['js/bkeeping/bkeeping', 'js/bkeeping/util'], (bkeeping, util) ->
     initialize : (options) ->
       console.log('EntryView initialize CALLED')
       this.el = $(options.el)
+      this.currencies = options.currencies
     
     render : (options) ->
       console.log('EntryView render CALLED')
@@ -154,12 +155,13 @@ define( ['js/bkeeping/bkeeping', 'js/bkeeping/util'], (bkeeping, util) ->
       
       
       $(".entry_container").render( { puredata : this.model.get('content') } , pureDirectives.entryDirective )
-      # $(".entry_container").render( { puredata : this.currencies.toJSON() } , pureDirectives.entryCurrencyDirective )
+      $("#entry").render( { puredata : this.currencies } , pureDirectives.entryCurrencyDirective )
       
       
       # removing table row borders 
       $("td").css("border", 0)
       
+      $("#entry-name").val(this.model.get("name"))
       $("#entry-date").datepicker()
       $("#entry-date").val(this.model.get("date"))
       $("#entry-currency > option[value='#{ this.model.get('currency') }']").attr('selected', 'selected')
@@ -175,7 +177,7 @@ define( ['js/bkeeping/bkeeping', 'js/bkeeping/util'], (bkeeping, util) ->
         .unbind('change')
       
       options.entry
-        .bind('change', options.entryView.render, { model: options.entry, view: options.entryView })  # bind Backbone event
+        .bind('change', options.entryView.render, { model: options.entry, view: options.entryView, currencies: this.currencies })  # bind Backbone event
         .trigger('change')   # this should trigger the entryView to render
                                   
     instrumentEntry: (options) ->
@@ -188,6 +190,7 @@ define( ['js/bkeeping/bkeeping', 'js/bkeeping/util'], (bkeeping, util) ->
         entryPartView: options.entryPartView,
         entries: options.entries,
         accounts: options.accounts,
+        currencies:  options.currencies,
         entry : options.entry,
         esm: options.esm
       }
@@ -458,6 +461,7 @@ define( ['js/bkeeping/bkeeping', 'js/bkeeping/util'], (bkeeping, util) ->
                       entryView: options.entryView,
                       entryPartView: options.entryPartView,
                       accounts: options.accounts,
+                      currencies: options.currencies,
                       esm: options.esm
                     }
       
