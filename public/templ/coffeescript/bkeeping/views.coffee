@@ -211,15 +211,13 @@ define( ['js/bkeeping/bkeeping', 'js/bkeeping/util'], (bkeeping, util) ->
                   _.bind(options.esm.EEpart, options.esm))  # trigger the transition when edit clicked
         
         # handle edit CLICKs and ii. bind entry row to the Entries State Machine
-        $(options.entryView.el)
-          .find(".editentrypart")
+        $(".editentrypart")
           .unbind("click")
           .bind(  "click",
                   bindObjects,
                   _.bind(options.esm.EEpart, options.esm))  # trigger the transition when edit clicked
         
-        $(options.entryView.el)
-          .find(".deleteentrypart")
+        $(".deleteentrypart")
           .unbind("click")
           .bind(  "click",
                   bindObjects,

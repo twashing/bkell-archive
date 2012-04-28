@@ -169,8 +169,8 @@
               tag: null
             }
           }, bindObjects), _.bind(options.esm.EEpart, options.esm));
-          $(options.entryView.el).find(".editentrypart").unbind("click").bind("click", bindObjects, _.bind(options.esm.EEpart, options.esm));
-          $(options.entryView.el).find(".deleteentrypart").unbind("click").bind("click", bindObjects, function(event) {
+          $(".editentrypart").unbind("click").bind("click", bindObjects, _.bind(options.esm.EEpart, options.esm));
+          $(".deleteentrypart").unbind("click").bind("click", bindObjects, function(event) {
             var bobjs, entry, entryView, epId;
             bobjs = {
               entriesView: event.data.entriesView,
