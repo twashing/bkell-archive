@@ -8,12 +8,15 @@
     %article 
       %header 
         %h3 Entry
-        %h5
-          %label Name
+        %div
+          %label.entry-label Name
           %input#entry-name( type="text" )
-        %h5
-          %label Date
+        %div
+          %label.entry-label Date
           %input#entry-date( type="text" )
+        %div
+          %label.entry-label Currency
+          %select#entry-currency
       
       .entry_container
         .entry_content
