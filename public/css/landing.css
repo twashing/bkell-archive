@@ -5540,3 +5540,17 @@ a.thumbnail:hover {
 #entry-date {
   position: relative;
 }
+
+/* line 122, ../templ/sass/landing.sass */
+.sorting_desc {
+  background: url("/images/sort_desc.png");
+  background-repeat: no-repeat;
+  background-position: 100% 50%;
+}
+
+/* line 127, ../templ/sass/landing.sass */
+.sorting_asc {
+  background: url("/images/sort_asc.png");
+  background-repeat: no-repeat;
+  background-position: 100% 50%;
+}
