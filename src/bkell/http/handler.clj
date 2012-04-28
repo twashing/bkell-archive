@@ -171,6 +171,14 @@
                                            :value (:verifiedEmail cb-resp),
                                            :content nil}
                                           {:tag :profileDetail,
+                                           :name "currency", 
+                                           :value "CAD",
+                                           :content nil}
+                                          {:tag :profileDetail,
+                                           :name "company", 
+                                           :value "",
+                                           :content nil}
+                                          {:tag :profileDetail,
                                            :name "country", 
                                            :value "",
                                            :content nil}]}]
