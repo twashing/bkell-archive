@@ -155,6 +155,11 @@ define( ['js/bkeeping/bkeeping', 'js/bkeeping/util'], (bkeeping, util) ->
       
       
       $(".entry_container").render( { puredata : this.model.get('content') } , pureDirectives.entryDirective )
+      
+      $("select#entry-currency")
+        .empty()
+        .append("<option value=''></option>")
+      
       $("#entry").render( { puredata : this.currencies } , pureDirectives.entryCurrencyDirective )
       
       
@@ -282,6 +287,7 @@ define( ['js/bkeeping/bkeeping', 'js/bkeeping/util'], (bkeeping, util) ->
       $("#entry-part-cancel")
         .addClass("btn")
         .addClass("btn-danger")
+      
       
       $(".entryPart_container .entryPart_content").render( { puredata : this.accounts.toJSON() } , pureDirectives.entryPartDirective )
       

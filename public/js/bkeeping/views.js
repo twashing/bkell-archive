@@ -123,6 +123,7 @@
         $(".entry_container").render({
           puredata: this.model.get('content')
         }, pureDirectives.entryDirective);
+        $("select#entry-currency").empty().append("<option value=''></option>");
         $("#entry").render({
           puredata: this.currencies
         }, pureDirectives.entryCurrencyDirective);
