@@ -314,13 +314,15 @@
                     fdata.tag = "entry";
                     fdata.name = $("#entry-name").val();
                     fdata.date = $("#entry-date").val();
+                    fdata.currency = $("#entry-currency").val();
                     fdata.content = args.data.entry.get("content");
                     return saveEntry(fdata);
                   });
                 } else {
                   args.data.entry.set({
                     "name": $("#entry-name").val(),
-                    "date": $("#entry-date").val()
+                    "date": $("#entry-date").val(),
+                    "currency": $("#entry-currency").val()
                   });
                   saveEntry(args.data.entry.toJSON());
                 }
