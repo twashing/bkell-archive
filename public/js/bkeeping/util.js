@@ -5,7 +5,7 @@
         # Grab the Backbone object 
         */
       exists: function(thing) {
-        if ((!(typeof thing === "undefined")) && thing) {
+        if ((!(typeof thing === "undefined")) && thing && (thing.trim().length > 0)) {
           return true;
         }
         return false;

@@ -371,7 +371,7 @@ define( [ "bkeeping/util", ], (util) ->
                                           fdata.id = result
                                           fdata.tag = "entry"
                                           fdata.name = $("#entry-name").val()
-                                          fdata.date = $("#entry-date").val()
+                                          fdata.date = $("#entry-date > input.span2").val()
                                           fdata.currency = $("#entry-currency").val()
                                           fdata.content = args.data.entry.get("content")
                                           
@@ -381,7 +381,7 @@ define( [ "bkeeping/util", ], (util) ->
                                         
                                         args.data.entry.set({
                                                               "name" : $("#entry-name").val()
-                                                              "date" : $("#entry-date").val()
+                                                              "date" : $("#entry-date > input.span2").val()
                                                               "currency" : $("#entry-currency").val()
                                                             })
                                         saveEntry(args.data.entry.toJSON())

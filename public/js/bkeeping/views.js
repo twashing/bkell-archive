@@ -108,7 +108,7 @@
         return this.currencies = options.currencies;
       },
       render: function(options) {
-        var template;
+        var dstring, now, template;
         console.log('EntryView render CALLED');
         /*
               # clear the container each time - don't want to incrementally add
@@ -130,8 +130,17 @@
         }, pureDirectives.entryCurrencyDirective);
         $("td").css("border", 0);
         $("#entry-name").val(this.model.get("name"));
-        $(".input-append.date").datepicker();
-        $("#entry-date").val(this.model.get("date"));
+        now = null;
+        if (util.exists(this.model.get("date"))) {
+          now = new Date(this.model.get("date"));
+        } else {
+          now = new Date();
+        }
+        dstring = "" + (1 + now.getMonth()) + "/" + (now.getDate()) + "/" + (now.getUTCFullYear());
+        $("#entry-date > input.span2").val(this.model.get("date"));
+        $("#entry-date").data("date", dstring).datepicker({
+          date: this.model.get("date")
+        });
         return $("#entry-currency > option[value='" + (this.model.get('currency')) + "']").attr('selected', 'selected');
       },
       renderEntry: function(options) {

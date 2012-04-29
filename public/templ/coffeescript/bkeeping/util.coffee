@@ -7,7 +7,7 @@ define([], () ->
   ###
   exists: (thing) ->
     
-    if( (!(typeof thing == "undefined")) and (thing) )
+    if( (!(typeof thing == "undefined")) and (thing) and (thing.trim().length > 0) )
       return true
     
     return false
