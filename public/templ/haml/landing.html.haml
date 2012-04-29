@@ -33,10 +33,13 @@
     %script( src="/js/lib/bootstrap.js" )
     %script( src="/js/lib/bootstrap-modal.js" )
     
+    %link{ :href => "/css/datepicker.css", :media => "screen", :rel => "stylesheet", :type => "text/css" }
+    %script( src="/js/lib/bootstrap-datepicker.js" )
+    
     %link{ :href => "/css/common.css", :media => "screen", :rel => "stylesheet", :type => "text/css" }
     %link{ :href => "/css/landing.css", :media => "screen", :rel => "stylesheet", :type => "text/css" }
     %script( src="/js/lib/require.js" data-main="js/bkeeping/landing" )
-
+    
     :javascript
       $(document).ready(function() { 
         

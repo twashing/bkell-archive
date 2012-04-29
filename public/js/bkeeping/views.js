@@ -130,7 +130,7 @@
         }, pureDirectives.entryCurrencyDirective);
         $("td").css("border", 0);
         $("#entry-name").val(this.model.get("name"));
-        $("#entry-date").datepicker();
+        $(".input-append.date").datepicker();
         $("#entry-date").val(this.model.get("date"));
         return $("#entry-currency > option[value='" + (this.model.get('currency')) + "']").attr('selected', 'selected');
       },

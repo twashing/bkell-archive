@@ -168,7 +168,8 @@ define( ['js/bkeeping/bkeeping', 'js/bkeeping/util'], (bkeeping, util) ->
       $("td").css("border", 0)
       
       $("#entry-name").val(this.model.get("name"))
-      $("#entry-date").datepicker()
+      #$("#entry-date").datepicker()
+      $(".input-append.date").datepicker()
       $("#entry-date").val(this.model.get("date"))
       $("#entry-currency > option[value='#{ this.model.get('currency') }']").attr('selected', 'selected')
       

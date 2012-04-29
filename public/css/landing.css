@@ -5540,21 +5540,25 @@ a.thumbnail:hover {
 #entry-date {
   position: relative;
 }
-
 /* line 121, ../templ/sass/landing.sass */
+#entry-date input.span2 {
+  height: 28px;
+}
+
+/* line 125, ../templ/sass/landing.sass */
 .entry-label {
   float: left;
   width: 100px;
 }
 
-/* line 125, ../templ/sass/landing.sass */
+/* line 129, ../templ/sass/landing.sass */
 .sorting_desc {
   background: url("/images/sort_desc.png");
   background-repeat: no-repeat;
   background-position: 100% 50%;
 }
 
-/* line 130, ../templ/sass/landing.sass */
+/* line 134, ../templ/sass/landing.sass */
 .sorting_asc {
   background: url("/images/sort_asc.png");
   background-repeat: no-repeat;
