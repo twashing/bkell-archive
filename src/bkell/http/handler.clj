@@ -290,6 +290,11 @@
 #_(POST "/user" [:as req])
 #_(DELETE "/user/:id" [id] )
 
+(noir/defpage [ :get "/logout" ] [ :as req ]
+
+  (session/remove! :current-user)
+)
+
 
 ;; ======
 ;; CRUD on Accounts
