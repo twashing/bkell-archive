@@ -81,6 +81,12 @@
         });
         
         adjustEntryPanes();
+
+        $("#logout-button").click(function() {
+          
+          window.location = "/logout";
+        });
+        
       })
    
   %body 
@@ -100,7 +106,7 @@
           #subtitle 
             #subtitle-default Your solution to simple &nbsp;
             #subtitle-black online bookkeeping 
-          #logout-button.btn.btn-inverse( href="/logout" )
+          #logout-button.btn.btn-inverse
             Logout
       
       #main-content 

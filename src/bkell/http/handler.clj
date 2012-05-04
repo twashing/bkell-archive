@@ -293,6 +293,7 @@
 (noir/defpage [ :get "/logout" ] [ :as req ]
 
   (session/remove! :current-user)
+  (response/redirect "/")
 )
 
 
