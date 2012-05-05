@@ -403,7 +403,7 @@ define( [ "bkeeping/util", ], (util) ->
                                           )
                                           
                                           # adding the balance error highlight
-                                          if not error.balances
+                                          if not (typeof error.balances is "undefined") and not error.balances
                                             $(".entry_content > table > tbody").addClass("alert alert-error")
                                           
                                           # shake to notify user of imbalance error 

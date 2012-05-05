@@ -333,7 +333,7 @@
                     _.each(errorKeys, function(ech) {
                       return $("#entry > article > header > div > #entry-" + ech).parent().addClass("control-group error");
                     });
-                    if (!error.balances) {
+                    if (!(typeof error.balances === "undefined") && !error.balances) {
                       $(".entry_content > table > tbody").addClass("alert alert-error");
                     }
                     $("#entry > article > header > div , .entry_content > table").effect("shake", {
