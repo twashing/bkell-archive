@@ -113,7 +113,7 @@ define( [ "bkeeping/util", ], (util) ->
                                                                   args.data.asm.transition() # now fire off the transition 
                                                                 error: (model, error, options) ->
                                                                   
-                                                                  console.log("error on save")
+                                                                  console.log("error on saving account")
                                                                    
                                                                   # light up the error field(s)
                                                                   errorKeys = _.keys(error)
@@ -318,6 +318,10 @@ define( [ "bkeeping/util", ], (util) ->
                                     
                                     console.log("START Transition from E->Es > Entriess cancel")
                                     
+                                    # removing possible error highlights
+                                    $("#entry > article > header > div").removeClass("control-group error")
+                                    $(".entry_content > table > tbody").removeClass("alert alert-error")
+                                          
                                     args.data.entriesView.instrumentEntries(
                                       $("#entries-table"),
                                       {
@@ -358,6 +362,13 @@ define( [ "bkeeping/util", ], (util) ->
                                           
                                           console.log("success on CUSTOM Entry CALLED > model[ #{model} ] > response[ #{response} ]")
                                           
+                                          # only add entry to Entries onsuccess
+                                          args.data.entries.add( args.data.entry, { at: 0 } )   # add to the Accounts list
+                                      
+                                          # removing possible error highlights
+                                          $("#entry > article > header > div").removeClass("control-group error")
+                                          $(".entry_content > table > tbody").removeClass("alert alert-error")
+                                          
                                           # re-instrument Entries pane
                                           args.data.entriesView.instrumentEntries(
                                             $("#entries-table"),
@@ -377,11 +388,25 @@ define( [ "bkeeping/util", ], (util) ->
                                           global.CURRENT_ENTRY_PANE = "#entries"
                                           
                                           args.data.esm.transition() # now fire off the transition 
-                                        error: (model, response) ->
+                                        error: (model, error) ->
                                           
                                           console.log("error saving the entry")
                                           
-                                          # 3. shake to notify user of imbalance error 
+                                          # clear slate 
+                                          $("#entry > article > header > div").removeClass("control-group error")
+                                          $(".entry_content > table > tbody").removeClass("alert alert-error")
+                                          
+                                          # light up the error field(s)
+                                          errorKeys = _.keys(error)
+                                          _.each(errorKeys, (ech) ->
+                                            $("#entry > article > header > div > #entry-#{ech}").parent().addClass("control-group error")
+                                          )
+                                          
+                                          # adding the balance error highlight
+                                          if not error.balances
+                                            $(".entry_content > table > tbody").addClass("alert alert-error")
+                                          
+                                          # shake to notify user of imbalance error 
                                           # http://docs.jquery.com/UI/Effects/Shake
                                           # http://stackoverflow.com/questions/4399005/implementing-jquerys-shake-effect-with-animate
                                           $("#entry > article > header > div , .entry_content > table").effect("shake", { times: 3 }, 60)
@@ -395,8 +420,6 @@ define( [ "bkeeping/util", ], (util) ->
                                     ###
                                     fdata = {}
                                     if args.data.entry.isNew()
-                                      
-                                      args.data.entries.add( args.data.entry, { at: 0 } )   # add to the Accounts list
                                       
                                       $.get("/generateid", (result, status, obj) ->
                                         

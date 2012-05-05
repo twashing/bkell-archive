@@ -92,7 +92,7 @@
                   },
                   error: function(model, error, options) {
                     var errorKeys;
-                    console.log("error on save");
+                    console.log("error on saving account");
                     errorKeys = _.keys(error);
                     _.each(errorKeys, function(ech) {
                       return $(".account_content > div > #account-" + ech).parent().addClass("control-group error");
@@ -277,6 +277,8 @@
             var bal, fdata, saveEntry;
             if (args.data.cancel) {
               console.log("START Transition from E->Es > Entriess cancel");
+              $("#entry > article > header > div").removeClass("control-group error");
+              $(".entry_content > table > tbody").removeClass("alert alert-error");
               args.data.entriesView.instrumentEntries($("#entries-table"), {
                 entries: args.data.entries,
                 entriesView: args.data.entriesView,
@@ -303,6 +305,11 @@
                   type: args.data.entry.isNew() ? "PUT" : "POST",
                   success: function(model, response) {
                     console.log("success on CUSTOM Entry CALLED > model[ " + model + " ] > response[ " + response + " ]");
+                    args.data.entries.add(args.data.entry, {
+                      at: 0
+                    });
+                    $("#entry > article > header > div").removeClass("control-group error");
+                    $(".entry_content > table > tbody").removeClass("alert alert-error");
                     args.data.entriesView.instrumentEntries($("#entries-table"), {
                       entries: args.data.entries,
                       entriesView: args.data.entriesView,
@@ -317,8 +324,18 @@
                     global.CURRENT_ENTRY_PANE = "#entries";
                     return args.data.esm.transition();
                   },
-                  error: function(model, response) {
+                  error: function(model, error) {
+                    var errorKeys;
                     console.log("error saving the entry");
+                    $("#entry > article > header > div").removeClass("control-group error");
+                    $(".entry_content > table > tbody").removeClass("alert alert-error");
+                    errorKeys = _.keys(error);
+                    _.each(errorKeys, function(ech) {
+                      return $("#entry > article > header > div > #entry-" + ech).parent().addClass("control-group error");
+                    });
+                    if (!error.balances) {
+                      $(".entry_content > table > tbody").addClass("alert alert-error");
+                    }
                     $("#entry > article > header > div , .entry_content > table").effect("shake", {
                       times: 3
                     }, 60);
@@ -331,9 +348,6 @@
                                                   */
               fdata = {};
               if (args.data.entry.isNew()) {
-                args.data.entries.add(args.data.entry, {
-                  at: 0
-                });
                 $.get("/generateid", function(result, status, obj) {
                   console.log("Generated entry ID[" + result + "]");
                   fdata.id = result;
