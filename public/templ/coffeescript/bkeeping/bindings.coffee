@@ -345,85 +345,84 @@ define( [ "bkeeping/util", ], (util) ->
                                     bal = args.data.entry.balances(args.data.accounts)
                                     console.log("entry balances? [#{bal}]")
                                     
-                                    if(bal.balances)
+                                    ###
+                                    # common saveEntry function
+                                    ###
+                                    saveEntry = (fdata) ->
                                       
-                                      ###
-                                      # common saveEntry function
-                                      ###
-                                      saveEntry = (fdata) ->
-                                        
-                                        args.data.entry.saveS( fdata, {
-                                          accounts: args.data.accounts,
-                                          wait: true,
-                                          type: if args.data.entry.isNew() then "PUT" else "POST",
-                                          success: (model, response) ->
-                                            
-                                            console.log("success on CUSTOM Entry CALLED > model[ #{model} ] > response[ #{response} ]")
-                                            
-                                            # re-instrument Entries pane
-                                            args.data.entriesView.instrumentEntries(
-                                              $("#entries-table"),
-                                              {
-                                                entries: args.data.entries,
-                                                entriesView: args.data.entriesView,
-                                                entryView: args.data.entryView,
-                                                entryPartView: args.data.entryPartView,
-                                                accounts: args.data.accounts,
-                                                esm: args.data.esm
-                                              },
-                                              args.data.esm
-                                            )
-                                            
-                                            # 3. scroll to Accounts pane 
-                                            $('#right-wrapper').scrollTo($('#entries'), 500, { axis:'x' })
-                                            global.CURRENT_ENTRY_PANE = "#entries"
-                                            
-                                            args.data.esm.transition() # now fire off the transition 
-                                        })
-                                      
-                                      ###
-                                      # 2. update entry 
-                                      ###
-                                      fdata = {}
-                                      if args.data.entry.isNew()
-                                        
-                                        args.data.entries.add( args.data.entry, { at: 0 } )   # add to the Accounts list
-                                        
-                                        $.get("/generateid", (result, status, obj) ->
+                                      args.data.entry.saveS( fdata, {
+                                        accounts: args.data.accounts,
+                                        wait: true,
+                                        type: if args.data.entry.isNew() then "PUT" else "POST",
+                                        success: (model, response) ->
                                           
-                                          console.log("Generated entry ID[#{result}]")
-                                          fdata.id = result
-                                          fdata.tag = "entry"
-                                          fdata.name = $("#entry-name").val()
-                                          fdata.date = $("#entry-date > input.span2").val()
-                                          fdata.currency = $("#entry-currency").val()
-                                          fdata.content = args.data.entry.get("content")
+                                          console.log("success on CUSTOM Entry CALLED > model[ #{model} ] > response[ #{response} ]")
                                           
-                                          saveEntry(fdata)
-                                        )
-                                      else
-                                        
-                                        args.data.entry.set({
-                                                              "name" : $("#entry-name").val()
-                                                              "date" : $("#entry-date > input.span2").val()
-                                                              "currency" : $("#entry-currency").val()
-                                                            })
-                                        saveEntry(args.data.entry.toJSON())
-                                      
-                                      ###
-                                      # last statement in IF block
-                                      ###
-                                      return StateMachine.ASYNC; # tell StateMachine to defer next state until we call transition (in fadeOut callback above)
+                                          # re-instrument Entries pane
+                                          args.data.entriesView.instrumentEntries(
+                                            $("#entries-table"),
+                                            {
+                                              entries: args.data.entries,
+                                              entriesView: args.data.entriesView,
+                                              entryView: args.data.entryView,
+                                              entryPartView: args.data.entryPartView,
+                                              accounts: args.data.accounts,
+                                              esm: args.data.esm
+                                            },
+                                            args.data.esm
+                                          )
+                                          
+                                          # 3. scroll to Accounts pane 
+                                          $('#right-wrapper').scrollTo($('#entries'), 500, { axis:'x' })
+                                          global.CURRENT_ENTRY_PANE = "#entries"
+                                          
+                                          args.data.esm.transition() # now fire off the transition 
+                                        error: (model, response) ->
+                                          
+                                          console.log("error saving the entry")
+                                          
+                                          # 3. shake to notify user of imbalance error 
+                                          # http://docs.jquery.com/UI/Effects/Shake
+                                          # http://stackoverflow.com/questions/4399005/implementing-jquerys-shake-effect-with-animate
+                                          $("#entry > article > header > div , .entry_content > table").effect("shake", { times: 3 }, 60)
+                                          
+                                          # don't transition - this should cancel the transition
+                                          args.data.esm.transition = null
+                                      })
                                     
-                                    else    # entry doesn't BALANCE
+                                    ###
+                                    # 2. update entry 
+                                    ###
+                                    fdata = {}
+                                    if args.data.entry.isNew()
                                       
-                                      # 3. shake to notify user of imbalance error 
-                                      # http://docs.jquery.com/UI/Effects/Shake
-                                      # http://stackoverflow.com/questions/4399005/implementing-jquerys-shake-effect-with-animate
-                                      $(".entry_content > table").effect("shake", { times: 3 }, 60)
+                                      args.data.entries.add( args.data.entry, { at: 0 } )   # add to the Accounts list
                                       
-                                      # don't transition - this should cancel the transition
-                                      return false
+                                      $.get("/generateid", (result, status, obj) ->
+                                        
+                                        console.log("Generated entry ID[#{result}]")
+                                        fdata.id = result
+                                        fdata.tag = "entry"
+                                        fdata.name = $("#entry-name").val()
+                                        fdata.date = $("#entry-date > input.span2").val()
+                                        fdata.currency = $("#entry-currency").val()
+                                        fdata.content = args.data.entry.get("content")
+                                        
+                                        saveEntry(fdata)
+                                      )
+                                    else
+                                      
+                                      args.data.entry.set({
+                                                            "name" : $("#entry-name").val()
+                                                            "date" : $("#entry-date > input.span2").val()
+                                                            "currency" : $("#entry-currency").val()
+                                                          })
+                                      saveEntry(args.data.entry.toJSON())
+                                    
+                                    ###
+                                    # last statement in IF block
+                                    ###
+                                    return StateMachine.ASYNC; # tell StateMachine to defer next state until we call transition (in fadeOut callback above)
                                       
                             }
   )

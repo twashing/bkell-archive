@@ -293,69 +293,69 @@
               console.log("START Transition from E->Es > Entriess ok");
               bal = args.data.entry.balances(args.data.accounts);
               console.log("entry balances? [" + bal + "]");
-              if (bal.balances) {
-                /*
-                                                      # common saveEntry function
-                                                      */
-                saveEntry = function(fdata) {
-                  return args.data.entry.saveS(fdata, {
-                    accounts: args.data.accounts,
-                    wait: true,
-                    type: args.data.entry.isNew() ? "PUT" : "POST",
-                    success: function(model, response) {
-                      console.log("success on CUSTOM Entry CALLED > model[ " + model + " ] > response[ " + response + " ]");
-                      args.data.entriesView.instrumentEntries($("#entries-table"), {
-                        entries: args.data.entries,
-                        entriesView: args.data.entriesView,
-                        entryView: args.data.entryView,
-                        entryPartView: args.data.entryPartView,
-                        accounts: args.data.accounts,
-                        esm: args.data.esm
-                      }, args.data.esm);
-                      $('#right-wrapper').scrollTo($('#entries'), 500, {
-                        axis: 'x'
-                      });
-                      global.CURRENT_ENTRY_PANE = "#entries";
-                      return args.data.esm.transition();
-                    }
-                  });
-                };
-                /*
-                                                      # 2. update entry 
-                                                      */
-                fdata = {};
-                if (args.data.entry.isNew()) {
-                  args.data.entries.add(args.data.entry, {
-                    at: 0
-                  });
-                  $.get("/generateid", function(result, status, obj) {
-                    console.log("Generated entry ID[" + result + "]");
-                    fdata.id = result;
-                    fdata.tag = "entry";
-                    fdata.name = $("#entry-name").val();
-                    fdata.date = $("#entry-date > input.span2").val();
-                    fdata.currency = $("#entry-currency").val();
-                    fdata.content = args.data.entry.get("content");
-                    return saveEntry(fdata);
-                  });
-                } else {
-                  args.data.entry.set({
-                    "name": $("#entry-name").val(),
-                    "date": $("#entry-date > input.span2").val(),
-                    "currency": $("#entry-currency").val()
-                  });
-                  saveEntry(args.data.entry.toJSON());
-                }
-                /*
-                                                      # last statement in IF block
-                                                      */
-                return StateMachine.ASYNC;
+              /*
+                                                  # common saveEntry function
+                                                  */
+              saveEntry = function(fdata) {
+                return args.data.entry.saveS(fdata, {
+                  accounts: args.data.accounts,
+                  wait: true,
+                  type: args.data.entry.isNew() ? "PUT" : "POST",
+                  success: function(model, response) {
+                    console.log("success on CUSTOM Entry CALLED > model[ " + model + " ] > response[ " + response + " ]");
+                    args.data.entriesView.instrumentEntries($("#entries-table"), {
+                      entries: args.data.entries,
+                      entriesView: args.data.entriesView,
+                      entryView: args.data.entryView,
+                      entryPartView: args.data.entryPartView,
+                      accounts: args.data.accounts,
+                      esm: args.data.esm
+                    }, args.data.esm);
+                    $('#right-wrapper').scrollTo($('#entries'), 500, {
+                      axis: 'x'
+                    });
+                    global.CURRENT_ENTRY_PANE = "#entries";
+                    return args.data.esm.transition();
+                  },
+                  error: function(model, response) {
+                    console.log("error saving the entry");
+                    $("#entry > article > header > div , .entry_content > table").effect("shake", {
+                      times: 3
+                    }, 60);
+                    return args.data.esm.transition = null;
+                  }
+                });
+              };
+              /*
+                                                  # 2. update entry 
+                                                  */
+              fdata = {};
+              if (args.data.entry.isNew()) {
+                args.data.entries.add(args.data.entry, {
+                  at: 0
+                });
+                $.get("/generateid", function(result, status, obj) {
+                  console.log("Generated entry ID[" + result + "]");
+                  fdata.id = result;
+                  fdata.tag = "entry";
+                  fdata.name = $("#entry-name").val();
+                  fdata.date = $("#entry-date > input.span2").val();
+                  fdata.currency = $("#entry-currency").val();
+                  fdata.content = args.data.entry.get("content");
+                  return saveEntry(fdata);
+                });
               } else {
-                $(".entry_content > table").effect("shake", {
-                  times: 3
-                }, 60);
-                return false;
+                args.data.entry.set({
+                  "name": $("#entry-name").val(),
+                  "date": $("#entry-date > input.span2").val(),
+                  "currency": $("#entry-currency").val()
+                });
+                saveEntry(args.data.entry.toJSON());
               }
+              /*
+                                                  # last statement in IF block
+                                                  */
+              return StateMachine.ASYNC;
             }
           }
         }
