@@ -113,6 +113,8 @@ define( [ "bkeeping/util", ], (util) ->
                                                                   # shake the Account pane
                                                                   $(".account_content").effect("shake", { times: 3 }, 60)
                                                                   
+                                                                  args.data.asm.transition = null # hacking a StateMachine.CANCELLED event
+                                                                  
                                                               })
                                     
                                     fdata = {}

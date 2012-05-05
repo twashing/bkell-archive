@@ -94,9 +94,10 @@
                     _.each(errorKeys, function(ech) {
                       return $(".account_content > div > #account-" + ech).parent().addClass("control-group error");
                     });
-                    return $(".account_content").effect("shake", {
+                    $(".account_content").effect("shake", {
                       times: 3
                     }, 60);
+                    return args.data.asm.transition = null;
                   }
                 });
               };
