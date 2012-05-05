@@ -86,6 +86,9 @@ define( [ "bkeeping/util", ], (util) ->
                                                                 success: () ->
                                                                   console.log("successful save")
                                                                   
+                                                                  # 1. removing any possible error highlists in Account pane
+                                                                  $(".account_content *").removeClass("control-group error")  # getting selector for all children under ".account_content"
+                                                                  
                                                                   # 2. ensure Accounts list is updated -> list UI should be re-rendered ... "change" event should fire 
                                                                   args.data.accountsView.instrumentAccounts($("#accounts-table"),
                                                                                                             {
