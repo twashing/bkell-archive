@@ -71,7 +71,7 @@
       */
     Account = AbstractK.extend({
       urlRoot: "/account",
-      validate: function(attrs) {
+      validate: function(attrs, options) {
         if (!util.exists(attrs.name) || attrs.name.isempty()) {
           return {
             name: false
@@ -99,6 +99,24 @@
           rhs: 0
         });
         return _.extend({ balances: result.lhs == result.rhs }, result);
+      },
+      validate: function(attrs, options) {
+        var bal, errors;
+        errors = {};
+        if (!util.exists(attrs.name) || attrs.name.isempty()) {
+          errors.name = false;
+        }
+        if (!util.exists(attrs.date) || attrs.date.isempty()) {
+          errors.date = false;
+        }
+        bal = this.balances(options.accounts);
+        console.log("Entry.validate -> entry balances? [" + bal + "]");
+        if (!bal.balances) {
+          errors.balances = false;
+        }
+        if (!_.isEmpty(errors)) {
+          return errors;
+        }
       },
       findEntryPart: function(eid) {
         return _.find(this.get("content"), function(ech) {

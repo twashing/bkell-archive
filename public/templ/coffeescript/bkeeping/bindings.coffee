@@ -353,6 +353,7 @@ define( [ "bkeeping/util", ], (util) ->
                                       saveEntry = (fdata) ->
                                         
                                         args.data.entry.saveS( fdata, {
+                                          accounts: args.data.accounts,
                                           wait: true,
                                           type: if args.data.entry.isNew() then "PUT" else "POST",
                                           success: (model, response) ->

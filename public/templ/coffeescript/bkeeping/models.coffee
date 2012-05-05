@@ -91,7 +91,7 @@ define(['bkeeping/util'], (util) ->
   ###
   Account = AbstractK.extend(
     urlRoot : "/account",
-    validate: (attrs) ->
+    validate: (attrs, options) ->
       return { name: false } if not util.exists(attrs.name) or attrs.name.isempty()
   )
   Entry = AbstractK.extend(
@@ -122,6 +122,19 @@ define(['bkeeping/util'], (util) ->
       
       return _.extend( `{ balances: result.lhs == result.rhs }`, result )
       
+    validate : (attrs, options) ->
+      
+      errors = {}
+      errors.name = false if not util.exists(attrs.name) or attrs.name.isempty()
+      errors.date = false if not util.exists(attrs.date) or attrs.date.isempty()
+      
+      bal = this.balances(options.accounts)
+      console.log("Entry.validate -> entry balances? [#{bal}]")
+      
+      errors.balances = false if not (bal.balances)
+
+      return errors if not _.isEmpty(errors)
+    
     findEntryPart: (eid) ->
       
       _.find( this.get("content"), (ech) ->

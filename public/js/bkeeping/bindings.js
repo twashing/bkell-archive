@@ -299,6 +299,7 @@
                                                       */
                 saveEntry = function(fdata) {
                   return args.data.entry.saveS(fdata, {
+                    accounts: args.data.accounts,
                     wait: true,
                     type: args.data.entry.isNew() ? "PUT" : "POST",
                     success: function(model, response) {
