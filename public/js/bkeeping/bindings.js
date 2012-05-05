@@ -88,7 +88,15 @@
                     return args.data.asm.transition();
                   },
                   error: function(model, error, options) {
-                    return console.log("error on save");
+                    var errorKeys;
+                    console.log("error on save");
+                    errorKeys = _.keys(error);
+                    _.each(errorKeys, function(ech) {
+                      return $(".account_content > div > #account-" + ech).parent().addClass("control-group error");
+                    });
+                    return $(".account_content").effect("shake", {
+                      times: 3
+                    }, 60);
                   }
                 });
               };
@@ -340,8 +348,8 @@
                 return StateMachine.ASYNC;
               } else {
                 $(".entry_content > table").effect("shake", {
-                  times: 2
-                }, 50);
+                  times: 3
+                }, 60);
                 return false;
               }
             }

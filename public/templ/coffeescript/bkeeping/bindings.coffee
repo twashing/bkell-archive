@@ -105,8 +105,13 @@ define( [ "bkeeping/util", ], (util) ->
                                                                   console.log("error on save")
                                                                    
                                                                   # light up the error field(s)
+                                                                  errorKeys = _.keys(error)
+                                                                  _.each(errorKeys, (ech) ->
+                                                                    $(".account_content > div > #account-#{ech}").parent().addClass("control-group error")
+                                                                  )
                                                                   
                                                                   # shake the Account pane
+                                                                  $(".account_content").effect("shake", { times: 3 }, 60)
                                                                   
                                                               })
                                     
@@ -403,7 +408,7 @@ define( [ "bkeeping/util", ], (util) ->
                                       # 3. shake to notify user of imbalance error 
                                       # http://docs.jquery.com/UI/Effects/Shake
                                       # http://stackoverflow.com/questions/4399005/implementing-jquerys-shake-effect-with-animate
-                                      $(".entry_content > table").effect("shake", { times:2 }, 50)
+                                      $(".entry_content > table").effect("shake", { times: 3 }, 60)
                                       
                                       # don't transition - this should cancel the transition
                                       return false
