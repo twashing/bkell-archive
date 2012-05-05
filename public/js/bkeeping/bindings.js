@@ -55,6 +55,7 @@
             console.log('START Transition from A->As');
             if (args.data.cancel) {
               console.log("Accounts cancel");
+              $(".account_content *").removeClass("control-group error");
               args.data.accountsView.instrumentAccounts($("#accounts-table"), {
                 accounts: args.data.accounts,
                 accountsView: args.data.accountsView,
@@ -76,6 +77,7 @@
                   type: args.data.account.isNew() ? "PUT" : "POST",
                   success: function() {
                     console.log("successful save");
+                    args.data.accounts.add(args.data.account);
                     $(".account_content *").removeClass("control-group error");
                     args.data.accountsView.instrumentAccounts($("#accounts-table"), {
                       accounts: args.data.accounts,
@@ -104,7 +106,6 @@
               };
               fdata = {};
               if (args.data.account.isNew()) {
-                args.data.accounts.add(args.data.account);
                 $.get("/generateid", function(result, status, obj) {
                   console.log("Generated account ID[" + result + "]");
                   fdata.id = result;

@@ -52,8 +52,12 @@ define( [ "bkeeping/util", ], (util) ->
                                   console.log('START Transition from A->As')
                                   
                                   if(args.data.cancel)
+                                    
                                     console.log("Accounts cancel")
                                     
+                                    # removing any possible error highlists in Account pane
+                                    $(".account_content *").removeClass("control-group error")  # getting selector for all children under ".account_content"
+                                                                  
                                     args.data.accountsView.instrumentAccounts($("#accounts-table"),
                                                                               {
                                                                                 accounts: args.data.accounts,
@@ -86,6 +90,10 @@ define( [ "bkeeping/util", ], (util) ->
                                                                 success: () ->
                                                                   console.log("successful save")
                                                                   
+                                                                  
+                                                                  # 0. add to the Accounts list
+                                                                  args.data.accounts.add( args.data.account )   # add to the Accounts list
+                                                                   
                                                                   # 1. removing any possible error highlists in Account pane
                                                                   $(".account_content *").removeClass("control-group error")  # getting selector for all children under ".account_content"
                                                                   
@@ -122,8 +130,6 @@ define( [ "bkeeping/util", ], (util) ->
                                     
                                     fdata = {}
                                     if args.data.account.isNew()
-                                      
-                                      args.data.accounts.add( args.data.account )   # add to the Accounts list
                                       
                                       $.get("/generateid", (result, status, obj) ->
                                         
