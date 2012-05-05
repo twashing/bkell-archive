@@ -237,7 +237,7 @@
                                           # BACK > STATE callbacks from EntryPart, and from Entry
                                           */
           onleaveEpart: function(event, from, to, args) {
-            var isNew;
+            var errors, isNew;
             console.log('START Transition from Epart->E');
             /*
                                               # this is cause a circular JSON error - unbind
@@ -245,6 +245,23 @@
             args.data.epart.unbind("change");
             if (args.data.ok) {
               console.log("#entry-part > ok clicked");
+              $(".entryPart_content > div").removeClass("control-group error");
+              errors = {};
+              if ($("#entry-part-amount").val().isempty()) {
+                errors.amount = false;
+              }
+              if ($("#entry-part-account").val().isempty()) {
+                errors.account = false;
+              }
+              if (!_.isEmpty(errors)) {
+                _.each(_.keys(errors), function(ech) {
+                  return $(".entryPart_content > div > #entry-part-" + ech).parent().addClass("control-group error");
+                });
+                $(".entryPart_content").effect("shake", {
+                  times: 3
+                }, 60);
+                return false;
+              }
               args.data.epart.accountid = $("#entry-part-account").val();
               args.data.epart.amount = parseFloat($("#entry-part-amount").val());
               args.data.epart.tag = $("#entry-part-type").val();
@@ -268,6 +285,7 @@
               accounts: args.data.accounts,
               esm: args.data.esm
             });
+            $(".entryPart_content > div").removeClass("control-group error");
             $('#right-wrapper').scrollTo($('#entry'), 500, {
               axis: 'x'
             });

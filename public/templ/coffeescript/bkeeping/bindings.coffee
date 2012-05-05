@@ -277,9 +277,32 @@ define( [ "bkeeping/util", ], (util) ->
                                   
                                   if(args.data.ok)
                                     
-                                    # 1. update the model inline 
                                     console.log("#entry-part > ok clicked")
                                     
+                                    # 0. do some error checking 
+                                    
+                                    # clear the error highlight slate 
+                                    $(".entryPart_content > div").removeClass("control-group error")
+                                    
+                                    # collect errors
+                                    errors = {}
+                                    errors.amount = false if $("#entry-part-amount").val().isempty()
+                                    errors.account = false if $("#entry-part-account").val().isempty()
+                                    
+                                    if not _.isEmpty(errors)
+                                      
+                                      # highlight error fields
+                                      _.each(_.keys(errors), (ech) ->
+                                        $(".entryPart_content > div > #entry-part-#{ech}").parent().addClass("control-group error")
+                                      )
+                                      
+                                      # give an error shake effect
+                                      $(".entryPart_content").effect("shake", { times: 3 }, 60)
+                                      
+                                      # return an error
+                                      return false
+                                    
+                                    # 1. update the model inline 
                                     args.data.epart.accountid = $("#entry-part-account").val()
                                     args.data.epart.amount = parseFloat($("#entry-part-amount").val())
                                     args.data.epart.tag = $("#entry-part-type").val()
@@ -307,6 +330,9 @@ define( [ "bkeeping/util", ], (util) ->
                                     esm: args.data.esm
                                   })
                                   
+                                  # clear the error highlight slate 
+                                  $(".entryPart_content > div").removeClass("control-group error")
+                                  
                                   # 4. scroll back to #entry
                                   $('#right-wrapper').scrollTo($('#entry'), 500, { axis:'x' })
                                   global.CURRENT_ENTRY_PANE = "#entry"
@@ -321,7 +347,7 @@ define( [ "bkeeping/util", ], (util) ->
                                     # removing possible error highlights
                                     $("#entry > article > header > div").removeClass("control-group error")
                                     $(".entry_content > table > tbody").removeClass("alert alert-error")
-                                          
+                                     
                                     args.data.entriesView.instrumentEntries(
                                       $("#entries-table"),
                                       {
