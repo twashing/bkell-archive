@@ -1,5 +1,5 @@
 (function() {
-  define([], function() {
+  define(['bkeeping/util'], function(util) {
     /*
       # Grab the Backbone object 
       */
@@ -70,7 +70,14 @@
       # Account & Entry
       */
     Account = AbstractK.extend({
-      urlRoot: "/account"
+      urlRoot: "/account",
+      validate: function(attrs) {
+        if (!util.exists(attrs.name) || attrs.name.isempty()) {
+          return {
+            name: false
+          };
+        }
+      }
     });
     Entry = AbstractK.extend({
       urlRoot: "/entry",

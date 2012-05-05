@@ -5,9 +5,10 @@
       'js': '/js/'
     }
   });
-  require(['bkeeping/bkeeping', 'bkeeping/bindings'], function(bkeeping, bindings) {
+  require(['bkeeping/bkeeping', 'bkeeping/bindings', 'bkeeping/util'], function(bkeeping, bindings, util) {
     var accountView, accounts, accountsView, adjustEntryPanes, asm, currencies, entries, entriesView, entryPartView, entryView, esm, loadAccounts, loadEntries, models, views;
     console.log("landing LOADED / bkeeping[" + bkeeping.models + "]");
+    String.prototype.isempty = util.isempty;
     /*
         # Adjust Entry panes based on right width
         */

@@ -100,9 +100,16 @@ define( [ "bkeeping/util", ], (util) ->
                                                                   $('#left-wrapper').scrollTo($('#accounts'), 500, { axis:'x' })
                                                                   
                                                                   args.data.asm.transition() # now fire off the transition 
-                                                                
+                                                                error: (model, error, options) ->
+                                                                  
+                                                                  console.log("error on save")
+                                                                   
+                                                                  # light up the error field(s)
+                                                                  
+                                                                  # shake the Account pane
+                                                                  
                                                               })
-                                  
+                                    
                                     fdata = {}
                                     if args.data.account.isNew()
                                       

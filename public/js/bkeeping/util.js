@@ -23,6 +23,12 @@
         });
         $("#delete-confirm").modal();
         return true;
+      },
+      isempty: function() {
+        if ((!(typeof this === 'undefined')) && this && (!(this.trim() === ""))) {
+          return false;
+        }
+        return true;
       }
     };
   });

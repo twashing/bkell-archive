@@ -38,6 +38,10 @@ define([], () ->
     
     $("#delete-confirm").modal()
     true
+
+  isempty: () ->
+    return false if( (!(typeof this is 'undefined')) && (this) && (!(this.trim() is "")) )
+    return true
 )
 
 

@@ -13,11 +13,12 @@ require.config({
 })
 
 
-require( ['bkeeping/bkeeping', 'bkeeping/bindings']
-  (bkeeping, bindings) ->
+require( ['bkeeping/bkeeping', 'bkeeping/bindings',  'bkeeping/util']
+  (bkeeping, bindings, util) ->
     
     console.log("landing LOADED / bkeeping[#{bkeeping.models}]")
     
+    String.prototype.isempty = util.isempty
     
     ###
     # Adjust Entry panes based on right width

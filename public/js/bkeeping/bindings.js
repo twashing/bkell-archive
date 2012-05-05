@@ -86,6 +86,9 @@
                       axis: 'x'
                     });
                     return args.data.asm.transition();
+                  },
+                  error: function(model, error, options) {
+                    return console.log("error on save");
                   }
                 });
               };

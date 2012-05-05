@@ -1,6 +1,6 @@
 
 #define(['Backbone'], (bb) ->
-define([], () ->
+define(['bkeeping/util'], (util) ->
   
   
   ###
@@ -91,6 +91,8 @@ define([], () ->
   ###
   Account = AbstractK.extend(
     urlRoot : "/account",
+    validate: (attrs) ->
+      return { name: false } if not util.exists(attrs.name) or attrs.name.isempty()
   )
   Entry = AbstractK.extend(
     urlRoot : "/entry",
