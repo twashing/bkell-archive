@@ -312,6 +312,7 @@
           arow = new AccountRow({
             el: ech
           });
+          ctx.accountRows.length = 0;
           return ctx.accountRows.push(arow);
         });
         return $("td").css("border", 0);
@@ -386,6 +387,7 @@
           arow = new EntryRow({
             el: ech
           });
+          ctx.entryRows.length = 0;
           return ctx.entryRows.push(arow);
         });
         return $("td").css("border", 0);

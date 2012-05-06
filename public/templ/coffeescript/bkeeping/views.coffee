@@ -424,6 +424,7 @@ define( ['js/bkeeping/bkeeping', 'js/bkeeping/util'], (bkeeping, util) ->
           # Nesting Row Views here
           ###
           arow = new AccountRow( { el: ech } )
+          ctx.accountRows.length = 0              # clearing out the account rows on each render
           ctx.accountRows.push(arow)
         )
     
@@ -541,6 +542,7 @@ define( ['js/bkeeping/bkeeping', 'js/bkeeping/util'], (bkeeping, util) ->
           # Nesting Row Views here
           ###
           arow = new EntryRow( { el: ech } )
+          ctx.entryRows.length = 0              # clearing out the account rows on each render
           ctx.entryRows.push(arow)
         )
      

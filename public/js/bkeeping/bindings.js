@@ -77,7 +77,9 @@
                   type: args.data.account.isNew() ? "PUT" : "POST",
                   success: function() {
                     console.log("successful save");
-                    args.data.accounts.add(args.data.account);
+                    args.data.accounts.add(args.data.account, {
+                      at: 0
+                    });
                     $(".account_content *").removeClass("control-group error");
                     args.data.accountsView.instrumentAccounts($("#accounts-table"), {
                       accounts: args.data.accounts,

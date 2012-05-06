@@ -92,7 +92,7 @@ define( [ "bkeeping/util", ], (util) ->
                                                                   
                                                                   
                                                                   # 0. add to the Accounts list
-                                                                  args.data.accounts.add( args.data.account )   # add to the Accounts list
+                                                                  args.data.accounts.add( args.data.account, { at: 0 } )   # add to the Accounts list
                                                                    
                                                                   # 1. removing any possible error highlists in Account pane
                                                                   $(".account_content *").removeClass("control-group error")  # getting selector for all children under ".account_content"
