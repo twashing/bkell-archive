@@ -381,6 +381,8 @@
                   "name": $("#entry-name").val(),
                   "date": $("#entry-date > input.span2").val(),
                   "currency": $("#entry-currency").val()
+                }, {
+                  accounts: args.data.accounts
                 });
                 saveEntry(args.data.entry.toJSON());
               }
