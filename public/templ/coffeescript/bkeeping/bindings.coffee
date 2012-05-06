@@ -229,13 +229,18 @@ define( [ "bkeeping/util", ], (util) ->
                                   
                                   console.log('END Transition from E->Epart')
                                   
+                                  # fill out the Entry for a roundtrip
+                                  args.data.entry.set({ name: $("#entry-name").val() , date: $("#entry-date > input.span2").val() },
+                                                      { silent: true })
+                                  
+                                  # get the EntryPart
                                   epart = null
                                   if args.target.dataset['eid']   # edit 
                                     epart = _.find(args.data.entry.get('content'), (ech) -> return ech.id == args.target.dataset['eid'] )
                                   else  # otherwise, new
                                     epart = args.data.epart
-                                  
                                   _.extend(epart, Backbone.Events)
+                                  
                                   bindObjects = {
                                     entriesView: args.data.entriesView,
                                     entryView: args.data.entryView,

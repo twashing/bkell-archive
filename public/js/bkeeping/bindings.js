@@ -207,6 +207,12 @@
           onafterEEpart: function(event, from, to, args) {
             var bindObjects, epart;
             console.log('END Transition from E->Epart');
+            args.data.entry.set({
+              name: $("#entry-name").val(),
+              date: $("#entry-date > input.span2").val()
+            }, {
+              silent: true
+            });
             epart = null;
             if (args.target.dataset['eid']) {
               epart = _.find(args.data.entry.get('content'), function(ech) {
