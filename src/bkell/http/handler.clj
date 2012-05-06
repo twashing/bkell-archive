@@ -263,7 +263,8 @@
   (comment  i. block action unless authenticated 
             ii. block action unless correct user )
   `(if (nil? (session/get :current-user))
-    (-> "User is not authenticated" (util/wrap-error-msg 400) substitute-body)
+    #_(-> "User is not authenticated" (util/wrap-error-msg 400) substitute-body)
+    (response/redirect "/")
     (~fn-run)
   )
 )

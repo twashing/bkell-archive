@@ -20,7 +20,7 @@ define(['bkeeping/util'], (util) ->
       console.log("success [commonFetch] CALLED > model[ #{model} ] > response[ #{response} ]")
     )
     errorC = if(options && options.error) then (options.error) else ((model, response) ->
-      console.log("error CALLED > model["+ model +"] > response["+ response.responseText +"]")
+      console.log("commonFetch > error CALLED > model["+ model +"] > response["+ response.responseText +"]")
     )
     
     this.fetch( _.extend((if(options) then (options) else ({})),
@@ -51,7 +51,7 @@ define(['bkeeping/util'], (util) ->
       )
       
       errorC = if(options && options.error) then (options.error) else ((model, response) ->
-        #console.log("error CALLED > model["+ model +"] > response["+ response.responseText +"]")
+        console.log("AbstractK.saveS > error CALLED > model["+ model +"] > response["+ response.responseText +"]")
       )
       
       statusC = if(options && options.statusCode) then (options.statusCode) else ({ 302 : -> console.log("302 called")  })
@@ -71,7 +71,7 @@ define(['bkeeping/util'], (util) ->
         console.log("success [bkeeping.models.AbstractK.removeS] CALLED > model[ #{model} ] > response[ #{response} ]")
       )
       errorC = if(options && options.error) then (options.error) else ((model, response) ->
-        #console.log("error CALLED > model["+ model +"] > response["+ response.responseText +"]")
+        console.log("AbstractK.removeS > error CALLED > model["+ model +"] > response["+ response.responseText +"]")
       )
       
       this.destroy(  _.extend((if(options) then (options) else ({})),
@@ -163,7 +163,7 @@ define(['bkeeping/util'], (util) ->
         console.log("success [commonFetch] CALLED > model[ #{model} ] > response[ #{response} ]")
       )
       errorC = if(options && options.error) then (options.error) else ((model, response) ->
-        console.log("error CALLED > model["+ model +"] > response["+ response.responseText +"]")
+        console.log("Accounts.fetchS > error CALLED > model["+ model +"] > response["+ response.responseText +"]")
       )
       
       this.fetch( _.extend((if(options) then (options) else ({})),
@@ -183,7 +183,7 @@ define(['bkeeping/util'], (util) ->
         console.log("success [commonFetch] CALLED > model[ #{model} ] > response[ #{response} ]")
       )
       errorC = if(options && options.error) then (options.error) else ((model, response) ->
-        console.log("error CALLED > model["+ model +"] > response["+ response.responseText +"]")
+        console.log("Entries.fetchS > error CALLED > model["+ model +"] > response["+ response.responseText +"]")
       )
       
       this.fetch( _.extend((if(options) then (options) else ({})),
