@@ -187,7 +187,7 @@
         (println (str "add-resp: " add-resp))
         { :cb-resp (merge cb-resp { :exists true }) :new-user add-resp }
       )
-      (catch java.lang.Exception ae (println (str "Not adding this user as it already exists:  " ae))))
+      (catch java.lang.Exception ae (println (str "Error adding this user:  " (.getMessage ae) ))))
     
     { :cb-resp cb-resp :new-user nil }   ;; otherwise just return the result
   )
