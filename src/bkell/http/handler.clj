@@ -381,7 +381,7 @@
 )
 (noir/defpage [ :get "/entry/:id" ] { :keys [id] } 
 
-  (println (str "GET ; /entries/:id ; " id))
+  (println (str "GET ; /entry/:id ; " id))
   (let [lin-user (authenticatek/logged-in-user)]
     
     (->      ;; JSON of MongoDB WriteResult; 

@@ -86,8 +86,11 @@
     
     ;;(println (str "get-accounts > result[" (first result) "]"))
     (vec (map bkell.domain/keywordize-tags 
-      (-> result first :value :result)))  ;; dig in and get the currency list 
-    
+      (if (-> result first :value :result vector?)
+        (-> result first :value :result)
+        [(-> result first :value)]
+      )
+    ))  ;; dig in and get the currency list 
   )
 )
 (defn get-account [uname account]
@@ -132,9 +135,13 @@
         r   "function(k,vals) { return { result : vals } ; }"
         result (map-reduce :bookkeeping m r {:inline 1})]
     
+    ;;(println (str "get-entries: " (pr-str result)))
     (vec (map bkell.domain/keywordize-tags 
-      (-> result first :value :result)))  ;; dig in and get the currency list 
-    
+      (if (-> result first :value :result vector?)
+        (-> result first :value :result)
+        [(-> result first :value)]
+      )
+    ))  ;; dig in and get the currency list 
   )
 )
 (defn get-entry [uname entry]
