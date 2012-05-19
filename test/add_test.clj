@@ -89,7 +89,6 @@
 
 
 (comment *** 
-  BOOKKEEPING tests)
 (deftest test-add-currency-1
   (let [user (load-file "test/etc/data/stubu-two.clj")]
     (let  [ result (addk/add-user user) 
@@ -164,6 +163,8 @@
     )
   )
 )
+  BOOKKEEPING tests)
+  
 (deftest test-add-account-1
   
   (let [user (load-file "test/etc/data/stubu-two.clj")
@@ -192,8 +193,8 @@
     )
   )
 )
-    
-(deftest test-add-account-2
+ 
+#_(deftest test-add-account-2
   
   (let [user (load-file "test/etc/data/stubu-two.clj")
         ru (addk/add-user user)
@@ -211,7 +212,7 @@
   )
   
 )
-(deftest test-add-entry-1
+#_(deftest test-add-entry-1
   
   ;; ensure that entry has date & id 
   (let [entry (load-file "test/etc/data/test-entry-bal.clj")
@@ -223,7 +224,7 @@
   )
 )
   
-(deftest test-add-entry-2
+#_(deftest test-add-entry-2
   (let [user (load-file "test/etc/data/stubu-two.clj")
         ru (addk/add-user user)
         entry (load-file "test/etc/data/test-entry-bal.clj")]
@@ -244,7 +245,7 @@
     )
   )
 )
-(deftest test-add-entry-3
+#_(deftest test-add-entry-3
   (let [user (load-file "test/etc/data/stubu-two.clj")
         ru (addk/add-user user)
         entry (load-file "test/etc/data/test-entry-bal.clj")]
@@ -265,7 +266,7 @@
     )
   )
 )
-(deftest test-add-entry-4
+#_(deftest test-add-entry-4
   (let [user (load-file "test/etc/data/stubu-two.clj")
         ru (addk/add-user user)]
         ;;entry (load-file "test/etc/data/test-entry-bal.clj")]
@@ -290,6 +291,7 @@
 )
 
 ;; Testing multimethods 
+(comment
 (deftest test-addU
   (let [user (load-file "test/etc/data/stubu-two.clj")]
     (addk/add user)
@@ -318,7 +320,6 @@
     (addk/add entry "stub")
   )
 )
-
-
+)
 
 

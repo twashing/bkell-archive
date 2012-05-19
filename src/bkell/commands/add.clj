@@ -80,7 +80,11 @@
             (= 0 (count (fetch "bookkeeping" :where { "content.content.id" (:id account) :owner uname }))) ;; ensure no duplicates 
           ] }
   
-  (let  [ ru (fetch-one "bookkeeping" :where { :owner uname }) ]
+  (update!  "bookkeeping" 
+            { :owner uname }
+            { :push { "content.1.content" account } })
+  
+  #_(let  [ ru (fetch-one "bookkeeping" :where { :owner uname }) ]
     
     (if-let [result ;; result will be a 'com.mongodb.WriteResult' 
       (update! :bookkeeping { :_id (:_id ru) }  ;; passing in hash w/ ObjecId, NOT original object
