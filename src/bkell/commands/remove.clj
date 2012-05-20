@@ -1,6 +1,6 @@
 (ns bkell.commands.remove
-  (:use somnium.congomongo)
-  (:require [bkell.domain :as domain])
+  #_(:use somnium.congomongo)
+  #_(:require [bkell.domain :as domain])
 )
 
 
@@ -12,9 +12,9 @@
             (not (nil? (:username user))) ] 
   }
   
-  (destroy! :users { :username (:username user) })
-  (destroy! :groups { :owner (:username user) })
-  (destroy! :bookkeeping { :owner (:username user) })
+  #_(destroy! :users { :username (:username user) })
+  #_(destroy! :groups { :owner (:username user) })
+  #_(destroy! :bookkeeping { :owner (:username user) })
   nil
 )
 
@@ -22,8 +22,8 @@
 ;; remove currency 
 (defn remove-currency [currency uname]
 
-  (let  [ ru (fetch-one "bookkeeping" :where { :owner uname }) ]
-    (update! :bookkeeping { :_id (:_id ru) }  ;; passing in hash w/ ObjecId, NOT original object
+  (let  [ ru {} #_(fetch-one "bookkeeping" :where { :owner uname }) ]
+    #_(update! :bookkeeping { :_id (:_id ru) }  ;; passing in hash w/ ObjecId, NOT original object
       (domain/traverse-tree ru :remove { :id (:id currency) } nil))
   )
 )
@@ -32,8 +32,8 @@
 ;; remove account 
 (defn remove-account [account uname]
 
-  (let  [ ru (fetch-one "bookkeeping" :where { :owner uname }) ]
-    (update! :bookkeeping { :_id (:_id ru) }  ;; passing in hash w/ ObjecId, NOT original object
+  (let  [ ru {} #_(fetch-one "bookkeeping" :where { :owner uname }) ]
+    #_(update! :bookkeeping { :_id (:_id ru) }  ;; passing in hash w/ ObjecId, NOT original object
       (domain/traverse-tree ru :remove { :id (:id account) } nil))
   )
 )
@@ -42,8 +42,8 @@
 ;; remove entry 
 (defn remove-entry [entry uname]
 
-  (let  [ ru (fetch-one "bookkeeping" :where { :owner uname }) ]
-    (update! :bookkeeping { :_id (:_id ru) }  ;; passing in hash w/ ObjecId, NOT original object
+  (let  [ ru {} #_(fetch-one "bookkeeping" :where { :owner uname }) ]
+    #_(update! :bookkeeping { :_id (:_id ru) }  ;; passing in hash w/ ObjecId, NOT original object
       (domain/traverse-tree ru :remove { :id (:id entry) } nil))
   )
 )

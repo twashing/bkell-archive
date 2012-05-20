@@ -1,7 +1,7 @@
 (ns bkell.bjell
 
   (:import java.io.FileReader)
-  (:use somnium.congomongo)
+  #_(:use somnium.congomongo)
   (:require [bkell.bkell]
             [clojure.data.json]
             [bkell.domain]

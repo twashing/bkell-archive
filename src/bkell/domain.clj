@@ -1,7 +1,7 @@
 (ns bkell.domain
   
   (:require [clojure.zip :as zip])
-  (:use somnium.congomongo)
+  ;(:use somnium.congomongo)
   
   (:import
    (java.security NoSuchAlgorithmException MessageDigest)
@@ -144,7 +144,7 @@
 
 ;; TODO - memoize 
 (defn get-accounts [uname] 
-  (:content (traverse-tree (first (fetch "bookkeeping" :where { :owner uname })) ;; original result -> main.account contents from DB 
+  (:content (traverse-tree (first #_(fetch "bookkeeping" :where { :owner uname })) ;; original result -> main.account contents from DB 
     :get { :id "main.accounts" } nil))
 )
 (defn find-linked-account [uname dtct]

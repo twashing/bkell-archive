@@ -13,7 +13,7 @@
 
 
 (defn init-shell [] 
-  (somnium.congomongo/mongo! :db "bkell") ;; connect to mongodb
+  ;;(somnium.congomongo/mongo! :db "bkell") ;; connect to mongodb
   (def shell (ref { :active true })) 	;; the shell and memory 
 )
 

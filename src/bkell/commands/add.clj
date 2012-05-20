@@ -1,14 +1,12 @@
 (ns bkell.commands.add
   
-  ;;(:require clojure.contrib.logging)
   (:require clojure.string)
   (:require clojure.pprint)
   (:require [clojure.zip :as zip])
   (:require bkell.domain)
   (:require bkell.util)
   
-  (:use somnium.congomongo)
-  ;;(:require debug)
+  ;(:use somnium.congomongo)
 )
 
 
@@ -16,17 +14,17 @@
   
   { :pre  [ (bkell.util/verify-arg 
               (not (= (:username user) ;; check that there is not a duplicate user 
-                      (:username (first (fetch "users" :where { :username (:username user) })))))
+                      (:username (first ()#_(fetch "users" :where { :username (:username user) })))))
               "This is a duplicate User"
             )
           ]}
   
   (let [gr (load-file "etc/data/default.group.clj")]  ;; insert the associated group
-    (insert! :groups (assoc gr :name (:username user) :owner (:username user))))
+    #_(insert! :groups (assoc gr :name (:username user) :owner (:username user))))
   (let [bk (load-file "etc/data/default.bookkeeping.clj")]  ;; insert the associated bookkeeping
-    (insert! :bookkeeping (assoc bk :owner (:username user))))
+    #_(insert! :bookkeeping (assoc bk :owner (:username user))))
   (bkell.domain/keywordize-tags 
-    (insert! :users (assoc user :password (bkell.domain/md5-sum (:password user))))) ;; insert the user, after MD5 encrypting the password 
+    #_(insert! :users (assoc user :password (bkell.domain/md5-sum (:password user))))) ;; insert the user, after MD5 encrypting the password 
 )
 
 
@@ -35,17 +33,17 @@
   { :pre  [ (not (nil? uname)) 
             (not (clojure.string/blank? (:name currency)))
             (not (clojure.string/blank? (:id currency)))
-            (= 0 (count (fetch "bookkeeping" :where { "content.content.id" (:id currency) :owner uname }))) ;; ensure no duplicates 
+            (= 0 0 #_(count (fetch "bookkeeping" :where { "content.content.id" (:id currency) :owner uname }))) ;; ensure no duplicates 
           ] }
   
   ;; creating a zipper function. Good reference points are: 
   ;;  1. http://tech.puredanger.com/2010/10/22/zippers-with-records-in-clojure 
   ;;  2. http://tech.puredanger.com/2010/10/23/pattern-matching-and-tree-mutation
-  (let  [ ru (fetch-one "bookkeeping" :where { :owner uname }) ]
+  (let  [ ru {} #_(fetch-one "bookkeeping" :where { :owner uname }) ]
     
     ;;(debug/debug-repl)
     (if-let [result     ;; result will be a 'com.mongodb.WriteResult'
-      (update! :bookkeeping { :_id (:_id ru) }  ;; passing in hash w/ ObjecId, NOT original object 
+      {} #_(update! :bookkeeping { :_id (:_id ru) }  ;; passing in hash w/ ObjecId, NOT original object 
         (bkell.domain/modify-currency                       ;; update the currency if existing  
           ru
           :insert
@@ -77,17 +75,17 @@
             (not (clojure.string/blank? (:id account)))
             (not (nil? (:type account)))
             (not (nil? (:counterWeight account)))
-            (= 0 (count (fetch "bookkeeping" :where { "content.content.id" (:id account) :owner uname }))) ;; ensure no duplicates 
+            (= 0 (count 0 #_(fetch "bookkeeping" :where { "content.content.id" (:id account) :owner uname }))) ;; ensure no duplicates 
           ] }
   
-  (update!  "bookkeeping" 
+  #_(update!  "bookkeeping" 
             { :owner uname }
             { :push { "content.1.content" account } })
   
-  #_(let  [ ru (fetch-one "bookkeeping" :where { :owner uname }) ]
+  #_(let  [ ru {} #_(fetch-one "bookkeeping" :where { :owner uname }) ]
     
     (if-let [result ;; result will be a 'com.mongodb.WriteResult' 
-      (update! :bookkeeping { :_id (:_id ru) }  ;; passing in hash w/ ObjecId, NOT original object
+      {} #_(update! :bookkeeping { :_id (:_id ru) }  ;; passing in hash w/ ObjecId, NOT original object
         (bkell.domain/traverse-tree ru :insert { :id "main.accounts" } account))]
       
       (if (-> result .getLastError .ok)
@@ -116,10 +114,10 @@
           ]
   }
   
-  (let  [ ru (fetch-one "bookkeeping" :where { :owner uname }) ]
+  (let  [ ru {} #_(fetch-one "bookkeeping" :where { :owner uname }) ]
     
     (if-let [result ;; result will be a 'com.mongodb.WriteResult' 
-      (update! :bookkeeping { :_id (:_id ru) }  ;; passing in hash w/ ObjecId, NOT original object
+      {} #_(update! :bookkeeping { :_id (:_id ru) }  ;; passing in hash w/ ObjecId, NOT original object
         (bkell.domain/traverse-tree ru :insert { :id "main.entries" } entry))]
       
       (if (-> result .getLastError .ok)

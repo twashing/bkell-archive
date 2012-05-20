@@ -1,6 +1,6 @@
 (ns bkell.commands.get
 
-  (:use somnium.congomongo)
+  #_(:use somnium.congomongo)
   (:require bkell.domain)
 )
 
@@ -8,7 +8,7 @@
 ;; get user 
 (defn get-user [uname]
   
-  (let [result (first (fetch "users" :where { :username uname }))]
+  (let [result {} #_(first (fetch "users" :where { :username uname }))]
     
     (if (-> result empty? not)
       (bkell.domain/keywordize-tags result)
@@ -17,10 +17,10 @@
   )
 )
 (defn get-group [uname]
-  (first (fetch "groups" :where { :owner uname }))
+  (first () #_(fetch "groups" :where { :owner uname }))
 )
 (defn get-bookkeeping [uname] 
-  (first (fetch "bookkeeping" :where { :owner uname }))
+  (first () #_(fetch "bookkeeping" :where { :owner uname }))
 )
 
 
@@ -37,12 +37,12 @@
 			  }
 			};")
         r   "function(k,vals) { return { result : vals } ; }"
-        result (map-reduce :bookkeeping m r {:inline 1})]
+        result {} #_(map-reduce :bookkeeping m r {:inline 1})]
     
     (vec (map bkell.domain/keywordize-tags 
       (-> result first :value :result)))  ;; dig in and get the currency list 
   )
-  (fetch "currencies")
+  #_(fetch "currencies")
 )
 (defn get-currency [uname currency]
 
@@ -59,7 +59,7 @@
 			  }
 			};")
         r   "function(k,vals) { return { result : vals } ; }"
-        result (map-reduce :bookkeeping m r {:inline 1})]
+        result {} #_(map-reduce :bookkeeping m r {:inline 1})]
 
     (if (-> result empty? not)
       (-> result first :value bkell.domain/keywordize-tags) ;; dig in and get the currency
@@ -82,7 +82,7 @@
 			  }
 			};")
         r   "function(k,vals) { return { result : vals } ; }"
-        result (map-reduce :bookkeeping m r {:inline 1})]
+        result {} #_(map-reduce :bookkeeping m r {:inline 1})]
     
     ;;(println (str "get-accounts > result[" (first result) "]"))
     (if (empty? result)
@@ -111,7 +111,7 @@
 			  }
 			};")
         r   "function(k,vals) { return { result : vals } ; }"
-        result (map-reduce :bookkeeping m r {:inline 1})]
+        result {} #_(map-reduce :bookkeeping m r {:inline 1})]
     
     (if (-> result empty? not)
       (-> result first :value bkell.domain/keywordize-tags) ;; dig in and get the currency
@@ -136,7 +136,7 @@
 			  }
 			};" )
         r   "function(k,vals) { return { result : vals } ; }"
-        result (map-reduce :bookkeeping m r {:inline 1})]
+        result {} #_(map-reduce :bookkeeping m r {:inline 1})]
     
     (println (str "get-entries: " (pr-str result)))
     
@@ -166,7 +166,7 @@
 			  }
 			};")
         r   "function(k,vals) { return { result : vals } ; }"
-        result (map-reduce :bookkeeping m r {:inline 1})]
+        result {} #_(map-reduce :bookkeeping m r {:inline 1})]
 
     (if (-> result empty? not)
       (-> result first :value bkell.domain/keywordize-tags)  ;; dig in and get the account

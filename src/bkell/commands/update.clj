@@ -1,5 +1,5 @@
 (ns bkell.commands.update
-  (:use somnium.congomongo)
+  #_(:use somnium.congomongo)
   (:require 
     [clojure.string]
     [bkell.commands.get :as getk]
@@ -13,12 +13,12 @@
 ;; update user 
 (defn update-user [user]
   
-  { :pre  [ (not (nil? (first (fetch "users" :where { :username (:username user) })))) ;; assert that user exists
+  { :pre  [ (not false #_(nil? (first (fetch "users" :where { :username (:username user) })))) ;; assert that user exists
           ] }
    
-  (let [ru  (first (fetch "users" :where { :username (:username user) }))]
+  (let [ru  {} #_(first (fetch "users" :where { :username (:username user) }))]
     (if-let [ result ;; result will be a 'com.mongodb.WriteResult' 
-              (update!  :users { :_id (:_id ru) }  ;; passing in hash w/ ObjecId, NOT original object
+              {} #_(update!  :users { :_id (:_id ru) }  ;; passing in hash w/ ObjecId, NOT original object
                 user)]
       (if (-> result .getLastError .ok)
         user
@@ -35,11 +35,11 @@
             (not (clojure.string/blank? (:name currency)))
             (not (clojure.string/blank? (:id currency)))
           ] }
-  (let [ru (fetch-one "bookkeeping" :where { :owner uname })
+  (let [ru {} #_(fetch-one "bookkeeping" :where { :owner uname })
         rc (getk/get-currency uname (:id currency))]
     
     (if rc 
-      (update! :bookkeeping { :_id (:_id ru) }  ;; passing in hash w/ ObjecId, NOT original object 
+      {} #_(update! :bookkeeping { :_id (:_id ru) }  ;; passing in hash w/ ObjecId, NOT original object 
         (domain/modify-currency                       ;; update the currency if existing  
           ru
           :update
@@ -60,11 +60,11 @@
             (not (nil? (:type account)))
             (not (nil? (:counterWeight account)))
           ] }
-  (let [ru (fetch-one "bookkeeping" :where { :owner uname })
+  (let [ru {} #_(fetch-one "bookkeeping" :where { :owner uname })
         ra (getk/get-account uname (:id account))]
     
     (if ra 
-      (if-let [result (update! :bookkeeping { :_id (:_id ru) }  ;; passing in hash w/ ObjecId, NOT original object
+      (if-let [result {} #_(update! :bookkeeping { :_id (:_id ru) }  ;; passing in hash w/ ObjecId, NOT original object
                         (domain/traverse-tree ru :update { :id (:id account) } account))]
         (if (-> result .getLastError .ok)
           account
@@ -95,12 +95,12 @@
             ]
   }
   
-  (let [ru (fetch-one "bookkeeping" :where { :owner uname })
+  (let [ru {} #_(fetch-one "bookkeeping" :where { :owner uname })
         re (getk/get-entry uname (:id entry))]
     
     (if re 
       (if-let [result 
-                (update! :bookkeeping { :_id (:_id ru) }  ;; passing in hash w/ ObjecId, NOT original object
+                {} #_(update! :bookkeeping { :_id (:_id ru) }  ;; passing in hash w/ ObjecId, NOT original object
                   (domain/traverse-tree ru :update { :id (:id entry) } entry))]
         
         (if (-> result .getLastError .ok)
