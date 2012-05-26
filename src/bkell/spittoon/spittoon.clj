@@ -1,4 +1,4 @@
-(ns spittoon
+(ns bkell.spittoon.spittoon
 
 "Spittoon is functionality to convert (CRUD) calls between 
     1. absolute XML path, to 

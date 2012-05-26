@@ -1,10 +1,10 @@
 (ns init.database
-  (:use somnium.congomongo)
+  ;;(:use somnium.congomongo)
 )
 
 (defn setup [] 
   
-  (somnium.congomongo/mongo! :db "bkell") ;; connect to mongodb
+  ;;(somnium.congomongo/mongo! :db "bkell") ;; connect to mongodb
   
   (let [  currency-list
           [
@@ -22,7 +22,7 @@
           ]
         ]
 
-    (map 
+    #_(map 
       #(insert! :currencies %1)
       currency-list
     )

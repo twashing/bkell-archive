@@ -12,6 +12,8 @@
                   [noir "1.3.0-alpha5"]
                   [org.clojure/data.json "0.1.0"]
                   [org.clojure/clojure-contrib "1.2.0"]
+                  [clj-http "0.4.1"]
+                  [enlive "1.0.0"]
                 ]
   :dev-dependencies [ [midje "1.4.0"]
                       [lein-midje "1.0.10"]
