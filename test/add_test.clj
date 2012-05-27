@@ -1,4 +1,4 @@
-(ns fubar-test
+(ns add-test
   
   (:use [monger.operators]
         [midje.sweet]
@@ -8,31 +8,54 @@
             [monger.core :as mg]
             [monger.collection :as mc]
             [monger.operators :as mop]
+            [test-utils :as tutils]
   )
 )
 
-(fact 1 => 1)
-(fact (+ 2 3) => 5)
-
-;; test-add-new-user
-
-;  ;; assert basic add
-;  (let [user (load-file "test/etc/data/stubu-two.clj")
-;        result (addk/add-user user)
-;        ru (fetch "users" :where { :username (:username user) })]
-;      
-;      (is (not (nil? ru)) "There SHOULD be a user with the username 'stub'")
+(fact 
+  
+  (tutils/test-fixture-db)
+  (let[ user (load-file "test/etc/data/stubu-two.clj")
+        result (addk/add-user user)
+        ru (mc/find-one-as-map "users" { :username (:username user) })
+      ]
+      
+      true => (not (nil? ru))   ;;"There SHOULD be a user with the username 'stub'"
+      
+      ;; assert that there are some associated profileDetails: [ last.name first.name email country ]
+      (let [pd (:tag (first (:content ru)))]
+         
+        pd => "profileDetails"    ;;"There SHOULD be a profileDetail element in the user")
+      )
+  )
+)
+(comment 
+#_(fact  ;; test adding a new user 
+  
+  ;;(tutils/test-fixture-db)
+      (1 => 1)
+  
+  ;; assert basic add
+  #_(let[ user (load-file "test/etc/data/stubu-two.clj")
+        result (addk/add-user user)
+        ru (mc/find-one "users" { :username (:username user) })
+      ]
+      
+      (1 => 1)
+      ;(true => (not (nil? ru)))   ;;"There SHOULD be a user with the username 'stub'"
+      ;(provided
+      ;  (tutils/test-fixture-db => nil))
 ;      
 ;      ;; assert that there are some associated profileDetails: [ last.name first.name email country ]
 ;      (let [pd (:tag (nth (:content (nth ru 0)) 0))]
 ;        (is (= "profileDetails" pd) "There SHOULD be a profileDetail element in the user")
 ;      )
-;  )
+  )
 
-
+)
 
 ;; test adding against an existing user
-(deftest test-add-existing-user 
+#_(deftest test-add-existing-user 
   
 ;  (let [user (load-file "test/etc/data/stubu-two.clj")]
 ;    
@@ -48,7 +71,7 @@
 )
 
 ;; test that associated group is getting added as well 
-(deftest test-add-associated-group 
+#_(deftest test-add-associated-group 
   
 ;  (let [user (load-file "test/etc/data/stubu-two.clj")]
 ;    (let [  result (addk/add-user user) 
@@ -61,7 +84,7 @@
 )
 
 ;; test that associated bookkeeping is getting added as well 
-(deftest test-add-associated-bookkeeping 
+#_(deftest test-add-associated-bookkeeping 
   
 ;  (let [user (load-file "test/etc/data/stubu-two.clj")]
 ;    (let [  result (addk/add-user user) 
@@ -72,4 +95,5 @@
 ;    )
 ;  )
 
+)
 )

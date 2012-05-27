@@ -8,12 +8,17 @@
             [bkell.commands.update :as updatek]
             [bkell.commands.get :as getk]
             [bkell.commands.remove :as removek]
-            [bkell.commands.authenticate :as authenticatek])
+            [bkell.commands.authenticate :as authenticatek]
+            [monger.core :as mg]
+  )
 )
 
 
 (defn init-shell [] 
-  ;;(somnium.congomongo/mongo! :db "bkell") ;; connect to mongodb
+
+  ;; connect to the DB
+  (mg/connect! { :host "172.16.210.144" :port 27017 }) 
+  (mg/set-db! (mg/get-db "bkell"))
   (def shell (ref { :active true })) 	;; the shell and memory 
 )
 

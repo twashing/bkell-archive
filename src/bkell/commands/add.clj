@@ -1,11 +1,13 @@
 (ns bkell.commands.add
   
-  (:require clojure.string)
-  (:require clojure.pprint)
-  (:require [clojure.zip :as zip])
-  (:require bkell.domain)
-  (:require bkell.util)
-  
+  (require  [clojure.string]
+            [clojure.pprint]
+            [clojure.zip :as zip]
+            [bkell.domain]
+            [bkell.util]
+            [monger.core :as mg]
+            [monger.collection :as mc]
+  )
   ;(:use somnium.congomongo)
 )
 
@@ -20,11 +22,17 @@
           ]}
   
   (let [gr (load-file "etc/data/default.group.clj")]  ;; insert the associated group
-    #_(insert! :groups (assoc gr :name (:username user) :owner (:username user))))
+    (mc/insert "groups" (assoc gr :name (:username user) :owner (:username user))))
   (let [bk (load-file "etc/data/default.bookkeeping.clj")]  ;; insert the associated bookkeeping
-    #_(insert! :bookkeeping (assoc bk :owner (:username user))))
-  (bkell.domain/keywordize-tags 
-    #_(insert! :users (assoc user :password (bkell.domain/md5-sum (:password user))))) ;; insert the user, after MD5 encrypting the password 
+    (mc/insert "bookkeeping" (assoc bk :owner (:username user))))
+  (let [uuser (assoc user :password (bkell.domain/md5-sum (:password user)))]
+    
+    (mc/insert "users" uuser) ;; insert the user, after MD5 encrypting the password 
+    
+    ;; return the passed in user
+    uuser
+  )
+  
 )
 
 
