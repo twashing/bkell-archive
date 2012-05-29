@@ -15,10 +15,15 @@
 
 
 (defn init-shell [] 
-
-  ;; connect to the DB
-  (mg/connect! { :host "172.16.210.144" :port 27017 }) 
-  (mg/set-db! (mg/get-db "bkell"))
+  
+  (let [config (load-file "etc/config/config.clj")
+        dburl (-> config :dev :host-url-db)
+        dport (-> config :dev :host-port-db)]
+    
+    ;; connect to the DB server
+    (mg/connect! { :host dburl :port dport }) 
+  )
+  (mg/set-db! (mg/get-db "bkell"))    ;; select the DB 
   (def shell (ref { :active true })) 	;; the shell and memory 
 )
 
