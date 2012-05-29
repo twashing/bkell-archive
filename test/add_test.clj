@@ -29,7 +29,6 @@
       )
   )
 )
-(comment 
 #_(fact  ;; test adding a new user 
   
   ;;(tutils/test-fixture-db)
@@ -54,6 +53,7 @@
 
 )
 
+(comment 
 ;; test adding against an existing user
 #_(deftest test-add-existing-user 
   

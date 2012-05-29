@@ -18,12 +18,13 @@
   
   (let [config (load-file "etc/config/config.clj")
         dburl (-> config :dev :host-url-db)
-        dport (-> config :dev :host-port-db)]
+        dport (-> config :dev :host-port-db)
+        database (-> config :dev :database)]
     
     ;; connect to the DB server
     (mg/connect! { :host dburl :port dport }) 
+    (mg/set-db! (mg/get-db database))    ;; select the DB 
   )
-  (mg/set-db! (mg/get-db "bkell"))    ;; select the DB 
   (def shell (ref { :active true })) 	;; the shell and memory 
 )
 
