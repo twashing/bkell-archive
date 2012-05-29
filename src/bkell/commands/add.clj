@@ -8,7 +8,6 @@
             [monger.core :as mg]
             [monger.collection :as mc]
   )
-  ;(:use somnium.congomongo)
 )
 
 
@@ -16,10 +15,10 @@
   
   { :pre  [ (bkell.util/verify-arg 
               (not (= (:username user) ;; check that there is not a duplicate user 
-                      (:username (first ()#_(fetch "users" :where { :username (:username user) })))))
+                      (:username (mc/find-one-as-map "users" { :username (:username user) }))))
               "This is a duplicate User"
             )
-          ]}
+          ] }
   
   (let [gr (load-file "etc/data/default.group.clj")]  ;; insert the associated group
     (mc/insert "groups" (assoc gr :name (:username user) :owner (:username user))))

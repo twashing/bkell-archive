@@ -8,7 +8,7 @@
   :plugins [[lein-swank "1.4.4"]]
             
   :dependencies [ [org.clojure/clojure "1.3.0"]
-                  [com.novemberain/monger "1.0.0-beta5"]
+                  [com.novemberain/monger "1.0.0-SNAPSHOT"]
                   [noir "1.3.0-alpha5"]
                   [org.clojure/data.json "0.1.0"]
                   [org.clojure/clojure-contrib "1.2.0"]
