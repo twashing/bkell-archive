@@ -69,7 +69,6 @@
   
   (let[ user (load-file "test/etc/data/stubu-two.clj")
         result (addk/add-user user) 
-        ;;bk (:owner (first (fetch "bookkeeping" :where { :owner (:username user) })))
         bk (mc/find-one-as-map "bookkeeping" { :owner (:username user) })
       ]
       
@@ -78,3 +77,19 @@
   )
 
 )
+
+;; test that password is encrypted - MD5 checksum 
+(deftest test-encrypted-password 
+    
+  (let [user (load-file "test/etc/data/stubu-two.clj")]
+    (let  [ result (addk/add-user user) 
+            ru (mc/find-one-as-map "users" { :username (:username user) })
+          ]
+      
+      (is (not (nil? ru)) "There SHOULD be a user after creation")
+      (is (= "5185e8b8fd8a71fc80545e144f91faf2" (:password ru) ) "The password SHOULD be MD5 checksumed" )
+    )
+  )
+)
+
+
