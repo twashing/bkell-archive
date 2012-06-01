@@ -156,8 +156,6 @@
         ru (addk/add-user user)
         entry (load-file "test/etc/data/test-entry-bal.clj")]
     
-    ;;(test-utils/populate-accounts)
-    
     ;; make entry have dt / ct associated with those accounts
     (let [ae  (try  (addk/add-entry 
                       (merge  (merge entry { :id "testid" :date "03/22/2011" }) 
@@ -172,12 +170,10 @@
     )
   )
 )
-#_(deftest test-add-entry-3
+(deftest test-add-entry-3
   (let [user (load-file "test/etc/data/stubu-two.clj")
         ru (addk/add-user user)
         entry (load-file "test/etc/data/test-entry-bal.clj")]
-    
-    (test-utils/populate-accounts)
     
     ;; make entry have dt / ct associated with those accounts
     (let [ae  (try  (addk/add-entry 
