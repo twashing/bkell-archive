@@ -87,21 +87,6 @@
           ] }
   
   (mc/update "bookkeeping" { :owner uname "content.id" "main.accounts"} { mop/$push { :content.$.content account } } )
-  #_(update!  "bookkeeping" 
-            { :owner uname }
-            { :push { "content.1.content" account } })
-  
-  #_(let  [ ru {} #_(fetch-one "bookkeeping" :where { :owner uname }) ]
-    
-    (if-let [result ;; result will be a 'com.mongodb.WriteResult' 
-      {} #_(update! :bookkeeping { :_id (:_id ru) }  ;; passing in hash w/ ObjecId, NOT original object
-        (bkell.domain/traverse-tree ru :insert { :id "main.accounts" } account))]
-      
-      (if (-> result .getLastError .ok)
-        account
-        (bkell.util/generate-error-response (.getErrorMessage result)))
-    )
-  )
 )
 
 

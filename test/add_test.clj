@@ -106,21 +106,22 @@
       (is (= java.lang.AssertionError (type ae)) "return type is NOT an assertion error")
     )
      
-    (let[ ra (addk/add-account { :tag :account :type "asset" :id "thing" :name "thing" :counterWeight "debit" } "stub")
+    (let[ taccount { :tag :account :type "asset" :id "thing" :name "thing" :counterWeight "debit" }
+          ra (addk/add-account taccount "stub")
           bk (mc/find-one-as-map "bookkeeping" { :owner (:username user) })
         ]
         
       ;; assert that account was added
-      (let [ ac (domain/traverse-tree bk :get { :id (:id account) } {}) ]
+      (let [ ac (domain/traverse-tree bk :get { :id (:id taccount) } {}) ]
         
         (is (not (nil? ac)) "we do NOT have a 'cash' account - 1")
-        (is (= "cash" (:id ac)) "we do NOT have a 'cash' account - 2")
+        (is (= "thing" (:id ac)) "we do NOT have a 'cash' account - 2")
       )
     )
   )
 )
  
-#_(deftest test-add-account-2
+(deftest test-add-account-2
   
   (let [user (load-file "test/etc/data/stubu-two.clj")
         ru (addk/add-user user)
