@@ -1,6 +1,8 @@
 (ns bkell.domain
   
-  (:require [clojure.zip :as zip])
+  (:require [clojure.zip :as zip]
+            [bkell.commands.get :as getk]
+  )
   ;(:use somnium.congomongo)
   
   (:import
@@ -142,13 +144,8 @@
 )
 
 
-;; TODO - memoize 
-(defn get-accounts [uname] 
-  (:content (traverse-tree (first #_(fetch "bookkeeping" :where { :owner uname })) ;; original result -> main.account contents from DB 
-    :get { :id "main.accounts" } nil))
-)
 (defn find-linked-account [uname dtct]
-  (let [alist (get-accounts uname)] 
+  (let [alist (getk/get-accounts uname)] 
           (loop [x dtct y alist ] ;; given main.account list, loop through dt / ct in entrys and see if accountid matches 
             (if (= (:accountid x) (:id (first y)))
               (first y)
@@ -182,7 +179,7 @@
 
 (defn account-for-entry? [uname entry] 
 
-  (empty? (let [ alist (get-accounts uname)]
+  (empty? (let [ alist (getk/get-accounts uname)]
     
     (filter 
       (fn [a] 

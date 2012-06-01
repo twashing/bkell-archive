@@ -151,7 +151,7 @@
   )
 )
 
-#_(deftest test-add-entry-2
+(deftest test-add-entry-2
   (let [user (load-file "test/etc/data/stubu-two.clj")
         ru (addk/add-user user)
         entry (load-file "test/etc/data/test-entry-bal.clj")]

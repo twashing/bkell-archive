@@ -5,7 +5,7 @@
   )
   (:import  [com.mongodb WriteResult WriteConcern DBCursor DBObject CommandResult$CommandFailure MapReduceOutput MapReduceCommand MapReduceCommand$OutputType]
   )
-  (:require [bkell.domain]
+  (:require #_[bkell.domain]
             [monger.collection :as mc]
   )
 )
@@ -17,7 +17,7 @@
   (let [result {} #_(first (fetch "users" :where { :username uname }))]
     
     (if (-> result empty? not)
-      (bkell.domain/keywordize-tags result)
+      #_(bkell.domain/keywordize-tags result)
       nil
     )
   )
@@ -68,7 +68,7 @@
         result {} #_(map-reduce :bookkeeping m r {:inline 1})]
 
     (if (-> result empty? not)
-      (-> result first :value bkell.domain/keywordize-tags) ;; dig in and get the currency
+      #_(-> result first :value bkell.domain/keywordize-tags) ;; dig in and get the currency
       nil
     )
   )
@@ -96,16 +96,6 @@
     ; digging into a structure that looks like this: [{:_id nil, :value {:result [{:counterWeight "debit", :name "cash", :type "asset", :id "cash", :tag "account"} {:counterWeight "credit", :name "expense", :type "expense", :id "expense", :tag "account"} {:counterWeight "debit", :name "revenue", :type "revenue", :id "revenue", :tag "account"} {:counterWeight "credit", :name "accounts payable", :type "liability", :id "accounts payable", :tag "account"}]}}]
     (-> converted first :value :result)
     
-    ;;(println (str "get-accounts > result[" (first result) "]"))
-    #_(if (empty? result)
-      (vec result)
-      (vec (map bkell.domain/keywordize-tags 
-        (if (-> result first :value :result vector?)
-          (-> result first :value :result)
-          [(-> result first :value)]
-        )
-      ))  ;; dig in and get the currency list 
-    )
   )
 )
 (defn get-account [uname account]
@@ -154,7 +144,7 @@
     
     (if (empty? result)
       (vec result)
-      (vec (map bkell.domain/keywordize-tags 
+      #_(vec (map bkell.domain/keywordize-tags 
         (if (-> result first :value :result vector?)  ;; deal with a multiple results (list), versus single result (map)
           (-> result first :value :result)
           [(-> result first :value)]
@@ -181,7 +171,7 @@
         result {} #_(map-reduce :bookkeeping m r {:inline 1})]
 
     (if (-> result empty? not)
-      (-> result first :value bkell.domain/keywordize-tags)  ;; dig in and get the account
+      #_(-> result first :value bkell.domain/keywordize-tags)  ;; dig in and get the account
       nil
     )
   )
