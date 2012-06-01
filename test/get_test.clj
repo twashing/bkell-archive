@@ -57,10 +57,9 @@
     (is (= "cash" (:id ra)) "There SHOULD be a 'cash' account with the username 'stub'")
   )
 )
-#_(deftest test-get-accounts
+(deftest test-get-accounts
 
   (let [result (test-utils/add-user nil)
-        ;;xx (test-utils/populate-accounts)
         ra (getk/get-accounts "stub")]
     
     (is (not (nil? ra)) "result account list should NOT be nil")

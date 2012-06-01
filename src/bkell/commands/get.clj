@@ -78,7 +78,7 @@
 ;; get account 
 (defn get-accounts [uname] 
 
-  (let [m (str "function(){ 
+  (let[ m (str "function(){ 
 			  if( (this.content[1].content != null) && (this.owner == '"uname"') ) { 
 			    this.content[1].content.forEach( 
 			      function(x) { 
@@ -88,10 +88,16 @@
 			  }
 			};")
         r   "function(k,vals) { return { result : vals } ; }"
-        result {} #_(map-reduce :bookkeeping m r {:inline 1})]
+        ;result {} #_(map-reduce :bookkeeping m r {:inline 1})
+        result (mc/map-reduce "bookkeeping" m r nil MapReduceCommand$OutputType/INLINE {})
+        converted (from-db-object ^DBObject (.results ^MapReduceOutput result) true)
+      ]
+    
+    ; digging into a structure that looks like this: [{:_id nil, :value {:result [{:counterWeight "debit", :name "cash", :type "asset", :id "cash", :tag "account"} {:counterWeight "credit", :name "expense", :type "expense", :id "expense", :tag "account"} {:counterWeight "debit", :name "revenue", :type "revenue", :id "revenue", :tag "account"} {:counterWeight "credit", :name "accounts payable", :type "liability", :id "accounts payable", :tag "account"}]}}]
+    (-> converted first :value :result)
     
     ;;(println (str "get-accounts > result[" (first result) "]"))
-    (if (empty? result)
+    #_(if (empty? result)
       (vec result)
       (vec (map bkell.domain/keywordize-tags 
         (if (-> result first :value :result vector?)
