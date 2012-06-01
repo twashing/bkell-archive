@@ -13,7 +13,7 @@
   )
 )
 
-(fact  ;; test adding a new user 
+#_(fact  ;; test adding a new user 
   
   (tutils/test-fixture-midje)
   (let[ user (load-file "test/etc/data/stubu-two.clj")
@@ -139,4 +139,80 @@
   
 )
 
+(deftest test-add-entry-1
+  
+  ;; ensure that entry has date & id 
+  (let [entry (load-file "test/etc/data/test-entry-bal.clj")
+        ae  (try (addk/add-entry entry "stub")
+              (catch java.lang.AssertionError ae ae))]
+  
+    (is (not (nil? ae)) "there SHOULD be an error if entry doesn't have 'date' and / or 'id'")
+    (is (= java.lang.AssertionError (type ae)) "return type is NOT an assertion error")
+  )
+)
 
+#_(deftest test-add-entry-2
+  (let [user (load-file "test/etc/data/stubu-two.clj")
+        ru (addk/add-user user)
+        entry (load-file "test/etc/data/test-entry-bal.clj")]
+    
+    ;;(test-utils/populate-accounts)
+    
+    ;; make entry have dt / ct associated with those accounts
+    (let [ae  (try  (addk/add-entry 
+                      (merge  (merge entry { :id "testid" :date "03/22/2011" }) 
+                        {:content [ {:tag :debit :id "dtS" :amount 120.00 :accountid "fubar" } 
+                                    {:tag :credit :id "crS" :amount 120.00 :accountid "accounts payable" }]})
+                      "stub")
+                    (catch java.lang.AssertionError ae ae))]
+    
+      ;; assert that accounts correspond with existing accounts
+      (is (not (nil? ae)) "there SHOULD be an error if a dt / ct has a bad accountid reference")
+      (is (= java.lang.AssertionError (type ae)) "return type is NOT an assertion error")
+    )
+  )
+)
+#_(deftest test-add-entry-3
+  (let [user (load-file "test/etc/data/stubu-two.clj")
+        ru (addk/add-user user)
+        entry (load-file "test/etc/data/test-entry-bal.clj")]
+    
+    (test-utils/populate-accounts)
+    
+    ;; make entry have dt / ct associated with those accounts
+    (let [ae  (try  (addk/add-entry 
+                      (merge  (merge entry { :id "testid" :date "03/22/2011" }) 
+                        {:content [ {:tag :debit :id "dtS" :amount 130.00 :accountid "cash" } 
+                                    {:tag :credit :id "crS" :amount 120.00 :accountid "accounts payable" }]})
+                      "stub")
+                    (catch java.lang.AssertionError ae ae))]
+    
+      ;; assert that entry is balanced
+      (is (not (nil? ae)) "there SHOULD be an error if entry is not balanced")
+      (is (= java.lang.AssertionError (type ae)) "return type is NOT an assertion error")
+    )
+  )
+)
+#_(deftest test-add-entry-4
+  (let [user (load-file "test/etc/data/stubu-two.clj")
+        ru (addk/add-user user)]
+        ;;entry (load-file "test/etc/data/test-entry-bal.clj")]
+    
+    (test-utils/populate-accounts)
+    
+    ;; add the entry
+    (addk/add-entry 
+      (test-utils/create-balanced-test-entry)
+      "stub")
+    
+    (let  [ bk (first (fetch "bookkeeping" :where { :owner (:username user) })) ]
+      
+      ;; assert that entry was added
+      (let [ en (domain/traverse-tree bk :get { :id "testid" } {}) ]
+        
+        (is (not (nil? en)) "we do NOT have an entry with id 'testid'")
+      )
+    )
+    
+  )
+)

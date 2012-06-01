@@ -20,7 +20,7 @@
   
   (test)
 )
-(defn test-fixture-midje
+#_(defn test-fixture-midje
   "test to clear out DB before a test is run"
   []
   
@@ -33,7 +33,6 @@
   
 )
 
-(comment
 (defn add-user [uloc]
 
   (let [user (load-file (if (not (nil? uloc)) uloc "test/etc/data/stubu-two.clj"))]
@@ -41,6 +40,7 @@
   )
 )
 
+(comment
 (defn populate-currencies
   "populate with Canadian and Austrilian currencies"
   [] 

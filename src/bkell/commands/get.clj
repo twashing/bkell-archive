@@ -1,7 +1,13 @@
 (ns bkell.commands.get
 
-  #_(:use somnium.congomongo)
-  (:require bkell.domain)
+  (:use #_[somnium.congomongo]
+        [monger operators conversion]
+  )
+  (:import  [com.mongodb WriteResult WriteConcern DBCursor DBObject CommandResult$CommandFailure MapReduceOutput MapReduceCommand MapReduceCommand$OutputType]
+  )
+  (:require [bkell.domain]
+            [monger.collection :as mc]
+  )
 )
 
 
@@ -98,7 +104,7 @@
 )
 (defn get-account [uname account]
 
-  (let [m (str "function(){ 
+  (let[ m (str "function(){ 
 			  if( (this.content[1].content != null) && (this.owner == '"uname"') ) { 
 			    this.content[1].content.forEach( 
 			        
@@ -111,12 +117,12 @@
 			  }
 			};")
         r   "function(k,vals) { return { result : vals } ; }"
-        result {} #_(map-reduce :bookkeeping m r {:inline 1})]
+        result (mc/map-reduce "bookkeeping" m r nil MapReduceCommand$OutputType/INLINE {})
+        converted (from-db-object ^DBObject (.results ^MapReduceOutput result) true)
+      ]
     
-    (if (-> result empty? not)
-      (-> result first :value bkell.domain/keywordize-tags) ;; dig in and get the currency
-      nil
-    )
+    ; digging into a structure that looks like this: {:_id nil, :value {:counterWeight "debit", :name "cash", :type "asset", :id "cash", :tag "account"}}
+    (-> converted first :value)
   )
 )
 
