@@ -7,6 +7,7 @@
             [bkell.util]
             [monger.core :as mg]
             [monger.collection :as mc]
+            [monger.operators :as mop]
   )
 )
 
@@ -82,9 +83,10 @@
             (not (clojure.string/blank? (:id account)))
             (not (nil? (:type account)))
             (not (nil? (:counterWeight account)))
-            (= 0 (count 0 #_(fetch "bookkeeping" :where { "content.content.id" (:id account) :owner uname }))) ;; ensure no duplicates 
+            (nil? (mc/find-one-as-map "bookkeeping" { "content.content.name" (:name account) "content.content.id" (:id account) :owner uname })) ;; ensure no duplicates 
           ] }
   
+  (mc/update "bookkeeping" { :owner uname "content.id" "main.accounts"} { mop/$push { :content.$.content account } } )
   #_(update!  "bookkeeping" 
             { :owner uname }
             { :push { "content.1.content" account } })

@@ -92,4 +92,51 @@
   )
 )
 
+(deftest test-add-account-1
+  
+  (let [user (load-file "test/etc/data/stubu-two.clj")
+        ru (addk/add-user user)
+        account (load-file "test/etc/data/test-account-asset.clj")]
+    
+    (let [ae  (try (addk/add-account { :tag :account :type "asset" :id "cash" :name "cash" :counterWeight "debit" } "stub" )
+                (catch java.lang.AssertionError ae ae))]
+      
+      ;; assert that we can't add a bad account 
+      (is (not (nil? ae)) "there SHOULD be an error if account with no name is added")
+      (is (= java.lang.AssertionError (type ae)) "return type is NOT an assertion error")
+    )
+     
+    (let[ ra (addk/add-account { :tag :account :type "asset" :id "thing" :name "thing" :counterWeight "debit" } "stub")
+          bk (mc/find-one-as-map "bookkeeping" { :owner (:username user) })
+        ]
+        
+      ;; assert that account was added
+      (let [ ac (domain/traverse-tree bk :get { :id (:id account) } {}) ]
+        
+        (is (not (nil? ac)) "we do NOT have a 'cash' account - 1")
+        (is (= "cash" (:id ac)) "we do NOT have a 'cash' account - 2")
+      )
+    )
+  )
+)
+ 
+#_(deftest test-add-account-2
+  
+  (let [user (load-file "test/etc/data/stubu-two.clj")
+        ru (addk/add-user user)
+        account (load-file "test/etc/data/test-account-asset.clj")]
+    
+    (addk/add-account account "stub")
+    (let [ae  (try (addk/add-account account "stub")
+                (catch java.lang.AssertionError ae ae))]
+      
+      ;; assert that there is no duplicate account
+      (is (not (nil? ae)) "there SHOULD be an error if account if we try adding a duplicate")
+      (is (= java.lang.AssertionError (type ae)) "return type is NOT an assertion error")
+    )
+     
+  )
+  
+)
+
 
