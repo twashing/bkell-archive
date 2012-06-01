@@ -127,7 +127,6 @@
         ru (addk/add-user user)
         account (load-file "test/etc/data/test-account-asset.clj")]
     
-    (addk/add-account account "stub")
     (let [ae  (try (addk/add-account account "stub")
                 (catch java.lang.AssertionError ae ae))]
       
