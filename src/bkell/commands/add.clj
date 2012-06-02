@@ -105,20 +105,10 @@
             ;; :lhs -> dt/dt == ct/ct
             ;; :rhs -> dt/cr == ct/dt 
             (bkell.domain/entry-balanced? uname entry)
-          ]
-  }
+          ] }
   
-  (let  [ ru {} #_(fetch-one "bookkeeping" :where { :owner uname }) ]
-    
-    (if-let [result ;; result will be a 'com.mongodb.WriteResult' 
-      {} #_(update! :bookkeeping { :_id (:_id ru) }  ;; passing in hash w/ ObjecId, NOT original object
-        (bkell.domain/traverse-tree ru :insert { :id "main.entries" } entry))]
-      
-      (if (-> result .getLastError .ok)
-        entry
-        (bkell.util/generate-error-response (.getErrorMessage result)))
-    )
-  )
+  (mc/update "bookkeeping" { :owner uname "content.content.content.id" "main.entries"} { mop/$push { :content.$.content.0.content.0.content entry } } )
+  
 )
 
 

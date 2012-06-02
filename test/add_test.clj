@@ -10,6 +10,7 @@
             [monger.collection :as mc]
             [monger.operators :as mop]
             [test-utils :as tutils]
+            [clojure.pprint :as pprint]
   )
 )
 
@@ -189,20 +190,18 @@
     )
   )
 )
-#_(deftest test-add-entry-4
+(deftest test-add-entry-4
   (let [user (load-file "test/etc/data/stubu-two.clj")
         ru (addk/add-user user)]
         ;;entry (load-file "test/etc/data/test-entry-bal.clj")]
     
-    (test-utils/populate-accounts)
-    
     ;; add the entry
-    (addk/add-entry 
-      (test-utils/create-balanced-test-entry)
-      "stub")
+    (addk/add-entry (test-utils/create-balanced-test-entry) "stub")
     
-    (let  [ bk (first (fetch "bookkeeping" :where { :owner (:username user) })) ]
+    (let  [ bk (mc/find-one-as-map "bookkeeping" { :owner (:username user) })
+          ]
       
+      ;(pprint/pprint bk)
       ;; assert that entry was added
       (let [ en (domain/traverse-tree bk :get { :id "testid" } {}) ]
         

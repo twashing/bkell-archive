@@ -216,7 +216,7 @@
                             (merge a { :rhs (+ (:rhs a) (:amount b)) } ))))
                   { :lhs 0.0 :rhs 0.0 }   ;; beginning tally 
                   (:content entry))]       ;; list of debits and credits 
-
+    
     ;;(println (str "entry-balanced? > result[" result "]"))
     (= (:lhs result) (:rhs result))
   )

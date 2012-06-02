@@ -80,14 +80,14 @@
 )
 
 
+)
+
 (defn create-balanced-test-entry []
   (let [entry (load-file "test/etc/data/test-entry-bal.clj")]
   
     (merge  (merge entry { :id "testid" :date "03/22/2011" }) 
       {:content [ {:tag :debit :id "dtS" :amount 120.00 :accountid "cash" } 
-                  {:tag :credit :id "crS" :amount 120.00 :accountid "accounts payable" }]})
+                  {:tag :credit :id "crS" :amount 120.00 :accountid "revenue" }]})
   )
-)
-
 )
 
