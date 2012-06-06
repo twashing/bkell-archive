@@ -103,7 +103,7 @@
 ;; Testing multimethods 
 
 ;; get user 
-#_(deftest test-getU
+(deftest test-getU
 
   (let [result (test-utils/add-user nil)
         ru (getk/get :user "stub")]
@@ -140,20 +140,18 @@
 
     
 ;; get account 
-#_(deftest test-getA
+(deftest test-getA
 
   (let [result (test-utils/add-user nil)
-        xx (test-utils/populate-accounts)
         ra (getk/get :account "stub" "cash")]
     
     (is (not (nil? ra)) "cash result should NOT be nil")
     (is (= "cash" (:id ra)) "There SHOULD be a 'cash' account with the username 'stub'")
   )
 )
-#_(deftest test-getAs
+(deftest test-getAs
 
   (let [result (test-utils/add-user nil)
-        xx (test-utils/populate-accounts)
         ra (getk/get :accounts "stub")]
     
     (is (not (nil? ra)) "result account list should NOT be nil")
@@ -163,10 +161,9 @@
 
 
 ;; get entry 
-#_(deftest test-getE
+(deftest test-getE
 
   (let [result (test-utils/add-user nil)
-        xx (test-utils/populate-accounts)
         yy (test-utils/populate-entries)
         re (getk/get :entry "stub" "testid")]
     
@@ -174,10 +171,9 @@
     (is (= "testid" (:id re)) "There SHOULD be a 'testid' entry with the username 'stub'")
   )
 )
-#_(deftest test-getEs
+(deftest test-getEs
 
   (let [result (test-utils/add-user nil)
-        xx (test-utils/populate-accounts)
         yy (test-utils/populate-entries)
         re (getk/get :entries "stub")]
     
