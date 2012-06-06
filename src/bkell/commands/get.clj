@@ -7,6 +7,7 @@
             [monger.collection :as mc]
             [monger.operators :as mop]
             [monger.conversion :as cnv]
+            [clojure.pprint :as pprint]
   )
 )
 
@@ -16,10 +17,10 @@
   (domain/keywordize-tags (mc/find-one-as-map "users" { :username uname }))
 )
 (defn get-group [uname]
-  (first () #_(fetch "groups" :where { :owner uname }))
+  (domain/keywordize-tags (mc/find-one-as-map "groups" { :owner uname }))
 )
 (defn get-bookkeeping [uname] 
-  (first () #_(fetch "bookkeeping" :where { :owner uname }))
+  (domain/keywordize-tags (mc/find-one-as-map "bookkeeping" { :owner uname }))
 )
 
 
@@ -148,25 +149,27 @@
 )
 (defn get-entry [uname entry]
 
-  (let [m (str "function(){ 
-			  if( (this.content[2].content[0].content[0].content != null) && (this.owner == '"uname"') ) { 
-			    this.content[2].content[0].content[0].content.forEach(
-			        
-                    function(x) { 
-			          if( x.id == '"entry"' ) { 
-			            emit( this.owner , x ); 
-			          }
-			        }
-                );
-			  }
-			};")
-        r   "function(k,vals) { return { result : vals } ; }"
-        result {} #_(map-reduce :bookkeeping m r {:inline 1})]
+  (let  [ m (str "function(){ 
+  			  if( (this.content[2].content[0].content[0].content != null) && (this.owner == '"uname"') ) { 
+  			    this.content[2].content[0].content[0].content.forEach(
+  			        
+                      function(x) { 
+  			          if( x.id == '"entry"' ) { 
+  			            emit( this.owner , x ); 
+  			          }
+  			        }
+                  );
+  			  }
+  			};")
+          r   "function(k,vals) { return { result : vals } ; }"
+          ;;result {} #_(map-reduce :bookkeeping m r {:inline 1})
+          result (mc/map-reduce "bookkeeping" m r nil MapReduceCommand$OutputType/INLINE {})
+          converted (cnv/from-db-object ^DBObject (.results ^MapReduceOutput result) true)
+        ]
+    (pprint/pprint (str "Zzz: " converted))
 
-    (if (-> result empty? not)
-      #_(-> result first :value bkell.domain/keywordize-tags)  ;; dig in and get the account
-      nil
-    )
+    ;; digging into a structure that looks like: [{:_id nil, :value {:date \"03/22/2011\", :content [{:accountid \"cash\", :amount 120.0, :id \"dtS\", :tag \"debit\"} {:accountid \"revenue\", :amount 120.0, :id \"crS\", :tag \"credit\"}], :id \"testid\", :tag \"entry\"}}]"
+    (-> converted first :value)
   )
 )
 

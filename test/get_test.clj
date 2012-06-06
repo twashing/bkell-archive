@@ -26,7 +26,6 @@
       
       (is (not (nil? ru)) "There SHOULD be a user with the username 'stub'")
       
-      (pprint/pprint (first (:content ru)))
       ;; assert that there are some associated profileDetails: [ last.name first.name email country ]
       (let [pd (:tag (first (:content ru)))]
         (is (= :profileDetails pd) "There SHOULD be a profileDetail element in the user")
@@ -78,10 +77,10 @@
 
 
 ;; get entry 
-#_(deftest test-get-entry
+(deftest test-get-entry
 
   (let [result (test-utils/add-user nil)
-        xx (test-utils/populate-accounts)
+        ;;xx (test-utils/populate-accounts)
         yy (test-utils/populate-entries)
         re (getk/get-entry "stub" "testid")]
     
