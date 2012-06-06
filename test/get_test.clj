@@ -80,7 +80,6 @@
 (deftest test-get-entry
 
   (let [result (test-utils/add-user nil)
-        ;;xx (test-utils/populate-accounts)
         yy (test-utils/populate-entries)
         re (getk/get-entry "stub" "testid")]
     
@@ -88,10 +87,9 @@
     (is (= "testid" (:id re)) "There SHOULD be a 'testid' entry with the username 'stub'")
   )
 )
-#_(deftest test-get-entries
+(deftest test-get-entries
 
   (let [result (test-utils/add-user nil)
-        xx (test-utils/populate-accounts)
         yy (test-utils/populate-entries)
         re (getk/get-entries "stub")]
     

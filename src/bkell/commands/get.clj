@@ -82,7 +82,6 @@
 			  }
 			};")
         r   "function(k,vals) { return { result : vals } ; }"
-        ;result {} #_(map-reduce :bookkeeping m r {:inline 1})
         result (mc/map-reduce "bookkeeping" m r nil MapReduceCommand$OutputType/INLINE {})
         converted (cnv/from-db-object ^DBObject (.results ^MapReduceOutput result) true)
       ]
@@ -121,30 +120,22 @@
 ;; get entry 
 (defn get-entries [uname] 
 
-  (let [m (str "function(){ 
-			  if( (this.content[2].content[0].content[0].content != null) && (this.owner == '"uname"') ) { 
-                this.content[2].content[0].content[0].content.forEach(
-			      
-                  function(x) { 
-                    emit( this.owner , x ); 
-                  }
-                );
-			  }
-			};" )
-        r   "function(k,vals) { return { result : vals } ; }"
-        result {} #_(map-reduce :bookkeeping m r {:inline 1})]
+  (let [  m (str "function(){ 
+  			  if( (this.content[2].content[0].content[0].content != null) && (this.owner == '"uname"') ) { 
+                  this.content[2].content[0].content[0].content.forEach(
+  			      
+                    function(x) { 
+                      emit( this.owner , x ); 
+                    }
+                  );
+  			  }
+  			};" )
+          r "function(k,vals) { return { result : vals } ; }"
+          result (mc/map-reduce "bookkeeping" m r nil MapReduceCommand$OutputType/INLINE {})
+          converted (cnv/from-db-object ^DBObject (.results ^MapReduceOutput result) true)
+        ]
     
-    (println (str "get-entries: " (pr-str result)))
-    
-    (if (empty? result)
-      (vec result)
-      #_(vec (map bkell.domain/keywordize-tags 
-        (if (-> result first :value :result vector?)  ;; deal with a multiple results (list), versus single result (map)
-          (-> result first :value :result)
-          [(-> result first :value)]
-        )
-      ))  ;; dig in and get the currency list 
-    )
+    (-> converted first :value :result)
   )
 )
 (defn get-entry [uname entry]
@@ -162,12 +153,10 @@
   			  }
   			};")
           r   "function(k,vals) { return { result : vals } ; }"
-          ;;result {} #_(map-reduce :bookkeeping m r {:inline 1})
           result (mc/map-reduce "bookkeeping" m r nil MapReduceCommand$OutputType/INLINE {})
           converted (cnv/from-db-object ^DBObject (.results ^MapReduceOutput result) true)
         ]
-    (pprint/pprint (str "Zzz: " converted))
-
+    
     ;; digging into a structure that looks like: [{:_id nil, :value {:date \"03/22/2011\", :content [{:accountid \"cash\", :amount 120.0, :id \"dtS\", :tag \"debit\"} {:accountid \"revenue\", :amount 120.0, :id \"crS\", :tag \"credit\"}], :id \"testid\", :tag \"entry\"}}]"
     (-> converted first :value)
   )
