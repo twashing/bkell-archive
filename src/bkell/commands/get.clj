@@ -2,7 +2,7 @@
 
   (:import  [com.mongodb WriteResult WriteConcern DBCursor DBObject CommandResult$CommandFailure MapReduceOutput MapReduceCommand MapReduceCommand$OutputType]
   )
-  #_(:use [bkell.domain :as domain])
+  (:use [bkell.domain :as domain])
   (:require [monger.core :as mg]
             [monger.collection :as mc]
             [monger.operators :as mop]
@@ -13,7 +13,7 @@
 
 ;; get user 
 (defn get-user [uname]
-  (mc/find-one-as-map "users" { :username uname })
+  (domain/keywordize-tags (mc/find-one-as-map "users" { :username uname }))
 )
 (defn get-group [uname]
   (first () #_(fetch "groups" :where { :owner uname }))

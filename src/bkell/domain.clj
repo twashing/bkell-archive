@@ -1,7 +1,6 @@
 (ns bkell.domain
   
   (:require [clojure.zip :as zip]
-            #_[bkell.commands.get :as getk]
   )
   ;(:use somnium.congomongo)
   
@@ -144,15 +143,13 @@
 )
 
 
-#_(defn find-linked-account [uname dtct]
-  (let [alist (getk/get-accounts uname)] 
-          (loop [x dtct y alist ] ;; given main.account list, loop through dt / ct in entrys and see if accountid matches 
-            (if (= (:accountid x) (:id (first y)))
-              (first y)
-              (if (< 1 (count y)) 
-                (recur x (rest y)))
-            )
-          )
+(defn find-linked-account [uname dtct accounts]
+  (loop [x dtct y accounts ] ;; given main.account list, loop through dt / ct in entrys and see if accountid matches 
+    (if (= (:accountid x) (:id (first y)))
+      (first y)
+      (if (< 1 (count y)) 
+        (recur x (rest y)))
+    )
   )
 )
 (defn modify-currency [context action currency default]
@@ -177,13 +174,13 @@
   )
 )
 
-#_(defn account-for-entry? [uname entry] 
-
-  (empty? (let [ alist (getk/get-accounts uname)]
+(defn account-for-entry? [uname entry accounts]
+  
+  (empty? 
     
     (filter 
       (fn [a] 
-        (loop [x a y alist ]    ;; given main.account list, loop through dt / ct in entrys and see if accountid matches 
+        (loop [x a y accounts ]    ;; given main.account list, loop through dt / ct in entrys and see if accountid matches 
           
           (if (= (:accountid x) (:id (first y)))
             false
@@ -196,8 +193,7 @@
       )
       (:content entry)
     )
-  ))
-            
+  )
 )
 
 (defn entry-balanced? 
@@ -205,11 +201,11 @@
     
     :lhs -> dt/dt == ct/ct
     :rhs -> dt/cr == ct/dt "
-  [uname entry] 
+  [uname entry accounts]
   
   ;;(println (str "entry-balanced? > uname[" uname "] > entry[" entry "]"))
   (let [result  (reduce (fn [a b] 
-                          (let [acct (find-linked-account uname b)]
+                          (let [acct (find-linked-account uname b accounts)]
                           (if (or (and (= "debit" (:counterWeight acct)) (= :debit (keyword (:tag b))) ) 
                                   (and (= "credit" (:counterWeight acct)) (= :credit (keyword (:tag b)))))
                             (merge a { :lhs (+ (:lhs a) (:amount b)) } )     ;; increase :lhs if debit(ing) a debit account OR credit(ing) a credit account 

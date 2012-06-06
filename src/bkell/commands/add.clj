@@ -5,6 +5,7 @@
             [clojure.zip :as zip]
             [bkell.domain]
             [bkell.util]
+            [bkell.commands.get :as getk]
             [monger.core :as mg]
             [monger.collection :as mc]
             [monger.operators :as mop]
@@ -98,13 +99,13 @@
             (not (clojure.string/blank? (:date entry)))
             
             ;; ASSERT that accounts correspond with existing accounts
-            (bkell.domain/account-for-entry? uname entry)
+            (bkell.domain/account-for-entry? uname entry (getk/get-accounts uname))
             
             
             ;; ASSERT that entry is balanced 
             ;; :lhs -> dt/dt == ct/ct
             ;; :rhs -> dt/cr == ct/dt 
-            (bkell.domain/entry-balanced? uname entry)
+            (bkell.domain/entry-balanced? uname entry (getk/get-accounts uname))
           ] }
   
   (mc/update "bookkeeping" { :owner uname "content.content.content.id" "main.entries"} { mop/$push { :content.$.content.0.content.0.content entry } } )
