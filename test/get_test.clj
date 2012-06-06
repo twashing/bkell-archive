@@ -1,25 +1,34 @@
 (ns get-test
 	(:use [clojure.test]
+          [monger.operators]
+          [midje.sweet]
     )
     (:require [test-utils]
-              [bkell.commands.get :as getk])
+              [bkell.commands.get :as getk]
+              [bkell.domain :as domain]
+              [monger.core :as mg]
+              [monger.collection :as mc]
+              [monger.operators :as mop]
+              [test-utils :as tutils]
+              [clojure.pprint :as pprint]
+    )
 )
 
 
 (use-fixtures :each test-utils/test-fixture-db)
-#_(somnium.congomongo/mongo! :db "bkell") ;; connect to mongodb
 
 
 ;; get user 
-#_(deftest test-get-user 
+(deftest test-get-user 
 
   (let [result (test-utils/add-user nil)
         ru (getk/get-user "stub")]
       
       (is (not (nil? ru)) "There SHOULD be a user with the username 'stub'")
       
+      (pprint/pprint (first (:content ru)))
       ;; assert that there are some associated profileDetails: [ last.name first.name email country ]
-      (let [pd (:tag (nth (:content ru) 0))]
+      (let [pd (:tag (first (:content ru)))]
         (is (= :profileDetails pd) "There SHOULD be a profileDetail element in the user")
       )
   )

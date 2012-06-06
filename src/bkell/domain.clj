@@ -1,7 +1,7 @@
 (ns bkell.domain
   
   (:require [clojure.zip :as zip]
-            [bkell.commands.get :as getk]
+            #_[bkell.commands.get :as getk]
   )
   ;(:use somnium.congomongo)
   
@@ -144,7 +144,7 @@
 )
 
 
-(defn find-linked-account [uname dtct]
+#_(defn find-linked-account [uname dtct]
   (let [alist (getk/get-accounts uname)] 
           (loop [x dtct y alist ] ;; given main.account list, loop through dt / ct in entrys and see if accountid matches 
             (if (= (:accountid x) (:id (first y)))
@@ -177,7 +177,7 @@
   )
 )
 
-(defn account-for-entry? [uname entry] 
+#_(defn account-for-entry? [uname entry] 
 
   (empty? (let [ alist (getk/get-accounts uname)]
     

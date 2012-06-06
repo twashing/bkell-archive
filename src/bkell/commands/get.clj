@@ -1,26 +1,19 @@
 (ns bkell.commands.get
 
-  (:use #_[somnium.congomongo]
-        [monger operators conversion]
-  )
   (:import  [com.mongodb WriteResult WriteConcern DBCursor DBObject CommandResult$CommandFailure MapReduceOutput MapReduceCommand MapReduceCommand$OutputType]
   )
-  (:require #_[bkell.domain]
+  #_(:use [bkell.domain :as domain])
+  (:require [monger.core :as mg]
             [monger.collection :as mc]
+            [monger.operators :as mop]
+            [monger.conversion :as cnv]
   )
 )
 
 
 ;; get user 
 (defn get-user [uname]
-  
-  (let [result {} #_(first (fetch "users" :where { :username uname }))]
-    
-    (if (-> result empty? not)
-      #_(bkell.domain/keywordize-tags result)
-      nil
-    )
-  )
+  (mc/find-one-as-map "users" { :username uname })
 )
 (defn get-group [uname]
   (first () #_(fetch "groups" :where { :owner uname }))
@@ -90,7 +83,7 @@
         r   "function(k,vals) { return { result : vals } ; }"
         ;result {} #_(map-reduce :bookkeeping m r {:inline 1})
         result (mc/map-reduce "bookkeeping" m r nil MapReduceCommand$OutputType/INLINE {})
-        converted (from-db-object ^DBObject (.results ^MapReduceOutput result) true)
+        converted (cnv/from-db-object ^DBObject (.results ^MapReduceOutput result) true)
       ]
     
     ; digging into a structure that looks like this: [{:_id nil, :value {:result [{:counterWeight "debit", :name "cash", :type "asset", :id "cash", :tag "account"} {:counterWeight "credit", :name "expense", :type "expense", :id "expense", :tag "account"} {:counterWeight "debit", :name "revenue", :type "revenue", :id "revenue", :tag "account"} {:counterWeight "credit", :name "accounts payable", :type "liability", :id "accounts payable", :tag "account"}]}}]
@@ -114,7 +107,7 @@
 			};")
         r   "function(k,vals) { return { result : vals } ; }"
         result (mc/map-reduce "bookkeeping" m r nil MapReduceCommand$OutputType/INLINE {})
-        converted (from-db-object ^DBObject (.results ^MapReduceOutput result) true)
+        converted (cnv/from-db-object ^DBObject (.results ^MapReduceOutput result) true)
       ]
     
     ; digging into a structure that looks like this: {:_id nil, :value {:counterWeight "debit", :name "cash", :type "asset", :id "cash", :tag "account"}}
