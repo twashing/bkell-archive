@@ -95,22 +95,6 @@
                               "content.content.content.content.tag" "entry"
                               "content.content.content.content.id" (:id entry) }
                             { mop/$set { :content.$.content.0.content.0.content.0 entry } } )
-  #_(let [ru (mc/find-one-as-map "bookkeeping" { :owner (:username user) })
-        re (getk/get-entry uname (:id entry))]
-    
-    #_(if re 
-      (if-let [result 
-                {} #_(update! :bookkeeping { :_id (:_id ru) }  ;; passing in hash w/ ObjecId, NOT original object
-                  (domain/traverse-tree ru :update { :id (:id entry) } entry))]
-        
-        (if (-> result .getLastError .ok)
-          entry
-          (bkell.util/generate-error-response (.getErrorMessage result)))
-      )
-      (addk/add-entry entry uname)  ;; insert the entry otherwise 
-    )
-  )
-  
 )
 
 
