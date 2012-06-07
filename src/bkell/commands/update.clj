@@ -1,30 +1,26 @@
 (ns bkell.commands.update
-  #_(:use somnium.congomongo)
   (:require 
     [clojure.string]
     [bkell.commands.get :as getk]
     [bkell.commands.add :as addk]
     [bkell.domain :as domain]
-    [bkell.util])
+    [bkell.util]
+    [monger.core :as mg]
+    [monger.collection :as mc]
+    [monger.operators :as mop]
+  )
 )
 
 
 
 ;; update user 
 (defn update-user [user]
-  
-  { :pre  [ (not false #_(nil? (first (fetch "users" :where { :username (:username user) })))) ;; assert that user exists
+
+  ;; assert that user exists
+  { :pre  [ (not (nil? (mc/find-one-as-map "users" { :username (:username user) })))
           ] }
    
-  (let [ru  {} #_(first (fetch "users" :where { :username (:username user) }))]
-    (if-let [ result ;; result will be a 'com.mongodb.WriteResult' 
-              {} #_(update!  :users { :_id (:_id ru) }  ;; passing in hash w/ ObjecId, NOT original object
-                user)]
-      (if (-> result .getLastError .ok)
-        user
-        (bkell.util/generate-error-response (.getErrorMessage result)))
-    )
-  )
+  (mc/update "users" { :username (:username user) :tag "user" } { mop/$set user } )
 )
 
 
