@@ -100,7 +100,7 @@
 
 ;; Tests for Multimethods 
 
-#_(deftest test-updateU
+(deftest test-updateU
   
   ;; assert that user was updated 
   (let  [ u1 (test-utils/add-user nil)
@@ -129,11 +129,10 @@
 
 
 ;; update entry 
-#_(deftest test-updateE
+(deftest test-updateE
   
   ;; assert that entry was updated 
   (let [user (addk/add-user (load-file "test/etc/data/stubu-two.clj"))
-        ra (test-utils/populate-accounts)
         entry (load-file "test/etc/data/test-entry-FULL.clj")
         re0 (addk/add-entry entry "stub")
         re1 (updatek/update (merge entry { :date "06/30/2011" }) "stub" )
