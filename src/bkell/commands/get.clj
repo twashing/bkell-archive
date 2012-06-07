@@ -14,13 +14,28 @@
 
 ;; get user 
 (defn get-user [uname]
-  (domain/keywordize-tags (mc/find-one-as-map "users" { :username uname }))
+  (let  [ uresult (mc/find-one-as-map "users" { :username uname }) ]
+    (if (not (nil? uresult))
+      (domain/keywordize-tags uresult)
+      nil
+    )
+  )
 )
 (defn get-group [uname]
-  (domain/keywordize-tags (mc/find-one-as-map "groups" { :owner uname }))
+  (let  [ gresult (mc/find-one-as-map "groups" { :owner uname }) ]
+    (if (not (nil? gresult))
+      (domain/keywordize-tags gresult)
+      nil
+    )
+  )
 )
 (defn get-bookkeeping [uname] 
-  (domain/keywordize-tags (mc/find-one-as-map "bookkeeping" { :owner uname }))
+  (let  [ bresult (mc/find-one-as-map "bookkeeping" { :owner uname }) ]
+    (if (not (nil? bresult))
+      (domain/keywordize-tags bresult)
+      nil
+    )
+  )
 )
 
 

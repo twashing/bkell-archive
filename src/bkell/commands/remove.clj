@@ -1,6 +1,9 @@
 (ns bkell.commands.remove
-  #_(:use somnium.congomongo)
-  #_(:require [bkell.domain :as domain])
+
+  (:require [monger.core :as mg]
+            [monger.collection :as mc]
+            [monger.operators :as mop]
+  )
 )
 
 
@@ -12,9 +15,9 @@
             (not (nil? (:username user))) ] 
   }
   
-  #_(destroy! :users { :username (:username user) })
-  #_(destroy! :groups { :owner (:username user) })
-  #_(destroy! :bookkeeping { :owner (:username user) })
+  (mc/remove "users" { :username (:username user) })
+  (mc/remove "groups" { :owner (:username user) })
+  (mc/remove "bookkeeping" { :owner (:username user) })
   nil
 )
 
