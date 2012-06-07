@@ -8,9 +8,9 @@
     [monger.core :as mg]
     [monger.collection :as mc]
     [monger.operators :as mop]
+    [clojure.pprint :as pprint]
   )
 )
-
 
 
 ;; update user 
@@ -25,7 +25,7 @@
 
 
 ;; update currency 
-(defn update-currency [currency uname default]
+#_(defn update-currency [currency uname default]
   
   { :pre  [ (not (nil? uname)) 
             (not (clojure.string/blank? (:name currency)))
@@ -48,7 +48,7 @@
 
 
 ;; CAN'T update accounts, only destroy and re-add them 
-(defn update-account [account uname]
+#_(defn update-account [account uname]
   
   { :pre  [ (not (nil? uname)) 
             (not (clojure.string/blank? (:id account)))
@@ -81,20 +81,24 @@
             (not (clojure.string/blank? (:date entry)))
             
             ;; ASSERT that accounts correspond with existing accounts
-            (domain/account-for-entry? uname entry)
+            (domain/account-for-entry? uname entry (getk/get-accounts uname))
             
             
             ;; ASSERT that entry is balanced 
             ;; :lhs -> dt/dt == ct/ct
             ;; :rhs -> dt/cr == ct/dt 
-            (domain/entry-balanced? uname entry)
-            ]
+            (domain/entry-balanced? uname entry (getk/get-accounts uname))
+          ]
   }
   
-  (let [ru {} #_(fetch-one "bookkeeping" :where { :owner uname })
+  (mc/update "bookkeeping"  { :owner uname 
+                              "content.content.content.content.tag" "entry"
+                              "content.content.content.content.id" (:id entry) }
+                            { mop/$set { :content.$.content.0.content.0.content.0 entry } } )
+  #_(let [ru (mc/find-one-as-map "bookkeeping" { :owner (:username user) })
         re (getk/get-entry uname (:id entry))]
     
-    (if re 
+    #_(if re 
       (if-let [result 
                 {} #_(update! :bookkeeping { :_id (:_id ru) }  ;; passing in hash w/ ObjecId, NOT original object
                   (domain/traverse-tree ru :update { :id (:id entry) } entry))]
@@ -112,8 +116,8 @@
 
 (defmulti update (fn [obj & etal] (:tag obj)))
 (defmethod update :user [user & etal] (update-user user))
-(defmethod update :currency [currency & etal] (update-currency currency (first etal) (second etal)))   ;; input arguments are: currency uname default
-(defmethod update :account [account & etal] (update-account account (first etal)))  ;; input arguments are: account uname 
+;;(defmethod update :currency [currency & etal] (update-currency currency (first etal) (second etal)))   ;; input arguments are: currency uname default
+;;(defmethod update :account [account & etal] (update-account account (first etal)))  ;; input arguments are: account uname 
 (defmethod update :entry [entry & etal] (update-entry entry (first etal)))  ;; input arguments are: entry uname 
 
 

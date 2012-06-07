@@ -3,7 +3,9 @@
   (:require [test-utils]
             [bkell.commands.add :as addk]
             [bkell.commands.update :as updatek]
-            [bkell.commands.get :as getk])
+            [bkell.commands.get :as getk]
+            [clojure.pprint :as pprint]
+  )
 )
 
 
@@ -66,35 +68,34 @@
 
 
 ;; update entry 
-#_(deftest test-update-entry-1
+(deftest test-update-entry-1
   
   ;; insert if entry doesn't exist 
   (let [user (addk/add-user (load-file "test/etc/data/stubu-two.clj"))
-        ra (test-utils/populate-accounts)
         entry (load-file "test/etc/data/test-entry-FULL.clj")
+        aentry (addk/add-entry entry "stub")
         re0 (updatek/update-entry entry "stub")
         re1 (getk/get-entry "stub" (:id entry))]
     (is (not (nil? re1)) "1. result entry should NOT be nil")
     (is (= "testid" (:id re1)) "2. entry SHOULD have the :id 'testid'")
   )
 )
-#_(deftest test-update-entry-2
+(deftest test-update-entry-2
   
   ;; assert that entry was updated 
   (let [user (addk/add-user (load-file "test/etc/data/stubu-two.clj"))
-        ra (test-utils/populate-accounts)
         entry (load-file "test/etc/data/test-entry-FULL.clj")
         re0 (addk/add-entry entry "stub")
         re1 (updatek/update-entry (merge entry { :date "06/30/2011" }) "stub" )
         re2 (getk/get-entry "stub" (:id entry))]
     
+    ;;(pprint/pprint re2)
     (is (not (nil? re2)) "1. result entry should NOT be nil")
     (is (= "testid" (:id re2)) "2. entry SHOULD have the :id 'testid'")
     (is (= "06/30/2011" (:date re2)) "3. entry SHOULD have update date of '06/30/2011'")
   )
   
 )
-
 
 
 ;; Tests for Multimethods 

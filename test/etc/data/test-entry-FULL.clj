@@ -9,5 +9,5 @@
        {:tag :credit
         :id "crS"
         :amount 120.00
-        :accountid "accounts payable" }]}
+        :accountid "revenue" }]}
 
