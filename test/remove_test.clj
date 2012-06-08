@@ -50,17 +50,19 @@
 
     
 ;; get account 
-#_(deftest test-remove-account
+(deftest test-remove-account
   
   (let [result (addk/add-user (load-file "test/etc/data/stubu-two.clj"))
-        xx (test-utils/populate-accounts)
         ra (getk/get-account "stub" "cash")]
     
     (is (not (nil? ra)) "cash result should NOT be nil")
     (is (= "cash" (:id ra)) "There SHOULD be a 'cash' account with the username 'stub'")
     
-    (let [zz (removek/remove-account { :id "cash" } "stub")
-          ra (getk/get-account "stub" "cash")]
+    (let  [ zz (removek/remove-account { :id "cash" } "stub")
+            ra (getk/get-account "stub" "cash")
+            xx (getk/get-bookkeeping "stub")
+          ]
+      ;;(pprint/pprint xx)
       (is (nil? ra) "account SHOULD be nil")
     )
   )
@@ -122,7 +124,7 @@
   )
 )
 
-    
+ 
 ;; get account 
 #_(deftest test-removeA
   
@@ -158,6 +160,5 @@
     )
   )
 )
-
 
 
