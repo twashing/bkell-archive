@@ -60,9 +60,7 @@
     
     (let  [ zz (removek/remove-account { :id "cash" } "stub")
             ra (getk/get-account "stub" "cash")
-            xx (getk/get-bookkeeping "stub")
           ]
-      ;;(pprint/pprint xx)
       (is (nil? ra) "account SHOULD be nil")
     )
   )
@@ -70,18 +68,18 @@
 
 
 ;; get entry 
-#_(deftest test-remove-entry
+(deftest test-remove-entry
 
   (let [result (addk/add-user (load-file "test/etc/data/stubu-two.clj"))
-        xx (test-utils/populate-accounts)
         yy (test-utils/populate-entries)
         re (getk/get-entry "stub" "testid")]
     
     (is (not (nil? re)) "entry result should NOT be nil")
     (is (= "testid" (:id re)) "There SHOULD be a 'testid' entry with the username 'stub'")
     
-    (let [zz (removek/remove-entry { :id "testid" } "stub")
-          re (getk/get-entry "stub" "testid")]
+    (let  [ zz (removek/remove-entry { :id "testid" } "stub")
+            re (getk/get-entry "stub" "testid")
+          ]
       (is (nil? re) "entry SHOULD be nil")
     )
   )

@@ -56,9 +56,13 @@
                             { mop/$unset { "content.$.content.0.content.0.content.0" { :id (:id entry) } } }
   )
   
+  ;; based on this...
+  ; db.bookkeeping.update( { owner : "stub" , 
+  ;                               "content.content.content.id" : "main.entries" } , 
+  ;                             { $pull : { "content.$.content.0.content.0.content" : null } } ) 
   (mc/update "bookkeeping"  { :owner uname
-                              "content.content.content.content" nil }
-                            { mop/$pull { "content.$.content.content.content" nil } } )
+                              "content.content.content.id" "main.entries" }
+                            { mop/$pull { "content.$.content.0.content.0.content" nil } } )
 )
 
 
