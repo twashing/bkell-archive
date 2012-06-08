@@ -88,7 +88,7 @@
 
 
 ;; Testing Multimethods 
-#_(deftest test-removeU
+(deftest test-removeU
 
   (let [result (test-utils/add-user nil)
         r0 (getk/get-user "stub")]
@@ -124,10 +124,9 @@
 
  
 ;; get account 
-#_(deftest test-removeA
+(deftest test-removeA
   
   (let [result (addk/add-user (load-file "test/etc/data/stubu-two.clj"))
-        xx (test-utils/populate-accounts)
         ra (getk/get-account "stub" "cash")]
     
     (is (not (nil? ra)) "cash result should NOT be nil")
@@ -142,10 +141,9 @@
 
 
 ;; get entry 
-#_(deftest test-removeE
+(deftest test-removeE
 
   (let [result (addk/add-user (load-file "test/etc/data/stubu-two.clj"))
-        xx (test-utils/populate-accounts)
         yy (test-utils/populate-entries)
         re (getk/get-entry "stub" "testid")]
     
