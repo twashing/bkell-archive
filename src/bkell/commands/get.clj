@@ -1,7 +1,6 @@
 (ns bkell.commands.get
 
-  (:import  [com.mongodb WriteResult WriteConcern DBCursor DBObject CommandResult$CommandFailure MapReduceOutput MapReduceCommand MapReduceCommand$OutputType]
-  )
+  (:import  [com.mongodb WriteResult WriteConcern DBCursor DBObject CommandResult$CommandFailure MapReduceOutput MapReduceCommand MapReduceCommand$OutputType])
   (:use [bkell.domain :as domain])
   (:require [monger.core :as mg]
             [monger.collection :as mc]

@@ -26,15 +26,11 @@
       (alter bkell/shell conj config)
     )
     
-    
     (println (str "Bkell: " @bkell/shell))
     
     ;; ====
     ;; Startup the Noir server (wraps Jetty)
-    (server/start (Integer. host-port) {  :mode mode
-                                          :ns 'bkell  })
+    (server/start (Integer. host-port) {  :mode mode :ns 'bkell  })
     
   ))
-
-;;(-main)
 

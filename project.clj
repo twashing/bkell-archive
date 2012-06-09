@@ -9,7 +9,7 @@
             
   :dependencies [ [org.clojure/clojure "1.3.0"]
                   [com.novemberain/monger "1.0.0-SNAPSHOT"]
-                  [noir "1.3.0-alpha5"]
+                  [noir "1.3.0-beta8"]
                   [org.clojure/data.json "0.1.0"]
                   [org.clojure/clojure-contrib "1.2.0"]
                   [clj-http "0.4.1"]
@@ -19,6 +19,8 @@
                       [lein-midje "1.0.10"]
                       [com.stuartsierra/lazytest "1.2.3"]
                     ]
-
+  
   :repositories {"stuart" "http://stuartsierra.com/maven2"}
+  :resources-path ".:src/:test/:vendor/:vendor/debug/:public/:etc/resources/"
+  :main bkell.run.run-ring
 )
