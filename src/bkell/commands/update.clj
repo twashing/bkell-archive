@@ -48,7 +48,7 @@
 
 
 ;; CAN'T update accounts, only destroy and re-add them 
-#_(defn update-account [account uname]
+(defn update-account [account uname]
   
   { :pre  [ (not (nil? uname)) 
             (not (clojure.string/blank? (:id account)))
@@ -56,19 +56,12 @@
             (not (nil? (:type account)))
             (not (nil? (:counterWeight account)))
           ] }
-  (let [ru {} #_(fetch-one "bookkeeping" :where { :owner uname })
-        ra (getk/get-account uname (:id account))]
-    
-    (if ra 
-      (if-let [result {} #_(update! :bookkeeping { :_id (:_id ru) }  ;; passing in hash w/ ObjecId, NOT original object
-                        (domain/traverse-tree ru :update { :id (:id account) } account))]
-        (if (-> result .getLastError .ok)
-          account
-          (bkell.util/generate-error-response (.getErrorMessage result)))
-      )
-      (addk/add account uname)
-    )
-  )
+  
+  (mc/update "bookkeeping"  { :owner uname 
+                              "content.content.tag" "account"
+                              "content.content.id" (:id account) }
+                            { mop/$set { :content.$.content.0 account } } )
+  account
 )
 
 
@@ -102,7 +95,7 @@
 (defmulti update (fn [obj & etal] (:tag obj)))
 (defmethod update :user [user & etal] (update-user user))
 ;;(defmethod update :currency [currency & etal] (update-currency currency (first etal) (second etal)))   ;; input arguments are: currency uname default
-;;(defmethod update :account [account & etal] (update-account account (first etal)))  ;; input arguments are: account uname 
+(defmethod update :account [account & etal] (update-account account (first etal)))  ;; input arguments are: account uname 
 (defmethod update :entry [entry & etal] (update-entry entry (first etal)))  ;; input arguments are: entry uname 
 
 

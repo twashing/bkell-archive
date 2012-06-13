@@ -176,7 +176,6 @@
   )
 )
 
-
 (defmulti get (fn [tagk & etal] tagk))
 
 (defmethod get :user [tagk & etal] (get-user (first etal)))
@@ -191,4 +190,5 @@
 
 (defmethod get :entries [tagk & etal] (get-entries (first etal)))
 (defmethod get :entry [tagk & etal] (get-entry (first etal) (second etal)))  ;; arguments are: 'uname' 'entry' 
+
 
