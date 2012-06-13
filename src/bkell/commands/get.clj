@@ -56,7 +56,7 @@
     (vec (map bkell.domain/keywordize-tags 
       (-> result first :value :result)))  ;; dig in and get the currency list 
   )
-  #_(fetch "currencies")
+  (mc/find-maps "currencies")
 )
 (defn get-currency [uname currency]
 
@@ -177,7 +177,6 @@
 )
 
 
-
 (defmulti get (fn [tagk & etal] tagk))
 
 (defmethod get :user [tagk & etal] (get-user (first etal)))
@@ -192,5 +191,4 @@
 
 (defmethod get :entries [tagk & etal] (get-entries (first etal)))
 (defmethod get :entry [tagk & etal] (get-entry (first etal) (second etal)))  ;; arguments are: 'uname' 'entry' 
-
 

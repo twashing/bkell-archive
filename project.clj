@@ -16,6 +16,7 @@
                   [enlive "1.0.0"]
                 ]
   :dev-dependencies [ [midje "1.4.0"]
+                      [lein-ring "0.7.1"]
                       [lein-midje "1.0.10"]
                       [com.stuartsierra/lazytest "1.2.3"]
                     ]
