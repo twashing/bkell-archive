@@ -395,7 +395,7 @@
     (println (str "POST ; /entry/:id ; " raw-req))
     (let  [ lin-user (authenticatek/logged-in-user)
             body (InputStreamReader. (:body raw-req))
-          ]
+           ]
       (->      ;; JSON of MongoDB WriteResult; 
         body (bjell/update (:username lin-user) ) (handle-errors 400) substitute-body) 
     )

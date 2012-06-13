@@ -95,6 +95,7 @@
                               "content.content.content.content.tag" "entry"
                               "content.content.content.content.id" (:id entry) }
                             { mop/$set { :content.$.content.0.content.0.content.0 entry } } )
+  entry
 )
 
 
