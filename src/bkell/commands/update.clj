@@ -60,7 +60,7 @@
   (mc/update "bookkeeping"  { :owner uname 
                               "content.content.tag" "account"
                               "content.content.id" (:id account) }
-                            { mop/$set { :content.$.content.0 account } } )
+                            { mop/$set { :content.$.content account } } )
   account
 )
 
@@ -87,7 +87,7 @@
   (mc/update "bookkeeping"  { :owner uname 
                               "content.content.content.content.tag" "entry"
                               "content.content.content.content.id" (:id entry) }
-                            { mop/$set { :content.$.content.0.content.0.content.0 entry } } )
+                            { mop/$set { :content.$.content.content.content entry } } )
   entry
 )
 
