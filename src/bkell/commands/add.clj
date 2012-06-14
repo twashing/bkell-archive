@@ -88,6 +88,7 @@
           ] }
   
   (mc/update "bookkeeping" { :owner uname "content.id" "main.accounts"} { mop/$push { :content.$.content account } } )
+  account
 )
 
 
@@ -109,7 +110,7 @@
           ] }
   
   (mc/update "bookkeeping" { :owner uname "content.content.content.id" "main.entries"} { mop/$push { :content.$.content.0.content.0.content entry } } )
-  
+  entry
 )
 
 

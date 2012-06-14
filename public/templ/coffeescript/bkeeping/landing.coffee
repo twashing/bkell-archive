@@ -25,7 +25,6 @@ require( ['bkeeping/bkeeping', 'bkeeping/bindings',  'bkeeping/util']
     ###
     adjustEntryPanes = () ->
       
-      
       rightWidth = $(".bkell-container").width() - $("#left-col").width() - 10  # adjustment to make the Entries layout work in FF
       
       $("#right-col").css("width", rightWidth)

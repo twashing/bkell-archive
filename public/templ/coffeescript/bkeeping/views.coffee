@@ -470,7 +470,7 @@ define( ['js/bkeeping/bkeeping', 'js/bkeeping/util'], (bkeeping, util) ->
     
     el: $('#entries')
     initialize : (options) ->
-    
+       
       bindObjects = {
                       entries: options.collection,
                       entriesView: this,
@@ -486,7 +486,7 @@ define( ['js/bkeeping/bkeeping', 'js/bkeeping/util'], (bkeeping, util) ->
       this.collection.bind('reset', _.bind(this.render, this), bindObjects)
       this.collection.bind('add', _.bind(this.render, this), bindObjects)
       this.collection.bind('change', _.bind(this.render, this), bindObjects)
-
+      
       bindRender = _.bind(this.render, this)
       bindInstrumentEntries = _.bind(this.instrumentEntries, this)
       bindFunction = () ->
@@ -558,8 +558,6 @@ define( ['js/bkeeping/bkeeping', 'js/bkeeping/util'], (bkeeping, util) ->
                 bindings,
                 _.bind(esm.EsE, esm))  # trigger the transition when edit clicked
       
-
-
       
       elem
         .find('.deleteentry')
@@ -577,6 +575,7 @@ define( ['js/bkeeping/bkeeping', 'js/bkeeping/util'], (bkeeping, util) ->
                     entry.destroy()
                   )
               )  # trigger the transition when edit clicked
+      
       elem
         .find('#entry-add')
         .unbind('click')
