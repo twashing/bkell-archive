@@ -87,8 +87,8 @@
 (defn get-accounts [uname] 
 
   (let[ m (str "function(){ 
-			  if( (this.content[1].content != null) && (this.owner == '"uname"') ) { 
-			    this.content[1].content.forEach( 
+			  if( (this.content[0].content != null) && (this.owner == '"uname"') ) { 
+			    this.content[0].content.forEach( 
 			      function(x) { 
 			        emit( this.owner , x ); 
 			      }
@@ -135,8 +135,8 @@
 (defn get-entries [uname] 
 
   (let [  m (str "function(){ 
-  			  if( (this.content[2].content[0].content[0].content != null) && (this.owner == '"uname"') ) { 
-                  this.content[2].content[0].content[0].content.forEach(
+  			  if( (this.content[1].content[0].content[0].content != null) && (this.owner == '"uname"') ) { 
+                  this.content[1].content[0].content[0].content.forEach(
   			      
                     function(x) { 
                       emit( this.owner , x ); 
@@ -155,8 +155,8 @@
 (defn get-entry [uname entry]
 
   (let  [ m (str "function(){ 
-  			  if( (this.content[2].content[0].content[0].content != null) && (this.owner == '"uname"') ) { 
-  			    this.content[2].content[0].content[0].content.forEach(
+  			  if( (this.content[1].content[0].content[0].content != null) && (this.owner == '"uname"') ) { 
+  			    this.content[1].content[0].content[0].content.forEach(
   			        
                       function(x) { 
   			          if( x.id == '"entry"' ) { 

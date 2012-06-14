@@ -60,7 +60,7 @@
   (mc/update "bookkeeping"  { :owner uname 
                               "content.content.tag" "account"
                               "content.content.id" (:id account) }
-                            { mop/$set { :content.$.content account } } )
+                            { mop/$set { :content.content.$ account } } )
   account
 )
 
