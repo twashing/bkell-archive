@@ -7,6 +7,7 @@
             [monger.operators :as mop]
             [monger.conversion :as cnv]
             [clojure.pprint :as pprint]
+            [clojure.core.match :as match]
   )
 )
 
@@ -176,6 +177,24 @@
   )
 )
 
+(defn get [tag & etal]
+  (match/match [tag]
+    [:user] (get-user (first etal))
+    [:group] (get-group (first etal))
+    [:bookkeeping] (get-bookkeeping (first etal))
+    
+    [:currencies] (get-currencies (first etal))
+    [:currency] (get-currency (first etal) (second etal))
+    
+    [:accounts] (get-accounts (first etal))
+    [:account] (get-account (first etal) (second etal))
+    
+    [:entries] (get-entries (first etal))
+    [:entry] (get-entry (first etal) (second etal))
+  )
+)
+
+(comment 
 (defmulti get (fn [tagk & etal] tagk))
 
 (defmethod get :user [tagk & etal] (get-user (first etal)))
@@ -190,5 +209,6 @@
 
 (defmethod get :entries [tagk & etal] (get-entries (first etal)))
 (defmethod get :entry [tagk & etal] (get-entry (first etal) (second etal)))  ;; arguments are: 'uname' 'entry' 
+)
 
 

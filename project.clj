@@ -14,6 +14,7 @@
                   [org.clojure/clojure-contrib "1.2.0"]
                   [clj-http "0.4.1"]
                   [enlive "1.0.0"]
+                  [org.clojure/core.match "0.2.0-alpha9"]
                 ]
   :dev-dependencies [ [midje "1.4.0"]
                       [lein-ring "0.7.1"]

@@ -1,15 +1,11 @@
 (ns bkell.domain
   
-  (:require [clojure.zip :as zip]
-  )
-  ;(:use somnium.congomongo)
+  (:require [clojure.zip :as zip])
   
   (:import
    (java.security NoSuchAlgorithmException MessageDigest)
    (java.math BigInteger)
    (org.bson.types.ObjectId))
-    
-  ;;(:require debug)
 )
 
 #_(bkell/init-shell)
