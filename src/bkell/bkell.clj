@@ -14,12 +14,12 @@
 )
 
 
-(defn init-shell [] 
+(defn init-shell [mode]
   
   (let [config (load-file "etc/config/config.clj")
-        dburl (-> config :dev :host-url-db)
-        dport (-> config :dev :host-port-db)
-        database (-> config :dev :database)]
+        dburl (-> config mode :host-url-db)
+        dport (-> config mode :host-port-db)
+        database (-> config mode :database)]
     
     ;; connect to the DB server
     (mg/connect! { :host dburl :port dport }) 

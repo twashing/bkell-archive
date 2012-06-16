@@ -14,9 +14,12 @@
                       (get (System/getenv) "PORT" "8080"))
       ]
     
+    
+    (println (str "Initializing shell with mode: " mode))
+    
     ;; ====
     ;; Initialize the shell incl. DB connection 
-    (bjell/init-shell)
+    (bjell/init-shell mode)
     
     
     ;; ==== 
