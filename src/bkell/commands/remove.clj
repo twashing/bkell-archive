@@ -3,6 +3,7 @@
   (:require [monger.core :as mg]
             [monger.collection :as mc]
             [monger.operators :as mop]
+            [clojure.core.match :as match]
   )
 )
 
@@ -65,11 +66,15 @@
                             { mop/$pull { "content.$.content.0.content.0.content" nil } } )
 )
 
+(defn removek [obj & etal]
+  (let [a (:tag obj)]
+    (match/match [a]
+      [ :user ] (remove-user obj)
+      [ :account ] (remove-account obj (first etal))
+      [ :entry ] (remove-entry obj (first etal))
+    )
+  )
+)
 
-(defmulti removek (fn [tagk & etal] (:tag tagk))) 
-(defmethod removek :user [user & etal] (remove-user user)) 
-;;(defmethod removek :currency [currency & etal] (remove-currency currency (-> etal first) ))   ;; input arguments are: uname currency 
-(defmethod removek :account [account & etal] (remove-account account (-> etal first) ))  ;; input arguments are: uname account
-(defmethod removek :entry [entry & etal] (remove-entry entry (-> etal first) ))  ;; input arguments are: uname entry 
 
 
