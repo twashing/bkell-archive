@@ -14,7 +14,8 @@
     :developer-key "AIzaSyDc7_lGZsmbtdOUpprPClKBOxXCQ6LztRE"
     
     ; url "heroku_app2227080:pvqdogtk4tptcl8e4p8kt7t1al@ds029297.mongolab.com:29297/heroku_app2227080"
-    :host-url-db "heroku_app2227080:pvqdogtk4tptcl8e4p8kt7t1al@ds029297.mongolab.com"
+    ;:host-url-db "heroku_app2227080:pvqdogtk4tptcl8e4p8kt7t1al@ds029297.mongolab.com"
+    :host-url-db "ds029297.mongolab.com:29297/heroku_app2227080"
     :host-port-db 29297
     :database "heroku_app2227080"
   } 

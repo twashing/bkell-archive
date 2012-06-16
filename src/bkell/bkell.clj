@@ -23,7 +23,8 @@
     
     ;; connect to the DB server
     (println (str "Connecting to DB url[" dburl  "] / port[" dport  "]"))
-    (mg/connect! { :host dburl :port dport }) 
+    ;;(mg/connect! { :host dburl :port dport }) 
+    (mg/connect! { :host dburl }) 
     
     (println (str "Setting Database[" database "]"))
     (mg/set-db! (mg/get-db database))    ;; select the DB 
