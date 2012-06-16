@@ -8,8 +8,8 @@
 (server/load-views "src/bkell/http/") 
 
 (defn -main [& m]
-  (let[ mode (keyword (or (first m) :dev))
-        config (load-file "etc/config/config.clj")
+  (let[ config (load-file "etc/config/config.clj")
+        mode (keyword (get (System/getenv) "MODE" "dev"))
         host-port (or (-> config mode :host-port)
                       (get (System/getenv) "PORT" "8080"))
       ]
