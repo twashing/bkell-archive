@@ -9,6 +9,7 @@
             [monger.core :as mg]
             [monger.collection :as mc]
             [monger.operators :as mop]
+            [clojure.core.match :as match]
   )
 )
 
@@ -114,10 +115,15 @@
 )
 
 
-(defmulti add (fn [obj & etal] (:tag obj)))
-(defmethod add :user [user] (add-user user))
-(defmethod add :currency [currency & etal] (add-currency currency (first etal) (second etal)))   ;; input arguments are: currency uname default
-(defmethod add :account [account & etal] (add-account account (first etal)))  ;; input arguments are: account uname 
-(defmethod add :entry [entry & etal] (add-entry entry (first etal)))  ;; input arguments are: entry uname 
+(defn add [entry & etal]
+  (let [a (:tag entry)]
+    (match/match [a]
+      [ :user ] (add-user entry)
+      [ :account ] (add-account entry (first etal))
+      [ :entry ] (add-entry entry (first etal))
+    )
+  )
+)
+
 
 
