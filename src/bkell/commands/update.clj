@@ -25,29 +25,6 @@
 )
 
 
-;; update currency 
-#_(defn update-currency [currency uname default]
-  
-  { :pre  [ (not (nil? uname)) 
-            (not (clojure.string/blank? (:name currency)))
-            (not (clojure.string/blank? (:id currency)))
-          ] }
-  (let [ru {} #_(fetch-one "bookkeeping" :where { :owner uname })
-        rc (getk/get-currency uname (:id currency))]
-    
-    (if rc 
-      {} #_(update! :bookkeeping { :_id (:_id ru) }  ;; passing in hash w/ ObjecId, NOT original object 
-        (domain/modify-currency                       ;; update the currency if existing  
-          ru
-          :update
-          currency 
-          default))
-      (addk/add-currency currency uname default)  ;; insert the currency otherwise 
-    )
-  )
-)
-
-
 ;; CAN'T update accounts, only destroy and re-add them 
 (defn update-account [account uname]
   
@@ -91,9 +68,9 @@
   }
   
   (mc/update "bookkeeping"  { :owner uname 
-                              "content.content.content.content.tag" "entry"
-                              "content.content.content.content.id" (:id entry) }
-                            { mop/$set { :content.$.content.content.content entry } } )
+                              "content.1.content.0.content.0.content.tag" "entry"
+                              "content.1.content.0.content.0.content.id" (:id entry) }
+                            { mop/$set  { :content.1.content.0.content.0.content.$ entry } } )
   entry
 )
 

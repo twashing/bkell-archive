@@ -36,33 +36,6 @@
 )
 
 
-;; update currency 
-#_(deftest test-update-currency-1
-  
-  ;; insert if currency doesn't exist 
-  (let [user (addk/add-user (load-file "test/etc/data/stubu-two.clj"))
-        currency (load-file "test/etc/data/test-currency.clj")
-        rc0 (updatek/update-currency currency "stub" false)
-        rc1 (getk/get-currency "stub" "AUD")]
-    (is (not (nil? rc1)) "1. we SHOULD have the 'AUD' currency")
-    (is (= "AUD" (:id rc1)) "2. we SHOULD have the 'AUD' currency")
-  )
-)
-#_(deftest test-update-currency-2
-  
-  ;; assert that currency was updated 
-  (let [user (addk/add-user (load-file "test/etc/data/stubu-two.clj"))
-        currency (load-file "test/etc/data/test-currency-CAD.clj")
-        rc0 (updatek/update-currency currency "stub" false)
-        rc1 (getk/get-currency "stub" "CDN")]
-
-    (is (not (nil? rc1)) "we SHOULD have the 'CDN' currency")
-    (is (= "CDN" (:id rc1)) "1. 'CDN' currency SHOULD have been updated")
-    (is (= "Some content" (:content rc1)) "2. 'CDN' currency SHOULD have been updated with 'Some content'")
-  )
-)
-
-
 ;; CAN'T update accounts, only destroy and re-add them 
 (comment deftest test-update-account )
 
@@ -76,6 +49,7 @@
         aentry (addk/add-entry entry "stub")
         re0 (updatek/update-entry entry "stub")
         re1 (getk/get-entry "stub" (:id entry))]
+
     (is (not (nil? re1)) "1. result entry should NOT be nil")
     (is (= "testid" (:id re1)) "2. entry SHOULD have the :id 'testid'")
   )
