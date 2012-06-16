@@ -10,7 +10,7 @@
   }
   :prod {
     :host-url "http://bkeeping.herokuapp.com/"
-    :host-port "8080"
+    :host-port "42854"
     :developer-key "AIzaSyDc7_lGZsmbtdOUpprPClKBOxXCQ6LztRE"
     
     ; url "heroku_app2227080:pvqdogtk4tptcl8e4p8kt7t1al@ds029297.mongolab.com:29297/heroku_app2227080"
