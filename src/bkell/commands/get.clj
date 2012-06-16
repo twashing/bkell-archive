@@ -109,8 +109,8 @@
 (defn get-account [uname account]
 
   (let[ m (str "function(){ 
-			  if( (this.content[1].content != null) && (this.owner == '"uname"') ) { 
-			    this.content[1].content.forEach( 
+			  if( (this.content[0].content != null) && (this.owner == '"uname"') ) { 
+			    this.content[0].content.forEach( 
 			        
                     function(x) { 
 			          if( x.id == '"account"' ) { 
