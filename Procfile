@@ -1,3 +1,3 @@
 
-web: lein run -m bkell.run.run-ring
+web: lein run -m bkell.run.run-ring $PORT
 

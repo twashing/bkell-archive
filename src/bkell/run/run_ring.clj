@@ -10,7 +10,8 @@
 (defn -main [& m]
   (let[ config (load-file "etc/config/config.clj")
         mode (keyword (get (System/getenv) "MODE" "dev"))
-        host-port (or (-> config mode :host-port)
+        host-port (or (first m)                   ;; see if PORT is passed in as a parameter
+                      (-> config mode :host-port)
                       (get (System/getenv) "PORT" "8080"))
       ]
     
