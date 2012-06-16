@@ -8,6 +8,7 @@
     [monger.core :as mg]
     [monger.collection :as mc]
     [monger.operators :as mop]
+    [clojure.core.match :as match]
     [clojure.pprint :as pprint]
   )
 )
@@ -96,11 +97,16 @@
   entry
 )
 
+(defn update [obj & etal]
+  (let [a (:tag obj)]
+    (match/match [a]
+      [ :user ] (update-user obj)
+      [ :account ] (update-account obj (first etal))
+      [ :entry ] (update-entry obj (first etal))
+    )
+  )
+)
 
-(defmulti update (fn [obj & etal] (:tag obj)))
-(defmethod update :user [user & etal] (update-user user))
-;;(defmethod update :currency [currency & etal] (update-currency currency (first etal) (second etal)))   ;; input arguments are: currency uname default
-(defmethod update :account [account & etal] (update-account account (first etal)))  ;; input arguments are: account uname 
-(defmethod update :entry [entry & etal] (update-entry entry (first etal)))  ;; input arguments are: entry uname 
+
 
 
