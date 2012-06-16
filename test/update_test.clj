@@ -37,7 +37,29 @@
 
 
 ;; CAN'T update accounts, only destroy and re-add them 
-(comment deftest test-update-account )
+(deftest test-update-account 
+    
+  (pprint/pprint (getk/get-bookkeeping "stub"))
+  #_(let[ taccount { :tag :account :type "asset" :id "thing" :name "thing" :counterWeight "debit" }
+        ra (addk/add-account taccount "stub")
+        ac1 (getk/get-account "stub" taccount)
+        xx (getk/get-bookkeeping "stub")
+        
+        up (updatek/update-account (merge taccount { :name "thing2" }) "stub")
+        ac2 (getk/get-account "stub" taccount)
+        yy (getk/get-bookkeeping "stub")
+      ]
+    
+    ;(pprint/pprint ac1)
+    ;(pprint/pprint ac2)
+    ;; assert that account was added
+    #_(let [ ac (domain/traverse-tree bk :get { :id (:id taccount) } {}) ]
+      
+      (is (not (nil? ac)) "we do NOT have a 'cash' account - 1")
+      (is (= "thing" (:id ac)) "we do NOT have a 'cash' account - 2")
+    )
+  )
+)
 
 
 ;; update entry 

@@ -35,14 +35,10 @@
             (not (nil? (:counterWeight account)))
           ] }
   
-  #_(mc/update "bookkeeping"  { :owner uname 
-                              "content.content.tag" "account"
-                              "content.content.id" (:id account) }
-                            { mop/$set { :content.$.content.id account } } )
   (mc/update "bookkeeping"  { :owner uname 
-                              "fubar" { "$elemMatch" { "content.content.tag" "account" "content.content.id" (:id account) } } 
-                            }
-                            { mop/$set { "fubar.$" account } } )
+                              "content.0.content.tag" "account"
+                              "content.0.content.id" (:id account) }
+                            { mop/$set  { :content.0.content.$ account } } )
   
   account
 )
