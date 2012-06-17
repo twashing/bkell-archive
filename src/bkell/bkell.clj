@@ -29,10 +29,10 @@
       (do
         (mg/connect! { :host dburl :port dport }) 
         (mg/set-db! (mg/get-db database))    ;; select the DB 
+        (println (str "Setting Database[" database "]"))
       )
     )
 
-    ;;(println (str "Setting Database[" database "]"))
   )
   (def shell (ref { :active true })) 	;; the shell and memory 
 )

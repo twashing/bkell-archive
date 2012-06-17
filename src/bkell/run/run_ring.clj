@@ -27,7 +27,9 @@
     ;; Setting the mode in the shell 
     (dosync 
       (alter bkell/shell conj { :mode mode })
-      (alter bkell/shell conj (merge config (merge (:prod config) {:host-port host-port}) ))
+      (let [new-prod (merge (:prod config) { :host-port host-port })]
+        (alter bkell/shell conj (merge config { :prod new-prod }))
+      )
     )
     
     (println (str "Bkell: " @bkell/shell))
