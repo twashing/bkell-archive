@@ -122,7 +122,8 @@
     (let [  host-url (-> @bkell/shell :mode (@bkell/shell) :host-url)
             host-port (-> @bkell/shell :mode (@bkell/shell) :host-port)
             developer-key (-> @bkell/shell :mode (@bkell/shell) :developer-key)
-            ruri  (str  (generate-host-address host-url host-port) "/callbackGitkit" )
+            ;ruri  (str  (generate-host-address host-url host-port) "/callbackGitkit" )
+            ruri  (str  (generate-host-address host-url nil) "/callbackGitkit" )
             pbody (encode-params req)
             
             print0 (println (str "ruri:[" ruri "]"))
