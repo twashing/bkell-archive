@@ -1,10 +1,8 @@
 (ns init.database
-  ;;(:use somnium.congomongo)
+  (require  [monger.collection :as mc])
 )
 
 (defn setup [] 
-  
-  ;;(somnium.congomongo/mongo! :db "bkell") ;; connect to mongodb
   
   (let [  currency-list
           [
@@ -22,11 +20,10 @@
           ]
         ]
 
-    #_(map 
-      #(insert! :currencies %1)
+    (map 
+      #(mc/insert :currencies %1)
       currency-list
     )
   )
-  
 )
 
