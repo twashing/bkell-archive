@@ -9,8 +9,8 @@
 )
 
 
-(defn init-shell [mode]
-  (bkell.bkell/init-shell mode) 	;; the shell and memory 
+(defn init-shell [mode & extend-params]
+  (bkell.bkell/init-shell mode (first extend-params)) 	;; the shell and memory 
 )
 
 (defn generate-id [entity]

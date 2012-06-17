@@ -9,7 +9,7 @@
     :database "bkell"
   }
   :prod {
-    :host-url "http://bkeeping.herokuapp.com/"
+    :host-url "bkeeping.herokuapp.com"
     :host-port "8080"
     :developer-key "AIzaSyDc7_lGZsmbtdOUpprPClKBOxXCQ6LztRE"
     

@@ -14,7 +14,7 @@
 )
 
 
-(defn init-shell [mode]
+(defn init-shell [mode & extend-params]
   
   (let [config (load-file "etc/config/config.clj")
         dburl (-> config mode :host-url-db)
