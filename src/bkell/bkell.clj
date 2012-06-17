@@ -23,11 +23,16 @@
     
     ;; connect to the DB server
     (println (str "Connecting to DB url[" dburl  "] / port[" dport  "]"))
-    ;;(mg/connect! { :host dburl :port dport }) 
-    (mg/connect! { :host dburl }) 
-    
+
+    (if (= :prod mode)
+      (mg/connect-via-uri! dburl)
+      (do
+        (mg/connect! { :host dburl :port dport }) 
+        (mg/set-db! (mg/get-db database))    ;; select the DB 
+      )
+    )
+
     ;;(println (str "Setting Database[" database "]"))
-    ;;(mg/set-db! (mg/get-db database))    ;; select the DB 
   )
   (def shell (ref { :active true })) 	;; the shell and memory 
 )
