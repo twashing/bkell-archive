@@ -53,11 +53,12 @@
 ;; ROOT Page 
 (noir/defpage "/" []   ;; index is the default page of the application 
   (let  [ templ (enlive/html-resource "index.html")
-          host-url (-> @bkell/shell :mode (@bkell/shell) :host-url)
-          host-port (-> @bkell/shell :mode (@bkell/shell) :host-port)
-          developer-key (-> @bkell/shell :mode (@bkell/shell) :developer-key)
+          mode (:mode @bkell/shell)
+          host-url (-> mode (@bkell/shell) :host-url)
+          host-port (-> mode (@bkell/shell) :host-port)
+          developer-key (-> mode (@bkell/shell) :developer-key)
           ;ruri  (str  (generate-host-address host-url host-port) "/callbackGitkit" )
-          ruri  (str  (generate-host-address host-url nil) "/callbackGitkit" )
+          ruri  (str  (generate-host-address host-url (if (= mode :dev) host-port nil)) "/callbackGitkit" ) ;; conditionally assign the host-port
         ]
   
     ;;(response/file-response "index.html" { :root "public" })
@@ -120,11 +121,12 @@
 (defn callbackHandlerCommon [method req]
   
     ;; needs to call 'verifyAssertion' to parse response - should return a { :user :map }
-    (let [  host-url (-> @bkell/shell :mode (@bkell/shell) :host-url)
-            host-port (-> @bkell/shell :mode (@bkell/shell) :host-port)
-            developer-key (-> @bkell/shell :mode (@bkell/shell) :developer-key)
+    (let [  mode (:mode @bkell/shell)
+            host-url (-> mode (@bkell/shell) :host-url)
+            host-port (-> mode (@bkell/shell) :host-port)
+            developer-key (-> mode (@bkell/shell) :developer-key)
             ;ruri  (str  (generate-host-address host-url host-port) "/callbackGitkit" )
-            ruri  (str  (generate-host-address host-url nil) "/callbackGitkit" )
+            ruri  (str  (generate-host-address host-url (if (= mode :dev) host-port nil)) "/callbackGitkit" )
             pbody (encode-params req)
             
             print0 (println (str "ruri:[" ruri "]"))

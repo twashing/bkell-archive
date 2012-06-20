@@ -7,12 +7,15 @@
 
 (server/load-views "src/bkell/http/") 
 
+; the default mode is 'dev', 
+; for heroku, you can set the environment variable with the command: 
+; `heroku config:add MODE=prod`
 (defn -main [& m]
   (let[ config (load-file "etc/config/config.clj")
         mode (keyword (get (System/getenv) "MODE" "dev"))
         host-port (or (first m)                   ;; see if PORT is passed in as a parameter
-                      (-> config mode :host-port)
-                      (get (System/getenv) "PORT" "8080"))
+                      (-> config mode :host-port) ;; otherwise, get the PORT from the config mode
+                      (get (System/getenv) "PORT" "8080"))  ;; last ditch is to set the PORT manually to 8080
       ]
     
     

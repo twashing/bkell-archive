@@ -25,6 +25,9 @@
                     ]
   
   :repositories {"stuart" "http://stuartsierra.com/maven2"}
-  :resources-path ".:src/:test/:vendor/:vendor/debug/:public/:etc/resources/"
+  ;:resources-path ".:src/:test/:vendor/:vendor/debug/:public/:etc/resources/"
+  :profiles {
+              :dev {:resource-paths ["." "src/" "test/" "vendor/" "vendor/debug/" "public/" "etc/resources/"]}
+            }
   :main bkell.run.run-ring
 )
