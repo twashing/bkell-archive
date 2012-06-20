@@ -177,7 +177,7 @@
   )
 )
 
-(defn get [tag & etal]
+(defn getk [tag & etal]
   (match/match [tag]
     [:user] (get-user (first etal))
     [:group] (get-group (first etal))

@@ -24,6 +24,7 @@
             [noir.core :as noir]
             [noir.session :as session]
             [noir.request :as request]
+            ;[cemerick.drawbridge :as dbridge]
   )
 )
 
@@ -320,7 +321,7 @@
   (let [lin-user (authenticatek/logged-in-user)]
     
     (->      ;; JSON of MongoDB WriteResult; 
-      (bkell/get :accounts (:username lin-user)) (handle-errors 400) substitute-body) 
+      (bkell/getk :accounts (:username lin-user)) (handle-errors 400) substitute-body) 
   )
 )
 (noir/defpage [ :get "/account/:id" ] { :keys [id] }
@@ -329,7 +330,7 @@
   (let [lin-user (authenticatek/logged-in-user)]
     
     (->      ;; JSON of MongoDB WriteResult; 
-      (bkell/get :account (:username lin-user) id ) (handle-errors 400) substitute-body) 
+      (bkell/getk :account (:username lin-user) id ) (handle-errors 400) substitute-body) 
   )
 )
 (noir/defpage [ :post "/account/:id" ] [ :as req { :keys [id] } ]
@@ -378,7 +379,7 @@
   (let [lin-user (authenticatek/logged-in-user)]
     
     (->      ;; JSON of MongoDB WriteResult; 
-      (bkell/get :entries (:username lin-user)) (handle-errors 400) substitute-body) 
+      (bkell/getk :entries (:username lin-user)) (handle-errors 400) substitute-body) 
   )
 )
 (noir/defpage [ :get "/entry/:id" ] { :keys [id] } 
@@ -387,7 +388,7 @@
   (let [lin-user (authenticatek/logged-in-user)]
     
     (->      ;; JSON of MongoDB WriteResult; 
-      (bkell/get :entry (:username lin-user) id ) (handle-errors 400) substitute-body) 
+      (bkell/getk :entry (:username lin-user) id ) (handle-errors 400) substitute-body) 
   )
 )
 (noir/defpage [ :post "/entry/:id" ] { :keys [id] } 
@@ -430,7 +431,7 @@
   (let [lin-user (authenticatek/logged-in-user)]
     
 
-    (let  [ cur (bkell/get :currencies (:username lin-user))
+    (let  [ cur (bkell/getk :currencies (:username lin-user))
             fcur (map #(dissoc %1 :_id) cur)    ;; removing ObjectId
           ]
 
@@ -438,6 +439,11 @@
         fcur (handle-errors 400) substitute-body) 
     )
   )
+)
+
+;; nrepl Drawbridge handler
+#_(noir/defpage [ :get "/repl" ] [:as req]
+  (dbridge/ring-handler req)
 )
 
 

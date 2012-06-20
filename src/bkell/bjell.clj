@@ -33,7 +33,7 @@
 
 (defn get [akey & etal]
   "akey - input is a String"
-    (let [result (eval `(bkell.bkell/get ~akey ~@etal))]
+    (let [result (eval `(bkell.bkell/getk ~akey ~@etal))]
 
       (if (or (vector? result)
               (list? result)

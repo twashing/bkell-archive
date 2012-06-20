@@ -106,7 +106,7 @@
 (deftest test-getU
 
   (let [result (test-utils/add-user nil)
-        ru (getk/get :user "stub")]
+        ru (getk/getk :user "stub")]
       
       (is (not (nil? ru)) "There SHOULD be a user with the username 'stub'")
       
@@ -122,7 +122,7 @@
 #_(deftest test-getC
 
   (let [result (test-utils/add-user nil)
-        rc (getk/get :currency "stub" "CDN")]
+        rc (getk/getk :currency "stub" "CDN")]
     
     (is (not (nil? rc)) "currency result should NOT be nil")
     (is (= "CDN" (:id rc)) "There SHOULD be a 'CDN' currency with the username 'stub'")
@@ -131,7 +131,7 @@
 #_(deftest test-getCs
 
   (let [result (test-utils/add-user nil)
-        rc (getk/get :currencies "stub")]
+        rc (getk/getk :currencies "stub")]
     
     (is (not (nil? rc)) "result currency list should NOT be nil")
     (is (not (empty? rc)) "result SHOULD be list with content")
@@ -143,7 +143,7 @@
 (deftest test-getA
 
   (let [result (test-utils/add-user nil)
-        ra (getk/get :account "stub" "cash")]
+        ra (getk/getk :account "stub" "cash")]
     
     (is (not (nil? ra)) "cash result should NOT be nil")
     (is (= "cash" (:id ra)) "There SHOULD be a 'cash' account with the username 'stub'")
@@ -152,7 +152,7 @@
 (deftest test-getAs
 
   (let [result (test-utils/add-user nil)
-        ra (getk/get :accounts "stub")]
+        ra (getk/getk :accounts "stub")]
     
     (is (not (nil? ra)) "result account list should NOT be nil")
     (is (not (empty? ra)) "result SHOULD be list with content")
@@ -165,7 +165,7 @@
 
   (let [result (test-utils/add-user nil)
         yy (test-utils/populate-entries)
-        re (getk/get :entry "stub" "testid")]
+        re (getk/getk :entry "stub" "testid")]
     
     (is (not (nil? re)) "entry result should NOT be nil")
     (is (= "testid" (:id re)) "There SHOULD be a 'testid' entry with the username 'stub'")
@@ -175,7 +175,7 @@
 
   (let [result (test-utils/add-user nil)
         yy (test-utils/populate-entries)
-        re (getk/get :entries "stub")]
+        re (getk/getk :entries "stub")]
     
     (is (not (nil? re)) "result entries list should NOT be nil")
     (is (not (empty? re)) "result SHOULD be list with content")

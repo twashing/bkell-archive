@@ -53,12 +53,12 @@
   )
 )
 
-(defn get [akey & etal]
+(defn getk [akey & etal]
   
   (let [  logged-in-user (authenticatek/logged-in-user)]
     (if (-> logged-in-user nil?)  ;; we want to see a logged-in-user 
       (bkell.util/generate-error-response "User is not authenticated")
-      (eval `(getk/get ~akey ~@etal))  ;; ensure result is not nil before returning
+      (eval `(getk/getk ~akey ~@etal))  ;; ensure result is not nil before returning
     )
   )
 )
