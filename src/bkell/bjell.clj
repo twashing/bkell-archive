@@ -31,7 +31,7 @@
 )
   
 
-(defn get [akey & etal]
+(defn getk [akey & etal]
   "akey - input is a String"
     (let [result (eval `(bkell.bkell/getk ~akey ~@etal))]
 
@@ -53,10 +53,10 @@
   )
 )
 
-(defn remove [entity & etal]
+(defn removek [entity & etal]
   "entity - input is a String"
   
-    (let [result (eval `(bkell.bkell/remove ~entity ~@etal))]
+    (let [result (eval `(bkell.bkell/removek ~entity ~@etal))]
       result
       #_(if (-> result nil? not)
         (clojure.data.json/json-str result)

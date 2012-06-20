@@ -74,7 +74,7 @@
   )
 )
 
-(defn remove [entity & etal]
+(defn removek [entity & etal]
   (let [  logged-in-user (authenticatek/logged-in-user)]
     (if (-> logged-in-user nil?)  ;; we want to see a logged-in-user 
       (bkell.util/generate-error-response "User is not authenticated")
