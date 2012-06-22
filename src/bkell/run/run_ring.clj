@@ -6,6 +6,7 @@
             [ring.middleware.nested-params :as nested-params]
             [ring.middleware.params :as params]
             [ring.middleware.session :as session]
+            [cemerick.drawbridge]
   ))
 
 (def drawbridge-handler
