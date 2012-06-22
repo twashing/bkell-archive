@@ -3,7 +3,7 @@
   (:import java.io.FileReader)
   (:import java.lang.AssertionError)
   (:require [bkell.domain]
-            [bkell.util]
+            [bkell.util :as util]
             [bkell.commands.add :as addk]
             [bkell.commands.update :as updatek]
             [bkell.commands.get :as getk]
@@ -68,8 +68,7 @@
   (let [  logged-in-user (authenticatek/logged-in-user)]
     (if (-> logged-in-user nil?)  ;; we want to see a logged-in-user 
       (bkell.util/generate-error-response "User is not authenticated")
-      (bkell.domain/keywordize-tags 
-        (eval `(updatek/update (bkell.domain/keywordize-tags ~artifact-p) ~@etal)))
+      (eval `(updatek/update (bkell.domain/keywordize-tags ~artifact-p) ~@etal))
     )
   )
 )

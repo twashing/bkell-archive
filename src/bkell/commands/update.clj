@@ -10,6 +10,7 @@
     [monger.operators :as mop]
     [clojure.core.match :as match]
     [clojure.pprint :as pprint]
+    [bkell.util :as util]
   )
 )
 
@@ -62,7 +63,7 @@
             (domain/entry-balanced? uname entry (getk/get-accounts uname))
           ]
   }
-  
+
   (mc/update "bookkeeping"  { :owner uname 
                               "content.1.content.0.content.0.content.tag" "entry"
                               "content.1.content.0.content.0.content.id" (:id entry) }

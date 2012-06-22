@@ -24,9 +24,7 @@
   "artifact - input can be JSON String or Reader"
   
   (let  [ artifact-p (bkell.domain/keywordize-tags (clojure.data.json/read-json artifact))]
-
-      (bkell.domain/bsonid-to-id
-        (eval `(bkell.bkell/add ~artifact-p ~@etal)) )
+    (eval `(bkell.bkell/add ~artifact-p ~@etal))
   )
 )
   
@@ -48,8 +46,7 @@
   "artifact - input can be JSON String or Reader"
   
   (let  [ artifact-p (bkell.domain/keywordize-tags (clojure.data.json/read-json artifact))]
-    (bkell.domain/bsonid-to-id
-      (eval `(bkell.bkell/update ~artifact-p ~@etal)) )
+    (eval `(bkell.bkell/update ~artifact-p ~@etal))
   )
 )
 

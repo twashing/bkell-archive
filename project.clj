@@ -22,6 +22,7 @@
                       [lein-ring "0.7.1"]
                       [lein-midje "1.0.10"]
                       [com.stuartsierra/lazytest "1.2.3"]
+                      
                     ]
   
   :repositories {"stuart" "http://stuartsierra.com/maven2"}

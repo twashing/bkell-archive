@@ -8,6 +8,7 @@
             [monger.conversion :as cnv]
             [clojure.pprint :as pprint]
             [clojure.core.match :as match]
+            [bkell.util :as util]
   )
 )
 
@@ -149,7 +150,7 @@
           result (mc/map-reduce "bookkeeping" m r nil MapReduceCommand$OutputType/INLINE {})
           converted (cnv/from-db-object ^DBObject (.results ^MapReduceOutput result) true)
         ]
-    
+    (util/break)
     (-> converted first :value :result)
   )
 )
