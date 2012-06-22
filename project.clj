@@ -15,7 +15,7 @@
                   [clj-http "0.4.1"]
                   [enlive "1.0.0"]
                   [org.clojure/core.match "0.2.0-alpha9"]
-                  [com.cemerick/drawbridge "0.0.4"]
+                  [com.cemerick/drawbridge "0.0.6"]
                   [ring/ring-core "1.1.1"]
                   [swank-clojure "1.4.2"]
                 ]

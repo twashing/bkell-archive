@@ -444,7 +444,7 @@
 )
 
 ;; nrepl Drawbridge handler
-#_(noir/defpage [ :get "/repl" ] [:as req]
+(noir/defpage [ :get "/repl" ] [:as req]
   (dbridge/ring-handler req)
 )
 
