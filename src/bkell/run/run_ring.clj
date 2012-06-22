@@ -2,8 +2,24 @@
   (:require [noir.server :as server]
             [bkell.bjell :as bjell]
             [bkell.bkell :as bkell]
+            [ring.middleware.keyword-params :as keyword-params]
+            [ring.middleware.nested-params :as nested-params]
+            [ring.middleware.params :as params]
+            [ring.middleware.session :as session]
   ))
 
+(def drawbridge-handler
+  (-> (cemerick.drawbridge/ring-handler)
+      (keyword-params/wrap-keyword-params)
+      (nested-params/wrap-nested-params)
+      (params/wrap-params)
+      (session/wrap-session)))
+
+(defn wrap-drawbridge [handler]
+  (fn [req]
+    (if (= "/repl" (:uri req))
+      (drawbridge-handler req)
+            (handler req))))
 
 (server/load-views "src/bkell/http/") 
 
