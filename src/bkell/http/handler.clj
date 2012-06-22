@@ -24,7 +24,7 @@
             [noir.core :as noir]
             [noir.session :as session]
             [noir.request :as request]
-            ;[cemerick.drawbridge :as dbridge]
+            [cemerick.drawbridge :as dbridge]
   )
 )
 
