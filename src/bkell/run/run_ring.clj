@@ -12,11 +12,12 @@
 ; `heroku config:add MODE=prod`
 (defn -main [& m]
   (let[ config (load-file "etc/config/config.clj")
-        mode (keyword (or (second m)
-                          (get (System/getenv) "MODE" "dev")))
-        host-port (or (first m)                   ;; see if PORT is passed in as a parameter
+        mode (keyword (or (get (System/getenv) "MODE" "dev")
+                          (second m) ))
+        host-port (or (get (System/getenv) "PORT" "8080")
+                      (first m)                   ;; see if PORT is passed in as a parameter
                       (-> config mode :host-port) ;; otherwise, get the PORT from the config mode
-                      (get (System/getenv) "PORT" "8080"))  ;; last ditch is to set the PORT manually to 8080
+                      )  ;; last ditch is to set the PORT manually to 8080
       ]
     
     
