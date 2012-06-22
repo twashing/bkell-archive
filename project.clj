@@ -26,7 +26,9 @@
                     ]
   
   :repositories {"stuart" "http://stuartsierra.com/maven2"}
-  ;:resources-path ".:src/:test/:vendor/:vendor/debug/:public/:etc/resources/"
+
+  ;; including both lein 1 & 2 configs for dev and local environments
+  :resources-path ".:src/:test/:vendor/:vendor/debug/:public/:etc/resources/"
   :profiles {
               :dev {:resource-paths ["." "src/" "test/" "vendor/" "vendor/debug/" "public/" "etc/resources/"]}
             }
