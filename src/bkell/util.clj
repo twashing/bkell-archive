@@ -1,6 +1,6 @@
 (ns bkell.util
   
-  #_(:require [swank.core]
+  (:require [swank.core]
             [swank.core.connection])
 )
 

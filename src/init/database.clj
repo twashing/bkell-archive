@@ -21,7 +21,7 @@
         ]
 
     (map 
-      #(mc/insert :currencies %1)
+      #(mc/insert "currencies" %1)
       currency-list
     )
   )
