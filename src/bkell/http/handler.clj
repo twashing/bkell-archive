@@ -448,6 +448,9 @@
   (println (request/ring-request))
   (dbridge/ring-handler (request/ring-request))
 )
+(noir/defpage [ :post "/repl" ] [:as req]
+  (println (request/ring-request))
+  (dbridge/ring-handler (request/ring-request))
 
 
 ;; ======
