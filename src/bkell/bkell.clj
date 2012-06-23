@@ -10,6 +10,7 @@
             [bkell.commands.remove :as removek]
             [bkell.commands.authenticate :as authenticatek]
             [monger.core :as mg]
+            [clojure.pprint :as pprint]
   )
 )
 

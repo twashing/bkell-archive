@@ -179,19 +179,20 @@
 )
 
 (defn getk [tag & etal]
-  (match/match [tag]
-    [:user] (get-user (first etal))
-    [:group] (get-group (first etal))
-    [:bookkeeping] (get-bookkeeping (first etal))
+  
+  (case tag
+    :user (get-user (first etal))
+    :group (get-group (first etal))
+    :bookkeeping (get-bookkeeping (first etal))
     
-    [:currencies] (get-currencies (first etal))
-    [:currency] (get-currency (first etal) (second etal))
+    :currencies (get-currencies (first etal))
+    :currency (get-currency (first etal) (second etal))
     
-    [:accounts] (get-accounts (first etal))
-    [:account] (get-account (first etal) (second etal))
+    :accounts (get-accounts (first etal))
+    :account (get-account (first etal) (second etal))
     
-    [:entries] (get-entries (first etal))
-    [:entry] (get-entry (first etal) (second etal))
+    :entries (get-entries (first etal))
+    :entry (get-entry (first etal) (second etal))
   )
 )
 

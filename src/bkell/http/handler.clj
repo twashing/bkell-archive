@@ -379,9 +379,10 @@
 
   (println (str "GET ; /entries ; " req))
   (let [lin-user (authenticatek/logged-in-user)]
-    
+
+    (println (str "handler; get-entries ; lin-user ; " (bkell/getk :entries (:username lin-user))))
     (->      ;; JSON of MongoDB WriteResult; 
-      (bkell/getk :entries (:username lin-user)) (handle-errors 400) substitute-body) 
+      (bkell/getk :entries (:username lin-user)) (handle-errors 400) substitute-body)
   )
 )
 (noir/defpage [ :get "/entry/:id" ] { :keys [id] } 
