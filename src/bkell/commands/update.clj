@@ -73,13 +73,11 @@
 
 (defn update [obj & etal]
   (let [a (:tag obj)]
-    (match/match [a]
-      [ :user ] (update-user obj)
-      [ :account ] (update-account obj (first etal))
-      [ :entry ] (update-entry obj (first etal))
+    (case a
+      :user (update-user obj)
+      :account (update-account obj (first etal))
+      :entry (update-entry obj (first etal))
     )
   )
 )
-
-
 

@@ -118,10 +118,10 @@
 
 (defn add [obj & etal]
   (let [a (:tag obj)]
-    (match/match [a]
-      [ :user ] (add-user obj)
-      [ :account ] (add-account obj (first etal))
-      [ :entry ] (add-entry obj (first etal))
+    (case a
+      :user (add-user obj)
+      :account (add-account obj (first etal))
+      :entry (add-entry obj (first etal))
     )
   )
 )

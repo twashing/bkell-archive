@@ -54,27 +54,25 @@
   (mc/update "bookkeeping"  { :owner uname
                               "content.content.content.content.tag" "entry"
                               "content.content.content.content.id" (:id entry) }
-                            { mop/$unset { "content.$.content.0.content.0.content.0" { :id (:id entry) } } }
+                            { mop/$unset { "content.1.content.0.content.0.content.$" { :id (:id entry) } } }
   )
   
   ;; based on this...
   ; db.bookkeeping.update( { owner : "stub" , 
   ;                               "content.content.content.id" : "main.entries" } , 
   ;                             { $pull : { "content.$.content.0.content.0.content" : null } } ) 
-  (mc/update "bookkeeping"  { :owner uname
+  #_(mc/update "bookkeeping"  { :owner uname
                               "content.content.content.id" "main.entries" }
-                            { mop/$pull { "content.$.content.0.content.0.content" nil } } )
+                            { mop/$pull { "content.1.content.0.content.0.content.$" nil } } )
 )
 
 (defn removek [obj & etal]
   (let [a (:tag obj)]
-    (match/match [a]
-      [ :user ] (remove-user obj)
-      [ :account ] (remove-account obj (first etal))
-      [ :entry ] (remove-entry obj (first etal))
+    (case a
+      :user (remove-user obj)
+      :account (remove-account obj (first etal))
+      :entry (remove-entry obj (first etal))
     )
   )
 )
-
-
 
