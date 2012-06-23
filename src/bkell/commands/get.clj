@@ -150,7 +150,7 @@
           result (mc/map-reduce "bookkeeping" m r nil MapReduceCommand$OutputType/INLINE {})
           converted (cnv/from-db-object ^DBObject (.results ^MapReduceOutput result) true)
         ]
-    (util/break)
+    
     (-> converted first :value :result)
   )
 )
