@@ -56,17 +56,21 @@ define( ['js/bkeeping/bkeeping', 'js/bkeeping/util'], (bkeeping, util) ->
         }
       }
     }
-    determineCommon : (arg, weight, attribute) ->
+    determineAccount : (arg, weight, attribute) ->
       if(arg["tag"] == weight)
         return attribute
+      return "&nbsp;"
+    determineAmount : (arg, weight, attribute) ->
+      if(arg["tag"] == weight)
+        return arg[attribute]
       return "&nbsp;"
     determineAccountDtCt : (arg, weight, accountList) ->
       aid = arg["accountid"]
       account = _.find(accountList, (ech) ->
         return ech if (ech.id is aid)
       )
-      return pureDirectives.determineCommon(arg, weight, account.get("name"))
-    determineAmountDtCt : (arg, weight) -> return pureDirectives.determineCommon(arg, weight, "amount")
+      return pureDirectives.determineAccount(arg, weight, account.get("name"))
+    determineAmountDtCt : (arg, weight) -> return pureDirectives.determineAmount(arg, weight, "amount")
     
     entryPartDirective: {   # this is just meant to list out accounts, for now
       "select#entry-part-account option" : {

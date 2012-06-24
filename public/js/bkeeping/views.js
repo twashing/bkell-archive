@@ -60,9 +60,15 @@
           }
         }
       },
-      determineCommon: function(arg, weight, attribute) {
+      determineAccount: function(arg, weight, attribute) {
         if (arg["tag"] === weight) {
           return attribute;
+        }
+        return "&nbsp;";
+      },
+      determineAmount: function(arg, weight, attribute) {
+        if (arg["tag"] === weight) {
+          return arg[attribute];
         }
         return "&nbsp;";
       },
@@ -74,10 +80,10 @@
             return ech;
           }
         });
-        return pureDirectives.determineCommon(arg, weight, account.get("name"));
+        return pureDirectives.determineAccount(arg, weight, account.get("name"));
       },
       determineAmountDtCt: function(arg, weight) {
-        return pureDirectives.determineCommon(arg, weight, "amount");
+        return pureDirectives.determineAmount(arg, weight, "amount");
       },
       entryPartDirective: {
         "select#entry-part-account option": {
