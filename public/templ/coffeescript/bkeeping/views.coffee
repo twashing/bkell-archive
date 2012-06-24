@@ -40,9 +40,9 @@ define( ['js/bkeeping/bkeeping', 'js/bkeeping/util'], (bkeeping, util) ->
         "each<-puredata" : {
           "button.editentrypart@data-eid" : "each.id"
           "button.editentrypart@data-type" : "each.tag"
-          "td.debitAccount" : (arg) -> return pureDirectives.determineAccountDtCt(this, "debit")
+          "td.debitAccount" : (arg) -> return pureDirectives.determineAccountDtCt(this, "debit", arg.context.accounts)
           "td.debitAmount" : (arg) -> return pureDirectives.determineAmountDtCt(this, "debit")
-          "td.creditAccount" : (arg) -> return pureDirectives.determineAccountDtCt(this, "credit")
+          "td.creditAccount" : (arg) -> return pureDirectives.determineAccountDtCt(this, "credit", arg.context.accounts)
           "td.creditAmount" : (arg) -> return pureDirectives.determineAmountDtCt(this, "credit")
           "button.deleteentrypart@data-eid" : "each.id"
         }
@@ -58,9 +58,14 @@ define( ['js/bkeeping/bkeeping', 'js/bkeeping/util'], (bkeeping, util) ->
     }
     determineCommon : (arg, weight, attribute) ->
       if(arg["tag"] == weight)
-        return arg[attribute]
+        return attribute
       return "&nbsp;"
-    determineAccountDtCt : (arg, weight) -> return pureDirectives.determineCommon(arg, weight, "accountid")
+    determineAccountDtCt : (arg, weight, accountList) ->
+      aid = arg["accountid"]
+      account = _.find(accountList, (ech) ->
+        return ech if (ech.id is aid)
+      )
+      return pureDirectives.determineCommon(arg, weight, account.get("name"))
     determineAmountDtCt : (arg, weight) -> return pureDirectives.determineCommon(arg, weight, "amount")
     
     entryPartDirective: {   # this is just meant to list out accounts, for now
@@ -113,6 +118,7 @@ define( ['js/bkeeping/bkeeping', 'js/bkeeping/util'], (bkeeping, util) ->
       console.log('EntryView initialize CALLED')
       this.el = $(options.el)
       this.currencies = options.currencies
+      this.accounts = options.accounts.models
     
     render : (options) ->
       console.log('EntryView render CALLED')
@@ -155,7 +161,7 @@ define( ['js/bkeeping/bkeeping', 'js/bkeeping/util'], (bkeeping, util) ->
         #.addClass("table-condensed")
       
       
-      $(".entry_container").render( { puredata : this.model.get('content') } , pureDirectives.entryDirective )
+      $(".entry_container").render( { puredata : this.model.get('content'), accounts : this.view.accounts } , pureDirectives.entryDirective )
       
       $("select#entry-currency")
         .empty()
@@ -193,7 +199,7 @@ define( ['js/bkeeping/bkeeping', 'js/bkeeping/util'], (bkeeping, util) ->
         .unbind('change')
       
       options.entry
-        .bind('change', options.entryView.render, { model: options.entry, view: options.entryView, currencies: this.currencies })  # bind Backbone event
+        .bind('change', options.entryView.render, { model: options.entry, view: options.entryView, accounts: options.accounts, currencies: this.currencies })  # bind Backbone event
         .trigger('change')   # this should trigger the entryView to render
                                   
     instrumentEntry: (options) ->

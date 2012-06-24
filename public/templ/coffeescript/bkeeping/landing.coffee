@@ -114,7 +114,7 @@ require( ['bkeeping/bkeeping', 'bkeeping/bindings',  'bkeeping/util']
       $.get("/currencies", (result, status, obj) ->
         
         currencies = $.parseJSON(result)
-        entryView = new views.EntryView( { el: '#entry', currencies: currencies } )
+        entryView = new views.EntryView( { el: '#entry', currencies: currencies, accounts: accounts } )
         entriesView = new views.EntriesView( { collection: entries, entryView: entryView, entryPartView: entryPartView, accounts: accounts, currencies: currencies, esm: esm} )
         
         $('#entries').load("/include/entries.html", () ->

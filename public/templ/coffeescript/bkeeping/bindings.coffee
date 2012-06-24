@@ -172,6 +172,7 @@ define( [ "bkeeping/util", ], (util) ->
                                   args.data.entryView.renderEntry({
                                     entry: if args.data.entry then args.data.entry else args.data.entries.get( args.target.dataset['eid'] )
                                     entryView: args.data.entryView
+                                    accounts: args.data.accounts.models
                                   })
                                   
                                   ###

@@ -37,13 +37,13 @@
             "button.editentrypart@data-eid": "each.id",
             "button.editentrypart@data-type": "each.tag",
             "td.debitAccount": function(arg) {
-              return pureDirectives.determineAccountDtCt(this, "debit");
+              return pureDirectives.determineAccountDtCt(this, "debit", arg.context.accounts);
             },
             "td.debitAmount": function(arg) {
               return pureDirectives.determineAmountDtCt(this, "debit");
             },
             "td.creditAccount": function(arg) {
-              return pureDirectives.determineAccountDtCt(this, "credit");
+              return pureDirectives.determineAccountDtCt(this, "credit", arg.context.accounts);
             },
             "td.creditAmount": function(arg) {
               return pureDirectives.determineAmountDtCt(this, "credit");
@@ -62,12 +62,19 @@
       },
       determineCommon: function(arg, weight, attribute) {
         if (arg["tag"] === weight) {
-          return arg[attribute];
+          return attribute;
         }
         return "&nbsp;";
       },
-      determineAccountDtCt: function(arg, weight) {
-        return pureDirectives.determineCommon(arg, weight, "accountid");
+      determineAccountDtCt: function(arg, weight, accountList) {
+        var account, aid;
+        aid = arg["accountid"];
+        account = _.find(accountList, function(ech) {
+          if (ech.id === aid) {
+            return ech;
+          }
+        });
+        return pureDirectives.determineCommon(arg, weight, account.get("name"));
       },
       determineAmountDtCt: function(arg, weight) {
         return pureDirectives.determineCommon(arg, weight, "amount");
@@ -105,7 +112,8 @@
       initialize: function(options) {
         console.log('EntryView initialize CALLED');
         this.el = $(options.el);
-        return this.currencies = options.currencies;
+        this.currencies = options.currencies;
+        return this.accounts = options.accounts.models;
       },
       render: function(options) {
         var dstring, now, template;
@@ -122,7 +130,8 @@
         $("#entry-cancel").addClass("btn").addClass("btn-danger");
         $(".entry_content > table").addClass("table");
         $(".entry_container").render({
-          puredata: this.model.get('content')
+          puredata: this.model.get('content'),
+          accounts: this.view.accounts
         }, pureDirectives.entryDirective);
         $("select#entry-currency").empty().append("<option value=''></option>");
         $("#entry").render({
@@ -153,6 +162,7 @@
         return options.entry.bind('change', options.entryView.render, {
           model: options.entry,
           view: options.entryView,
+          accounts: options.accounts,
           currencies: this.currencies
         }).trigger('change');
       },

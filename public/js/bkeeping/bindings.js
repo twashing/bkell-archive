@@ -154,7 +154,8 @@
                                               */
             args.data.entryView.renderEntry({
               entry: args.data.entry ? args.data.entry : args.data.entries.get(args.target.dataset['eid']),
-              entryView: args.data.entryView
+              entryView: args.data.entryView,
+              accounts: args.data.accounts.models
             });
             /*
                                               # scroll to the relevant pane 

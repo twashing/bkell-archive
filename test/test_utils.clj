@@ -12,7 +12,7 @@
   [test]
   
   ;; ** execute the TEST function
-  (bkell/init-shell)      ;; initialize the bkell 
+  (bkell/init-shell :dev)      ;; initialize the bkell 
   
   (mc/remove "users")  ;; destroying all users
   (mc/remove "groups") ;; destroying all groups

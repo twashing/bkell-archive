@@ -97,7 +97,8 @@
         currencies = $.parseJSON(result);
         entryView = new views.EntryView({
           el: '#entry',
-          currencies: currencies
+          currencies: currencies,
+          accounts: accounts
         });
         entriesView = new views.EntriesView({
           collection: entries,
