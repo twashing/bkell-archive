@@ -5537,7 +5537,7 @@ a.thumbnail:hover {
 }
 
 /* line 119, ../templ/sass/landing.sass */
-table#entries-table > tbody > tr > td.sorting_1 {
+table#entries-table > tbody > tr > td.editcolumn {
   width: 50px;
 }
 
