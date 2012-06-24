@@ -37,14 +37,11 @@
 (defn remove-account [account uname]
   
   (mc/update "bookkeeping"  { :owner uname
-                              "content.content.tag" "account"
-                              "content.content.id" (:id account) }
-                            { mop/$unset { "content.$.content.0" { :id (:id account) } } }
+                              "content.0.content.tag" "account"
+                              "content.0.content.id" (:id account) }
+                            { mop/$pull { "content.0.content" { :id (:id account) } } }
   )
   
-  (mc/update "bookkeeping"  { :owner uname
-                              "content.content" nil }
-                            { mop/$pull { "content.$.content" nil } } )
 )
 
 
@@ -52,18 +49,11 @@
 (defn remove-entry [entry uname]
   
   (mc/update "bookkeeping"  { :owner uname
-                              "content.content.content.content.tag" "entry"
-                              "content.content.content.content.id" (:id entry) }
-                            { mop/$unset { "content.1.content.0.content.0.content.$" { :id (:id entry) } } }
+                              "content.1.content.0.content.0.content.tag" "entry"
+                              "content.1.content.0.content.0.content.id" (:id entry) }
+                            { mop/$pull { "content.1.content.0.content.0.content" { :id (:id entry) } } }
   )
   
-  ;; based on this...
-  ; db.bookkeeping.update( { owner : "stub" , 
-  ;                               "content.content.content.id" : "main.entries" } , 
-  ;                             { $pull : { "content.$.content.0.content.0.content" : null } } ) 
-  #_(mc/update "bookkeeping"  { :owner uname
-                              "content.content.content.id" "main.entries" }
-                            { mop/$pull { "content.1.content.0.content.0.content.$" nil } } )
 )
 
 (defn removek [obj & etal]
