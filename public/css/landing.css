@@ -1817,7 +1817,7 @@ table .span12 {
   height: 14px;
   line-height: 14px;
   vertical-align: text-top;
-  background-image: url('/images/glyphicons-halflings.png?1336350367');
+  background-image: url('/images/glyphicons-halflings.png?1339804910');
   background-position: 14px 14px;
   background-repeat: no-repeat;
   *margin-right: .3em;
@@ -1830,7 +1830,7 @@ table .span12 {
 
 /* line 30, ../../../../.rvm/gems/ruby-1.9.2-p290/gems/compass_twitter_bootstrap-2.0.1.2/stylesheets/compass_twitter_bootstrap/_sprites.scss */
 .icon-white {
-  background-image: url('/images/glyphicons-halflings-white.png?1336350367');
+  background-image: url('/images/glyphicons-halflings-white.png?1339804910');
 }
 
 /* line 34, ../../../../.rvm/gems/ruby-1.9.2-p290/gems/compass_twitter_bootstrap-2.0.1.2/stylesheets/compass_twitter_bootstrap/_sprites.scss */
@@ -5536,35 +5536,40 @@ a.thumbnail:hover {
   width: 800px;
 }
 
-/* line 120, ../templ/sass/landing.sass */
+/* line 119, ../templ/sass/landing.sass */
+table#entries-table > tbody > tr > td.sorting_1 {
+  width: 50px;
+}
+
+/* line 122, ../templ/sass/landing.sass */
 #logout-button.btn.btn-inverse {
   position: relative;
   float: right;
 }
 
-/* line 124, ../templ/sass/landing.sass */
+/* line 126, ../templ/sass/landing.sass */
 #entry-date {
   position: relative;
 }
-/* line 127, ../templ/sass/landing.sass */
+/* line 129, ../templ/sass/landing.sass */
 #entry-date input.span2 {
   height: 28px;
 }
 
-/* line 131, ../templ/sass/landing.sass */
+/* line 133, ../templ/sass/landing.sass */
 .entry-label {
   float: left;
   width: 100px;
 }
 
-/* line 135, ../templ/sass/landing.sass */
+/* line 137, ../templ/sass/landing.sass */
 .sorting_desc {
   background: url("/images/sort_desc.png");
   background-repeat: no-repeat;
   background-position: 100% 50%;
 }
 
-/* line 140, ../templ/sass/landing.sass */
+/* line 142, ../templ/sass/landing.sass */
 .sorting_asc {
   background: url("/images/sort_asc.png");
   background-repeat: no-repeat;
