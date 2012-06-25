@@ -32,3 +32,27 @@
 .signup-wrapper .signup-anchor .buttons {
   font-size: 13.2px;
 }
+
+/* line 15, ../templ/sass/index.sass */
+.motto {
+  margin: auto;
+  margin-top: 23%;
+  width: 900px;
+  position: relative;
+}
+/* line 20, ../templ/sass/index.sass */
+.motto .motto-left, .motto .motto-right {
+  float: left;
+  font-style: italic;
+  font-family: Palatino, sans-serif;
+  font-weight: bold;
+  font-size: 35px;
+}
+/* line 27, ../templ/sass/index.sass */
+.motto .motto-left {
+  color: #132abf;
+}
+/* line 29, ../templ/sass/index.sass */
+.motto .motto-right {
+  color: #007821;
+}
