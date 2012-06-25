@@ -103,7 +103,8 @@
       ]
     
     ; digging into a structure that looks like this: [{:_id nil, :value {:result [{:counterWeight "debit", :name "cash", :type "asset", :id "cash", :tag "account"} {:counterWeight "credit", :name "expense", :type "expense", :id "expense", :tag "account"} {:counterWeight "debit", :name "revenue", :type "revenue", :id "revenue", :tag "account"} {:counterWeight "credit", :name "accounts payable", :type "liability", :id "accounts payable", :tag "account"}]}}]
-    (-> converted first :value :result)
+    (or (-> converted first :value :result)
+        (-> converted first :value))  ;; for the case where there is only a single result
     
   )
 )
@@ -151,7 +152,8 @@
           converted (cnv/from-db-object ^DBObject (.results ^MapReduceOutput result) true)
         ]
     
-    (-> converted first :value :result)
+    (or (-> converted first :value :result)
+        (-> converted first :value))  ;; for the case where there's only one result
   )
 )
 (defn get-entry [uname entry]
