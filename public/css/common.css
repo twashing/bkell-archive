@@ -149,3 +149,8 @@ html, body {
 #legal {
   color: #666666;
 }
+
+/* line 90, ../templ/sass/common.sass */
+.widget-email-box {
+  visibility: hidden;
+}

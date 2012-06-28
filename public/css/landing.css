@@ -167,6 +167,11 @@ html, body {
   color: #666666;
 }
 
+/* line 90, ../templ/sass/common.sass */
+.widget-email-box {
+  visibility: hidden;
+}
+
 /*
  * Bootstrap v2.0.0
  *
