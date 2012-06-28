@@ -10,13 +10,11 @@
     %script( src= "https://ajax.googleapis.com/ajax/libs/googleapis/0.0.4/googleapis.min.js" )
     %script( src= 'https://ajax.googleapis.com/jsapi' )
     :javascript
-      //google.load("identitytoolkit", "1.0", { packages: ["ac"] });
       google.load("identitytoolkit", "1", {packages: ["ac"], language:"en"});
     
     %script( src="/js/lib/json2.js" )
     %script( src="/js/lib/underscore.js" )
     %script( src="/js/lib/backbone.js" )
-    %script( src="/js/lib/jquery.pulse.min.js" )
     %script( src="js/bkeeping.js" type="text/javascript" )
     :javascript
       $(document).ready(function() {
@@ -47,15 +45,6 @@
          
         $('#account-chooser').accountChooser();
         
-        var properties = {
-           opacity : 0.3
-        };
-        
-        $("#account-chooser").pulse(properties, {
-          duration : 2500,
-          pulses   : 5,
-          interval : 400
-        });
         
         /********* 
          * load the footer file
