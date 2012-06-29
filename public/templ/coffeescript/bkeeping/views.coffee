@@ -427,7 +427,6 @@ define( ['js/bkeeping/bkeeping', 'js/bkeeping/util'], (bkeeping, util) ->
         .render(  { puredata : this.collection.toJSON() } ,   # i) using PURE templ lib, ii) returning raw JSON object (instead of BB models) for pure templ
                   pureDirectives.accountsDirective )
         .find('table')
-        .dataTable()    # using dataTables to render accounts tabular data
         .find('tbody > tr')
         .each((index, ech) ->
           
@@ -438,6 +437,10 @@ define( ['js/bkeeping/bkeeping', 'js/bkeeping/util'], (bkeeping, util) ->
           ctx.accountRows.length = 0              # clearing out the account rows on each render
           ctx.accountRows.push(arow)
         )
+      
+      $("#accounts")
+        .find('table')
+        .dataTable()    # using dataTables to render accounts tabular data
     
       # removing table row borders 
       $("td").css("border", 0)
@@ -554,7 +557,6 @@ define( ['js/bkeeping/bkeeping', 'js/bkeeping/util'], (bkeeping, util) ->
         .render(  { puredata : this.collection.toJSON() } ,
                   pureDirectives.entriesDirective)
         .find('table')
-        .dataTable()
         .find('tbody > tr')
         .each((index, ech) ->
           
@@ -565,6 +567,10 @@ define( ['js/bkeeping/bkeeping', 'js/bkeeping/util'], (bkeeping, util) ->
           ctx.entryRows.length = 0              # clearing out the account rows on each render
           ctx.entryRows.push(arow)
         )
+      
+      $("#entries")
+        .find('table')
+        .dataTable()
      
       $("#entries")
         #.enscroll({
