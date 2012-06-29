@@ -366,6 +366,7 @@ define( ['js/bkeeping/bkeeping', 'js/bkeeping/util'], (bkeeping, util) ->
   AccountsView = Backbone.View.extend(
     
     el: $('#accounts')
+    
     initialize : (options) ->
       
       this.collection = options.collection
@@ -441,6 +442,14 @@ define( ['js/bkeeping/bkeeping', 'js/bkeeping/util'], (bkeeping, util) ->
       # removing table row borders 
       $("td").css("border", 0)
       
+      $("#accounts")
+        .enscroll({
+          showOnHover: true,
+          clickTrackToScroll: false,
+          verticalTrackClass: 'track3',
+          verticalHandleClass: 'handle3'
+        })
+    
     ###
     # instrument Accounts pane with actions
     ###
@@ -479,6 +488,7 @@ define( ['js/bkeeping/bkeeping', 'js/bkeeping/util'], (bkeeping, util) ->
   EntriesView = Backbone.View.extend(
     
     el: $('#entries')
+    
     initialize : (options) ->
        
       bindObjects = {
@@ -556,6 +566,14 @@ define( ['js/bkeeping/bkeeping', 'js/bkeeping/util'], (bkeeping, util) ->
           ctx.entryRows.push(arow)
         )
      
+      $("#entries")
+        .enscroll({
+          showOnHover: true,
+          clickTrackToScroll: false,
+          verticalTrackClass: 'track3',
+          verticalHandleClass: 'handle3'
+        })
+    
       # removing table row borders 
       $("td").css("border", 0)
       

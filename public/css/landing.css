@@ -5541,45 +5541,65 @@ a.thumbnail:hover {
 /* line 118, ../templ/sass/landing.sass */
 #right-col #right-wrapper #right-content #entries, #right-col #right-wrapper #right-content #entry, #right-col #right-wrapper #right-content #entry-part {
   float: left;
-  width: 800px;
+  width: 795px;
   height: 100%;
-  overflow-y: scroll;
+  overflow: auto;
 }
 
-/* line 124, ../templ/sass/landing.sass */
+/**
+ * track and handle styles for enscroll
+ ** */
+/* line 126, ../templ/sass/landing.sass */
+.track3 {
+  width: 10px;
+}
+
+/* line 129, ../templ/sass/landing.sass */
+.handle3 {
+  width: 5px;
+  background: black;
+  opacity: 0.45;
+  filter: alpha(opacity=45);
+  border: 1px solid #555555;
+  -webkit-border-radius: 7px;
+  -moz-border-radius: 7px;
+  border-radius: 7px;
+}
+
+/* line 140, ../templ/sass/landing.sass */
 table#entries-table > tbody > tr > td.editcolumn {
   width: 50px;
 }
 
-/* line 127, ../templ/sass/landing.sass */
+/* line 143, ../templ/sass/landing.sass */
 #logout-button.btn.btn-inverse {
   position: relative;
   float: right;
 }
 
-/* line 131, ../templ/sass/landing.sass */
+/* line 147, ../templ/sass/landing.sass */
 #entry-date {
   position: relative;
 }
-/* line 134, ../templ/sass/landing.sass */
+/* line 150, ../templ/sass/landing.sass */
 #entry-date input.span2 {
   height: 28px;
 }
 
-/* line 138, ../templ/sass/landing.sass */
+/* line 154, ../templ/sass/landing.sass */
 .entry-label {
   float: left;
   width: 100px;
 }
 
-/* line 142, ../templ/sass/landing.sass */
+/* line 158, ../templ/sass/landing.sass */
 .sorting_desc {
   background: url("/images/sort_desc.png");
   background-repeat: no-repeat;
   background-position: 100% 50%;
 }
 
-/* line 147, ../templ/sass/landing.sass */
+/* line 163, ../templ/sass/landing.sass */
 .sorting_asc {
   background: url("/images/sort_asc.png");
   background-repeat: no-repeat;

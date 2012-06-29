@@ -331,7 +331,13 @@
           ctx.accountRows.length = 0;
           return ctx.accountRows.push(arow);
         });
-        return $("td").css("border", 0);
+        $("td").css("border", 0);
+        return $("#accounts").enscroll({
+          showOnHover: true,
+          clickTrackToScroll: false,
+          verticalTrackClass: 'track3',
+          verticalHandleClass: 'handle3'
+        });
       },
       /*
           # instrument Accounts pane with actions
@@ -405,6 +411,12 @@
           });
           ctx.entryRows.length = 0;
           return ctx.entryRows.push(arow);
+        });
+        $("#entries").enscroll({
+          showOnHover: true,
+          clickTrackToScroll: false,
+          verticalTrackClass: 'track3',
+          verticalHandleClass: 'handle3'
         });
         return $("td").css("border", 0);
       },

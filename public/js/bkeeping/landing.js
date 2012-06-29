@@ -16,7 +16,7 @@
       var rightWidth;
       rightWidth = $(".bkell-container").width() - $("#left-col").width() - 10;
       $("#right-col").css("width", rightWidth);
-      $('#entries, #entry, #entry-part').css("width", rightWidth);
+      $('#entries, #entry, #entry-part').css("width", rightWidth - 5);
       return $("#right-content").css("width", (rightWidth * 3) + 50);
     };
     /*

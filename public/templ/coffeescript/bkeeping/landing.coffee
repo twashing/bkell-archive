@@ -28,7 +28,7 @@ require( ['bkeeping/bkeeping', 'bkeeping/bindings',  'bkeeping/util']
       rightWidth = $(".bkell-container").width() - $("#left-col").width() - 10  # adjustment to make the Entries layout work in FF
       
       $("#right-col").css("width", rightWidth)
-      $('#entries, #entry, #entry-part').css("width", rightWidth)
+      $('#entries, #entry, #entry-part').css("width", (rightWidth - 5))  # adjusting for enscroll plugin
       $("#right-content").css("width", (rightWidth * 3) + 50)
     
     ###

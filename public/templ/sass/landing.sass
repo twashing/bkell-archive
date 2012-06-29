@@ -117,9 +117,25 @@ $grid-gutter-width: 1px
 
       #entries , #entry, #entry-part
         float: left
-        width: 800px
+        width: 795px
         height: 100%
-        overflow-y: scroll
+        overflow: auto
+/***
+ * track and handle styles for enscroll
+ ***/
+.track3
+  width: 10px
+
+.handle3
+  width: 5px
+  background: #000
+  opacity: 0.45
+  filter: alpha(opacity=45)
+  border: 1px solid #555
+  -webkit-border-radius: 7px
+  -moz-border-radius: 7px
+  border-radius: 7px
+
 
 table#entries-table > tbody > tr > td.editcolumn
   width: 50px
