@@ -332,12 +332,7 @@
           return ctx.accountRows.push(arow);
         });
         $("td").css("border", 0);
-        return $("#accounts").enscroll({
-          showOnHover: true,
-          clickTrackToScroll: false,
-          verticalTrackClass: 'track3',
-          verticalHandleClass: 'handle3'
-        });
+        return $("#accounts");
       },
       /*
           # instrument Accounts pane with actions
@@ -412,12 +407,7 @@
           ctx.entryRows.length = 0;
           return ctx.entryRows.push(arow);
         });
-        $("#entries").enscroll({
-          showOnHover: true,
-          clickTrackToScroll: false,
-          verticalTrackClass: 'track3',
-          verticalHandleClass: 'handle3'
-        });
+        $("#entries");
         return $("td").css("border", 0);
       },
       instrumentEntries: function(elem, bindings, esm) {

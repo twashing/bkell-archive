@@ -443,12 +443,12 @@ define( ['js/bkeeping/bkeeping', 'js/bkeeping/util'], (bkeeping, util) ->
       $("td").css("border", 0)
       
       $("#accounts")
-        .enscroll({
-          showOnHover: true,
-          clickTrackToScroll: false,
-          verticalTrackClass: 'track3',
-          verticalHandleClass: 'handle3'
-        })
+        #.enscroll({
+        #  showOnHover: true,
+        #  clickTrackToScroll: false,
+        #  verticalTrackClass: 'track3',
+        #  verticalHandleClass: 'handle3'
+        #})
     
     ###
     # instrument Accounts pane with actions
@@ -567,12 +567,12 @@ define( ['js/bkeeping/bkeeping', 'js/bkeeping/util'], (bkeeping, util) ->
         )
      
       $("#entries")
-        .enscroll({
-          showOnHover: true,
-          clickTrackToScroll: false,
-          verticalTrackClass: 'track3',
-          verticalHandleClass: 'handle3'
-        })
+        #.enscroll({
+        #  showOnHover: true,
+        #  clickTrackToScroll: false,
+        #  verticalTrackClass: 'track3',
+        #  verticalHandleClass: 'handle3'
+        #})
     
       # removing table row borders 
       $("td").css("border", 0)

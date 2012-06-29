@@ -5541,7 +5541,7 @@ a.thumbnail:hover {
 /* line 118, ../templ/sass/landing.sass */
 #right-col #right-wrapper #right-content #entries, #right-col #right-wrapper #right-content #entry, #right-col #right-wrapper #right-content #entry-part {
   float: left;
-  width: 795px;
+  width: 800px;
   height: 100%;
   overflow: auto;
 }
