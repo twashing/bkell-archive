@@ -5526,7 +5526,7 @@ a.thumbnail:hover {
   overflow: hidden;
   position: relative;
   width: 100%;
-  height: 70%;
+  height: 100%;
 }
 /* line 108, ../templ/sass/landing.sass */
 #right-col #right-wrapper #right-content {
