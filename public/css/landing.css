@@ -5492,15 +5492,18 @@ a.thumbnail:hover {
 #left-col #left-wrapper #left-content {
   white-space: nowrap;
   position: absolute;
+  height: 100%;
   width: 656;
 }
-/* line 72, ../templ/sass/landing.sass */
+/* line 73, ../templ/sass/landing.sass */
 #left-col #left-wrapper #left-content #accounts, #left-col #left-wrapper #left-content #account {
   width: 308;
   float: left;
   padding: 0px;
+  height: 100%;
+  overflow-y: scroll;
 }
-/* line 78, ../templ/sass/landing.sass */
+/* line 81, ../templ/sass/landing.sass */
 #left-col #left-wrapper #left-content #left-toggler {
   width: 20;
   height: 20px;
@@ -5512,7 +5515,7 @@ a.thumbnail:hover {
 /*****
  * Right / Entries Pane 
  ***** */
-/* line 89, ../templ/sass/landing.sass */
+/* line 92, ../templ/sass/landing.sass */
 #right-col {
   position: relative;
   float: left;
@@ -5520,7 +5523,7 @@ a.thumbnail:hover {
   margin-bottom: 0;
   margin-left: 310;
 }
-/* line 99, ../templ/sass/landing.sass */
+/* line 102, ../templ/sass/landing.sass */
 #right-col #right-wrapper {
   float: left;
   overflow: hidden;
@@ -5528,14 +5531,14 @@ a.thumbnail:hover {
   width: 100%;
   height: 100%;
 }
-/* line 108, ../templ/sass/landing.sass */
+/* line 111, ../templ/sass/landing.sass */
 #right-col #right-wrapper #right-content {
   white-space: nowrap;
   position: absolute;
   width: 100%;
   height: 100%;
 }
-/* line 115, ../templ/sass/landing.sass */
+/* line 118, ../templ/sass/landing.sass */
 #right-col #right-wrapper #right-content #entries, #right-col #right-wrapper #right-content #entry, #right-col #right-wrapper #right-content #entry-part {
   float: left;
   width: 800px;
@@ -5543,40 +5546,40 @@ a.thumbnail:hover {
   overflow-y: scroll;
 }
 
-/* line 121, ../templ/sass/landing.sass */
+/* line 124, ../templ/sass/landing.sass */
 table#entries-table > tbody > tr > td.editcolumn {
   width: 50px;
 }
 
-/* line 124, ../templ/sass/landing.sass */
+/* line 127, ../templ/sass/landing.sass */
 #logout-button.btn.btn-inverse {
   position: relative;
   float: right;
 }
 
-/* line 128, ../templ/sass/landing.sass */
+/* line 131, ../templ/sass/landing.sass */
 #entry-date {
   position: relative;
 }
-/* line 131, ../templ/sass/landing.sass */
+/* line 134, ../templ/sass/landing.sass */
 #entry-date input.span2 {
   height: 28px;
 }
 
-/* line 135, ../templ/sass/landing.sass */
+/* line 138, ../templ/sass/landing.sass */
 .entry-label {
   float: left;
   width: 100px;
 }
 
-/* line 139, ../templ/sass/landing.sass */
+/* line 142, ../templ/sass/landing.sass */
 .sorting_desc {
   background: url("/images/sort_desc.png");
   background-repeat: no-repeat;
   background-position: 100% 50%;
 }
 
-/* line 144, ../templ/sass/landing.sass */
+/* line 147, ../templ/sass/landing.sass */
 .sorting_asc {
   background: url("/images/sort_asc.png");
   background-repeat: no-repeat;
