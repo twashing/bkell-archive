@@ -1,6 +1,17 @@
 <html lang='en'>
   <head>
+    <meta charset='utf-8' />
     <title>Bkeeping.com: Simple Online Bookkeeping</title>
+    <!-- Chromeframe plugin -->
+    <meta content='chrome=1' http-equiv='X-UA-Compatible' />
+    <!-- Checking for Google Chromeframe; prompting for install -->
+    <!-- %script( type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/chrome-frame/1/CFInstall.min.js" ) -->
+    <!-- %style -->
+    <!-- / CSS rules to use for styling the overlay: -->
+    <!-- .chromeFrameOverlayContent -->
+    <!-- .chromeFrameOverlayContent iframe -->
+    <!-- .chromeFrameOverlayCloseBar -->
+    <!-- .chromeFrameOverlayUnderlay -->
     <link href='css/common.css' rel='stylesheet' type='text/css' />
     <link href='css/index.css' rel='stylesheet' type='text/css' />
     <script src='/js/lib/jquery-1.6.3.js'></script>
@@ -19,6 +30,11 @@
     <script type='text/javascript'>
       //<![CDATA[
         $(document).ready(function() {
+          
+          /* Checking for Google ChomrFrame installation*/
+          /*CFInstall.check({
+            mode: "overlay",
+            destination: "http://www.waikiki.com" }); */
           
           /*********
            * Some internal code is giving the body a margin - can't figure out what it is
