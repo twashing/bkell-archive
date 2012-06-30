@@ -254,10 +254,10 @@
         return this.el.find('.deleteaccount').bind('click', _.bind(this.deleteClicked, this));
       },
       editClicked: function() {
-        return console.log('edit CLICKED');
+        return console.log('edit account CLICKED');
       },
       deleteClicked: function() {
-        return console.log('delete CLICKED');
+        return console.log('delete account CLICKED');
       },
       accountChanged: function() {
         return console.log('account has been CHANGED');
@@ -320,18 +320,17 @@
         ctx = this;
         $("#accounts").render({
           puredata: this.collection.toJSON()
-        }, pureDirectives.accountsDirective).find('table').find('tbody > tr').each(function(index, ech) {
+        }, pureDirectives.accountsDirective).find('table').dataTable({
+          bPaginate: false
+        }).find('tbody > tr').each(function(index, ech) {
           /*
                     # Nesting Row Views here
                     */
           var arow;
-          arow = new AccountRow({
+          return arow = new AccountRow({
             el: ech
           });
-          ctx.accountRows.length = 0;
-          return ctx.accountRows.push(arow);
         });
-        $("#accounts").find('table').dataTable();
         $("td").css("border", 0);
         return $("#accounts");
       },
@@ -397,7 +396,9 @@
         });
         $("#entries").render({
           puredata: this.collection.toJSON()
-        }, pureDirectives.entriesDirective).find('table').find('tbody > tr').each(function(index, ech) {
+        }, pureDirectives.entriesDirective).find('table').dataTable({
+          bPaginate: false
+        }).find('tbody > tr').each(function(index, ech) {
           /*
                     # Nesting Row Views here
                     */
@@ -408,7 +409,6 @@
           ctx.entryRows.length = 0;
           return ctx.entryRows.push(arow);
         });
-        $("#entries").find('table').dataTable();
         $("#entries");
         return $("td").css("border", 0);
       },
