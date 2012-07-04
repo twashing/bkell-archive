@@ -1,16 +1,21 @@
-/* line 5, ../templ/sass/_utils.sass */
+@font-face {
+  font-family: "PalatinoZ";
+  src: url('/css/fonts/fonts/ufonts.com_palatino.ttf') format('truetype'), url('/css/fonts/fonts/ufonts.com_palatino.eot') format('embedded-opentype');
+}
+
+/* line 9, ../templ/sass/_utils.sass */
 .debug {
   border-style: solid;
   border-width: 1px;
 }
 
-/* line 8, ../templ/sass/_utils.sass */
+/* line 12, ../templ/sass/_utils.sass */
 .text-curly, #header #title-wrapper #title, #header #title-wrapper #subtitle, #legal {
   font-style: italic;
   font-family: Palatino, sans-serif;
 }
 
-/* line 12, ../templ/sass/_utils.sass */
+/* line 16, ../templ/sass/_utils.sass */
 .text-default {
   font: Verdana, Arial, sans-serif;
 }
@@ -40,19 +45,24 @@ html, body {
   height: 150px;
 }
 
-/* line 5, ../templ/sass/_utils.sass */
+@font-face {
+  font-family: "PalatinoZ";
+  src: url('/css/fonts/fonts/ufonts.com_palatino.ttf') format('truetype'), url('/css/fonts/fonts/ufonts.com_palatino.eot') format('embedded-opentype');
+}
+
+/* line 9, ../templ/sass/_utils.sass */
 .debug {
   border-style: solid;
   border-width: 1px;
 }
 
-/* line 8, ../templ/sass/_utils.sass */
+/* line 12, ../templ/sass/_utils.sass */
 .text-curly, #header #title-wrapper #title, #header #title-wrapper #subtitle, #legal {
   font-style: italic;
   font-family: Palatino, sans-serif;
 }
 
-/* line 12, ../templ/sass/_utils.sass */
+/* line 16, ../templ/sass/_utils.sass */
 .text-default {
   font: Verdana, Arial, sans-serif;
 }
