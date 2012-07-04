@@ -69,7 +69,7 @@ html, body {
 #header #title-wrapper #title {
   position: relative;
   float: left;
-  font-size: 3em;
+  font-size: 48;
   font-weight: bold;
   margin: 0 10;
 }

@@ -86,7 +86,7 @@ html, body {
 #header #title-wrapper #title {
   position: relative;
   float: left;
-  font-size: 3em;
+  font-size: 48;
   font-weight: bold;
   margin: 0 10;
 }
@@ -5468,15 +5468,37 @@ a.thumbnail:hover {
   min-width: 800px;
 }
 
-/* line 42, ../templ/sass/landing.sass */
+/*****
+ * !! have to do custom sizing on Landing page to have it match index page
+ ***** */
+/* line 45, ../templ/sass/landing.sass */
 #header {
   z-index: 20;
+}
+/* line 48, ../templ/sass/landing.sass */
+#header #title-wrapper #title {
+  font-size: 48;
+  margin: 18 10;
+  color: black;
+}
+/* line 52, ../templ/sass/landing.sass */
+#header #title-wrapper #subtitle {
+  color: black;
+}
+/* line 54, ../templ/sass/landing.sass */
+#header #title-wrapper #subtitle #subtitle-default, #header #title-wrapper #subtitle #subtitle-black {
+  font-size: 16;
+}
+
+/* line 57, ../templ/sass/landing.sass */
+#footer, #legal, .interruptlink {
+  font-size: 16;
 }
 
 /*****
  * Left / Accounts Pane 
  ***** */
-/* line 48, ../templ/sass/landing.sass */
+/* line 64, ../templ/sass/landing.sass */
 #left-col {
   position: absolute;
   top: 0;
@@ -5490,7 +5512,7 @@ a.thumbnail:hover {
   background: white;
   box-shadow: 0 4px 6px #554433;
 }
-/* line 58, ../templ/sass/landing.sass */
+/* line 74, ../templ/sass/landing.sass */
 #left-col #left-wrapper {
   float: left;
   width: 308;
@@ -5498,14 +5520,14 @@ a.thumbnail:hover {
   overflow: hidden;
   position: relative;
 }
-/* line 65, ../templ/sass/landing.sass */
+/* line 81, ../templ/sass/landing.sass */
 #left-col #left-wrapper #left-content {
   white-space: nowrap;
   position: absolute;
   height: 100%;
   width: 656;
 }
-/* line 73, ../templ/sass/landing.sass */
+/* line 89, ../templ/sass/landing.sass */
 #left-col #left-wrapper #left-content #accounts, #left-col #left-wrapper #left-content #account {
   width: 308;
   float: left;
@@ -5513,7 +5535,7 @@ a.thumbnail:hover {
   height: 100%;
   overflow-y: scroll;
 }
-/* line 81, ../templ/sass/landing.sass */
+/* line 97, ../templ/sass/landing.sass */
 #left-col #left-wrapper #left-content #left-toggler {
   width: 20;
   height: 20px;
@@ -5525,7 +5547,7 @@ a.thumbnail:hover {
 /*****
  * Right / Entries Pane 
  ***** */
-/* line 92, ../templ/sass/landing.sass */
+/* line 108, ../templ/sass/landing.sass */
 #right-col {
   position: relative;
   float: left;
@@ -5533,7 +5555,7 @@ a.thumbnail:hover {
   margin-bottom: 0;
   margin-left: 310;
 }
-/* line 102, ../templ/sass/landing.sass */
+/* line 118, ../templ/sass/landing.sass */
 #right-col #right-wrapper {
   float: left;
   overflow: hidden;
@@ -5541,14 +5563,14 @@ a.thumbnail:hover {
   width: 100%;
   height: 100%;
 }
-/* line 111, ../templ/sass/landing.sass */
+/* line 127, ../templ/sass/landing.sass */
 #right-col #right-wrapper #right-content {
   white-space: nowrap;
   position: absolute;
   width: 100%;
   height: 100%;
 }
-/* line 118, ../templ/sass/landing.sass */
+/* line 134, ../templ/sass/landing.sass */
 #right-col #right-wrapper #right-content #entries, #right-col #right-wrapper #right-content #entry, #right-col #right-wrapper #right-content #entry-part {
   float: left;
   width: 800px;
@@ -5559,12 +5581,12 @@ a.thumbnail:hover {
 /**
  * track and handle styles for enscroll
  ** */
-/* line 126, ../templ/sass/landing.sass */
+/* line 142, ../templ/sass/landing.sass */
 .track3 {
   width: 10px;
 }
 
-/* line 129, ../templ/sass/landing.sass */
+/* line 145, ../templ/sass/landing.sass */
 .handle3 {
   width: 5px;
   background: black;
@@ -5576,40 +5598,40 @@ a.thumbnail:hover {
   border-radius: 7px;
 }
 
-/* line 140, ../templ/sass/landing.sass */
+/* line 156, ../templ/sass/landing.sass */
 table#entries-table > tbody > tr > td.editcolumn {
   width: 50px;
 }
 
-/* line 143, ../templ/sass/landing.sass */
+/* line 159, ../templ/sass/landing.sass */
 #logout-button.btn.btn-inverse {
   position: relative;
   float: right;
 }
 
-/* line 147, ../templ/sass/landing.sass */
+/* line 163, ../templ/sass/landing.sass */
 #entry-date {
   position: relative;
 }
-/* line 150, ../templ/sass/landing.sass */
+/* line 166, ../templ/sass/landing.sass */
 #entry-date input.span2 {
   height: 28px;
 }
 
-/* line 154, ../templ/sass/landing.sass */
+/* line 170, ../templ/sass/landing.sass */
 .entry-label {
   float: left;
   width: 100px;
 }
 
-/* line 158, ../templ/sass/landing.sass */
+/* line 174, ../templ/sass/landing.sass */
 .sorting_desc {
   background: url("/images/sort_desc.png");
   background-repeat: no-repeat;
   background-position: 100% 50%;
 }
 
-/* line 163, ../templ/sass/landing.sass */
+/* line 179, ../templ/sass/landing.sass */
 .sorting_asc {
   background: url("/images/sort_asc.png");
   background-repeat: no-repeat;
