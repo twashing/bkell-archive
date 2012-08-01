@@ -8,13 +8,43 @@
     %meta( http-equiv="X-UA-Compatible" content="chrome=1")
     
     / Checking for Google Chromeframe; prompting for install
+    /[if lt IE 7]
+      %script( type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/chrome-frame/1/CFInstall.min.js" )
+    /[if IE 7]
+      %script( type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/chrome-frame/1/CFInstall.min.js" )
+    /[if IE 8]
+      %script( type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/chrome-frame/1/CFInstall.min.js" )
+    /[if IE 9]
+      %script( type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/chrome-frame/1/CFInstall.min.js" )
+    
+    %style
+      / CSS rules to use for styling the overlay:
+      .chromeFrameOverlayContent
+      .chromeFrameOverlayContent iframe
+      .chromeFrameOverlayCloseBar
+      .chromeFrameOverlayUnderlay
+    
+    /%iframe( style="border: 0; width: 0; height: 0" )
+    /  %script( type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/chrome-frame/1/CFInstall.min.js" )
+    
     /%script( type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/chrome-frame/1/CFInstall.min.js" )
-    /%style
-    /  / CSS rules to use for styling the overlay:
-    /  .chromeFrameOverlayContent
-    /  .chromeFrameOverlayContent iframe
-    /  .chromeFrameOverlayCloseBar
-    /  .chromeFrameOverlayUnderlay
+    /%script( type="text/javascript" src="/js/lib/CFInstall.min.js" )
+    
+    /:javascript
+    /  require.config({
+    /      baseUrl: 'scripts/',
+    /      paths: {
+    /          'backbone': 'lib/backbone',
+    /          'jquery': 'lib/jquery',
+    /          'underscore': 'lib/underscore'
+    /      },
+    /      shim: {
+    /          'backbone': {
+    /              deps: ['underscore', 'jquery'],
+    /              exports: 'Backbone'
+    /          }
+    /      }
+    /  });
     
     %link( type="text/css" href="css/common.css" rel="stylesheet" )
     %link( type="text/css" href="css/index.css" rel="stylesheet" )

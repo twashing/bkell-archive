@@ -5,13 +5,44 @@
     <!-- Chromeframe plugin -->
     <meta content='chrome=1' http-equiv='X-UA-Compatible' />
     <!-- Checking for Google Chromeframe; prompting for install -->
+    <!--[if lt IE 7]>
+      <script src='http://ajax.googleapis.com/ajax/libs/chrome-frame/1/CFInstall.min.js' type='text/javascript'></script>
+    <![endif]-->
+    <!--[if IE 7]>
+      <script src='http://ajax.googleapis.com/ajax/libs/chrome-frame/1/CFInstall.min.js' type='text/javascript'></script>
+    <![endif]-->
+    <!--[if IE 8]>
+      <script src='http://ajax.googleapis.com/ajax/libs/chrome-frame/1/CFInstall.min.js' type='text/javascript'></script>
+    <![endif]-->
+    <!--[if IE 9]>
+      <script src='http://ajax.googleapis.com/ajax/libs/chrome-frame/1/CFInstall.min.js' type='text/javascript'></script>
+    <![endif]-->
+    <style>
+      <!-- CSS rules to use for styling the overlay: -->
+      <div class='chromeFrameOverlayContent'></div>
+      <div class='chromeFrameOverlayContent'>iframe</div>
+      <div class='chromeFrameOverlayCloseBar'></div>
+      <div class='chromeFrameOverlayUnderlay'></div>
+    </style>
+    <!-- %iframe( style="border: 0; width: 0; height: 0" ) -->
     <!-- %script( type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/chrome-frame/1/CFInstall.min.js" ) -->
-    <!-- %style -->
-    <!-- / CSS rules to use for styling the overlay: -->
-    <!-- .chromeFrameOverlayContent -->
-    <!-- .chromeFrameOverlayContent iframe -->
-    <!-- .chromeFrameOverlayCloseBar -->
-    <!-- .chromeFrameOverlayUnderlay -->
+    <!-- %script( type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/chrome-frame/1/CFInstall.min.js" ) -->
+    <!-- %script( type="text/javascript" src="/js/lib/CFInstall.min.js" ) -->
+    <!-- :javascript -->
+    <!-- require.config({ -->
+    <!-- baseUrl: 'scripts/', -->
+    <!-- paths: { -->
+    <!-- 'backbone': 'lib/backbone', -->
+    <!-- 'jquery': 'lib/jquery', -->
+    <!-- 'underscore': 'lib/underscore' -->
+    <!-- }, -->
+    <!-- shim: { -->
+    <!-- 'backbone': { -->
+    <!-- deps: ['underscore', 'jquery'], -->
+    <!-- exports: 'Backbone' -->
+    <!-- } -->
+    <!-- } -->
+    <!-- }); -->
     <link href='css/common.css' rel='stylesheet' type='text/css' />
     <link href='css/index.css' rel='stylesheet' type='text/css' />
     <script src='/js/lib/jquery-1.6.3.js'></script>
