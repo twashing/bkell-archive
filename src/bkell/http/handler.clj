@@ -51,7 +51,7 @@
 
 ;; ======
 ;; ROOT Page 
-(noir/defpage "/" []   ;; index is the default page of the application 
+(noir/defpage [ :get "/" ] [:as req]   ;; index is the default page of the application 
   (let  [ templ (enlive/html-resource "index.html")
           mode (:mode @bkell/shell)
           host-url (-> mode (@bkell/shell) :host-url)
@@ -60,7 +60,18 @@
           ;ruri  (str  (generate-host-address host-url host-port) "/callbackGitkit" )
           ruri  (str  (generate-host-address host-url (if (= mode :dev) host-port nil)) "/callbackGitkit" ) ;; conditionally assign the host-port
         ]
-  
+
+    ;; get (-> raw-request :headers "user-agent")
+    (println (str "/ ROOT HANDLER: " (request/ring-request)))
+    ;;(println (str "/ raw request type: " (type (request/ring-request))))
+    (let [raw-request (request/ring-request)
+          uagent (get (:headers raw-request) "user-agent")
+          ]
+
+      ;; if IE, then return a ChromeFrameInstall page
+      ;; ...
+      (println (str "/ ROOT user-agent: " uagent))
+    )
     ;;(response/file-response "index.html" { :root "public" })
     (apply str (enlive/emit*  (enlive/transform 
                                 templ
