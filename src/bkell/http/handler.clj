@@ -48,6 +48,88 @@
   )
 )
 
+(defn goindex []
+  (let  [ templ (enlive/html-resource "index.html")
+          mode (:mode @bkell/shell)
+          host-url (-> mode (@bkell/shell) :host-url)
+          host-port (-> mode (@bkell/shell) :host-port)
+          developer-key (-> mode (@bkell/shell) :developer-key)
+          ruri  (str  (generate-host-address host-url (if (= mode :dev) host-port nil)) "/callbackGitkit" ) ;; conditionally assign the host-port
+        ]
+    
+    (apply str (enlive/emit*  (enlive/transform 
+                                templ
+                                [[ :script (enlive/nth-of-type 10) ]]  ;; get the 3rd script tag 
+                                (enlive/content 
+                                  (str 
+                                    " 
+                                          //<![CDATA[
+                                            $(document).ready(function() {
+                                              
+                                              /*********
+                                               * Some internal code is giving the body a margin - can't figure out what it is
+                                               *********/
+                                              $('body').css('margin', '0px'); 
+                                              
+                                              
+                                              /*********
+                                               * GITkit Account Chooser code
+                                               *********/
+                                              window.google.identitytoolkit.setConfig({
+                                                developerKey: '" developer-key "',
+                                                companyName: 'Interrupt Software Inc.',
+                                                callbackUrl: '" ruri "',
+                                                realm: '', 
+                                                userStatusUrl: '/userStatusUrl',
+                                                loginUrl: '/loginUrl',
+                                                signupUrl: '/register',
+                                                homeUrl: '/landing',
+                                                logoutUrl: '/logout',
+                                                idps: ['Gmail', 'Yahoo', 'AOL'],
+                                                tryFederatedFirst: true,
+                                                useCachedUserStatus: false
+                                              });
+                                               
+                                              $('#account-chooser').accountChooser();
+                                              
+                                              
+                                              /********* 
+                                               * load the footer file
+                                               *********/
+                                              $('#footer').load('/include/footerPart.html');
+                                              
+                                            });
+                                          //]]>
+                                    "
+                                  ))
+              ))
+    )
+  )
+)
+(def gocfinstall []
+  (let  [ templ (enlive/html-resource "cfinstall.html")
+          mode (:mode @bkell/shell)
+          host-url (-> mode (@bkell/shell) :host-url)
+          host-port (-> mode (@bkell/shell) :host-port)
+          developer-key (-> mode (@bkell/shell) :developer-key)
+          ruri  (str  (generate-host-address host-url (if (= mode :dev) host-port nil)) "/callbackGitkit" ) ;; conditionally assign the host-port
+        ]
+    
+    ;; get (-> raw-request :headers "user-agent")
+    (println (str "/ ROOT HANDLER: " (request/ring-request)))
+    (let [raw-request (request/ring-request)
+          uagent (get (:headers raw-request) "user-agent")
+          ]
+
+      ;; if IE, then return a ChromeFrameInstall page, otherwise, go to index
+      (println (str "/ ROOT user-agent: " uagent " / contains 'MSIE' [" (re-find #"MSIE" uagent) "] "))
+      (if (re-find #"MSIE" uagent)
+        (gocfinstall)
+        (goindex)
+      )
+    )
+  )
+)
 
 ;; ======
 ;; ROOT Page 
@@ -63,16 +145,18 @@
 
     ;; get (-> raw-request :headers "user-agent")
     (println (str "/ ROOT HANDLER: " (request/ring-request)))
-    ;;(println (str "/ raw request type: " (type (request/ring-request))))
     (let [raw-request (request/ring-request)
           uagent (get (:headers raw-request) "user-agent")
           ]
 
-      ;; if IE, then return a ChromeFrameInstall page
-      ;; ...
-      (println (str "/ ROOT user-agent: " uagent))
+      ;; if IE, then return a ChromeFrameInstall page, otherwise, go to index
+      (println (str "/ ROOT user-agent: " uagent " / contains 'MSIE' [" (re-find #"MSIE" uagent) "] "))
+      (if (re-find #"MSIE" uagent)
+        (gocfinstall)
+        (goindex)
+      )
     )
-    ;;(response/file-response "index.html" { :root "public" })
+    
     (apply str (enlive/emit*  (enlive/transform 
                                 templ
                                 [[ :script (enlive/nth-of-type 10) ]]  ;; get the 3rd script tag 
