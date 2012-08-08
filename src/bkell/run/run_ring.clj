@@ -46,7 +46,7 @@
     
     
     ;; ==== 
-    ;; Setting the mode in the shell 
+    ;; Settingc the mode in the shell 
     (dosync 
       (alter bkell/shell conj { :mode mode })
       (let [new-prod (merge (:prod config) { :host-port host-port })]
