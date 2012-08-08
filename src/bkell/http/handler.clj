@@ -132,8 +132,8 @@
           ]
 
       ;; if IE, then return a ChromeFrameInstall page, otherwise, go to index
-      (println (str "/ ROOT user-agent: " uagent " / contains 'MSIE' [" (re-find #"MSIE" uagent) "] "))
-      (if (re-find #"MSIE" uagent)
+      (println (str "/ ROOT user-agent: " uagent " / is solely IE (without GCF) [" (re-find #"MSIE" uagent) "] "))
+      (if (and (re-find #"MSIE" uagent) (not (re-find #"chromeframe" uagent)))
         (gocfinstall)
         (goindex)
       )
