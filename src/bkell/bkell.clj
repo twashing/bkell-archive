@@ -98,13 +98,13 @@
 
 (defn -main [& args]
     
-  (ns bkell) 
-  (use 'bkell) 
+  (ns bkell)
+  (use 'bkell.bkell)
   (init-shell) 
   
-  (println "-main CALLED")
-  (require 'clojure.main)
-  (clojure.main/repl)
+  #_(println "-main CALLED")
+  #_(require 'clojure.main)
+  #_(clojure.main/repl)
   
 )
 

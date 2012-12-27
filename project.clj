@@ -32,6 +32,6 @@
   :profiles {
               :dev {:resource-paths ["." "src/" "test/" "vendor/" "vendor/debug/" "public/" "etc/resources/"]}
             }
-  :main bkell.run.run-ring
+  ;;:main bkell.run.run-ring
 )
 

@@ -5,18 +5,45 @@ The bkell project is a Clojure implementation of 'Bookkeeping'. 'Bookkeeping' pr
 
 ## Download
 ```
-git clone 'https://github.com/twashing/bkell.git' 
+$ git clone 'https://github.com/twashing/bkell.git' 
 ```
 
 ## Database 
-bkell requires a MongoDB to be installed
 
-## Run
+bkell requires a MongoDB to be installed, minimum version (db version v2.0.5).
+
+Start MongoDB with command 
+````
+$ sudo mongod --dbpath /data/db
+```
+
+Initialize (populate) database. ** This is only needed when first installing the app **
 ````
 $ lein repl
-user=> 
-user=> (load "run-bkell")
+  => (require '[init.database :as db])
+  => (db/setup)
 ````
+
+
+## Run
+
+SHELL 
+
+Run the shell 
+````
+$ lein repl
+  => (require 'bkell.run.run-bkell)
+````
+
+Run the webapp
+````
+$ lein repl
+  => (require 'bkell.run.run-ring)
+  => (bkell.run.run-ring/-main)
+````
+
+Then in your browser, go to "localhost:8080" 
+
 
 ## Tests
 ````
