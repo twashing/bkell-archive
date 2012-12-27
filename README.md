@@ -10,14 +10,14 @@ $ git clone 'https://github.com/twashing/bkell.git'
 
 ## Database 
 
-bkell requires a MongoDB to be installed, minimum version (db version v2.0.5).
+_**bkell**_ requires a MongoDB to be installed, minimum version (db version v2.0.5).
 
 Start MongoDB with command 
 ````
 $ sudo mongod --dbpath /data/db
 ```
 
-Initialize (populate) database. ** This is only needed when first installing the app **
+Initialize (populate) database. _This is only needed when first installing the app_
 ````
 $ lein repl
   => (require '[init.database :as db])
@@ -26,8 +26,6 @@ $ lein repl
 
 
 ## Run
-
-SHELL 
 
 Run the shell 
 ````
@@ -42,7 +40,7 @@ $ lein repl
   => (bkell.run.run-ring/-main)
 ````
 
-Then in your browser, go to "localhost:8080" 
+Then in your browser, go to _localhost:8080_
 
 
 ## Tests
