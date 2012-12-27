@@ -1,6 +1,6 @@
 
 ## Abstract
-The bkell project is a Clojure implementation of 'Bookkeeping'. 'Bookkeeping' provides a Shell and API for maintaining balanced records for business transactions. 
+The _**bkell**_ project is a Clojure implementation of 'Bookkeeping'. _**bkell**_ provides a Shell and API for maintaining balanced records for business transactions. 
 
 
 ## Download
