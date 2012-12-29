@@ -3,6 +3,25 @@
 The _**bkell**_ project is a Clojure implementation of 'Bookkeeping'. _**bkell**_ provides a Shell and API for maintaining balanced records for business transactions. 
 
 
+##Tooling 
+
+If you haven't already, you'll need to install these tools:
+
+
+**git** [http://git-scm.com]
+
+**leiningen** [https://github.com/technomancy/leiningen]
+
+**compass** [http://compass-style.org]
+  compass configuration is already in _bkell/public/config.rb_
+  from _bkell/public/_ , execute `compass watch`
+
+**guard** [https://github.com/guard/guard]
+  with plugins for HAML [github.com/manufaktor/guard-haml] and Coffeescript [github.com/guard/guard-coffeescript] 
+  guard configuration is already in _bkell/public/Guardfile_
+  from _bkell/public/_ , execute with `guard` 
+
+
 ## Download
 ```
 $ git clone 'https://github.com/twashing/bkell.git' 
@@ -59,4 +78,6 @@ bkell=> (login {:username "twashing", :password "5f4dcc3b5aa765d61d8327deb882cf9
 {:previous {:username "twashing", :password "<...>", :tag :user}, :logged-in-user {:username "twashing", :password "5f4dcc3b5aa765d61d8327deb882cf99", :tag :user}, :active true}
 bkell=>
 ````
+
+
 
