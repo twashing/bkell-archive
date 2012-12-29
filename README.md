@@ -17,7 +17,7 @@ If you haven't already, you'll need to install these tools:
   * from _bkell/public/_ , execute `compass watch`
 
 **guard** _https://github.com/guard/guard_
-  * with plugins for HAML _github.com/manufaktor/guard-haml_ and Coffeescript _github.com/guard/guard-coffeescript_ 
+  * with plugins for HAML _https://github.com/manufaktor/guard-haml_ and Coffeescript _https://github.com/guard/guard-coffeescript_ 
   * guard configuration is already in _bkell/public/Guardfile_
   * from _bkell/public/_ , execute with `guard` 
 
