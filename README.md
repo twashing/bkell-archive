@@ -8,18 +8,18 @@ The _**bkell**_ project is a Clojure implementation of 'Bookkeeping'. _**bkell**
 If you haven't already, you'll need to install these tools:
 
 
-**git** [http://git-scm.com]
+**git** _http://git-scm.com_
 
-**leiningen** [https://github.com/technomancy/leiningen]
+**leiningen** _https://github.com/technomancy/leiningen_
 
-**compass** [http://compass-style.org]
-  compass configuration is already in _bkell/public/config.rb_
-  from _bkell/public/_ , execute `compass watch`
+**compass** _http://compass-style.org_
+  * compass configuration is already in _bkell/public/config.rb_
+  * from _bkell/public/_ , execute `compass watch`
 
-**guard** [https://github.com/guard/guard]
-  with plugins for HAML [github.com/manufaktor/guard-haml] and Coffeescript [github.com/guard/guard-coffeescript] 
-  guard configuration is already in _bkell/public/Guardfile_
-  from _bkell/public/_ , execute with `guard` 
+**guard** _https://github.com/guard/guard_
+  * with plugins for HAML _github.com/manufaktor/guard-haml_ and Coffeescript _github.com/guard/guard-coffeescript_ 
+  * guard configuration is already in _bkell/public/Guardfile_
+  * from _bkell/public/_ , execute with `guard` 
 
 
 ## Download
