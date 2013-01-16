@@ -48,15 +48,16 @@
     
     %link( type="text/css" href="css/common.css" rel="stylesheet" )
     %link( type="text/css" href="css/            index.css" rel="stylesheet" )
-    
+           
 
-    /%script( src="http://code.jquery.com/jquery-1.9.0.min.js")
-    %script( src="/js/lib/jquery-1.6.3.js" )
+    %script( src="//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js")
+    /%script( src="/js/lib/jquery-1.6.3.js" )
     %script( src= "http://ajax.googleapis.com/ajax/libs/jqueryui/1.8/jquery-ui.min.js" )
     %script( src= "https://ajax.googleapis.com/ajax/libs/googleapis/0.0.4/googleapis.min.js" )
     %script( src= 'https://ajax.googleapis.com/jsapi' )
+    %script( src= 'https://www.accountchooser.com/client.js' )
     :javascript
-      google.load("identitytoolkit", "1", {packages: ["ac"], language:"en"});
+      google.load("identitytoolkit", "2", {packages: ["ac"], language:"en"});
     
     %script( src="/js/lib/json2.js" )
     %script( src="/js/lib/underscore.js" )
