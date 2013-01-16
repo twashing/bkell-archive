@@ -26,7 +26,7 @@
     </style>
     <!-- %iframe( style="border: 0; width: 0; height: 0" ) -->
     <!-- %script( type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/chrome-frame/1/CFInstall.min.js" ) -->
-    <!-- %script( type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/chrome-frame/1/CFInstall.min.js" ) -->
+    <script src='http://ajax.googleapis.com/ajax/libs/chrome-frame/1/CFInstall.min.js' type='text/javascript'></script>
     <!-- %script( type="text/javascript" src="/js/lib/CFInstall.min.js" ) -->
     <!-- :javascript -->
     <!-- require.config({ -->
@@ -45,7 +45,8 @@
     <!-- }); -->
     <link href='css/common.css' rel='stylesheet' type='text/css' />
     <link href='css/index.css' rel='stylesheet' type='text/css' />
-    <script src='/js/lib/jquery-1.6.3.js'></script>
+    <script src='http://code.jquery.com/jquery-1.9.0.min.js'></script>
+    <!-- %script( src="/js/lib/jquery-1.6.3.js" ) -->
     <script src='http://ajax.googleapis.com/ajax/libs/jqueryui/1.8/jquery-ui.min.js'></script>
     <script src='https://ajax.googleapis.com/ajax/libs/googleapis/0.0.4/googleapis.min.js'></script>
     <script src='https://ajax.googleapis.com/jsapi'></script>
@@ -63,9 +64,9 @@
         $(document).ready(function() {
           
           /* Checking for Google ChomrFrame installation*/
-          /*CFInstall.check({
+          CFInstall.check({
             mode: "overlay",
-            destination: "http://www.waikiki.com" }); */
+            destination: "http://www.bkeeping.com" });
           
           /*********
            * Some internal code is giving the body a margin - can't figure out what it is
