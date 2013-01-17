@@ -5,7 +5,7 @@
     %title Bkeeping.com: Simple Online Bookkeeping
 
     / Chromeframe plugin
-    %meta( http-equiv="X-UA-Compatible" content="chrome=1")
+    /%meta( http-equiv="X-UA-Compatible" content="chrome=1")
 
     %style
       / CSS rules to use for styling the overlay:
@@ -15,7 +15,7 @@
       .chromeFrameOverlayUnderlay
 
     %script(src="https://github.com/kriskowal/es5-shim/blob/master/es5-shim.min.js")
-    %script( type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/chrome-frame/1/CFInstall.min.js" )
+    /%script( type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/chrome-frame/1/CFInstall.min.js" )
 
     %link( type="text/css" href="css/common.css" rel="stylesheet" )
     %link( type="text/css" href="css/index.css" rel="stylesheet" )
@@ -34,11 +34,6 @@
     %script( src="js/bkeeping.js" type="text/javascript" )
     :javascript
       $(document).ready(function() {
-
-      /* Checking for Google ChromeFrame installation*/
-      CFInstall.check({
-                mode: "overlay",
-                destination: "http://bkeeping.com" });
 
 
         /*********
