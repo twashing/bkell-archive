@@ -20,7 +20,7 @@
     <script src='https://ajax.googleapis.com/jsapi'></script>
     <script type='text/javascript'>
       //<![CDATA[
-        google.load("identitytoolkit", "1", {packages: ["ac"], language:"en"});
+        google.load("identitytoolkit", "2", {packages: ["ac"], language:"en"});
       //]]>
     </script>
     <script src='/js/lib/json2.js'></script>
@@ -31,10 +31,10 @@
       //<![CDATA[
         $(document).ready(function() {
         
-          /* Checking for Google ChromeFrame installation*/
-          CFInstall.check({
-            mode: "overlay",
-            destination: "http://bkeeping.com" });
+          /* Checking for Google ChromeFrame installation
+          //CFInstall.check({
+          //  mode: "overlay",
+          // destination: "http://bkeeping.com" });*/
         
           /*********
            * Some internal code is giving the body a margin - can't figure out what it is
