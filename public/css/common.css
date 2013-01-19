@@ -1,9 +1,9 @@
-/* line 10, ../../../../.rvm/gems/ruby-1.9.2-p290/gems/compass-0.12.1/frameworks/compass/stylesheets/compass/layout/_sticky-footer.scss */
+/* line 10, ../../../../.rvm/gems/ruby-1.9.3-p194/gems/compass-0.12.2/frameworks/compass/stylesheets/compass/layout/_sticky-footer.scss */
 html, body {
   height: 100%;
 }
 
-/* line 12, ../../../../.rvm/gems/ruby-1.9.2-p290/gems/compass-0.12.1/frameworks/compass/stylesheets/compass/layout/_sticky-footer.scss */
+/* line 12, ../../../../.rvm/gems/ruby-1.9.3-p194/gems/compass-0.12.2/frameworks/compass/stylesheets/compass/layout/_sticky-footer.scss */
 .container-fluid {
   clear: both;
   min-height: 100%;
@@ -11,12 +11,12 @@ html, body {
   height: 100%;
   margin-bottom: -150px;
 }
-/* line 18, ../../../../.rvm/gems/ruby-1.9.2-p290/gems/compass-0.12.1/frameworks/compass/stylesheets/compass/layout/_sticky-footer.scss */
+/* line 18, ../../../../.rvm/gems/ruby-1.9.3-p194/gems/compass-0.12.2/frameworks/compass/stylesheets/compass/layout/_sticky-footer.scss */
 .container-fluid .span3 {
   height: 150px;
 }
 
-/* line 20, ../../../../.rvm/gems/ruby-1.9.2-p290/gems/compass-0.12.1/frameworks/compass/stylesheets/compass/layout/_sticky-footer.scss */
+/* line 20, ../../../../.rvm/gems/ruby-1.9.3-p194/gems/compass-0.12.2/frameworks/compass/stylesheets/compass/layout/_sticky-footer.scss */
 #footer {
   clear: both;
   position: relative;
@@ -37,7 +37,7 @@ html, body {
 /* line 12, ../templ/sass/_utils.sass */
 .text-curly, #header #title-wrapper #title, #header #title-wrapper #subtitle, #legal {
   font-style: italic;
-  font-family: Palatino, sans-serif;
+  font-family: Poly, serif;
 }
 
 /* line 16, ../templ/sass/_utils.sass */
@@ -130,7 +130,7 @@ html, body {
   min-height: 100%;
   margin: 0 auto -150px;
 }
-/* line 10, ../../../../.rvm/gems/ruby-1.9.2-p290/gems/grid-coordinates-1.2.0/stylesheets/modules/_bulletproof-clearfix.sass */
+/* line 10, ../../../../.rvm/gems/ruby-1.9.3-p194/gems/grid-coordinates-1.2.0/stylesheets/modules/_bulletproof-clearfix.sass */
 .bkell-container:before, .bkell-container:after {
   content: ".";
   display: block;
@@ -141,7 +141,7 @@ html, body {
   width: 0;
   height: 0;
 }
-/* line 19, ../../../../.rvm/gems/ruby-1.9.2-p290/gems/grid-coordinates-1.2.0/stylesheets/modules/_bulletproof-clearfix.sass */
+/* line 19, ../../../../.rvm/gems/ruby-1.9.3-p194/gems/grid-coordinates-1.2.0/stylesheets/modules/_bulletproof-clearfix.sass */
 .bkell-container:after {
   clear: both;
 }
