@@ -18,22 +18,22 @@ $grid-columns: 12
 $grid-gutter-width: 1px
 @include grid-coordinates
 
-@mixin debugM 
+@mixin debugM
   border: black 1px solid
 
 
 
 .container-fluid
-  padding: 0px 
+  padding: 0px
 
 
-.sidebar-nav-fixed 
+.sidebar-nav-fixed
   position: relative
-  padding: 0px 
+  padding: 0px
   width: 250px
 
 
-.span-fixed-sidebar 
+.span-fixed-sidebar
   margin-left: 260px
   min-width: 800px
 
@@ -59,7 +59,7 @@ $grid-gutter-width: 1px
 
 
 /******
- * Left / Accounts Pane 
+ * Left / Accounts Pane
  ******/
 #left-col
   +stretch( $offset-top : 0, $offset-bottom : 0 )
@@ -77,12 +77,12 @@ $grid-gutter-width: 1px
     height: 100%
     overflow: hidden
     position: relative
-  
+
     #left-content
       white-space: nowrap
       position: absolute
       height: 100%
-      
+
       // adjustment to make layout in FF work
       width: ($left-content-width + $left-content-margin + $left-toggler-width) * 2 + 40 // adjustment to make layout in FF work
 
@@ -93,17 +93,17 @@ $grid-gutter-width: 1px
         padding: 0px
         height: 100%
         overflow-y: scroll
-      
+
       #left-toggler
         width: $left-toggler-width
         height: 20px
-        background-color: blue 
+        background-color: blue
         float: right
         position: relative
 
 
 /******
- * Right / Entries Pane 
+ * Right / Entries Pane
  ******/
 #right-col
   position: relative
@@ -162,7 +162,7 @@ table#entries-table > tbody > tr > td.editcolumn
 
 #entry-date
   position: relative
-  
+
   input.span2
     height: 28px
 
@@ -180,4 +180,3 @@ table#entries-table > tbody > tr > td.editcolumn
   background: url("/images/sort_asc.png")
   background-repeat: no-repeat
   background-position: 100% 50%
-
