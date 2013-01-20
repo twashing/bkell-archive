@@ -1,95 +1,171 @@
-/*
-Syntax error: Invalid CSS after "...k Basic', serif": expected expression (e.g. 1px, bold), was ";"
-        on line 14 of /home/murtaza/repos/bkell/public/templ/sass/_utils.sass
-        from line 12 of /home/murtaza/repos/bkell/public/templ/sass/common.sass
+/* line 10, ../../../../.rvm/gems/ruby-1.9.3-p194/gems/compass-0.12.2/frameworks/compass/stylesheets/compass/layout/_sticky-footer.scss */
+html, body {
+  height: 100%;
+}
 
-Backtrace:
-/home/murtaza/repos/bkell/public/templ/sass/_utils.sass:14
-/home/murtaza/repos/bkell/public/templ/sass/common.sass:12
-/home/murtaza/.rvm/gems/ruby-1.9.3-p194/gems/sass-3.3.0.alpha.1/lib/sass/scss/parser.rb:1130:in `expected'
-/home/murtaza/.rvm/gems/ruby-1.9.3-p194/gems/sass-3.3.0.alpha.1/lib/sass/script/lexer.rb:199:in `expected!'
-/home/murtaza/.rvm/gems/ruby-1.9.3-p194/gems/sass-3.3.0.alpha.1/lib/sass/script/parser.rb:486:in `assert_done'
-/home/murtaza/.rvm/gems/ruby-1.9.3-p194/gems/sass-3.3.0.alpha.1/lib/sass/script/parser.rb:50:in `parse'
-/home/murtaza/.rvm/gems/ruby-1.9.3-p194/gems/sass-3.3.0.alpha.1/lib/sass/script/parser.rb:166:in `parse'
-/home/murtaza/.rvm/gems/ruby-1.9.3-p194/gems/sass-3.3.0.alpha.1/lib/sass/script.rb:31:in `parse'
-/home/murtaza/.rvm/gems/ruby-1.9.3-p194/gems/sass-3.3.0.alpha.1/lib/sass/engine.rb:875:in `parse_script'
-/home/murtaza/.rvm/gems/ruby-1.9.3-p194/gems/sass-3.3.0.alpha.1/lib/sass/engine.rb:608:in `parse_property'
-/home/murtaza/.rvm/gems/ruby-1.9.3-p194/gems/sass-3.3.0.alpha.1/lib/sass/engine.rb:597:in `parse_property_or_rule'
-/home/murtaza/.rvm/gems/ruby-1.9.3-p194/gems/sass-3.3.0.alpha.1/lib/sass/engine.rb:578:in `parse_line'
-/home/murtaza/.rvm/gems/ruby-1.9.3-p194/gems/sass-3.3.0.alpha.1/lib/sass/engine.rb:471:in `build_tree'
-/home/murtaza/.rvm/gems/ruby-1.9.3-p194/gems/sass-3.3.0.alpha.1/lib/sass/engine.rb:490:in `block in append_children'
-/home/murtaza/.rvm/gems/ruby-1.9.3-p194/gems/sass-3.3.0.alpha.1/lib/sass/engine.rb:489:in `each'
-/home/murtaza/.rvm/gems/ruby-1.9.3-p194/gems/sass-3.3.0.alpha.1/lib/sass/engine.rb:489:in `append_children'
-/home/murtaza/.rvm/gems/ruby-1.9.3-p194/gems/sass-3.3.0.alpha.1/lib/sass/engine.rb:480:in `block in build_tree'
-/home/murtaza/.rvm/gems/ruby-1.9.3-p194/gems/sass-3.3.0.alpha.1/lib/sass/engine.rb:473:in `each'
-/home/murtaza/.rvm/gems/ruby-1.9.3-p194/gems/sass-3.3.0.alpha.1/lib/sass/engine.rb:473:in `build_tree'
-/home/murtaza/.rvm/gems/ruby-1.9.3-p194/gems/sass-3.3.0.alpha.1/lib/sass/engine.rb:490:in `block in append_children'
-/home/murtaza/.rvm/gems/ruby-1.9.3-p194/gems/sass-3.3.0.alpha.1/lib/sass/engine.rb:489:in `each'
-/home/murtaza/.rvm/gems/ruby-1.9.3-p194/gems/sass-3.3.0.alpha.1/lib/sass/engine.rb:489:in `append_children'
-/home/murtaza/.rvm/gems/ruby-1.9.3-p194/gems/sass-3.3.0.alpha.1/lib/sass/engine.rb:345:in `_to_tree'
-/home/murtaza/.rvm/gems/ruby-1.9.3-p194/gems/sass-3.3.0.alpha.1/lib/sass/engine.rb:274:in `to_tree'
-/home/murtaza/.rvm/gems/ruby-1.9.3-p194/gems/sass-3.3.0.alpha.1/lib/sass/tree/visitors/perform.rb:221:in `visit_import'
-/home/murtaza/.rvm/gems/ruby-1.9.3-p194/gems/sass-3.3.0.alpha.1/lib/sass/tree/visitors/base.rb:37:in `visit'
-/home/murtaza/.rvm/gems/ruby-1.9.3-p194/gems/sass-3.3.0.alpha.1/lib/sass/tree/visitors/perform.rb:97:in `visit'
-/home/murtaza/.rvm/gems/ruby-1.9.3-p194/gems/sass-3.3.0.alpha.1/lib/sass/tree/visitors/base.rb:53:in `block in visit_children'
-/home/murtaza/.rvm/gems/ruby-1.9.3-p194/gems/sass-3.3.0.alpha.1/lib/sass/tree/visitors/base.rb:53:in `map'
-/home/murtaza/.rvm/gems/ruby-1.9.3-p194/gems/sass-3.3.0.alpha.1/lib/sass/tree/visitors/base.rb:53:in `visit_children'
-/home/murtaza/.rvm/gems/ruby-1.9.3-p194/gems/sass-3.3.0.alpha.1/lib/sass/tree/visitors/perform.rb:106:in `block in visit_children'
-/home/murtaza/.rvm/gems/ruby-1.9.3-p194/gems/sass-3.3.0.alpha.1/lib/sass/tree/visitors/perform.rb:118:in `with_environment'
-/home/murtaza/.rvm/gems/ruby-1.9.3-p194/gems/sass-3.3.0.alpha.1/lib/sass/tree/visitors/perform.rb:105:in `visit_children'
-/home/murtaza/.rvm/gems/ruby-1.9.3-p194/gems/sass-3.3.0.alpha.1/lib/sass/tree/visitors/base.rb:37:in `block in visit'
-/home/murtaza/.rvm/gems/ruby-1.9.3-p194/gems/sass-3.3.0.alpha.1/lib/sass/tree/visitors/perform.rb:125:in `visit_root'
-/home/murtaza/.rvm/gems/ruby-1.9.3-p194/gems/sass-3.3.0.alpha.1/lib/sass/tree/visitors/base.rb:37:in `visit'
-/home/murtaza/.rvm/gems/ruby-1.9.3-p194/gems/sass-3.3.0.alpha.1/lib/sass/tree/visitors/perform.rb:97:in `visit'
-/home/murtaza/.rvm/gems/ruby-1.9.3-p194/gems/sass-3.3.0.alpha.1/lib/sass/tree/visitors/perform.rb:7:in `visit'
-/home/murtaza/.rvm/gems/ruby-1.9.3-p194/gems/sass-3.3.0.alpha.1/lib/sass/tree/root_node.rb:20:in `render'
-/home/murtaza/.rvm/gems/ruby-1.9.3-p194/gems/sass-3.3.0.alpha.1/lib/sass/engine.rb:315:in `_render'
-/home/murtaza/.rvm/gems/ruby-1.9.3-p194/gems/sass-3.3.0.alpha.1/lib/sass/engine.rb:262:in `render'
-/home/murtaza/.rvm/gems/ruby-1.9.3-p194/gems/compass-0.12.2/lib/compass/compiler.rb:140:in `block (2 levels) in compile'
-/home/murtaza/.rvm/gems/ruby-1.9.3-p194/gems/compass-0.12.2/lib/compass/compiler.rb:126:in `timed'
-/home/murtaza/.rvm/gems/ruby-1.9.3-p194/gems/compass-0.12.2/lib/compass/compiler.rb:139:in `block in compile'
-/home/murtaza/.rvm/gems/ruby-1.9.3-p194/gems/compass-0.12.2/lib/compass/logger.rb:45:in `red'
-/home/murtaza/.rvm/gems/ruby-1.9.3-p194/gems/compass-0.12.2/lib/compass/compiler.rb:138:in `compile'
-/home/murtaza/.rvm/gems/ruby-1.9.3-p194/gems/compass-0.12.2/lib/compass/compiler.rb:118:in `compile_if_required'
-/home/murtaza/.rvm/gems/ruby-1.9.3-p194/gems/compass-0.12.2/lib/compass/compiler.rb:103:in `block (2 levels) in run'
-/home/murtaza/.rvm/gems/ruby-1.9.3-p194/gems/compass-0.12.2/lib/compass/compiler.rb:101:in `each'
-/home/murtaza/.rvm/gems/ruby-1.9.3-p194/gems/compass-0.12.2/lib/compass/compiler.rb:101:in `block in run'
-/home/murtaza/.rvm/gems/ruby-1.9.3-p194/gems/compass-0.12.2/lib/compass/compiler.rb:126:in `timed'
-/home/murtaza/.rvm/gems/ruby-1.9.3-p194/gems/compass-0.12.2/lib/compass/compiler.rb:100:in `run'
-/home/murtaza/.rvm/gems/ruby-1.9.3-p194/gems/compass-0.12.2/lib/compass/commands/watch_project.rb:147:in `recompile'
-/home/murtaza/.rvm/gems/ruby-1.9.3-p194/gems/fssm-0.2.9/lib/fssm/path.rb:73:in `call'
-/home/murtaza/.rvm/gems/ruby-1.9.3-p194/gems/fssm-0.2.9/lib/fssm/path.rb:73:in `run_callback'
-/home/murtaza/.rvm/gems/ruby-1.9.3-p194/gems/fssm-0.2.9/lib/fssm/path.rb:55:in `callback_action'
-/home/murtaza/.rvm/gems/ruby-1.9.3-p194/gems/fssm-0.2.9/lib/fssm/path.rb:35:in `update'
-/home/murtaza/.rvm/gems/ruby-1.9.3-p194/gems/fssm-0.2.9/lib/fssm/state/directory.rb:39:in `block in modified'
-/home/murtaza/.rvm/gems/ruby-1.9.3-p194/gems/fssm-0.2.9/lib/fssm/state/directory.rb:37:in `each'
-/home/murtaza/.rvm/gems/ruby-1.9.3-p194/gems/fssm-0.2.9/lib/fssm/state/directory.rb:37:in `modified'
-/home/murtaza/.rvm/gems/ruby-1.9.3-p194/gems/fssm-0.2.9/lib/fssm/state/directory.rb:18:in `refresh'
-/home/murtaza/.rvm/gems/ruby-1.9.3-p194/gems/fssm-0.2.9/lib/fssm/backends/inotify.rb:12:in `block in add_handler'
-/home/murtaza/.rvm/gems/ruby-1.9.3-p194/gems/rb-inotify-0.8.8/lib/rb-inotify/notifier.rb:200:in `call'
-/home/murtaza/.rvm/gems/ruby-1.9.3-p194/gems/rb-inotify-0.8.8/lib/rb-inotify/notifier.rb:200:in `block in watch'
-/home/murtaza/.rvm/gems/ruby-1.9.3-p194/gems/rb-inotify-0.8.8/lib/rb-inotify/watcher.rb:41:in `[]'
-/home/murtaza/.rvm/gems/ruby-1.9.3-p194/gems/rb-inotify-0.8.8/lib/rb-inotify/watcher.rb:41:in `callback!'
-/home/murtaza/.rvm/gems/ruby-1.9.3-p194/gems/rb-inotify-0.8.8/lib/rb-inotify/event.rb:128:in `callback!'
-/home/murtaza/.rvm/gems/ruby-1.9.3-p194/gems/rb-inotify-0.8.8/lib/rb-inotify/notifier.rb:233:in `block in process'
-/home/murtaza/.rvm/gems/ruby-1.9.3-p194/gems/rb-inotify-0.8.8/lib/rb-inotify/notifier.rb:233:in `each'
-/home/murtaza/.rvm/gems/ruby-1.9.3-p194/gems/rb-inotify-0.8.8/lib/rb-inotify/notifier.rb:233:in `process'
-/home/murtaza/.rvm/gems/ruby-1.9.3-p194/gems/rb-inotify-0.8.8/lib/rb-inotify/notifier.rb:216:in `run'
-/home/murtaza/.rvm/gems/ruby-1.9.3-p194/gems/fssm-0.2.9/lib/fssm/backends/inotify.rb:20:in `run'
-/home/murtaza/.rvm/gems/ruby-1.9.3-p194/gems/fssm-0.2.9/lib/fssm/monitor.rb:26:in `run'
-/home/murtaza/.rvm/gems/ruby-1.9.3-p194/gems/fssm-0.2.9/lib/fssm.rb:70:in `monitor'
-/home/murtaza/.rvm/gems/ruby-1.9.3-p194/gems/compass-0.12.2/lib/compass/commands/watch_project.rb:87:in `perform'
-/home/murtaza/.rvm/gems/ruby-1.9.3-p194/gems/compass-0.12.2/lib/compass/commands/base.rb:18:in `execute'
-/home/murtaza/.rvm/gems/ruby-1.9.3-p194/gems/compass-0.12.2/lib/compass/commands/project_base.rb:19:in `execute'
-/home/murtaza/.rvm/gems/ruby-1.9.3-p194/gems/compass-0.12.2/lib/compass/exec/sub_command_ui.rb:43:in `perform!'
-/home/murtaza/.rvm/gems/ruby-1.9.3-p194/gems/compass-0.12.2/lib/compass/exec/sub_command_ui.rb:15:in `run!'
-/home/murtaza/.rvm/gems/ruby-1.9.3-p194/gems/compass-0.12.2/bin/compass:30:in `block in <top (required)>'
-/home/murtaza/.rvm/gems/ruby-1.9.3-p194/gems/compass-0.12.2/bin/compass:44:in `call'
-/home/murtaza/.rvm/gems/ruby-1.9.3-p194/gems/compass-0.12.2/bin/compass:44:in `<top (required)>'
-/home/murtaza/.rvm/gems/ruby-1.9.3-p194/bin/compass:23:in `load'
-/home/murtaza/.rvm/gems/ruby-1.9.3-p194/bin/compass:23:in `<main>'
-*/
-body:before {
-  white-space: pre;
-  font-family: monospace;
-  content: "Syntax error: Invalid CSS after \"...k Basic', serif\": expected expression (e.g. 1px, bold), was \";\"\A         on line 14 of /home/murtaza/repos/bkell/public/templ/sass/_utils.sass\A         from line 12 of /home/murtaza/repos/bkell/public/templ/sass/common.sass"; }
+/* line 12, ../../../../.rvm/gems/ruby-1.9.3-p194/gems/compass-0.12.2/frameworks/compass/stylesheets/compass/layout/_sticky-footer.scss */
+.container-fluid {
+  clear: both;
+  min-height: 100%;
+  height: auto !important;
+  height: 100%;
+  margin-bottom: -150px;
+}
+/* line 18, ../../../../.rvm/gems/ruby-1.9.3-p194/gems/compass-0.12.2/frameworks/compass/stylesheets/compass/layout/_sticky-footer.scss */
+.container-fluid .span3 {
+  height: 150px;
+}
+
+/* line 20, ../../../../.rvm/gems/ruby-1.9.3-p194/gems/compass-0.12.2/frameworks/compass/stylesheets/compass/layout/_sticky-footer.scss */
+#footer {
+  clear: both;
+  position: relative;
+  height: 150px;
+}
+
+@font-face {
+  font-family: "PalatinoZ";
+  src: url('/css/fonts/fonts/Palatino-Bold-Italic.ttf') format('truetype');
+}
+
+/* line 9, ../templ/sass/_utils.sass */
+.debug {
+  border-style: solid;
+  border-width: 1px;
+}
+
+/* line 12, ../templ/sass/_utils.sass */
+.text-curly, #header #title-wrapper #title, #header #title-wrapper #subtitle, #legal {
+  font-style: italic;
+  font-family: "Gentium Book Basic", serif;
+}
+
+/* line 16, ../templ/sass/_utils.sass */
+.text-default {
+  font: Verdana, Arial, sans-serif;
+}
+
+/* line 14, ../templ/sass/common.sass */
+html, body {
+  min-height: 400px;
+  min-width: 800px;
+  height: 100%;
+}
+
+/* line 19, ../templ/sass/common.sass */
+.common-wrapper, #header #title-wrapper, #legal {
+  float: none;
+  position: relative;
+  width: 95%;
+  margin: 0px auto;
+  top: 10px;
+}
+
+/* line 26, ../templ/sass/common.sass */
+#header {
+  background-color: #999999;
+  height: 70px;
+  z-index: 20;
+  position: relative;
+  z-index: 10;
+  box-shadow: 0 4px 6px #554433;
+}
+/* line 40, ../templ/sass/common.sass */
+#header #title-wrapper #title {
+  position: relative;
+  float: left;
+  font-size: 48;
+  font-weight: bold;
+  margin: 0 10;
+}
+/* line 47, ../templ/sass/common.sass */
+#header #title-wrapper #subtitle {
+  top: 20px;
+  float: left;
+  margin: 26 10 0 10;
+  float: left;
+}
+/* line 53, ../templ/sass/common.sass */
+#header #title-wrapper #subtitle #subtitle-default {
+  float: left;
+  color: #666666;
+}
+/* line 56, ../templ/sass/common.sass */
+#header #title-wrapper #subtitle #subtitle-black {
+  float: left;
+  font-weight: bold;
+}
+/* line 61, ../templ/sass/common.sass */
+#header #title-wrapper #account-chooser {
+  float: right;
+  margin: 10 0 0 0;
+}
+
+/* line 66, ../templ/sass/common.sass */
+#footer {
+  background-color: #999999;
+  clear: both;
+  z-index: 10;
+  height: 150px;
+}
+/* line 72, ../templ/sass/common.sass */
+#footer .interruptlink {
+  text-decoration: none;
+  color: #666666;
+}
+/* line 75, ../templ/sass/common.sass */
+#footer .interruptlink:hover {
+  border-bottom: 1px dashed;
+  color: black;
+}
+
+/* line 80, ../templ/sass/common.sass */
+.bkell-container {
+  zoom: 1;
+  margin-right: auto;
+  margin-left: auto;
+  width: 960px;
+  padding: 0px;
+  width: 100%;
+  min-height: 100%;
+  margin: 0 auto -150px;
+}
+/* line 10, ../../../../.rvm/gems/ruby-1.9.3-p194/gems/grid-coordinates-1.2.0/stylesheets/modules/_bulletproof-clearfix.sass */
+.bkell-container:before, .bkell-container:after {
+  content: ".";
+  display: block;
+  overflow: hidden;
+  visibility: hidden;
+  font-size: 0;
+  line-height: 0;
+  width: 0;
+  height: 0;
+}
+/* line 19, ../../../../.rvm/gems/ruby-1.9.3-p194/gems/grid-coordinates-1.2.0/stylesheets/modules/_bulletproof-clearfix.sass */
+.bkell-container:after {
+  clear: both;
+}
+
+/* line 87, ../templ/sass/common.sass */
+#main-content {
+  display: -webkit-box;
+  display: -moz-box;
+  display: -ms-box;
+  display: box;
+  position: absolute;
+  top: 70px;
+  bottom: 150px;
+  left: 0;
+  right: 0;
+  background: white;
+}
+
+/* line 93, ../templ/sass/common.sass */
+#legal {
+  color: #666666;
+}
+
+/* line 98, ../templ/sass/common.sass */
+.widget-email-box {
+  visibility: hidden;
+}
