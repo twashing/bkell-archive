@@ -1,10 +1,11 @@
 
 {
+ ;;"172.16.210.144"
   :dev {
-    :host-url "172.16.210.144"
+    :host-url "localhost"
     :host-port "8080"
     :developer-key "AIzaSyDc7_lGZsmbtdOUpprPClKBOxXCQ6LztRE"
-    :host-url-db "172.16.210.144"
+    :host-url-db "localhost"
     :host-port-db 27017
     :database "bkell"
   }
@@ -20,4 +21,3 @@
     :database "heroku_app2227080"
   }
 }
-
