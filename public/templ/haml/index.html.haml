@@ -3,85 +3,46 @@
 
     %meta{ :charset => "utf-8" }
     %title Bkeeping.com: Simple Online Bookkeeping
-    
+
     / Chromeframe plugin
-    %meta( http-equiv="X-UA-Compatible" content="chrome=1")
-    
-    / Checking for Google Chromeframe; prompting for install
-    /[if lt IE 7]
-      %script( type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/chrome-frame/1/CFInstall.min.js" )
-    /[if IE 7]
-      %script( type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/chrome-frame/1/CFInstall.min.js" )
-    /[if IE 8]
-      %script( type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/chrome-frame/1/CFInstall.min.js" )
-    /[if IE 9]
-      %script( type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/chrome-frame/1/CFInstall.min.js" )
-    
-    %style
-      / CSS rules to use for styling the overlay:
-      .chromeFrameOverlayContent
-      .chromeFrameOverlayContent iframe
-      .chromeFrameOverlayCloseBar
-      .chromeFrameOverlayUnderlay
-    
-    /%iframe( style="border: 0; width: 0; height: 0" )
-    /  %script( type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/chrome-frame/1/CFInstall.min.js" )
-    
+    /%meta( http-equiv="X-UA-Compatible" content="chrome=1")
+
+    %script(src="https://github.com/kriskowal/es5-shim/blob/master/es5-shim.min.js")
     /%script( type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/chrome-frame/1/CFInstall.min.js" )
-    /%script( type="text/javascript" src="/js/lib/CFInstall.min.js" )
-    
-    /:javascript
-    /  require.config({
-    /      baseUrl: 'scripts/',
-    /      paths: {
-    /          'backbone': 'lib/backbone',
-    /          'jquery': 'lib/jquery',
-    /          'underscore': 'lib/underscore'
-    /      },
-    /      shim: {
-    /          'backbone': {
-    /              deps: ['underscore', 'jquery'],
-    /              exports: 'Backbone'
-    /          }
-    /      }
-    /  });
-    
+
     %link( type="text/css" href="css/common.css" rel="stylesheet" )
     %link( type="text/css" href="css/index.css" rel="stylesheet" )
-    
-    %script( src="/js/lib/jquery-1.6.3.js" )
+
+
+    %script( src="//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js")
     %script( src= "http://ajax.googleapis.com/ajax/libs/jqueryui/1.8/jquery-ui.min.js" )
     %script( src= "https://ajax.googleapis.com/ajax/libs/googleapis/0.0.4/googleapis.min.js" )
     %script( src= 'https://ajax.googleapis.com/jsapi' )
     :javascript
       google.load("identitytoolkit", "1", {packages: ["ac"], language:"en"});
-    
+
     %script( src="/js/lib/json2.js" )
     %script( src="/js/lib/underscore.js" )
     %script( src="/js/lib/backbone.js" )
     %script( src="js/bkeeping.js" type="text/javascript" )
     :javascript
       $(document).ready(function() {
-        
-        /* Checking for Google ChomrFrame installation*/
-        /*CFInstall.check({
-          mode: "overlay",
-          destination: "http://www.waikiki.com" }); */
-        
+
+
         /*********
          * Some internal code is giving the body a margin - can't figure out what it is
          *********/
-        $('body').css('margin', '0px'); 
-        
-        
+        $('body').css('margin', '0px');
+
+
         /*********
          * GITkit Account Chooser code
          *********/
         window.google.identitytoolkit.setConfig({
           developerKey: "AIzaSyDc7_lGZsmbtdOUpprPClKBOxXCQ6LztRE",
           companyName: "Interrupt Software Inc.",
-          callbackUrl: "http://<to-be-generated>/callbackGitkit",
-          realm: "", 
+          callbackUrl: "http://bkeeping.com/callbackGitkit",
+          realm: "",
           userStatusUrl: "/userStatusUrl",
           loginUrl: "/loginUrl",
           signupUrl: "/register",
@@ -91,39 +52,38 @@
           tryFederatedFirst: true,
           useCachedUserStatus: false
         });
-         
+
         $('#account-chooser').accountChooser();
-        
-        
-        /********* 
+
+
+        /*********
          * load the footer file
          *********/
         $('#footer').load('/include/footerPart.html');
-        
+
       });
-   
+
   %body
     .bkell-container
       #header
         #title-wrapper
           #title
             bkeeping
-          #subtitle 
+          #subtitle
             #subtitle-default Your solution to simple &nbsp;
-            #subtitle-black online bookkeeping 
+            #subtitle-black online bookkeeping
           #account-chooser
 
-        
-      #main-content 
-        
+
+      #main-content
+
         .motto
           .motto-left The fastest and easiest way
-          .motto-right 
-            &nbsp; 
+          .motto-right
+            &nbsp;
             to manage your bookkeeping.
-        
+
       #modal_screen.modal.screen
         &nbsp;
-  	
-    #footer
 
+    #footer
