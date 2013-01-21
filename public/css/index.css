@@ -1,21 +1,16 @@
-@font-face {
-  font-family: "PalatinoZ";
-  src: url('/css/fonts/fonts/Palatino-Bold-Italic.ttf') format('truetype');
-}
-
-/* line 9, /home/murtaza/repos/bkell/public/templ/sass/_utils.sass */
+/* line 7, ../templ/sass/_utils.sass */
 .debug {
   border-style: solid;
   border-width: 1px;
 }
 
-/* line 12, /home/murtaza/repos/bkell/public/templ/sass/_utils.sass */
+/* line 10, ../templ/sass/_utils.sass */
 .text-curly {
   font-style: italic;
-  font-family: "Gentium Book Basic", serif;
+  font-family: "Vollkorn", serif;
 }
 
-/* line 16, /home/murtaza/repos/bkell/public/templ/sass/_utils.sass */
+/* line 14, ../templ/sass/_utils.sass */
 .text-default {
   font: Verdana, Arial, sans-serif;
 }
@@ -49,7 +44,7 @@
 .motto .motto-left, .motto .motto-right {
   float: left;
   font-style: italic;
-  font-family: "Gentium Book Basic", serif;
+  font-family: "Vollkorn", serif;
   font-weight: bold;
   font-size: 35px;
 }
