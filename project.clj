@@ -1,7 +1,7 @@
 (defproject bkell "0.1.0-SNAPSHOT"
   
-  :description "FIXME: write description"
-  :url "http://example.com/FIXME"
+  :description "The bkell project is a Clojure implementation of 'Bookkeeping'. bkell provides a Shell and API for maintaining balanced records for business transactions."
+  :url "http://bkeeping.com"
   :license {:name "Eclipse Public License"
             :url "http://www.eclipse.org/legal/epl-v10.html"}
   
