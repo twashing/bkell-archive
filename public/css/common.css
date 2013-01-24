@@ -1,4 +1,4 @@
-@import url(http://fonts.googleapis.com/css?family=Vollkorn:700italic);
+@import url(http://fonts.googleapis.com/css?family=Gentium+Book+Basic:700italic);
 /* line 10, ../../../../.rvm/gems/ruby-1.9.3-p194/gems/compass-0.12.2/frameworks/compass/stylesheets/compass/layout/_sticky-footer.scss */
 html, body {
   height: 100%;
@@ -33,7 +33,7 @@ html, body {
 /* line 10, ../templ/sass/_utils.sass */
 .text-curly, #header #title-wrapper #title, #header #title-wrapper #subtitle, #legal {
   font-style: italic;
-  font-family: "Vollkorn", serif;
+  font-family: "Gentium Book Basic", serif;
 }
 
 /* line 14, ../templ/sass/_utils.sass */
@@ -41,14 +41,14 @@ html, body {
   font: Verdana, Arial, sans-serif;
 }
 
-/* line 18, ../templ/sass/common.sass */
+/* line 16, ../templ/sass/common.sass */
 html, body {
   min-height: 400px;
   min-width: 800px;
   height: 100%;
 }
 
-/* line 23, ../templ/sass/common.sass */
+/* line 21, ../templ/sass/common.sass */
 .common-wrapper, #header #title-wrapper, #legal {
   float: none;
   position: relative;
@@ -57,7 +57,7 @@ html, body {
   top: 10px;
 }
 
-/* line 30, ../templ/sass/common.sass */
+/* line 28, ../templ/sass/common.sass */
 #header {
   background-color: #999999;
   height: 70px;
@@ -66,7 +66,7 @@ html, body {
   z-index: 10;
   box-shadow: 0 4px 6px #554433;
 }
-/* line 44, ../templ/sass/common.sass */
+/* line 42, ../templ/sass/common.sass */
 #header #title-wrapper #title {
   position: relative;
   float: left;
@@ -74,48 +74,48 @@ html, body {
   font-weight: bold;
   margin: 0 10;
 }
-/* line 51, ../templ/sass/common.sass */
+/* line 49, ../templ/sass/common.sass */
 #header #title-wrapper #subtitle {
   top: 20px;
   float: left;
   margin: 26 10 0 10;
   float: left;
 }
-/* line 57, ../templ/sass/common.sass */
+/* line 55, ../templ/sass/common.sass */
 #header #title-wrapper #subtitle #subtitle-default {
   float: left;
   color: #666666;
 }
-/* line 60, ../templ/sass/common.sass */
+/* line 58, ../templ/sass/common.sass */
 #header #title-wrapper #subtitle #subtitle-black {
   float: left;
   font-weight: bold;
 }
-/* line 65, ../templ/sass/common.sass */
+/* line 63, ../templ/sass/common.sass */
 #header #title-wrapper #account-chooser {
   float: right;
   margin: 10 0 0 0;
 }
 
-/* line 70, ../templ/sass/common.sass */
+/* line 68, ../templ/sass/common.sass */
 #footer {
   background-color: #999999;
   clear: both;
   z-index: 10;
   height: 150px;
 }
-/* line 76, ../templ/sass/common.sass */
+/* line 74, ../templ/sass/common.sass */
 #footer .interruptlink {
   text-decoration: none;
   color: #666666;
 }
-/* line 79, ../templ/sass/common.sass */
+/* line 77, ../templ/sass/common.sass */
 #footer .interruptlink:hover {
   border-bottom: 1px dashed;
   color: black;
 }
 
-/* line 84, ../templ/sass/common.sass */
+/* line 82, ../templ/sass/common.sass */
 .bkell-container {
   zoom: 1;
   margin-right: auto;
@@ -142,7 +142,7 @@ html, body {
   clear: both;
 }
 
-/* line 91, ../templ/sass/common.sass */
+/* line 89, ../templ/sass/common.sass */
 #main-content {
   display: -webkit-box;
   display: -moz-box;
@@ -156,12 +156,12 @@ html, body {
   background: white;
 }
 
-/* line 97, ../templ/sass/common.sass */
+/* line 95, ../templ/sass/common.sass */
 #legal {
   color: #666666;
 }
 
-/* line 102, ../templ/sass/common.sass */
+/* line 100, ../templ/sass/common.sass */
 .widget-email-box {
   visibility: hidden;
 }
