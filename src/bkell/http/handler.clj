@@ -29,17 +29,17 @@
 )
 
 
-(def local-ip
-     (let [ ifc (NetworkInterface/getNetworkInterfaces)
-            ifsq (enumeration-seq ifc)
-            ifmp (map #(bean %) ifsq)
-            ipsq (filter #(false? (% :loopback)) ifmp)
-            ipa (map :interfaceAddresses ipsq)
-            ipaf (nth ipa 0)
-            ipafs (.split (str ipaf) " " )
-            ips (first (nnext ipafs))]
-            (str (second (.split ips "/")))
-      ))
+;; (def local-ip
+;;      (let [ ifc (NetworkInterface/getNetworkInterfaces)
+;;             ifsq (enumeration-seq ifc)
+;;             ifmp (map #(bean %) ifsq)
+;;             ipsq (filter #(false? (% :loopback)) ifmp)
+;;             ipa (map :interfaceAddresses ipsq)
+;;             ipaf (nth ipa 0)
+;;             ipafs (.split (str ipaf) " " )
+;;             ips (first (nnext ipafs))]
+;;             (str (second (.split ips "/")))
+;;       ))
 
 (defn generate-host-address [host-url host-port]
   (str  "http://"
@@ -490,4 +490,3 @@
 (route/resources "/")
 #_(route/not-found "Page not found")
 #_(ANY "/*" [path] )
-
