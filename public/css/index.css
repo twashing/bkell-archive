@@ -7,7 +7,7 @@
 /* line 10, ../templ/sass/_utils.sass */
 .text-curly {
   font-style: italic;
-  font-family: "Vollkorn", serif;
+  font-family: "Gentium Book Basic", serif;
 }
 
 /* line 14, ../templ/sass/_utils.sass */
@@ -44,7 +44,7 @@
 .motto .motto-left, .motto .motto-right {
   float: left;
   font-style: italic;
-  font-family: "Vollkorn", serif;
+  font-family: "Gentium Book Basic", serif;
   font-weight: bold;
   font-size: 35px;
 }
