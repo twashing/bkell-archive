@@ -2,7 +2,7 @@
 {
  ;;"172.16.210.144"
   :dev {
-    :host-url "localhost"
+    :host-url "172.16.210.144"
     :host-port "8080"
     :developer-key "AIzaSyDc7_lGZsmbtdOUpprPClKBOxXCQ6LztRE"
     :host-url-db "localhost"
