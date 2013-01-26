@@ -214,6 +214,10 @@
                                           {:tag :profileDetail,
                                            :name "country",
                                            :value "",
+                                           :content nil}
+                                          {:tag :profileDetail
+                                           :name :paywallState
+                                           :value "trial"
                                            :content nil}]}]
                                 })]
 
