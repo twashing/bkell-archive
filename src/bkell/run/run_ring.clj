@@ -7,7 +7,8 @@
             [ring.middleware.params :as params]
             [ring.middleware.session :as session]
             [cemerick.drawbridge]
-  ))
+            )
+  (:use [clojure.core.strint]) )
 
 (def drawbridge-handler
   (-> (cemerick.drawbridge/ring-handler)
@@ -22,10 +23,19 @@
       (drawbridge-handler req)
             (handler req))))
 
-(server/load-views "src/bkell/http/") 
+(server/load-views "src/bkell/http/")
 
-; the default mode is 'dev', 
-; for heroku, you can set the environment variable with the command: 
+(defn check-authorization [handler]
+  (fn [request]
+    (let [resp (handler request)]
+      (println (<< "check-authorization CALLED [~{resp}]"))
+      resp)
+    ))
+(server/add-middleware check-authorization)
+
+
+; the default mode is 'dev',
+; for heroku, you can set the environment variable with the command:
 ; `heroku config:add MODE=prod`
 (defn -main [& m]
   (let[ config (load-file "etc/config/config.clj")
@@ -36,29 +46,28 @@
                       (-> config mode :host-port) ;; otherwise, get the PORT from the config mode
                       )  ;; last ditch is to set the PORT manually to 8080
       ]
-    
-    
+
+
     (println (str "Initializing shell with mode: " mode))
-    
+
     ;; ====
-    ;; Initialize the shell incl. DB connection 
+    ;; Initialize the shell incl. DB connection
     (bjell/init-shell mode { :host-port host-port })
-    
-    
-    ;; ==== 
-    ;; Settingc the mode in the shell 
-    (dosync 
+
+
+    ;; ====
+    ;; Setting the mode in the shell
+    (dosync
       (alter bkell/shell conj { :mode mode })
       (let [new-prod (merge (:prod config) { :host-port host-port })]
         (alter bkell/shell conj (merge config { :prod new-prod }))
       )
     )
-    
+
     (println (str "Bkell: " @bkell/shell))
-    
+
     ;; ====
     ;; Startup the Noir server (wraps Jetty)
     (server/start (Integer. host-port) {  :mode mode :ns 'bkell  })
-    
-  ))
 
+  ))
