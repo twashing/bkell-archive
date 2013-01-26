@@ -59,7 +59,7 @@
 
     (apply str (enlive/emit*  (enlive/transform
                                 templ
-                                [[ :script (enlive/nth-of-type 10) ]]  ;; get the 3rd script tag
+                                [[ :script (enlive/nth-of-type 11) ]]  ;; get the 3rd script tag
                                 (enlive/content
                                   (str
                                     "
