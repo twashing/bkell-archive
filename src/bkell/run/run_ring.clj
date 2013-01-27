@@ -31,7 +31,7 @@
     (let [
           ;; check request for :uri
           ;; check that :uri is authorized for this
-          checkR (auth/is-authorized (:uri request) (-> request :session :noir :current-user :username))
+          checkR (auth/is-authorized request)
           resp (handler request)
           ]
 

@@ -1,5 +1,5 @@
 
-;; This is how the mathing will work:
+;; This is how the matching will work:
 ;; (re-matches #"\/account\/[0-9a-z]+" "/account/1n2k3b5l")
 
 {:trial [
