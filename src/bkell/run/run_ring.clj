@@ -2,6 +2,7 @@
   (:require [noir.server :as server]
             [bkell.bjell :as bjell]
             [bkell.bkell :as bkell]
+            [bkell.http.auth :as auth]
             [ring.middleware.keyword-params :as keyword-params]
             [ring.middleware.nested-params :as nested-params]
             [ring.middleware.params :as params]
@@ -27,8 +28,16 @@
 
 (defn check-authorization [handler]
   (fn [request]
-    (let [resp (handler request)]
-      (println (<< "check-authorization CALLED [~{resp}]"))
+    (let [
+          ;; check request for :uri
+          ;; check that :uri is authorized for this
+          checkR (auth/is-authorized (:uri request) (-> request :session :noir :current-user :username))
+          resp (handler request)
+          ]
+
+      ;; if not,  return an HTTP 401 Unauthorized
+
+      (println (<< "check-authorization CALLED [~{request}]"))
       resp)
     ))
 (server/add-middleware check-authorization)
