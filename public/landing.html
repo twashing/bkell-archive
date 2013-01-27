@@ -12,6 +12,7 @@
     <![endif]-->
     <script src='/js/lib/jquery-1.7.2.min.js'></script>
     <script src='/js/lib/jquery-ui-1.8.16.custom.min.js'></script>
+    <script src='/js/lib/bootstrap-tab.js'></script>
     <link href='/css/jquery-ui.css' media='screen' rel='stylesheet' type='text/css' />
     <!-- custom scrollbars -->
     <link href='/css/scrollbars.css' media='screen' rel='stylesheet' type='text/css' />
@@ -36,55 +37,56 @@
     <script src='/js/lib/bootstrap-datepicker.js'></script>
     <link href='/css/common.css' media='screen' rel='stylesheet' type='text/css' />
     <link href='/css/landing.css' media='screen' rel='stylesheet' type='text/css' />
+    <link href='/css/bootstrap-verticaltabs.css' media='print' rel='stylesheet' type='text/css' />
     <script data-main='js/bkeeping/landing' src='/js/lib/require.js'></script>
     <script type='text/javascript'>
       //<![CDATA[
-        $(document).ready(function() { 
-          
-          /*** 
+        $(document).ready(function() {
+        
+          /***
            * a GLOBAL namespace
            */
-          global = {}; 
+          global = {};
           global.CURRENT_ENTRY_PANE = "#entries";
           global.timerEntry = -1;
-          
+        
           /***
            * Adjust Entry panes based on right width
            ***/
-          adjustEntryPanes = function() { 
-            
+          adjustEntryPanes = function() {
+        
             $('#entries, #entry, #entry-part')
               .css('width', ( $('#right-wrapper').width() - $('#left-col').width() ) + "px");
-            
+        
             var rightWidth = $(".bkell-container").width() - $("#left-col").width();
             $("#right-col").css("width", rightWidth);
           };
-          
-          
-          var scrollFn = function() { 
+        
+        
+          var scrollFn = function() {
             $('#right-wrapper').scrollTo($(global.CURRENT_ENTRY_PANE), 500, { axis:'x' });
           }
-          
-          /*** 
+        
+          /***
            * Bootstrap pane sizes
            ***/
-          $(window).resize(function() { 
-            
+          $(window).resize(function() {
+        
             //console.log("resizing window > args ["+ arguments +"]")
-            adjustEntryPanes(); 
-            
+            adjustEntryPanes();
+        
             clearTimeout(global.timerEntry);
             global.timerEntry = setTimeout(scrollFn, 500);
-            
+        
           });
-          
+        
           adjustEntryPanes();
         
           $("#logout-button").click(function() {
-            
+        
             window.location = "/logout";
           });
-          
+        
         })
       //]]>
     </script>
@@ -118,26 +120,57 @@
           </div>
         </div>
       </div>
-      <div id='main-content'>
-        <div id='left-col'>
-          <div id='left-wrapper'>
-            <div id='left-content'>
-              <div id='accounts'></div>
-              <div id='account'></div>
-            </div>
-          </div>
-          <!-- #left-toggler -->
+      <div class='verticaltabs-container'>
+        <div class='tabs'>
+          <li class='active'>
+            <a href='#books'>Books</a>
+          </li>
+          <li>
+            <a href='#profile'>Profile</a>
+          </li>
         </div>
-        <div id='right-col'>
-          <div id='right-wrapper'>
-            <div id='right-content'>
-              <div id='entries'></div>
-              <div id='entry'></div>
-              <div id='entry-part'></div>
+        <div class='tab-content'>
+          <div class='tab-pane active' id='books'>
+            <div id='main-content'>
+              <div id='left-col'>
+                <div id='left-wrapper'>
+                  <div id='left-content'>
+                    <div id='accounts'></div>
+                    <div id='account'></div>
+                  </div>
+                </div>
+                <!-- #left-toggler -->
+              </div>
+              <div id='right-col'>
+                <div id='right-wrapper'>
+                  <div id='right-content'>
+                    <div id='entries'></div>
+                    <div id='entry'></div>
+                    <div id='entry-part'></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class='tab-pane' id='profile'>
+              Hello Dearest Batul
             </div>
           </div>
         </div>
       </div>
+      <ul class='nav nav-tabs'>
+        <li>
+          <a data-toggle='tab' href='#home'>Home</a>
+        </li>
+        <li>
+          <a data-toggle='tab' href='#profile'>Profile</a>
+        </li>
+        <li>
+          <a data-toggle='tab' href='#messages'>Messages</a>
+        </li>
+        <li>
+          <a data-toggle='tab' href='#settings'>Settings</a>
+        </li>
+      </ul>
     </div>
     <div id='footer'></div>
   </body>
