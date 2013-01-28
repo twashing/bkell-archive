@@ -16,7 +16,6 @@
 
     %script( src="/js/lib/jquery-1.7.2.min.js" )
     %script( src="/js/lib/jquery-ui-1.8.16.custom.min.js" )
-    %script( src="/js/lib/bootstrap-tab.js" )
 
     %link{ :href => "/css/jquery-ui.css", :media => "screen", :rel => "stylesheet", :type => "text/css" }
 
@@ -31,9 +30,9 @@
     %script( src="/js/lib/jquery.scrollTo.js" )
     /%script( src="/js/lib/enscroll-0.2.4.min.js" )
 
-    /%link{ :href => "/css/bootstrap.css", :media => "screen", :rel => "stylesheet", :type => "text/css" }
-    /%link{ :href => "/css/bootstrap-responsive.css", :media => "screen", :rel => "stylesheet", :type => "text/css" }
-    /%script( src="/js/lib/bootstrap.js" )
+    %link{ :href => "/css/bootstrap.css", :media => "screen", :rel => "stylesheet", :type => "text/css" }
+    %link{ :href => "/css/bootstrap-responsive.css", :media => "screen", :rel => "stylesheet", :type => "text/css" }
+    %script( src="/js/lib/bootstrap.js" )
 
     /%script( src="/js/lib/require.js" data-main="test/run_tests" )
 
@@ -51,7 +50,8 @@
     %link{ :href => "/css/common.css", :media => "screen", :rel => "stylesheet", :type => "text/css" }
     %link{ :href => "/css/landing.css", :media => "screen", :rel => "stylesheet", :type => "text/css" }
 
-    %link{ :href => "/css/bootstrap-verticaltabs.css", :media => "print", :rel => "stylesheet", :type => "text/css" }
+    /%link{ :href => "/css/bootstrap-verticaltabs.css", :media => "print", :rel => "stylesheet", :type => "text/css" }
+    /%script( src="/js/lib/bootstrap-tab.js" )
 
     %script( src="/js/lib/require.js" data-main="js/bkeeping/landing" )
 
@@ -124,12 +124,14 @@
             #subtitle-black online bookkeeping
           #logout-button.btn.btn-inverse.btn-large
             Logout
-      .verticaltabs-container
-        .tabs
+
+      .tabbable.tabs-left
+
+        %ul.nav.nav-tabs.nav-stacked
           %li.active
-            %a{:href => "#books"} Books
+            %a( href="#books" data-toggle="tab" ) Books
           %li
-            %a{:href => "#profile"} Profile
+            %a( href="#profile" data-toggle="tab" ) Profile
 
         .tab-content
           .tab-pane.active#books
@@ -146,8 +148,8 @@
                     #entries
                     #entry
                     #entry-part
-            .tab-pane#profile
-              Hello Dearest Batul
+          .tab-pane#profile
+            Hello Dearest Batul
       %ul.nav.nav-tabs
         %li
           %a{"data-toggle" => "tab", :href => "#home"} Home
