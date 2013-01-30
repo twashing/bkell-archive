@@ -12,30 +12,30 @@
           :authorized true}
 
          ;; CRUD Account authorizations
-         {:uri "/account/[0-9a-z]+"
+         {:uri #"/account/[0-9a-z]+"
           :method :put
           :authorized true}
-         {:uri "/account/[0-9a-z]+"
+         {:uri #"/account/[0-9a-z]+"
           :method :get
           :authorized true}
-         {:uri "/account/[0-9a-z]+"
+         {:uri #"/account/[0-9a-z]+"
           :method :post
           :authorized true}
-         {:uri "/accounts"
+         {:uri #"/accounts"
           :method :get
           :authorized true}
 
          ;; CRUD Entry authorizations
-         {:uri "/entry/[0-9a-z]+"
+         {:uri #"/entry/[0-9a-z]+"
           :method :put
           :authorized true}
-         {:uri "/entry/[0-9a-z]+"
+         {:uri #"/entry/[0-9a-z]+"
           :method :get
           :authorized true}
-         {:uri "/entry/[0-9a-z]+"
+         {:uri #"/entry/[0-9a-z]+"
           :method :post
           :authorized true}
-         {:uri "/entries"
+         {:uri #"/entries"
           :method :get
           :authorized true}
 
@@ -58,30 +58,30 @@
           :authorized true}
 
          ;; CRUD Account authorizations
-         {:uri "/account/[0-9a-z]+"
+         {:uri #"/account/[0-9a-z]+"
           :method :put
           :authorized true}
-         {:uri "/account/[0-9a-z]+"
+         {:uri #"/account/[0-9a-z]+"
           :method :get
           :authorized true}
-         {:uri "/account/[0-9a-z]+"
+         {:uri #"/account/[0-9a-z]+"
           :method :post
           :authorized true}
-         {:uri "/accounts"
+         {:uri #"/accounts"
           :method :get
           :authorized true}
 
          ;; CRUD Entry authorizations
-         {:uri "/entry/[0-9a-z]+"
+         {:uri #"/entry/[0-9a-z]+"
           :method :put
           :authorized true}
-         {:uri "/entry/[0-9a-z]+"
+         {:uri #"/entry/[0-9a-z]+"
           :method :get
           :authorized true}
-         {:uri "/entry/[0-9a-z]+"
+         {:uri #"/entry/[0-9a-z]+"
           :method :post
           :authorized true}
-         {:uri "/entries"
+         {:uri #"/entries"
           :method :get
           :authorized true}
 
@@ -104,30 +104,30 @@
           :authorized true}
 
          ;; CRUD Account authorizations
-         {:uri "/account/[0-9a-z]+"
+         {:uri #"/account/[0-9a-z]+"
           :method :put
           :authorized true}
-         {:uri "/account/[0-9a-z]+"
+         {:uri #"/account/[0-9a-z]+"
           :method :get
           :authorized true}
-         {:uri "/account/[0-9a-z]+"
+         {:uri #"/account/[0-9a-z]+"
           :method :post
           :authorized true}
-         {:uri "/accounts"
+         {:uri #"/accounts"
           :method :get
           :authorized true}
 
          ;; CRUD Entry authorizations
-         {:uri "/entry/[0-9a-z]+"
+         {:uri #"/entry/[0-9a-z]+"
           :method :put
           :authorized true}
-         {:uri "/entry/[0-9a-z]+"
+         {:uri #"/entry/[0-9a-z]+"
           :method :get
           :authorized true}
-         {:uri "/entry/[0-9a-z]+"
+         {:uri #"/entry/[0-9a-z]+"
           :method :post
           :authorized true}
-         {:uri "/entries"
+         {:uri #"/entries"
           :method :get
           :authorized true}
 
@@ -149,30 +149,30 @@
           :authorized true}
 
          ;; CRUD Account authorizations
-         {:uri "/account/[0-9a-z]+"
+         {:uri #"/account/[0-9a-z]+"
           :method :put
           :authorized true}
-         {:uri "/account/[0-9a-z]+"
+         {:uri #"/account/[0-9a-z]+"
           :method :get
           :authorized true}
-         {:uri "/account/[0-9a-z]+"
+         {:uri #"/account/[0-9a-z]+"
           :method :post
           :authorized true}
-         {:uri "/accounts"
+         {:uri #"/accounts"
           :method :get
           :authorized true}
 
          ;; CRUD Entry authorizations
-         {:uri "/entry/[0-9a-z]+"
+         {:uri #"/entry/[0-9a-z]+"
           :method :put
           :authorized true}
-         {:uri "/entry/[0-9a-z]+"
+         {:uri #"/entry/[0-9a-z]+"
           :method :get
           :authorized true}
-         {:uri "/entry/[0-9a-z]+"
+         {:uri #"/entry/[0-9a-z]+"
           :method :post
           :authorized true}
-         {:uri "/entries"
+         {:uri #"/entries"
           :method :get
           :authorized true}
 
@@ -195,30 +195,30 @@
           :authorized true}
 
          ;; CRUD Account authorizations
-         {:uri "/account/[0-9a-z]+"
+         {:uri #"/account/[0-9a-z]+"
           :method :put
           :authorized true}
-         {:uri "/account/[0-9a-z]+"
+         {:uri #"/account/[0-9a-z]+"
           :method :get
           :authorized true}
-         {:uri "/account/[0-9a-z]+"
+         {:uri #"/account/[0-9a-z]+"
           :method :post
           :authorized true}
-         {:uri "/accounts"
+         {:uri #"/accounts"
           :method :get
           :authorized true}
 
          ;; CRUD Entry authorizations
-         {:uri "/entry/[0-9a-z]+"
+         {:uri #"/entry/[0-9a-z]+"
           :method :put
           :authorized true}
-         {:uri "/entry/[0-9a-z]+"
+         {:uri #"/entry/[0-9a-z]+"
           :method :get
           :authorized true}
-         {:uri "/entry/[0-9a-z]+"
+         {:uri #"/entry/[0-9a-z]+"
           :method :post
           :authorized true}
-         {:uri "/entries"
+         {:uri #"/entries"
           :method :get
           :authorized true}
 
