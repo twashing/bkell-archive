@@ -38,6 +38,8 @@
       ;; if not,  return an HTTP 401 Unauthorized
 
       (println (<< "check-authorization CALLED [~{request}]"))
+      (println (<< "check RESULT [~{checkR}]"))
+      (println)
       resp)
     ))
 (server/add-middleware check-authorization)
