@@ -1,5 +1,5 @@
 (ns bkell.run.run-ring
-  (:require [noir.server :as server]
+  (:require ;;[noir.server :as server]
             [bkell.bjell :as bjell]
             [bkell.bkell :as bkell]
             [bkell.http.auth :as auth]
@@ -7,26 +7,26 @@
             [ring.middleware.nested-params :as nested-params]
             [ring.middleware.params :as params]
             [ring.middleware.session :as session]
-            [cemerick.drawbridge]
+            ;;[cemerick.drawbridge]
             )
   (:use [clojure.core.strint]) )
 
-(def drawbridge-handler
+#_(def drawbridge-handler
   (-> (cemerick.drawbridge/ring-handler)
       (keyword-params/wrap-keyword-params)
       (nested-params/wrap-nested-params)
       (params/wrap-params)
       (session/wrap-session)))
 
-(defn wrap-drawbridge [handler]
+#_(defn wrap-drawbridge [handler]
   (fn [req]
     (if (= "/repl" (:uri req))
       (drawbridge-handler req)
             (handler req))))
 
-(server/load-views "src/bkell/http/")
+#_(server/load-views "src/bkell/http/")
 
-(defn check-authorization [handler]
+#_(defn check-authorization [handler]
   (fn [request]
     (let [
           ;; check request for :uri
@@ -42,13 +42,13 @@
       (println)
       resp)
     ))
-(server/add-middleware check-authorization)
+#_(server/add-middleware check-authorization)
 
 
 ; the default mode is 'dev',
 ; for heroku, you can set the environment variable with the command:
 ; `heroku config:add MODE=prod`
-(defn -main [& m]
+#_(defn -main [& m]
   (let[ config (load-file "etc/config/config.clj")
         mode (keyword (or (get (System/getenv) "MODE" "dev")
                           (second m) ))
@@ -82,3 +82,8 @@
     (server/start (Integer. host-port) {  :mode mode :ns 'bkell  })
 
   ))
+
+(use 'ring.adapter.jetty)
+
+(require 'bkell.handler)
+(defonce server (run-jetty #'bkell.handler/app {:port 8080 :join? false}))
