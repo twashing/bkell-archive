@@ -7366,3 +7366,13 @@ table#entries-table > tbody > tr > td.editcolumn {
   padding-left: 30px;
   padding-top: 20px;
 }
+
+/* line 188, ../templ/sass/landing.sass */
+.color-white {
+  background-color: white;
+}
+
+/* line 191, ../templ/sass/landing.sass */
+.pad-left {
+  padding-left: 40px;
+}

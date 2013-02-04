@@ -33,6 +33,7 @@
     <script src='/js/lib/bootstrap.js'></script>
     <script src='/js/lib/bootstrap-modal.js'></script>
     <script src='/js/lib/bootstrap-tab.js'></script>
+    <script src='/js/lib/select2.min.js'></script>
     <link href='/css/datepicker.css' media='screen' rel='stylesheet' type='text/css' />
     <script src='/js/lib/bootstrap-datepicker.js'></script>
     <link href='/css/common.css' media='screen' rel='stylesheet' type='text/css' />
@@ -99,11 +100,11 @@
             window.location = "/logout";
           });
         
-          //Enable the main tabs
-          $("#mainTab a").click(function(e){
-            e.preventDefault(); 
-            $(this).tab('show');
-          });
+          $("#mainTab a").click(function(e){e.preventDefault(); $(this).tab('show');})
+        
+          $("#paywallTab a").click(function(e){e.preventDefault(); $(this).tab('show');})
+        
+          (function() { $("#country , #currency").select2(); })();
         
         })
       //]]>
@@ -140,42 +141,172 @@
           </div>
         </div>
       </div>
-      <div class='row'>
+      <div class='row pad-left'>
         <ul class='nav nav-tabs tab-align' id='mainTab'>
-          <li class='active'>
+          <li>
             <a data-toggle='tab' href='#books'>Books</a>
           </li>
-          <li>
+          <li class='active'>
             <a data-toggle='tab' href='#profile'>Profile</a>
           </li>
         </ul>
+        <script type='text/javascript'>
+          //<![CDATA[
+            $("#mainTab a").click(function(e){e.preventDefault(); $(this).tab('show');});
+          //]]>
+        </script>
         <div class='tab-content'>
-          <div class='tab-pane active' id='books'>
-            <div id='books'>
-              <div id='main-content'>
-                <div id='left-col'>
-                  <div id='left-wrapper'>
-                    <div id='left-content'>
-                      <div id='accounts'></div>
-                      <div id='account'></div>
+          <div class='tab-pane' id='books'>
+            <div class='row'>
+              <div id='books'>
+                <div id='main-content'>
+                  <div id='left-col'>
+                    <div id='left-wrapper'>
+                      <div id='left-content'>
+                        <div id='accounts'></div>
+                        <div id='account'></div>
+                      </div>
                     </div>
+                    <!-- #left-toggler -->
                   </div>
-                  <!-- #left-toggler -->
-                </div>
-                <div id='right-col'>
-                  <div id='right-wrapper'>
-                    <div id='right-content'>
-                      <div id='entries'></div>
-                      <div id='entry'></div>
-                      <div id='entry-part'></div>
+                  <div id='right-col'>
+                    <div id='right-wrapper'>
+                      <div id='right-content'>
+                        <div id='entries'></div>
+                        <div id='entry'></div>
+                        <div id='entry-part'></div>
+                      </div>
                     </div>
                   </div>
                 </div>
               </div>
             </div>
           </div>
-          <div class='tab-pane' id='profile'>
-            Profile
+          <div class='tab-pane active' id='profile'>
+            <div class='row'>
+              <div class='span6'>
+                <div class='well color-white'>
+                  <legend>
+                    User Details
+                  </legend>
+                  <form class='form-horizontal'>
+                    <div class='control-group'>
+                      <label class='control-label'>First Name</label>
+                      <div class='controls'>
+                        <input class='span2' placeholder='First Name' type='text' />
+                      </div>
+                    </div>
+                    <div class='control-group'>
+                      <label class='control-label'>Last Name</label>
+                      <div class='controls'>
+                        <input class='span2' placeholder='Last Name' type='text' />
+                      </div>
+                    </div>
+                    <div class='control-group'>
+                      <label class='control-label'>Email</label>
+                      <div class='controls'>
+                        <input class='span2' placeholder='Email' type='email' />
+                      </div>
+                    </div>
+                    <div class='control-group'>
+                      <label class='control-label'>Company</label>
+                      <div class='controls'>
+                        <input class='span2' placeholder='Company' type='text' />
+                      </div>
+                    </div>
+                    <div class='control-group'>
+                      <label class='control-label'>Country</label>
+                      <div class='controls'>
+                        <select class='span2' id='country'>
+                          <option>
+                            Canada
+                          </option>
+                          <option>
+                            USA
+                          </option>
+                        </select>
+                      </div>
+                    </div>
+                    <div class='control-group'>
+                      <label class='control-label'>Currency</label>
+                      <div class='controls'>
+                        <select class='span2' id='currency'>
+                          <option>
+                            US Dollars
+                          </option>
+                          <option>
+                            Canadian Dollars
+                          </option>
+                        </select>
+                      </div>
+                    </div>
+                    <div class='control-group'>
+                      <div class='controls'>
+                        <button class='btn' type='submit'>Save</button>
+                        <button class='btn' type='submit'>Cancel</button>
+                      </div>
+                    </div>
+                  </form>
+                </div>
+              </div>
+              <div class='span7 offset1'>
+                <div class='well color-white'>
+                  <legend>
+                    Current Plan : Trial
+                  </legend>
+                  <ul class='nav nav-tabs' id='paywallTab'>
+                    <li class='active'>
+                      <a data-toggle='tab' href='#trial'>Trial (free)</a>
+                    </li>
+                    <li>
+                      <a data-toggle='tab' href='#basic'>Basic ($9)</a>
+                    </li>
+                    <li>
+                      <a data-toggle='tab' href='#productivity'>Productivity ($20)</a>
+                    </li>
+                    <li>
+                      <a data-toggle='tab' href='#enterprise'>Enterprise ($50)</a>
+                    </li>
+                  </ul>
+                  <script type='text/javascript'>
+                    //<![CDATA[
+                      $("#paywallTab a").click(function(e){e.preventDefault(); $(this).tab('show');});
+                    //]]>
+                  </script>
+                  <div class='tab-content'>
+                    <div class='tab-pane active' id='trial'>
+                      <div class='row'>
+                        <div class='span2'>
+                          <ul>
+                            <li>Upload</li>
+                            <li>Export</li>
+                            <li>Reports</li>
+                          </ul>
+                        </div>
+                        <div class='span2'>
+                          <div class='pull-right'>$20/mth</div>
+                        </div>
+                      </div>
+                      <div class='row'>
+                        <div class='span4'>
+                          <div class='control-group'>
+                            <label class='control-label'>Card Number</label>
+                            <div class='controls'>
+                              <input placeholder='Card Number' type='text' />
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div class='tab-pane' id='basic'>
+                      <p>
+                        Basic
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       </div>
