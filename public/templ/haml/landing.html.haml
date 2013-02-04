@@ -14,11 +14,10 @@
     /[if IE]
       %link{ :href => "/css/ie.css", :media => "screen, projection", :rel => "stylesheet", :type => "text/css" }
 
-    %script( src="/js/lib/jquery-1.7.2.min.js" )
-    %script( src="/js/lib/jquery-ui-1.8.16.custom.min.js" )
-    %script( src="/js/lib/bootstrap-tab.js" )
+    %script( src="/js/lib/jquery1.9.min.js" )
+    %script( src= "/js/lib/jquery-ui-1.10.0.custom.min.js" )
 
-    %link{ :href => "/css/jquery-ui.css", :media => "screen", :rel => "stylesheet", :type => "text/css" }
+    %link{ :href => "/css/jquery-ui-1.10.0.custom.min.css", :media => "screen", :rel => "stylesheet", :type => "text/css" }
 
     / custom scrollbars
     %link{ :href => "/css/scrollbars.css", :media => "screen", :rel => "stylesheet", :type => "text/css" }
@@ -29,6 +28,8 @@
     %script( src="/js/lib/jquery.dataTables.js" )
     %script( src="/js/lib/jquery.serialScroll.js" )
     %script( src="/js/lib/jquery.scrollTo.js" )
+
+
     /%script( src="/js/lib/enscroll-0.2.4.min.js" )
 
     /%link{ :href => "/css/bootstrap.css", :media => "screen", :rel => "stylesheet", :type => "text/css" }
@@ -37,6 +38,7 @@
 
     /%script( src="/js/lib/require.js" data-main="test/run_tests" )
 
+
     %script( src="/js/lib/json2.js" )
     %script( src="/js/lib/underscore.js" )
     %script( src="/js/lib/backbone.js" )
@@ -44,6 +46,7 @@
     %script( src="/js/lib/state-machine.js" )
     %script( src="/js/lib/bootstrap.js" )
     %script( src="/js/lib/bootstrap-modal.js" )
+    %script( src="/js/lib/bootstrap-tab.js" )
 
     %link{ :href => "/css/datepicker.css", :media => "screen", :rel => "stylesheet", :type => "text/css" }
     %script( src="/js/lib/bootstrap-datepicker.js" )
@@ -51,10 +54,23 @@
     %link{ :href => "/css/common.css", :media => "screen", :rel => "stylesheet", :type => "text/css" }
     %link{ :href => "/css/landing.css", :media => "screen", :rel => "stylesheet", :type => "text/css" }
 
-    %link{ :href => "/css/bootstrap-verticaltabs.css", :media => "print", :rel => "stylesheet", :type => "text/css" }
+    <!-- %link{ :href => "/css/bootstrap-verticaltabs.css", :media => "screen", :rel => "stylesheet", :type => "text/css" } -->
 
     %script( src="/js/lib/require.js" data-main="js/bkeeping/landing" )
 
+    <!-- :css -->
+    <!--   .ui-tabs-vertical { width: 55em; } -->
+    <!--   .ui-tabs-vertical .ui-tabs-nav { padding: .2em .1em .2em .2em; float: left; width: 12em; } -->
+    <!--   .ui-tabs-vertical .ui-tabs-nav li { clear: left; width: 100%; border-bottom-width: 1px !important; border-right-width: 0 !important; margin: 0 -1px .2em 0; } -->
+    <!--   .ui-tabs-vertical .ui-tabs-nav li a { display:block; } -->
+    <!--   .ui-tabs-vertical .ui-tabs-nav li.ui-tabs-active { padding-bottom: 0; padding-right: .1em; border-right-width: 1px; border-right-width: 1px; } -->
+    <!--   .ui-tabs-vertical .ui-tabs-panel { padding: 1em; float: right; width: 40em;} -->
+
+    <!-- :javascript -->
+    <!--   $(function() { -->
+    <!--     $( "#tabs" ).tabs().addClass( "ui-tabs-vertical ui-helper-clearfix" ); -->
+    <!--     $( "#tabs li" ).removeClass( "ui-corner-top" ).addClass( "ui-corner-left" ); -->
+    <!--   }); -->
 
     :javascript
       $(document).ready(function() {
@@ -103,7 +119,15 @@
           window.location = "/logout";
         });
 
+        //Enable the main tabs
+        $("#mainTab a").click(function(e){
+          e.preventDefault(); 
+          $(this).tab('show');
+        });
+
       })
+
+
 
   %body
     #delete-confirm.modal.fade
@@ -115,47 +139,40 @@
         %button.btn#modal-delete-cancel
           cancel
     .bkell-container
-      #header
-        #title-wrapper
-          #title
-            bkeeping
-          #subtitle
-            #subtitle-default Your solution to simple &nbsp;
-            #subtitle-black online bookkeeping
-          #logout-button.btn.btn-inverse.btn-large
-            Logout
-      .verticaltabs-container
-        .tabs
+      .row
+        #header
+          #title-wrapper
+            #title
+              bkeeping
+            #subtitle
+              #subtitle-default Your solution to simple &nbsp;
+              #subtitle-black online bookkeeping
+            #logout-button.btn.btn-inverse.btn-large
+              Logout
+      .row
+        %ul.nav.nav-tabs.tab-align#mainTab
           %li.active
-            %a{:href => "#books"} Books
+            %a{:href => "#books", "data-toggle" => "tab"} Books
           %li
-            %a{:href => "#profile"} Profile
-
+            %a{:href => "#profile" , "data-toggle" => "tab"} Profile
         .tab-content
           .tab-pane.active#books
-            #main-content
-              #left-col
-                #left-wrapper
-                  #left-content
-                    #accounts
-                    #account
-                /#left-toggler
-              #right-col
-                #right-wrapper
-                  #right-content
-                    #entries
-                    #entry
-                    #entry-part
-            .tab-pane#profile
-              Hello Dearest Batul
-      %ul.nav.nav-tabs
-        %li
-          %a{"data-toggle" => "tab", :href => "#home"} Home
-        %li
-          %a{"data-toggle" => "tab", :href => "#profile"} Profile
-        %li
-          %a{"data-toggle" => "tab", :href => "#messages"} Messages
-        %li
-          %a{"data-toggle" => "tab", :href => "#settings"} Settings
+            #books
+              #main-content
+                #left-col
+                  #left-wrapper
+                    #left-content
+                      #accounts
+                      #account
+                  /#left-toggler
+                #right-col
+                  #right-wrapper
+                    #right-content
+                      #entries
+                      #entry
+                      #entry-part
+          .tab-pane#profile
+            Profile
+
 
     #footer

@@ -1,0 +1,63 @@
+@font-face {
+  font-family: "PalatinoZ";
+  src: url('/css/fonts/fonts/Palatino-Bold-Italic.ttf') format('truetype');
+}
+
+/* line 9, ../templ/sass/_utils.sass */
+.debug {
+  border-style: solid;
+  border-width: 1px;
+}
+
+/* line 12, ../templ/sass/_utils.sass */
+.text-curly {
+  font-style: italic;
+  font-family: Poly, serif;
+}
+
+/* line 16, ../templ/sass/_utils.sass */
+.text-default {
+  font: Verdana, Arial, sans-serif;
+}
+
+/* line 4, ../templ/sass/index.sass */
+.signup {
+  color: #686868;
+}
+
+/* line 8, ../templ/sass/index.sass */
+.signup-wrapper {
+  margin-top: 20px;
+}
+/* line 10, ../templ/sass/index.sass */
+.signup-wrapper .signup-anchor {
+  text-decoration: none;
+}
+/* line 12, ../templ/sass/index.sass */
+.signup-wrapper .signup-anchor .buttons {
+  font-size: 13.2px;
+}
+
+/* line 15, ../templ/sass/index.sass */
+.motto {
+  margin: auto;
+  margin-top: 23%;
+  width: 900px;
+  position: relative;
+}
+/* line 20, ../templ/sass/index.sass */
+.motto .motto-left, .motto .motto-right {
+  float: left;
+  font-style: italic;
+  font-family: Poly, serif;
+  font-weight: bold;
+  font-size: 35px;
+}
+/* line 27, ../templ/sass/index.sass */
+.motto .motto-left {
+  color: #132abf;
+}
+/* line 29, ../templ/sass/index.sass */
+.motto .motto-right {
+  color: #007821;
+}

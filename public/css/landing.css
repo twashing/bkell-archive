@@ -183,6 +183,21 @@ html, body {
   visibility: hidden;
 }
 
+/* line 104, ../templ/sass/common.sass */
+.h {
+  height: 100%;
+}
+
+/* line 107, ../templ/sass/common.sass */
+.w {
+  width: 100%;
+}
+
+/* line 110, ../templ/sass/common.sass */
+.color-white {
+  background-color: white;
+}
+
 /*
  * Bootstrap v2.1.0
  *
@@ -7344,4 +7359,10 @@ table#entries-table > tbody > tr > td.editcolumn {
   background: url("/images/sort_asc.png");
   background-repeat: no-repeat;
   background-position: 100% 50%;
+}
+
+/* line 184, ../templ/sass/landing.sass */
+.tab-align {
+  padding-left: 30px;
+  padding-top: 20px;
 }
