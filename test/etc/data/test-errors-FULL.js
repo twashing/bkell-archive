@@ -1,5 +1,0 @@
-{
-  "tag" : "errors",
-  "content" : []
-}
-
