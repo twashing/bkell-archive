@@ -1,4 +1,6 @@
+changes
 .env
 ./lib
 etc/scratch 
 etc/config/config.clj
+target/
