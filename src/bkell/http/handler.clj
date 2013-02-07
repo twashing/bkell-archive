@@ -5,16 +5,16 @@
             [compojure.route :as route]
             [cemerick.friend :as friend]
             [net.cgrand.enlive-html :as enlive]
+            [clj-http.client :as client]
+            [clojure.data.json :as json]
+            [bkell.http.handler-utils :as hutils]
             [bkell.bkell :as bkell]
+            [bkell.commands.get :as getk]
+            [bkell.commands.authenticate :as authenticatek]
+            [noir.session :as session]
             ))
 
 
-(defn generate-host-address [host-url host-port]
-  (str  "http://"
-        (if (-> host-url nil? not) host-url "localhost")
-        (if (-> host-port nil? not) (str ":" host-port))
-        )
-)
 (defn goindex []
   (let  [templ (enlive/html-resource "index.html")
          mode (:mode @bkell/shell)
@@ -23,7 +23,7 @@
          developer-key (-> mode (@bkell/shell) :developer-key)
 
          xx (println (<< "(xfn ~{host-url} ~{(if (= mode :dev) host-port nil)})"))
-         ruri  (str  (generate-host-address host-url (if (= mode :dev) host-port nil)) "/callbackGitkit" ) ;; conditionally assign the host-port
+         ruri  (str  (hutils/generate-host-address host-url (if (= mode :dev) host-port nil)) "/callbackGitkit" ) ;; conditionally assign the host-port
         ]
 
     (apply str (enlive/emit*  (enlive/transform
@@ -75,26 +75,87 @@
     )
   )
 )
+#_(defn callbackHandlerCommon [method req]
 
+  ;; needs to call 'verifyAssertion' to parse response - should return a { :user :map }
+  (let [mode (:mode @bkell/shell)
+        host-url (-> mode (@bkell/shell) :host-url)
+        host-port (-> mode (@bkell/shell) :host-port)
+        developer-key (-> mode (@bkell/shell) :developer-key)
+        ruri  (str  (hutils/generate-host-address host-url (if (= mode :dev) host-port nil)) "/callbackGitkit")
+        pbody (hutils/encode-params req)
+
+        print0 (println (str "ruri:[" ruri "]"))
+
+        final-url (str "https://www.googleapis.com/identitytoolkit/v1/relyingparty/verifyAssertion?key=" developer-key)
+        final-body (str "{'requestUri':'" ruri "','postBody':'" pbody "'}")
+
+        print1 (println (str "final-url:[" final-url "]"))
+        print2 (println (str "final-body:[" final-body "]"))
+
+        verify-resp (client/post
+                     final-url
+                     {:body final-body
+                      :content-type :json})
+
+        print3 (println (str "verify-resp: " verify-resp))]
+
+    (-> verify-resp :body clojure.data.json/read-json (merge { :exists false}))))
 
 (defroutes app-routes
 
 
-  #_(GET "/" [:as request]
-       (throw (Exception. "fubar"))
-       "Hello World")
-  #_(route/not-found "Not Found")
+  ;; ======
+  ;; ROOT Page
+  (GET "/" [:as request]   ;; index is the default page of the application
+    (goindex)
+    )
 
 
   ;; ======
-  ;; ROOT Page
-  (GET "/" []   ;; index is the default page of the application
-    (goindex)
-  )
+  ;; Gitkit Handler
+  ;;
+  ;;  ? Email exists in the user database
+  ;;  Log the user in;
+  ;;
+  ;;  ? Email does not exist in the user database
+  ;;  Create a new entry in your account database with that email address;
+  ;;  Add additional information such as the user attributes from the verifyAssertion response.
+  ;;  <Google suggests always saving the value of displayName and photoUrl if available because they can be used later to add the user's name and photo to the account chooser>
+  ;;  Log the user in to the newly created account;
+  ;;  By setting registered=true in the HTML response below, the user will then be redirected to your signupURL to collect any addditional information.
+  (POST "/callbackGitkit" [:as request]
 
+    (println (<< "/callbackGitkit HANDLER [POST]: ~{request}"))
+
+    (let  [cb-resp {}  #_(callbackHandlerCommon "POST" request)
+           one (println (str "cb-resp: " cb-resp))
+           ru (getk/get-user (:verifiedEmail cb-resp))
+           templ (enlive/html-resource "include/callbackUrlSuccess.html")]
+
+
+      (let  [rsetup (hutils/adduser-ifnil ru cb-resp)
+             rresp (:cb-resp rsetup)]
+
+        ;; Log the user in; session should die after some inactivity
+        (let [logu (if (nil? (:new-user rsetup)) ru (:new-user rsetup))]
+
+          (authenticatek/login-user logu)
+          (session/put! :current-user logu))
+
+        (let  [notify-input { :email (:verifiedEmail rresp) :registered (-> rresp :exists str)}
+               notify-input-str (clojure.data.json/json-str notify-input)]
+          (apply str  (enlive/emit*  (enlive/transform
+                                      templ
+                                      [[ :script (enlive/nth-of-type 3)]]  ;; get the 3rd script tag
+                                      (enlive/content (str "window.google.identitytoolkit.notifyFederatedSuccess(" notify-input-str ");")))))))))
+
+
+  ;; ======
+  ;; Resource Routes
   (route/files "/")
   (route/resources "/")
-
+  (route/not-found "Not Found")
 )
 
 (def app

@@ -1,6 +1,7 @@
 changes
 .env
 ./lib
+.lein-repl-history
 etc/scratch 
 etc/config/config.clj
 target/
