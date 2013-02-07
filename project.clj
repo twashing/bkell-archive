@@ -19,6 +19,7 @@
                   [com.cemerick/drawbridge "0.0.6"]
                   [ring/ring-core "1.1.1"]
                   [swank-clojure "1.4.2"]
+                  [abengoa/clj-stripe "1.0.3"]
                 ]
   :dev-dependencies [ [midje "1.4.0"]
                       [lein-ring "0.7.1"]

@@ -7363,16 +7363,30 @@ table#entries-table > tbody > tr > td.editcolumn {
 
 /* line 184, ../templ/sass/landing.sass */
 .tab-align {
-  padding-left: 30px;
-  padding-top: 20px;
+  padding-top: 30px;
 }
 
-/* line 188, ../templ/sass/landing.sass */
+/* line 187, ../templ/sass/landing.sass */
 .color-white {
   background-color: white;
 }
 
-/* line 191, ../templ/sass/landing.sass */
+/* line 190, ../templ/sass/landing.sass */
 .pad-left {
+  padding-left: 40px;
+}
+
+/* line 193, ../templ/sass/landing.sass */
+.price-font {
+  font-size: 22px;
+}
+
+/* line 196, ../templ/sass/landing.sass */
+.align-row {
+  padding-left: 20px;
+}
+
+/* line 199, ../templ/sass/landing.sass */
+.align-button {
   padding-left: 40px;
 }
