@@ -1,0 +1,29 @@
+
+%html{ :lang => "en" } 
+  
+  %head
+    %meta{ :charset => "utf-8" }
+  
+  %body
+    %article 
+      %header 
+        %h3 Add/Edit Entry
+      
+      .entryPart_container
+        .entryPart_content
+          %div 
+            %label Amount
+            %input#entry-part-amount{ :type => "text" }
+          %div 
+            %label Account
+            %select#entry-part-account
+              %option{ :value => "" , :label => "" }
+          %div 
+            %label Type
+            %select#entry-part-type
+              %option{ :value => "debit" } debit
+              %option{ :value => "credit" } credit
+          %div
+            %input#entry-part-ok{ :type => "button" , :value => "Save" }
+            %input#entry-part-cancel{ :type => "button" , :value => "Cancel" }
+

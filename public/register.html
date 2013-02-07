@@ -1,0 +1,276 @@
+
+<html>
+  <head>
+  	
+    <link type="text/css" href="css/main.css" rel="stylesheet" />
+    
+	<script type="text/javascript" src="http://code.jquery.com/jquery-1.6.2.js"></script>
+	<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.8.14/jquery-ui.js"></script>
+    <!-- script language="javascript" type="text/javascript">
+      $j = jQuery.noConflict();
+    </script -->
+	<script type="text/javascript" src="javascript/bkeeping.js"></script>
+    
+    <script type="text/javascript" src="javascript/json2.js"></script>
+    <script type="text/javascript" src="javascript/underscore-min.js"></script>
+	<!-- <script type="text/javascript" src="javascript/backbone-min.js"></script> -->
+	<script type="text/javascript" src="http://documentcloud.github.com/backbone/backbone.js"></script>
+    
+	<script type="text/javascript" > 
+	  
+      
+      $(document).ready(function() {
+          
+          /*window.Error = Backbone.Model.extend({
+            urlRoot : "/error",
+            tag : "error",
+            message : ""
+          });
+          window.Errors = Backbone.Collection.extend({
+            tag : "errors",
+            model: Error,
+            content : []
+          });
+          */
+          
+          window.Register = Backbone.Model.extend({
+            urlRoot : "/user"
+          }); 
+          
+          window.RegisterView = Backbone.View.extend({
+            
+            tagName : "div",
+            className: "register",
+            el: $('#register'),
+
+            initialize: function(){
+              _.bindAll(this, 'render'); // fixes loss of context for 'this' within methods
+              this.render(); // not all views are self-rendering. This one is.
+            },
+            
+            render: function() {},
+            
+            events: {
+              'click button#registerbtn': 'registerUser', 
+              //'click a' : 'registerUser'
+            },
+            
+            registerUser: function() {
+              
+              //alert("In the name of science... you monster");
+              
+			  registerModel.set( 
+                {"tag":"user",
+				 "username":this.$("#username").val(), 
+				 "password":this.$("#password").val(), 
+				 "content":
+				 [{"tag":"profileDetails",
+				   "content":
+				   [{"tag":"profileDetail",
+				     "name":"first.name",
+				     "value": this.$("#firstname").val(), 
+				     "content":null},
+				    {"tag":"profileDetail",
+				     "name":"last.name",
+				     "value": this.$("#lastname").val(), 
+				     "content":null},
+				    {"tag":"profileDetail",
+				     "name":"email",
+				     "value": this.$("#email").val(), 
+				     "content":null},
+				    {"tag":"profileDetail",
+				     "name":"country",
+				     "value": this.$("#country").val(), 
+				     "content":null},
+				    {"tag":"profileDetail",
+				     "name":"currency",
+				     "value": this.$("#currency").val(), 
+				     "content":null}
+                    
+                    ]}]},
+                {silent: true});
+              registerModel.save( registerModel,
+                {
+                  success : function(model, response) {
+                    
+                    // check if this is an ERROR
+                    // ... 
+                    
+                    // if success, make a login call 
+                    // ... 
+                    
+                    console.log("SUCCESS model: " + model.toJSON());
+                    console.log("SUCCESS response: " + response.toJSON());
+                  },   // handle a application error
+                  error : function(model, response) {
+                    console.log("ERROR model: " + model.toJSON());
+                    console.log("ERROR response: " + response.toJSON());
+                  }    // handle a 500 error 
+                });
+              }
+          });
+          
+          registerModel = new Register
+          registerView = new RegisterView; 
+          
+          //e1 = new Error({ "message" : "Error 1" });
+          //e2 = new Error({ "message" : "Error 2" });
+          //errs = new Errors( [e1, e2] );
+          //errs.save();
+          
+	  });
+      
+      
+	</script>
+	
+  </head>
+  <body>
+  		
+  		<div class="header" >
+  		</div> 
+  		
+  		<div 
+  			id="loading-msg" 
+   			style="
+   				display: block; 
+   				color: #113366; 
+   				padding: 2px; 
+   				width: 60px; 
+   				background-color: #C0C0C0; 
+   				text-align: center; 
+   				left: -100; 
+   				position: relative; 
+   				font-family: arial sans-serif; 
+   				font-size: 12px; 
+   				" >
+   			Loading...
+		</div>
+		
+  		
+  		<div class="content" >
+  			
+  			
+  			<div id="title" class="title" style=" position:relative; top:15px; left:30px; width:70%; height: 35px;" >
+				bkeeping
+				<xx class='subheader'>Your solution to simple 
+					<xx style="color:#000000">online bookkeeping</xx> 
+				</xx>
+			
+			
+			
+				<div class="loginholder">
+				<div class="leftgrid" id="leftcol">
+					
+					<input type="text" size="18" id="u" name="u"/>
+				</div>
+				<div class="leftgrid" id="rightcol">
+					
+					<input type="password" size="18" id="p" name="p"/>
+				</div>
+				<div class="leftgrid" id="gocol">
+					
+					
+					<button class="buttons" 
+                            style="font-size: 13.2px;" onclick="bkeeping.processLogin();" >
+                      LOGIN
+                    </button>
+					
+				</div>
+				</div>
+				
+				
+				
+			</div>			
+			
+			<div class="mainwindow lborder contentwindow" id="contentbox">
+
+	
+		<div class="register" id="register" >
+				<p class="signuptitle">
+					Sign up for bkeeping
+				</p>
+				<table>
+					<tbody><tr>
+						<td style="font-size: 11px;" >Username</td><td><input type="text" value="" id="username" name="username" style="margin: 0px 7px;" /></td>
+					</tr>
+					<tr>
+						<td style="font-size: 11px;" >Password</td><td><input type="password" value="" id="password" name="password" style="margin: 0px 7px;" /></td>
+					</tr>
+					<tr>
+						<td style="font-size: 11px;" >First Name</td><td><input type="text" value="" id="firstname" name="firstname" style="margin: 0px 7px;" /></td>
+					</tr>
+					<tr>
+						<td style="font-size: 11px;" >Last Name</td><td><input type="text" value="" id="lastname" name="lastname" style="margin: 0px 7px;" /></td>
+					</tr>
+					<tr>
+						<td style="font-size: 11px;" >Email</td><td><input type="text" value="" id="email" name="email" style="margin: 0px 7px;" /></td>
+					</tr>
+					<tr>
+						<td style="font-size: 11px;" >Country</td>
+						<td>
+							<select id="country" name="country" style="margin: 0px 7px;" >
+								<option>United States</option>
+								<option>Canada</option>
+							</select>
+						</td>
+					</tr>
+					<tr>
+						<td style="font-size: 11px;" >Currency</td>
+						<td>
+							<select id="currency" name="currency" style="margin: 0px 7px;" >
+								<option>USD</option>
+								<option>CDN</option>
+							</select>
+						</td>
+					</tr>
+					<tr>
+						<td/>
+						<td>
+							
+							<button id="registerbtn" 
+                                    class="buttons" 
+                                    style="font-size: 13.2px;" >
+                              SIGP UP
+                            </button>
+							<a href="/" style="text-decoration: none;" >
+								<button class="buttons" style="font-size: 13.2px;" >CANCEL</button>
+							</a>
+							
+						</td>
+					</tr>
+					</tbody>
+				</table>
+		</div>
+		<div class="fastandeasy" id="contentcentercol">
+			<p class="heading">
+				Benefits of bkeeping...
+			</p>
+			<p>
+				Simple interface to record and search for account and journal entries.
+			</p>
+			<p>
+				Sign up fast.
+			</p>
+			<p>
+				Easy, intuitive interface to manage your bookkeeping needs.
+			</p>
+		</div>
+
+	</div>
+			
+  			
+			
+			
+		</div>
+  		<div class="footer" >
+  			<p class="legal">
+				©2008-2009 bkeeping Software, Inc. | All Rights Reserved
+			</p>
+  		</div>
+  		
+		
+  </body>
+</html>
+
+
+

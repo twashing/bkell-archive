@@ -1,0 +1,94 @@
+<html lang='en'>
+  <head>
+    <meta charset='utf-8' />
+    <title>Bkeeping.com: Simple Online Bookkeeping</title>
+    <!-- Chromeframe plugin -->
+    <!-- %meta( http-equiv="X-UA-Compatible" content="chrome=1") -->
+    <script src='https://github.com/kriskowal/es5-shim/blob/master/es5-shim.min.js'></script>
+    <!-- %script( type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/chrome-frame/1/CFInstall.min.js" ) -->
+    <link href='css/common.css' rel='stylesheet' type='text/css' />
+    <link href='css/index.css' rel='stylesheet' type='text/css' />
+    <script src='//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js'></script>
+    <script src='http://ajax.googleapis.com/ajax/libs/jqueryui/1.8/jquery-ui.min.js'></script>
+    <script src='https://ajax.googleapis.com/ajax/libs/googleapis/0.0.4/googleapis.min.js'></script>
+    <script src='https://ajax.googleapis.com/jsapi'></script>
+    <script type='text/javascript'>
+      //<![CDATA[
+        google.load("identitytoolkit", "1", {packages: ["ac"], language:"en"});
+      //]]>
+    </script>
+    <script src='/js/lib/json2.js'></script>
+    <script src='/js/lib/underscore.js'></script>
+    <script src='/js/lib/backbone.js'></script>
+    <script src='js/bkeeping.js' type='text/javascript'></script>
+    <script type='text/javascript'>
+      //<![CDATA[
+        $(document).ready(function() {
+        
+        
+          /*********
+           * Some internal code is giving the body a margin - can't figure out what it is
+           *********/
+          $('body').css('margin', '0px');
+        
+        
+          /*********
+           * GITkit Account Chooser code
+           *********/
+          window.google.identitytoolkit.setConfig({
+            developerKey: "AIzaSyDc7_lGZsmbtdOUpprPClKBOxXCQ6LztRE",
+            companyName: "Interrupt Software Inc.",
+            callbackUrl: "http://<to-be-generated>/callbackGitkit",
+            realm: "",
+            userStatusUrl: "/userStatusUrl",
+            loginUrl: "/loginUrl",
+            signupUrl: "/register",
+            homeUrl: "/landing",
+            logoutUrl: "/logout",
+            idps: ["Gmail", "Yahoo", "AOL"],
+            tryFederatedFirst: true,
+            useCachedUserStatus: false
+          });
+        
+          $('#account-chooser').accountChooser();
+        
+        
+          /*********
+           * load the footer file
+           *********/
+          $('#footer').load('/include/footerPart.html');
+        
+        });
+      //]]>
+    </script>
+  </head>
+  <body>
+    <div class='bkell-container'>
+      <div id='header'>
+        <div id='title-wrapper'>
+          <div id='title'>
+            bkeeping
+          </div>
+          <div id='subtitle'>
+            <div id='subtitle-default'>Your solution to simple &nbsp;</div>
+            <div id='subtitle-black'>online bookkeeping</div>
+          </div>
+          <div id='account-chooser'></div>
+        </div>
+      </div>
+      <div id='main-content'>
+        <div class='motto'>
+          <div class='motto-left'>The fastest and easiest way</div>
+          <div class='motto-right'>
+            &nbsp;
+            to manage your bookkeeping.
+          </div>
+        </div>
+      </div>
+      <div class='modal screen' id='modal_screen'>
+        &nbsp;
+      </div>
+    </div>
+    <div id='footer'></div>
+  </body>
+</html>

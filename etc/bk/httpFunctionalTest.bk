@@ -1,0 +1,162 @@
+
+
+...TODO 
+create ( <account xmlns='com/interrupt/bookkeeping/account' type="asset" id="expense" name="modified expeses" counterWeight="debit" /> ); 
+create ( <account xmlns='com/interrupt/bookkeeping/account' type="asset" id="expense@tim.com" name="modified expeses" counterWeight="debit" /> ); 
+create ( <account xmlns='com/interrupt/bookkeeping/account' type="asset" id="create" name="modified expeses" counterWeight="debit" /> ); 
+create ( <account xmlns='com/interrupt/bookkeeping/account' type="asset" id="create:id" name="modified expeses" counterWeight="debit" /> ); 
+
+var abc = create ( <debit xmlns='com/interrupt/bookkeeping/account' id='abc' amount='10.00' entryid='e1' accountid='1' currency='CDN' /> ); 
+update ( (@abc) <debit xmlns='com/interrupt/bookkeeping/account' id='def' amount='10.00' entryid='e1' accountid='1' currency='CDN' /> ); 
+
+
+create ( 
+	<entries id='' xmlns='com/interrupt/bookkeeping/journal' 
+		xmlns:account='com/interrupt/bookkeeping/account' 
+		xmlns:journal='com/interrupt/bookkeeping/journal' > 
+		
+		<journal:entry id='e1' entrynum='' state='' journalid='' date='' currency='CDN' >  
+		    <account:debit id='abc' amount='10.00' entryid='e1' accountid='1' currency='CDN' />  
+		    <account:debit id='def' amount='1.50' entryid='e1' accountid='2' currency='CDN' />  
+		    <account:credit id='ghi' amount='11.50' entryid='e1' accountid='3' currency='CDN' />  
+		</journal:entry> 
+	</entries>
+); 
+
+
+login ( user -username root -password password ); 
+find ( ( load ( user -id twashing ) ) profileDetails -id user.details ); 
+create ( debit ); 
+print ( @previous ); 
+
+
+list ( ( load ( bookkeeping -id main.bookkeeping ) ) accounts -id main.accounts ); 
+
+
+
+###
+# expr to login 
+login ( user -username root -password password ); 
+
+
+###
+# expr to add a user 
+#var aauthUsers = add ( (load ( users -id aauth.users ))
+var aauthUsers = add ( (load ( `/system[ @id='main.system' ]/aauthentication[ @id='main.authentication' ]/users[ @id='aauth.users' ]` ))
+		<user xmlns='com/interrupt/bookkeeping/users' id='twashing' username='twashing' password='password' >
+			<profileDetails xmlns='com/interrupt/bookkeeping/users' id='user.details' >
+				<profileDetail xmlns='com/interrupt/bookkeeping/users' id='firstname' name='first.name' value='Timothy' />
+				<profileDetail xmlns='com/interrupt/bookkeeping/users' id='lastname' name='last.name' value='Washington' />
+				<profileDetail xmlns='com/interrupt/bookkeeping/users' id='email' name='email' value='twashing-gmail.com' />
+				<profileDetail xmlns='com/interrupt/bookkeeping/users' id='country' name='country' value='U.S.A' />
+			</profileDetails>
+		</user>
+	); 
+
+commit ( ( `/system[ @id='main.system' ]/aauthentication[ @id='main.authentication' ]/users[ @id='aauth.users' ]` ) @aauthUsers ); 
+
+
+var mainSystem = add ( (load ( system -id main.system ) )
+		<user xmlns='com/interrupt/bookkeeping/users' id='twashing' username='twashing' password='password' >
+			<profileDetails xmlns='com/interrupt/bookkeeping/users' id='user.details' >
+				<profileDetail xmlns='com/interrupt/bookkeeping/users' id='firstname' name='first.name' value='Timothy' />
+				<profileDetail xmlns='com/interrupt/bookkeeping/users' id='lastname' name='last.name' value='Washington' />
+				<profileDetail xmlns='com/interrupt/bookkeeping/users' id='email' name='email' value='twashing-gmail.com' />
+				<profileDetail xmlns='com/interrupt/bookkeeping/users' id='country' name='country' value='U.S.A' />
+			</profileDetails>
+		</user>
+	); 
+
+...TODO: var aauthUsers = add ( (load ( users -id aauth.users ))
+		<user xmlns='com/interrupt/bookkeeping/users' id='twashing' username='twashing' password='password' >
+			<profileDetails xmlns='com/interrupt/bookkeeping/users' id='user.details' >
+				<profileDetail xmlns='com/interrupt/bookkeeping/users' name='first.name' value='Timothy' />
+				<profileDetail xmlns='com/interrupt/bookkeeping/users' name='last.name' value='Washington' />
+				<profileDetail xmlns='com/interrupt/bookkeeping/users' name='email' value='twashing-gmail.com' />
+				<profileDetail xmlns='com/interrupt/bookkeeping/users' name='country' value='U.S.A' />
+			</profileDetails>
+			<profileDetails xmlns='com/interrupt/bookkeeping/users' id='group.details' >
+				<profileDetail xmlns='com/interrupt/bookkeeping/users' name='defaultCurrency' value='USD' />
+			</profileDetails>
+		</user>
+	); 
+
+###
+# expr to logout 
+logout; 
+
+
+
+###
+# expr to list account details 
+var timUserDetails = find ( ( find ((@aauthUsers) user -username twashing) ) profileDetails -id user.details ); 
+var timGroupDetails = find ( ( find ((@aauthUsers) group -username twashing) ) profileDetails -id user.details ); 
+
+
+
+###
+# exprs to update account details 
+update ( ( @timUserDetails ) 
+			<profileDetails xmlns='com/interrupt/bookkeeping/users' id='user.details' >
+				<profileDetail name='first.name' value='Timothy' />
+				<profileDetail name='last.name' value='Washington' />
+				<profileDetail name='email' value='timothyjwashington-yahoo.ca' />
+				<profileDetail name='country' value='Canada' />
+			</profileDetails>
+		); 
+
+update ( ( load ( group -id group.twashing ) ) 
+			<profileDetails id='group.details' >
+				<profileDetail name='defaultCurrency' value='CDN' />
+			</profileDetails>
+		); 
+
+
+
+###
+# expressions to list account(s) / find / update / create / remove 
+var mainAccounts = load ( accounts -id main.accounts ); 
+add ( ( @mainAccounts ) 
+		<account xmlns='com/interrupt/bookkeeping/account' type="asset" id="expense" name="regular expeses" counterWeight="debit" /> ); 
+var expenseAccount = find ( (@mainAccounts) account -id expense ); 
+update ( (@expenseAccount) 
+		<account xmlns='com/interrupt/bookkeeping/account' type="asset" id="expense" name="modified expeses" counterWeight="debit" /> ); 
+remove ( (load ( accounts -id main.accounts )) account -id expense ); 
+
+###
+# expressions to list journal(s) / find / update / create / remove 
+var mainJournals = load ( journals -id main.journals ); 
+add ( (@mainJournals) 
+		<journal xmlns='com/interrupt/bookkeeping/journal' id='specialledger' name='specialledger' type='' balance='' /> ); 
+var specialLedger = find ( (@mainJournals) journal -id specialledger ); 
+update ( (@specialLedger) 
+		<journal xmlns='com/interrupt/bookkeeping/journal' id='specialledger' name='modified ledger' type='' balance='' /> ); 
+remove ( (load ( journals -id main.journals )) journal -id specialledger ); 
+
+
+login ( user -username root -password password ); 
+
+###
+# expressions to list entry(s) / find / update / create / remove 
+var mainEntries = find ( ( load ( journals -id main.journals ) ) entries -id main.entries ); 
+add ( ( @mainEntries ) 
+			<entry xmlns='com/interrupt/bookkeeping/journal' id='' entrynum='' state='' journalid='' date='2/1/2006' currency='CDN' >  
+			    <debit xmlns='com/interrupt/bookkeeping/account' id='' amount='10.00' entryid='' accountid='1' account='office equipment' currency='CDN' />  
+			    <debit xmlns='com/interrupt/bookkeeping/account' id='' amount='1.50' entryid='' accountid='2' account='tax' currency='CDN' />  
+			    <credit xmlns='com/interrupt/bookkeeping/account' id='' amount='11.50' entryid='' accountid='3' account='bank' currency='CDN' />  
+			</entry>  
+	); 
+
+find ( ( load ( ( load ( journals -id main.journals ) ) entries -id main.entries ) ) ) 
+		entry -id ... ); 
+update ( ( load ( ( load ( journals -id main.journals ) ) entry -id ... ) ) ) 
+			<entry xmlns='com/interrupt/bookkeeping/journal' id='' entrynum='' state='' journalid='' date='2/11/2006' >  
+			    <debit xmlns='com/interrupt/bookkeeping/account' id='' amount='10.00' entryid='' accountid='1' account="office equipment" />  
+			    <debit xmlns='com/interrupt/bookkeeping/account' id='' amount='2.50' entryid='' accountid='2' account="tax" />  
+			    <credit xmlns='com/interrupt/bookkeeping/account' id='' amount='12.50' entryid='' accountid='3' account="bank" />  
+			</entry>  
+	);
+remove ( ( load ( ( load ( journals -id main.journals ) ) entries -id main.entries ) ) ) 
+		entry -id ... ); 
+
+

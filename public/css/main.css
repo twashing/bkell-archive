@@ -1,0 +1,191 @@
+
+.content {
+	height: 550px;
+	float: left;
+	width: 100%;
+	background: url(../images/bee.jpg) no-repeat 18% 30%;
+}
+
+.buttons { 
+				
+	-moz-border-radius: 5px; 
+	-moz-background-clip:border; 
+	-moz-background-inline-policy:continuous; 
+	-moz-background-origin:padding; 
+	/*background:#E6E6E6 url(images/ui-bg_glass_75_e6e6e6_1x400.png) repeat-x scroll 50% 50%; */
+	background:#E6E6E6 repeat-x scroll 50% 50%; 
+	border:1px solid #D3D3D3; 
+	color:#555555; 
+	font-weight:normal; 
+	outline-color:-moz-use-text-color; 
+	outline-style:none; 
+	outline-width:medium; 
+	
+	text-align:left; 
+	border-style:solid; 
+	
+}
+
+.footer {
+	width: 100%;
+	background-color: silver;
+	margin: 0;
+	padding: 0;
+	float: left;
+	height: 100%;
+	float-offset: 8px; 
+}
+.legal {
+	color: #686868;
+	font: italic 1em Palatino, sans-serif;
+	position: relative;
+	left: 50px;
+}
+
+.title { 
+	visibility: 100%;
+	color: #686868;
+	font: italic bold 2.5em Palatino, sans-serif; 
+	min-width:1000px; 
+}
+.subheader { 
+	font-size: 0.45em;
+	font-style: italic;
+}
+
+.signup {
+	width: 200px;
+	height: 300px;
+	margin: 5px;
+	padding: 2px;
+	float: left;
+	left: 100px;
+	position: relative;
+	top: 80px;
+	background-color: rgba(255,255,255,0.55);
+	font: 11px Verdana,Arial,sans-serif;
+}
+.signuptitle {
+	font: italic bold 1.5em Palatino, sans-serif; 
+}
+.register {	
+	width: 250px;
+	height: 300px;
+	margin: 5px 2px;
+	padding: 2px;
+	float: left;
+	left: 100px;
+	position: relative;
+	top: 80px;
+	background-color: rgba(255,255,255,0.55);
+	font: 11px Verdana,Arial,sans-serif;
+}
+
+.fastandeasy {
+	padding:12px 0px 0px 22px;
+	font: italic bold 24px Palatino, sans-serif;
+	font-weight:400;
+	color: #686868;
+	position: relative;
+	float: left;
+	left: 250px;
+	top: 50px;
+}
+.huge {
+	font-size:36px;
+}
+.pushright {
+	margin-left:40px;
+}
+
+
+.loginholder {
+	position: relative;
+	float: right;
+	font: .7em Verdana,Arial,sans-serif; 
+}
+.leftgrid {
+	float: left;
+	position: relative;
+	color: black;
+	font: 12px Verdana,Arial,sans-serif;
+	margin: 15px 5px 5px;
+}
+
+.accounts-wrapper {
+	position: relative;
+	height: 100%;
+	margin: 5px;
+}
+
+.accounts-pane { 
+
+	border-style:solid; 
+	border-color: #E0E0E0; 
+	
+	position: relative; 
+	
+	float: left;
+	width: 160px;
+	height: 440px; 
+	margin: 0;
+	padding: 1em;
+	clear: none;
+	display: table;
+	background-color: white;
+	opacity: 3;
+	z-index: 2;
+}
+
+.journals-pane {
+	float: left;
+	margin-left: 5px;
+	position: absolute;
+	padding: 10px;
+	top: 5px;
+	height: auto;
+	clear: none;
+	/*width: 65%;*/
+	z-index: 1;
+}
+
+.handle { 
+	
+	width: 20px; 
+	height: 20px; 
+	background-color: #808080; 
+	float: left;
+	position: relative;
+}
+
+
+
+/* OVERRIDE VALUES */ 
+    .ui-tabs-vertical {  /* width of overall 'books' pane */ 
+		width: 100%; 
+		min-width:1000px;
+	z-index: 3;
+} 
+	
+	//.ui-tabs-vertical .ui-tabs-nav { padding: .2em .1em .2em .2em; float: left; width: 12em; }
+	.ui-tabs-vertical .ui-tabs-nav { padding: .2em .1em .2em .2em; float: right; width: 12em; }
+	
+	.ui-tabs-vertical .ui-tabs-nav li { clear: left; width: 100%; border-bottom-width: 1px !important; border-right-width: 0 !important; margin: 0 -1px .2em 0; }
+	.ui-tabs-vertical .ui-tabs-nav li a { display:block; }
+	
+	//.ui-tabs-vertical .ui-tabs-nav li.ui-tabs-selected { padding-bottom: 0; padding-right: .1em; border-right-width: 1px; }
+	.ui-tabs-vertical .ui-tabs-nav li.ui-tabs-selected { padding-bottom: 0; padding-left: .1em; border-right-width: 1px; margin-left: -2px; }
+	
+	.ui-tabs-vertical .ui-tabs-panel { padding: 1em; float: right; width: 40em;}
+
+      /* Tweaks to imported styles ---------------------------------- */ 
+      .ui-corner-all { -moz-border-radius: 0px; }
+      .ui-widget-header { 
+	 background: none; 
+	 border: none; 
+      }
+      .ui-widget-content { 
+	 border: none; 
+      }
+
+

@@ -1,0 +1,49 @@
+
+/* Let's get this party started */
+::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+ 
+/* Track */
+::-webkit-scrollbar-track {
+  
+  -webkit-border-radius: 10px;
+  -moz-border-radius: 10px;
+  -o-border-radius: 10px;
+  -ms-border-radius: 10px;
+  border-radius: 10px;
+  background: #eee; 
+}
+::-webkit-scrollbar-track:hover {
+  
+  -webkit-border-radius: 10px;
+  -moz-border-radius: 10px;
+  -o-border-radius: 10px;
+  -ms-border-radius: 10px;
+  border-radius: 10px;
+
+  /*background: #aaa;*/
+}
+ 
+ 
+/* Handle */
+::-webkit-scrollbar-thumb {
+  
+  -webkit-border-radius: 10px;
+  -moz-border-radius: 10px;
+  -o-border-radius: 10px;
+  -ms-border-radius: 10px;
+  border-radius: 10px;
+  
+  background: #ccc; 
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #aaa;
+}
+
+::-webkit-scrollbar-corner {
+  width: 0px; 
+  height: 0px;
+}
+

@@ -1,0 +1,38 @@
+%html{ :lang => "en" } 
+
+  %head
+    %meta{ :charset => "utf-8" }
+  
+  %body
+    %article#accounts-pane
+      %header 
+        %h3 Accounts 
+      
+      .tab_container
+        .tab_content
+          %table#accounts-table.table.table-bordered.table-condensed
+            %thead 
+              %tr 
+                %th 
+                %th Name 
+                %th Category
+                %th Type 
+                %th 
+            %tbody
+              %tr
+                %td
+                  %a.editaccount{ :href => "#" } edit 
+                %td.name  My Name 
+                %td.type  My Type 
+                %td.weight  My Weight 
+                %td
+                  %a.deleteaccount{ :href => "#" } delete 
+            %tfoot 
+              %tr 
+                %td 
+                  %input{ :id => "account-add", :type => "button" , :value => "Add" }
+                %td &nbsp;
+                %td &nbsp;
+                %td &nbsp;
+                %td &nbsp;
+

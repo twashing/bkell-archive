@@ -1,0 +1,82 @@
+<!DOCTYPE>
+
+<html>
+
+<head>
+  
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+  
+  <!-- The jQuery UI widget factory, can be omitted if jQuery UI is already included -->
+  <script src="https://raw.github.com/blueimp/jQuery-File-Upload/master/js/vendor/jquery.ui.widget.js"></script>
+  
+  <!-- The Iframe Transport is required for browsers without support for XHR file uploads -->
+  <script src="https://raw.github.com/blueimp/jQuery-File-Upload/master/js/jquery.iframe-transport.js"></script>
+  
+  <!-- The basic File Upload plugin -->
+  <script src="https://raw.github.com/blueimp/jQuery-File-Upload/master/js/jquery.fileupload.js"></script>
+  
+  <!-- The localization script -->
+  <script src="https://raw.github.com/blueimp/jQuery-File-Upload/master/js/locale.js"></script>
+  
+  <!-- The main application script -->
+  <script src="jquery_file_upload.js"></script>
+  
+  <!-- <script >
+    $(document).ready(function() {
+      
+      console.log("document ready...")
+      $.get("/api/asset/signedUploadParameters", function(response) {
+        
+        $("#key").attr("value", response.response.inputs.key)
+        $("#AWSAccessKeyId").attr("value", response.response.inputs.AWSAccessKeyId)
+        $("#acl").attr("value", response.response.inputs.acl)
+        $("#policy").attr("value", response.response.inputs.policy)
+        $("#signature").attr("value", response.response.inputs.signature)
+        
+      })
+    })
+  </script>
+  -->
+</head>
+
+<body>
+  
+  <form id="fileupload" method="POST" enctype="multipart/form-data" action="http://bkeeping.s3-website-us-east-1.amazonaws.com">
+    
+    <div class="row fileupload-buttonbar">
+      
+      <input type="hidden", name="key" id="bkeeping/${filename}" />
+      <input type="hidden", name="AWSAccessKeyId" id="AKIAI7QL4ENX5KZ4QQCQ" />
+      <input type="hidden", name="acl" id="public-read" />
+      <!-- <input type="hidden", name="success_action_status" value="200" />
+      -->
+      <input type="hidden", name="policy" id="eyAJIlZlcnNpb24iOiAiMjAwOC0xMC0xNyIsIAkiSWQiOiAiUG9saWN5MTM1MTY5OTYxODMxNyIsIAkiU3RhdGVtZW50IjogWyAJCXsgCQkJIlNpZCI6ICJTdG10MTM1MTY5OTQ4MzQyNyIsIAkJCSJFZmZlY3QiOiAiQWxsb3ciLCAJCQkiUHJpbmNpcGFsIjogeyAJCQkJIkFXUyI6ICIqIiAJCQl9LCAJCQkiQWN0aW9uIjogWyAJCQkJInMzOkdldE9iamVjdEFjbCIsIAkJCQkiczM6RGVsZXRlT2JqZWN0IiwgCQkJCSJzMzpEZWxldGVPYmplY3RWZXJzaW9uIiwgCQkJCSJzMzpHZXRPYmplY3QiLCAJCQkJInMzOlB1dE9iamVjdEFjbCIsIAkJCQkiczM6UHV0T2JqZWN0IiAJCQldLCAJCQkiUmVzb3VyY2UiOiAiYXJuOmF3czpzMzo6OmJrZWVwaW5nLyoiIAkJfSAJXSB9" />
+      <input type="hidden", name="signature" id="signature" />
+      <!-- <input type="hidden", name="Filename" id="/Users/timothyw/bubble.rb" />
+      -->
+      <input type="file" name="file" multiple />
+      
+      
+      <!-- The global progress information -->
+      <div class="span5 fileupload-progress fade">
+        
+        <!-- The global progress bar -->
+        <div class="progress progress-success progress-striped active">
+          <div class="bar" style="width:0%;"></div>
+        </div>
+        
+        <!-- The extended global progress information -->
+        <div class="progress-extended">&nbsp;</div>
+        
+      </div>
+      
+      <!-- The loading indicator is shown during file processing -->
+      <div class="fileupload-loading"></div>
+      
+    </div>
+    
+  </form>
+  </body>
+</html>
+

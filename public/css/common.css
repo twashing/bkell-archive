@@ -1,0 +1,182 @@
+@import url(http://fonts.googleapis.com/css?family=Gentium+Book+Basic:700italic);
+/* line 10, /home/murtaza/.rvm/gems/ruby-1.9.3-p194/gems/compass-0.12.2/frameworks/compass/stylesheets/compass/layout/_sticky-footer.scss */
+html, body {
+  height: 100%;
+}
+
+/* line 12, /home/murtaza/.rvm/gems/ruby-1.9.3-p194/gems/compass-0.12.2/frameworks/compass/stylesheets/compass/layout/_sticky-footer.scss */
+.container-fluid {
+  clear: both;
+  min-height: 100%;
+  height: auto !important;
+  height: 100%;
+  margin-bottom: -150px;
+}
+/* line 18, /home/murtaza/.rvm/gems/ruby-1.9.3-p194/gems/compass-0.12.2/frameworks/compass/stylesheets/compass/layout/_sticky-footer.scss */
+.container-fluid .span3 {
+  height: 150px;
+}
+
+/* line 20, /home/murtaza/.rvm/gems/ruby-1.9.3-p194/gems/compass-0.12.2/frameworks/compass/stylesheets/compass/layout/_sticky-footer.scss */
+#footer {
+  clear: both;
+  position: relative;
+  height: 150px;
+}
+
+/* line 7, ../templ/sass/_utils.sass */
+.debug {
+  border-style: solid;
+  border-width: 1px;
+}
+
+/* line 10, ../templ/sass/_utils.sass */
+.text-curly, #header #title-wrapper #title, #header #title-wrapper #subtitle, #legal {
+  font-style: italic;
+  font-family: "Gentium Book Basic", serif;
+}
+
+/* line 14, ../templ/sass/_utils.sass */
+.text-default {
+  font: Verdana, Arial, sans-serif;
+}
+
+/* line 16, ../templ/sass/common.sass */
+html, body {
+  min-height: 400px;
+  min-width: 800px;
+  height: 100%;
+}
+
+/* line 21, ../templ/sass/common.sass */
+.common-wrapper, #header #title-wrapper, #legal {
+  float: none;
+  position: relative;
+  width: 95%;
+  margin: 0px auto;
+  top: 10px;
+}
+
+/* line 28, ../templ/sass/common.sass */
+#header {
+  background-color: #999999;
+  height: 70px;
+  z-index: 20;
+  position: relative;
+  z-index: 10;
+  box-shadow: 0 4px 6px #554433;
+}
+/* line 42, ../templ/sass/common.sass */
+#header #title-wrapper #title {
+  position: relative;
+  float: left;
+  font-size: 48;
+  font-weight: bold;
+  margin: 0 10;
+}
+/* line 49, ../templ/sass/common.sass */
+#header #title-wrapper #subtitle {
+  top: 20px;
+  float: left;
+  margin: 26 10 0 10;
+  float: left;
+}
+/* line 55, ../templ/sass/common.sass */
+#header #title-wrapper #subtitle #subtitle-default {
+  float: left;
+  color: #666666;
+}
+/* line 58, ../templ/sass/common.sass */
+#header #title-wrapper #subtitle #subtitle-black {
+  float: left;
+  font-weight: bold;
+}
+/* line 63, ../templ/sass/common.sass */
+#header #title-wrapper #account-chooser {
+  float: right;
+  margin: 10 0 0 0;
+}
+
+/* line 68, ../templ/sass/common.sass */
+#footer {
+  background-color: #999999;
+  clear: both;
+  z-index: 10;
+  height: 150px;
+}
+/* line 74, ../templ/sass/common.sass */
+#footer .interruptlink {
+  text-decoration: none;
+  color: #666666;
+}
+/* line 77, ../templ/sass/common.sass */
+#footer .interruptlink:hover {
+  border-bottom: 1px dashed;
+  color: black;
+}
+
+/* line 82, ../templ/sass/common.sass */
+.bkell-container {
+  zoom: 1;
+  margin-right: auto;
+  margin-left: auto;
+  width: 960px;
+  padding: 0px;
+  width: 100%;
+  min-height: 100%;
+  margin: 0 auto -150px;
+}
+/* line 10, /home/murtaza/.rvm/gems/ruby-1.9.3-p194/gems/grid-coordinates-1.2.0/stylesheets/modules/_bulletproof-clearfix.sass */
+.bkell-container:before, .bkell-container:after {
+  content: ".";
+  display: block;
+  overflow: hidden;
+  visibility: hidden;
+  font-size: 0;
+  line-height: 0;
+  width: 0;
+  height: 0;
+}
+/* line 19, /home/murtaza/.rvm/gems/ruby-1.9.3-p194/gems/grid-coordinates-1.2.0/stylesheets/modules/_bulletproof-clearfix.sass */
+.bkell-container:after {
+  clear: both;
+}
+
+/* line 89, ../templ/sass/common.sass */
+#main-content {
+  display: -webkit-box;
+  display: -moz-box;
+  display: -ms-box;
+  display: box;
+  position: absolute;
+  top: 70px;
+  bottom: 150px;
+  left: 0;
+  right: 0;
+  background: white;
+}
+
+/* line 95, ../templ/sass/common.sass */
+#legal {
+  color: #666666;
+}
+
+/* line 100, ../templ/sass/common.sass */
+.widget-email-box {
+  visibility: hidden;
+}
+
+/* line 104, ../templ/sass/common.sass */
+.h {
+  height: 100%;
+}
+
+/* line 107, ../templ/sass/common.sass */
+.w {
+  width: 100%;
+}
+
+/* line 110, ../templ/sass/common.sass */
+.color-white {
+  background-color: white;
+}

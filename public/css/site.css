@@ -1,0 +1,616 @@
+/* ****************************************************** RESET ************************************ */
+
+/*
+Copyright (c) 2009, Yahoo! Inc. All rights reserved.
+Code licensed under the BSD License:
+http://developer.yahoo.net/yui/license.txt
+version: 2.7.0
+*/
+/**
+ * YUI Reset
+ * @module reset
+ * @namespace
+ * @requires 
+ */
+html {
+	color: #000;
+	background: #FFF;
+}
+
+body,
+div,
+dl,
+dt,
+dd,
+ul,
+ol,
+li,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+pre,
+code,
+form,
+fieldset,
+legend,
+input,
+button,
+textarea,
+p,
+blockquote,
+th,
+td {
+	margin: 0;
+	padding: 0;
+}
+
+table {
+	border-collapse: collapse;
+	border-spacing: 0;
+}
+
+fieldset,
+img {
+	border: 0;
+}
+
+address,
+caption,
+cite,
+code,
+dfn,
+em,
+strong,
+th,
+var,
+optgroup {
+	font-style: inherit;
+	font-weight: inherit;
+}
+
+del,
+ins {
+	text-decoration: none;
+}
+
+li {
+	list-style: none;
+}
+
+caption,
+th {
+	text-align: left;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+	font-size: 100%;
+	font-weight: normal;
+}
+
+q:before,
+q:after {
+	content: '';
+}
+
+abbr,
+acronym {
+	border: 0;
+	font-variant: normal;
+}
+
+sup {
+	vertical-align: baseline;
+}
+
+sub {
+	vertical-align: baseline;
+}
+
+/*because legend doesn't inherit in IE */
+legend {
+	color: #000;
+}
+
+input,
+button,
+textarea,
+select,
+optgroup,
+option {
+	font-family: inherit;
+	font-size: inherit;
+	font-style: inherit;
+	font-weight: inherit;
+}
+
+/*@purpose To enable resizing for IE */
+/*@branch For IE6-Win, IE7-Win */
+input,
+button,
+textarea,
+select {
+	*font-size: 100%;
+}
+
+/* ****************************************************** SITE DEFAULTS ************************************ */
+
+html, body, div, span, img, h1, h2, h3, h4, h5, h6, p, big, small, a, del, em, strong, sub, sup, code, pre, dl, dt, dd, ol, ul, li, blockquote, q, form, label, legend, fieldset, input, select, textarea, table, tbody, tfoot, thead, caption, tr, th, td {
+	font-family:arial,sans-serif;
+	position:relative;
+	text-align:left;
+}
+
+html {
+	background-color:#fff;	
+}
+
+body {
+	margin-top:8px;
+	margin-left:8px;
+	font-size:12px;
+	color:#136;
+}
+
+a {
+	text-decoration: none;
+	color:#136;
+}
+
+#bk_main {
+	width:1024px;
+	height:700px;
+	background-image:url(/images/gradient.jpg);
+}
+
+#contentmain {
+	width:810px;
+	height:700px;
+	left:107px;
+}
+
+#contentheader {
+	height:90px;
+	background-color:#fff;
+}
+
+#contentnav {
+	padding:7px;
+	padding-left:15px;
+	height:15px;
+	background-image:url(/images/navgradient.jpg);
+	border-bottom:1px solid #37a;
+}
+
+#contentnav span {
+	font-size:14px;
+}
+
+.horizspacer {
+	margin-left:15px;
+	margin-right:15px;
+}
+
+.smhorizspacer {
+	margin-left:10px;
+	margin-right:10px;
+}
+
+#contentbox {
+	width:100%;
+	background-color:#5ae;
+	overflow:hidden;
+}
+
+.lborder {
+	border-left:2px solid #58a;
+}
+
+#shadow {
+	position:absolute;
+	top:3px;
+	left:3px;
+	height:600px;
+	width:810px;
+	background:#7ac;
+}
+
+#iconholder {
+	float:left;
+	width:389px;
+	margin-top:2px;
+	margin-left:22px;
+}
+
+#loginholder {
+	float:left;
+	padding-top:20px;
+	width:389px;
+	height:60px;
+}
+
+#topadholder {
+	float:left;
+	padding-top:20px;
+	width:389px;
+	height:60px;
+	background-color:#666;
+}
+
+.leftgrid {
+	font-weight:800;
+	float:left;
+	width:43%;
+	height:45px;
+}
+
+#gocol {
+	padding-top:13px;
+	width:4%;
+	height:32px;
+}
+
+#forgotrow {
+	clear:both;
+	width:100%;
+	height:15px;
+}
+
+#contentfoot {
+	top:4px;
+	height:96px;
+	background-color:#fff;
+	padding:2px 10px 10px 10px;
+}
+
+#contentfoot p {
+	margin:10px;
+}
+
+#contentleftcol {
+	width:385px;
+	padding:10px 5px 10px 5px;
+	height:460px;
+}
+
+#contentcentercol {
+	padding-top:40px;
+	height:440px;
+	width:208px;
+}
+
+#contentcentercol p {
+	color:black;
+	font-weight:400;
+	margin:0px 35px 10px 5px;
+}
+
+.heading {
+	font-size:18px;
+}
+
+#contentrightcol {
+
+}
+
+.contentwindow {
+	height:480px;
+	width:25%;
+}
+
+#fastandeasy {
+	padding:12px 0px 0px 22px;
+	font-weight:400;
+	color:black;
+	font-size:24px;
+}
+
+.huge {
+	font-size:36px;
+}
+
+.pushright {
+	margin-left:40px;
+}
+
+#advert {
+	height:430px;
+	width:163px;
+	margin:20px 10px 30px 10px;
+	background-color:#333;
+	color:#ccc;
+}
+
+.signuppadding {
+	padding:12px;
+	color:black;
+	font-weight:400;
+	margin:0px 35px 10px 5px;
+}
+
+.signuppadding p {
+	margin-bottom:10px;
+}
+
+p.largeheading {
+	font-size:24px;
+	margin-bottom:20px;
+}
+
+.signuppadding td {
+	padding:0px 0px 8px 5px;
+}
+
+#loggedinnote {
+	float:right;
+	margin-right:2px;
+}
+
+#bkeeping_dialog {
+	display:none;	
+}
+
+h3 {
+	font-weight:800;
+	font-size:16px;
+	color:#333;
+	float: left;
+	position: relative;
+}
+
+.form_holder_cell {
+	width:375px;
+	height:250px;
+	background-color:#f7f7f7;
+	border:1px solid #333;
+	float:left;
+	margin:3px;
+	padding:3px;
+}
+
+.cell_content {
+	width:373px;
+}
+
+.cell_corner {
+	width:10px;
+	height:10px;	
+	float:left;
+}
+
+.cell_preheader {
+	width:373px;
+	height:10px;
+}
+
+.cell_preheader_l { background-image:url(../images/bw-round-corner-tl.png); }
+.cell_preheader_r { background-image:url(../images/bw-round-corner-tr.png); }
+.cell_postheader_l { background-image:url(../images/bw-round-corner-bl.png); }
+.cell_postheader_r { background-image:url(../images/bw-round-corner-br.png); }
+
+.cell_h_c {
+	width:353px;
+	background-color:#fff;
+	float:left;	
+}
+
+.cell_preheader_c {
+	border-top:1px solid #777;
+	height:10px;
+}
+
+.cell_postheader_c {
+	border-bottom:1px solid #777;
+	height:9px;
+}
+
+.cell_header {
+	height:25px;
+	padding:0px 10px 0px 10px;
+	border-left:1px solid #777;
+	border-right:1px solid #777;
+	background-color:#fff;
+}
+
+.cell_window {
+	/*width:331px;
+	height:202px;*/
+	padding:0px 20px 0px 20px;
+	border-left:1px solid #777;
+	border-right:1px solid #777;
+	background-color:#fff;
+	float: left;
+	position: relative;
+}
+
+#accounts_ui {
+	position:absolute;
+	left:0px;
+	top:0px;
+}
+
+#accounts_content {
+	height:400px;
+}
+
+#accounts_content_list {
+	height:358px;
+	width:309px;
+	top:10px;
+	margin:0px 10px 20px 10px;
+	border:1px solid black;
+	overflow-x:hidden;
+	overflow-y:scroll;
+}
+
+#acl_header {
+	width:290px;
+	height:20px;
+}
+
+.form_header_row {
+	background-color:#d8d8d8;	
+}
+
+.row {
+	height:20px;	
+	padding:4px 0px 4px 4px;
+}
+
+.odd_row {
+	background-color:#e8e8e8;
+}
+
+.left_column {
+	float:left;
+}
+
+.edit_column {
+	width:18px;
+	height:18px;
+	padding:2px;
+}
+
+.name_column {
+	width:90px;
+	height:14px;
+	padding:2px;
+}
+
+.large_name_column {
+	height:14px;
+	padding:2px;
+	width: 90%;
+}
+
+.category_column {
+	width:70px;
+	height:14px;
+	padding:2px;
+}
+
+.balance_column {
+	width:70px;
+	height:14px;
+	padding:2px;
+}
+
+.delete_column {
+	width:18px;
+	height:18px;
+	padding:2px;
+}
+
+.entry_column {
+	width:100px;
+	height:14px;
+	padding:2px;
+}
+
+.date_column {
+	width:60px;
+	height:14px;
+	padding:2px;
+}
+
+#journal_ui {
+	position:absolute;
+	left:436px;
+	top:0px;
+	display:none;
+}
+
+#journal_content {
+	height:400px;
+}
+
+#journal_content_list {
+	height:358px;
+	width:309px;
+	top:10px;
+	margin:0px 10px 20px 10px;
+	border:1px solid black;
+	overflow-x:hidden;
+	overflow-y:scroll;
+}
+
+#j_header {
+	width:290px;
+	height:20px;
+}
+
+#journals_ui {
+	position:absolute;
+	left:436px;
+	top:0px;
+}
+
+#journals_content {
+	/* height:200px; */ 
+}
+
+#journals_content_list {
+	height:357px;
+	/* width:309px; */
+	top:10px;
+	margin:0px 10px 20px 10px;
+	border:1px solid black;
+	overflow-x:hidden;
+	overflow-y:scroll;
+}
+
+#js_header {
+	/*width:290px; */ 
+	/* height:20px; */ 
+}
+
+#modal_screen {
+	display:none;
+	position:absolute;
+	top:0px;
+	left:0px;
+	width:100%;
+	height:100%;
+	background-color:#999;
+	z-index:100;
+}
+
+.modal_dialog {
+	z-index:200;
+}
+
+.overhang {
+	position:absolute;
+	width:10px;
+	height:20px;
+	background-color:#fff;
+	top:10px;
+	font-size:14px;
+	font-weight:800;
+	cursor:pointer;
+}
+
+#accounts_close_thingy {
+	right:-10px;
+}
+
+#journals_close_thingy {
+	left:-10px;
+}
+
+.adder_plus {
+	font-size:20px;
+	font-weight:800;
+	position: relative;
+	cursor:pointer;
+	float: right;
+	top: 0;
+}
+

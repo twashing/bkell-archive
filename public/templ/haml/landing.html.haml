@@ -1,0 +1,261 @@
+%html{ :lang => "en" }
+
+  %head
+    %meta{ :charset => "utf-8" }
+    %title Bkeeping.com: Simple Online Bookkeeping
+
+    / Chromeframe plugin
+    %meta( http-equiv="X-UA-Compatible" content="chrome=1")
+
+    //%link{ :href => "/css/styles.css", :media => "screen", :rel => "stylesheet", :type => "text/css" }
+    %link{ :href => "/css/screen.css", :media => "screen, projection", :rel => "stylesheet", :type => "text/css" }
+    %link{ :href => "/css/print.css", :media => "print", :rel => "stylesheet", :type => "text/css" }
+
+    /[if IE]
+      %link{ :href => "/css/ie.css", :media => "screen, projection", :rel => "stylesheet", :type => "text/css" }
+
+    %script( src="/js/lib/jquery1.9.min.js" )
+    %script( src= "/js/lib/jquery-ui-1.10.0.custom.min.js" )
+
+    %link{ :href => "/css/jquery-ui-1.10.0.custom.min.css", :media => "screen", :rel => "stylesheet", :type => "text/css" }
+
+    / custom scrollbars
+    %link{ :href => "/css/scrollbars.css", :media => "screen", :rel => "stylesheet", :type => "text/css" }
+
+    %script( src="/js/lib/jquery.easing.1.3.js" )
+
+    %script( src="/js/lib/pure.js" )
+    %script( src="/js/lib/jquery.dataTables.js" )
+    %script( src="/js/lib/jquery.serialScroll.js" )
+    %script( src="/js/lib/jquery.scrollTo.js" )
+
+
+    /%script( src="/js/lib/enscroll-0.2.4.min.js" )
+
+    %link{ :href => "/css/bootstrap.css", :media => "screen", :rel => "stylesheet", :type => "text/css" }
+    %link{ :href => "/css/bootstrap-responsive.css", :media => "screen", :rel => "stylesheet", :type => "text/css" }
+    %script( src="/js/lib/bootstrap.js" )
+
+    /%script( src="/js/lib/require.js" data-main="test/run_tests" )
+
+
+    %script( src="/js/lib/json2.js" )
+    %script( src="/js/lib/underscore.js" )
+    %script( src="/js/lib/backbone.js" )
+    %script( src="/js/lib/md5.js" )
+    %script( src="/js/lib/state-machine.js" )
+
+    %script( src="/js/lib/bootstrap.js" )
+    %script( src="/js/lib/bootstrap-modal.js" )
+    %script( src="/js/lib/bootstrap-tab.js" )
+    %script( src="/js/lib/select2.min.js" )
+
+    %link{ :href => "/css/datepicker.css", :media => "screen", :rel => "stylesheet", :type => "text/css" }
+    %script( src="/js/lib/bootstrap-datepicker.js" )
+
+    %link{ :href => "/css/common.css", :media => "screen", :rel => "stylesheet", :type => "text/css" }
+    %link{ :href => "/css/landing.css", :media => "screen", :rel => "stylesheet", :type => "text/css" }
+
+    <!-- %link{ :href => "/css/bootstrap-verticaltabs.css", :media => "screen", :rel => "stylesheet", :type => "text/css" } -->
+
+    %script( src="/js/lib/require.js" data-main="js/bkeeping/landing" )
+
+    <!-- :css -->
+    <!--   .ui-tabs-vertical { width: 55em; } -->
+    <!--   .ui-tabs-vertical .ui-tabs-nav { padding: .2em .1em .2em .2em; float: left; width: 12em; } -->
+    <!--   .ui-tabs-vertical .ui-tabs-nav li { clear: left; width: 100%; border-bottom-width: 1px !important; border-right-width: 0 !important; margin: 0 -1px .2em 0; } -->
+    <!--   .ui-tabs-vertical .ui-tabs-nav li a { display:block; } -->
+    <!--   .ui-tabs-vertical .ui-tabs-nav li.ui-tabs-active { padding-bottom: 0; padding-right: .1em; border-right-width: 1px; border-right-width: 1px; } -->
+    <!--   .ui-tabs-vertical .ui-tabs-panel { padding: 1em; float: right; width: 40em;} -->
+
+    <!-- :javascript -->
+    <!--   $(function() { -->
+    <!--     $( "#tabs" ).tabs().addClass( "ui-tabs-vertical ui-helper-clearfix" ); -->
+    <!--     $( "#tabs li" ).removeClass( "ui-corner-top" ).addClass( "ui-corner-left" ); -->
+    <!--   }); -->
+
+    :javascript
+      $(document).ready(function() {
+
+        /***
+         * a GLOBAL namespace
+         */
+        global = {};
+        global.CURRENT_ENTRY_PANE = "#entries";
+        global.timerEntry = -1;
+
+        /***
+         * Adjust Entry panes based on right width
+         ***/
+        adjustEntryPanes = function() {
+
+          $('#entries, #entry, #entry-part')
+            .css('width', ( $('#right-wrapper').width() - $('#left-col').width() ) + "px");
+
+          var rightWidth = $(".bkell-container").width() - $("#left-col").width();
+          $("#right-col").css("width", rightWidth);
+        };
+
+
+        var scrollFn = function() {
+          $('#right-wrapper').scrollTo($(global.CURRENT_ENTRY_PANE), 500, { axis:'x' });
+        }
+
+        /***
+         * Bootstrap pane sizes
+         ***/
+        $(window).resize(function() {
+
+          //console.log("resizing window > args ["+ arguments +"]")
+          adjustEntryPanes();
+
+          clearTimeout(global.timerEntry);
+          global.timerEntry = setTimeout(scrollFn, 500);
+
+        });
+
+        adjustEntryPanes();
+
+        $("#logout-button").click(function() {
+
+          window.location = "/logout";
+        });
+
+        $("#mainTab a").click(function(e){e.preventDefault(); $(this).tab('show');})
+
+        $("#paywallTab a").click(function(e){e.preventDefault(); $(this).tab('show');})
+
+        (function() { $("#country , #currency").select2(); })();
+
+      })
+
+
+
+  %body
+    #delete-confirm.modal.fade
+      .modal-body
+        Modal Message
+      .modal-footer
+        %button.btn.btn-primary#modal-delete-ok
+          Ok
+        %button.btn#modal-delete-cancel
+          cancel
+    .bkell-container
+      .row
+        #header
+          #title-wrapper
+            #title
+              bkeeping
+            #subtitle
+              #subtitle-default Your solution to simple &nbsp;
+              #subtitle-black online bookkeeping
+            #logout-button.btn.btn-inverse.btn-large
+              Logout
+      .row.pad-left
+        %ul.nav.nav-tabs.tab-align#mainTab
+          %li
+            %a{:href => "#books", "data-toggle" => "tab"} Books
+          %li.active
+            %a{:href => "#profile" , "data-toggle" => "tab"} Profile
+        :javascript
+          $("#mainTab a").click(function(e){e.preventDefault(); $(this).tab('show');});
+        .tab-content
+          .tab-pane#books
+            .row
+              #books
+                #main-content
+                  #left-col
+                    #left-wrapper
+                      #left-content
+                        #accounts
+                        #account
+                    /#left-toggler
+                  #right-col
+                    #right-wrapper
+                      #right-content
+                        #entries
+                        #entry
+                        #entry-part
+          .tab-pane.active#profile
+            .row
+              .span6
+                .well.color-white
+                  %legend
+                    User Details
+                  %form.form-horizontal
+                    .control-group
+                      %label.control-label First Name
+                      .controls
+                        %input.span2{:type => 'text', 'placeholder' => 'First Name'}
+                    .control-group
+                      %label.control-label Last Name
+                      .controls
+                        %input.span2{:type => 'text', 'placeholder' => 'Last Name'}
+                    .control-group
+                      %label.control-label Email
+                      .controls
+                        %input.span2{:type => 'email', 'placeholder' => 'Email'}
+                    .control-group
+                      %label.control-label Company
+                      .controls
+                        %input.span2{:type => 'text', 'placeholder' => 'Company'}
+                    .control-group
+                      %label.control-label Country
+                      .controls
+                        %select.span2#country
+                          %option
+                            Canada
+                          %option
+                            USA
+                    .control-group
+                      %label.control-label Currency
+                      .controls
+                        %select.span2#currency
+                          %option
+                            US Dollars
+                          %option
+                            Canadian Dollars
+                    .control-group
+                      .controls
+                        %button.btn{:type => "submit"} Save
+                        %button.btn{:type => "submit"} Cancel
+
+              .span7.offset1
+                .well.color-white
+                  %legend
+                    Current Plan : Trial
+                  %ul.nav.nav-tabs#paywallTab
+                    %li.active
+                      %a{:href => "#trial", "data-toggle" => "tab"} Trial (free)
+                    %li
+                      %a{:href => "#basic", "data-toggle" => "tab"} Basic ($9)
+                    %li
+                      %a{:href => "#productivity", "data-toggle" => "tab"} Productivity ($20)
+                    %li
+                      %a{:href => "#enterprise", "data-toggle" => "tab"} Enterprise ($50)
+                  :javascript
+                    $("#paywallTab a").click(function(e){e.preventDefault(); $(this).tab('show');});
+                  .tab-content
+                    .tab-pane.active{:id => "trial"}
+                      .row
+                        .span2
+                          %ul
+                            %li Upload
+                            %li Export
+                            %li Reports
+                        .span2
+                          .pull-right $20/mth
+                      .row
+                        .span4
+                          .control-group
+                            %label.control-label Card Number
+                            .controls
+                              %input{:type => "text", :placeholder => "Card Number"}
+
+
+                    .tab-pane{:id => "basic"}
+                      %p
+                        Basic
+
+    #footer
+
