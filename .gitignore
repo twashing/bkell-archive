@@ -4,3 +4,6 @@ changes
 etc/scratch 
 etc/config/config.clj
 target/
+
+src/bkell/http/handler.clj.1
+
