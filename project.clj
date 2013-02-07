@@ -9,8 +9,10 @@
                  [enlive "1.0.1"]
                  [com.novemberain/monger "1.0.0-SNAPSHOT"]
                  [org.clojure/core.match "0.2.0-alpha9"]
+                 [org.clojure/data.json "0.1.0"]
                  ]
   :plugins [[lein-ring "0.8.2"]]
-  :ring {:handler thing.handler/app}
+  :ring {:handler bkell.http.handler/app-routes}
   :profiles
-  {:dev {:dependencies [[ring-mock "0.1.3"]]}})
+  {:dev {:resource-paths ["public/" "etc/resources/"]
+         :dependencies [[ring-mock "0.1.3"]]}})
