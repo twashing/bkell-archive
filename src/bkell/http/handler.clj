@@ -93,7 +93,8 @@
   )
 
 )
-
+(route/files "/")
+(route/resources "/")
 
 (def app
   (handler/site
