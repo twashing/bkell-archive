@@ -92,9 +92,10 @@
     (goindex)
   )
 
+  (route/files "/")
+  (route/resources "/")
+
 )
-(route/files "/")
-(route/resources "/")
 
 (def app
   (handler/site
