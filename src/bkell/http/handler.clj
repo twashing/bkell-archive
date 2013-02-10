@@ -77,7 +77,7 @@
     )
   )
 )
-(defn callbackHandlerCommon [method req]
+(defn callbackHandlerCommon [method request]
 
   ;; needs to call 'verifyAssertion' to parse response - should return a { :user :map }
   (let [mode (:mode @bkell/shell)
@@ -85,8 +85,8 @@
         host-port (-> mode (@bkell/shell) :host-port)
         developer-key (-> mode (@bkell/shell) :developer-key)
         ruri  (str  (hutils/generate-host-address host-url (if (= mode :dev) host-port nil)) "/callbackGitkit")
-        ;;pbody (hutils/encode-params req)
-        pbody req
+        ;;pbody (hutils/encode-params request)
+        pbody request
 
         print0 (println (str "ruri:[" ruri "]"))
 
@@ -96,7 +96,6 @@
         print1 (println (str "final-url:[" final-url "]"))
         print2 (println (str "final-body:[" final-body "]"))
 
-        ;;xx  (throw (Exception. "Stop"))
         verify-resp (client/post
                      final-url
                      {:body final-body
@@ -132,12 +131,15 @@
   ;; ======
   ;; ACCOUNT CHOOSER (GITkit) URL handlers
   (GET "/callbackGitkit" [:as request]
-       (response/render [:post "/callbackGitkit"] { :request request }))
-  (POST "/callbackGitkit" { body :body }
+    (println (<< "/callbackGitkit HANDLER [GET]: ~{request}"))
+    (response/render [:post "/callbackGitkit"] { :request request }))
+  (POST "/callbackGitkit" { query-string :query-string body :body }
 
 
-    (let  [request (slurp body)
+    (let  [request-body (slurp body)
+           request (<< "~{request-body}&~{query-string}")
            xx (println (<< "/callbackGitkit HANDLER [POST]: ~{request}"))
+           ;;xy  (throw (Exception. "Stop"))
            cb-resp (callbackHandlerCommon "POST" request)
            one (println (<< "cb-resp: ~{cb-resp}"))
            ru (getk/get-user (:verifiedEmail cb-resp))
