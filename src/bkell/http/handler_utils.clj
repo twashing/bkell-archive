@@ -1,7 +1,7 @@
 (ns bkell.http.handler-utils
 
   (:import [java.net URLEncoder NetworkInterface])
-  ;;(:require [bkell.bkell :as bkell])
+  (:require [bkell.bkell :as bkell])
   )
 
 
@@ -17,7 +17,7 @@
         (if (-> host-port nil? not) (str ":" host-port))
         ))
 
-#_(defn adduser-ifnil [ruser cb-resp]
+(defn adduser-ifnil [ruser cb-resp]
 
   (if (nil? ruser)
 
