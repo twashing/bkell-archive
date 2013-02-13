@@ -9,6 +9,7 @@
             [clj-http.client :as client]
             [clojure.data.json :as json]
             [noir.session :as session]
+            [ring.middleware.session :as rsession]
             [bkell.bkell :as bkell]
             [bkell.http.handler-utils :as hutils]
             [bkell.commands.get :as getk]
@@ -85,8 +86,8 @@
         host-port (-> mode (@bkell/shell) :host-port)
         developer-key (-> mode (@bkell/shell) :developer-key)
         ruri  (str  (hutils/generate-host-address host-url (if (= mode :dev) host-port nil)) "/callbackGitkit")
-        ;;pbody (hutils/encode-params request)
-        pbody request
+        pbody (hutils/encode-params request)
+        ;;pbody request
 
         print0 (println (str "ruri:[" ruri "]"))
 
@@ -133,14 +134,18 @@
   (GET "/callbackGitkit" [:as request]
     (println (<< "/callbackGitkit HANDLER [GET]: ~{request}"))
     (response/render [:post "/callbackGitkit"] { :request request }))
-  (POST "/callbackGitkit" { query-string :query-string body :body }
+  ;;(POST "/callbackGitkit" { { session :session query-string :query-string query-params :query-params form-params :form-params } :params }
+  (POST "/callbackGitkit" [ :as request & etal ]
 
 
-    (let  [request-body (slurp body)
-           request (<< "~{request-body}&~{query-string}")
-           xx (println (<< "/callbackGitkit HANDLER [POST]: ~{request}"))
-           ;;xy  (throw (Exception. "Stop"))
-           cb-resp (callbackHandlerCommon "POST" request)
+    (println (<< "/callbackGitkit HANDLER [POST]: request[~{request}]) > etal[~{etal}]"))
+    (println (<< ">> body: [~{(:body request)}]"))
+    (let  [;;xy  (throw (Exception. "Stop"))
+           ;;request-body (slurp (:body request))
+           ;;request (<< "~{(:form-params request)}&~{(:query-params request) }")
+           req (merge (:form-params request) (:query-params request))
+           xx (println (<< "/callbackGitkit HANDLER [POST]: ~{req}"))
+           cb-resp (callbackHandlerCommon "POST" req)
            one (println (<< "cb-resp: ~{cb-resp}"))
            ru (getk/get-user (:verifiedEmail cb-resp))
            templ (enlive/html-resource "include/callbackUrlSuccess.html")]
@@ -152,7 +157,8 @@
         (let [logu (if (nil? (:new-user rsetup)) ru (:new-user rsetup))]
 
           (authenticatek/login-user logu)
-          (session/put! :current-user logu))
+          (session/put! :current-user logu)
+          )
 
         (let  [ notify-input { :email (:verifiedEmail rresp) :registered (-> rresp :exists str)}
                notify-input-str (clojure.data.json/json-str notify-input)]
@@ -165,9 +171,17 @@
   ;; Resource Routes
   (route/files "/")
   (route/resources "/")
-  ;;(route/not-found "Not Found")
+  (route/not-found "Not Found")
+
 )
 
+
 (def app
+  (session/wrap-noir-session*
+   (handler/site
+    (friend/authenticate app-routes {})))
+)
+
+#_(def app
   (handler/site
-   (friend/authenticate app-routes {})))
+   (session/wrap-noir-session* (friend/authenticate app-routes))))

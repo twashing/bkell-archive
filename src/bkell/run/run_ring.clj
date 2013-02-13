@@ -49,7 +49,7 @@
     ;; Startup the Noir server (wraps Jetty)
     ;;(server/start (Integer. host-port) {  :mode mode :ns 'bkell  })
     (defonce server
-      (run-jetty #'bkell.http.handler/app-routes {:port 8080 :join? false}))
+      (run-jetty #'bkell.http.handler/app {:port 8080 :join? false}))
 
     ))
 
