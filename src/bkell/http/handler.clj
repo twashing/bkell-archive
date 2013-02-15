@@ -10,6 +10,7 @@
             [clojure.data.json :as json]
             [noir.session :as session]
             [ring.middleware.session :as rsession]
+            [ring.util.response :as ring-response]
             [bkell.bkell :as bkell]
             [bkell.http.handler-utils :as hutils]
             [bkell.commands.get :as getk]
@@ -134,19 +135,18 @@
   (GET "/callbackGitkit" [:as request]
     (println (<< "/callbackGitkit HANDLER [GET]: ~{request}"))
     (response/render [:post "/callbackGitkit"] { :request request }))
-  ;;(POST "/callbackGitkit" { { session :session query-string :query-string query-params :query-params form-params :form-params } :params }
+
   (POST "/callbackGitkit" [ :as request & etal ]
 
-
     (println (<< "/callbackGitkit HANDLER [POST]: request[~{request}]) > etal[~{etal}]"))
-    (println (<< ">> body: [~{(:body request)}]"))
+    ;;(println (<< ">> body: [~{(:body request)}]"))
     (let  [;;xy  (throw (Exception. "Stop"))
            ;;request-body (slurp (:body request))
            ;;request (<< "~{(:form-params request)}&~{(:query-params request) }")
            req (merge (:form-params request) (:query-params request))
-           xx (println (<< "/callbackGitkit HANDLER [POST]: ~{req}"))
+           ;;xx (println (<< "/callbackGitkit HANDLER [POST]: ~{req}"))
            cb-resp (callbackHandlerCommon "POST" req)
-           one (println (<< "cb-resp: ~{cb-resp}"))
+           ;;one (println (<< "cb-resp: ~{cb-resp}"))
            ru (getk/get-user (:verifiedEmail cb-resp))
            templ (enlive/html-resource "include/callbackUrlSuccess.html")]
 
@@ -166,6 +166,15 @@
                                       templ
                                       [[ :script (enlive/nth-of-type 3)]]  ;; get the 3rd script tag
                                       (enlive/content (str "window.google.identitytoolkit.notifyFederatedSuccess(" notify-input-str ");")))))))))
+
+  ;; ======
+  ;; LANDING Page
+  (GET "/landing" [ :as request ]
+
+       (friend/authorize #{::user}
+         #(ring-response/file-response "landing.html" { :root "public" })
+       )
+  )
 
   ;; ======
   ;; Resource Routes
