@@ -23,9 +23,10 @@
 
     (try  ;; add user if it is nil in DB
       (let [json (println (str "from-verify-JSON" cb-resp))
-            add-resp (bkell/add {  :tag :user
+            add-resp (bkell/add {:tag :user
                                  :username (:verifiedEmail cb-resp)
                                  :password ""
+                                 :authentications { ::authentication { :roles #{ ::user } } }
                                  :content
                                  [{  :tag :profileDetails,
                                    :content

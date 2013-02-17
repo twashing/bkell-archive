@@ -12,11 +12,14 @@
             [ring.middleware.session :as rsession]
             [ring.util.response :as ring-response]
             [clojure.pprint :as pprint]
+            [hozumi.session-expiry :as hozumi]
+
             [bkell.bkell :as bkell]
             [bkell.http.handler-utils :as hutils]
             [bkell.commands.get :as getk]
             [bkell.http.handler-utils :as hutils]
             [bkell.commands.authenticate :as authenticatek]
+            [bkell.domain :as domain]
             ))
 
 
@@ -89,7 +92,6 @@
         developer-key (-> mode (@bkell/shell) :developer-key)
         ruri  (str  (hutils/generate-host-address host-url (if (= mode :dev) host-port nil)) "/callbackGitkit")
         pbody (hutils/encode-params request)
-        ;;pbody request
 
         print0 (println (str "ruri:[" ruri "]"))
 
@@ -107,41 +109,6 @@
         print3 (println (str "verify-resp: " verify-resp))]
 
     (-> verify-resp :body clojure.data.json/read-json (merge { :exists false}))))
-
-
-
-
-#_(defn current-authentication
-  "Returns the authentication associated with either the current in-flight
-request, or the provided Ring request or response map.
-
-Providing the Ring request map explicitly is strongly encouraged, to avoid
-any funny-business related to the dynamic binding of `*identity*`."
-  ([identity-or-ring-map]
-    (let [identity (or (identity identity-or-ring-map)
-                     identity-or-ring-map)]
-      (pprint/pprint (<< "current-authentication > identity [~{identity}]"))
-      (-> identity :authentications (get (:current identity))))))
-#_(defn authorized?
-  "Returns the first value in the :roles of the current authentication
-   in the given identity map that isa? one of the required roles.
-   Returns nil otherwise, indicating that the identity is not authorized
-   for the set of required roles."
-  [roles identity]
-
-  (println (<< "authorized? [~{roles}] / [~{identity}]"))
-  (let [granted-roles (-> identity current-authentication :roles)
-        xx (println (<< "granted-roles[~{granted-roles}]"))
-        xy (println (<< "roles[~{roles}]"))
-        xz (println (<< "result[~{(first (for [granted granted-roles
-                 required roles
-                 :when (isa? granted required)]
-             granted))}]"))
-        ]
-    (first (for [granted granted-roles
-                 required roles
-                 :when (isa? granted required)]
-             granted))))
 
 
 (defroutes app-routes
@@ -185,10 +152,14 @@ any funny-business related to the dynamic binding of `*identity*`."
              rresp (:cb-resp rsetup)]
 
         ;; Log the user in; session should die after some inactivity
-        (let [logu (if (nil? (:new-user rsetup)) ru (:new-user rsetup))]
+        (let [;;dbuser (if (nil? (:new-user rsetup)) ru (:new-user rsetup))
+              ;;logu (domain/keywordize-roles (str *ns*) dbuser)
+              logu (if (nil? (:new-user rsetup)) ru (:new-user rsetup))
+              ]
 
-          (authenticatek/login-user logu)
-          (session/put! :current-user logu)
+          (authenticatek/login-user (merge logu { :current ::authentication}))
+          ;;(session/clear!)
+          ;;(session/put! :current-user (merge logu { :current ::authentication }))
           )
 
         (let  [notify-input { :email (:verifiedEmail rresp) :registered (-> rresp :exists str)}
@@ -202,13 +173,16 @@ any funny-business related to the dynamic binding of `*identity*`."
   ;; LANDING Page
   (GET "/landing" [ :as request ]
 
-       #_(friend/authorized? #{::user}
-         #(ring-response/file-response "landing.html" { :root "public" })
+       (println (<< "... ~{(pprint/pprint (:logged-in-user @bkell/shell))}"))
+
+
+       #_(if (friend/authorized? #{ ::user } (merge (:logged-in-user @bkell/shell) { :current ::thing :authentications { ::thing { :roles #{ ::admin ::user } } } }  ))
+         (ring-response/file-response "landing.html" { :root "public" })
+         "No go"
          )
-       #_(authorized? #{ ::user } (merge (:logged-in-user @bkell/shell) { :current ::thing :authentications { ::thing { :roles #{ ::admin ::user } } } }  ))
 
 
-       (if (friend/authorized? #{ ::user } (merge (:logged-in-user @bkell/shell) { :current ::thing :authentications { ::thing { :roles #{ ::admin ::user } } } }  ))
+       (if (friend/authorized? #{ "user" } (merge (:logged-in-user @bkell/shell) { :current :authentication }) )
          (ring-response/file-response "landing.html" { :root "public" })
          "No go"
        )
@@ -220,18 +194,16 @@ any funny-business related to the dynamic binding of `*identity*`."
   (route/resources "/")
   (route/not-found "Not Found")
 
-
 )
-
-
 
 
 #_(def app
-  (session/wrap-noir-session*
-   (handler/site
-    (friend/authenticate app-routes { :credential-fn (partial credential-fn (:logged-in-user @bkell/shell)) })))
-)
-
-(def app
   (handler/site
    (session/wrap-noir-session* app-routes)))
+
+(def app
+  (->
+   app-routes
+   (session/wrap-noir-session)
+   (hozumi/wrap-session-expiry 3600)
+   (handler/site)))

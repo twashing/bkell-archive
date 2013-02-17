@@ -12,6 +12,7 @@
                  [org.clojure/data.json "0.1.0"]
                  [clj-http "0.4.1"]
                  [lib-noir "0.3.5"]
+                 [org.clojars.hozumi/session-expiry "1.0.0-SNAPSHOT"]
                  ]
   :plugins [[lein-ring "0.8.2"]]
   :ring {:handler bkell.http.handler/app}
