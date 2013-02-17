@@ -11,6 +11,7 @@
             [noir.session :as session]
             [ring.middleware.session :as rsession]
             [ring.util.response :as ring-response]
+            [clojure.pprint :as pprint]
             [bkell.bkell :as bkell]
             [bkell.http.handler-utils :as hutils]
             [bkell.commands.get :as getk]
@@ -107,6 +108,42 @@
 
     (-> verify-resp :body clojure.data.json/read-json (merge { :exists false}))))
 
+
+
+
+#_(defn current-authentication
+  "Returns the authentication associated with either the current in-flight
+request, or the provided Ring request or response map.
+
+Providing the Ring request map explicitly is strongly encouraged, to avoid
+any funny-business related to the dynamic binding of `*identity*`."
+  ([identity-or-ring-map]
+    (let [identity (or (identity identity-or-ring-map)
+                     identity-or-ring-map)]
+      (pprint/pprint (<< "current-authentication > identity [~{identity}]"))
+      (-> identity :authentications (get (:current identity))))))
+#_(defn authorized?
+  "Returns the first value in the :roles of the current authentication
+   in the given identity map that isa? one of the required roles.
+   Returns nil otherwise, indicating that the identity is not authorized
+   for the set of required roles."
+  [roles identity]
+
+  (println (<< "authorized? [~{roles}] / [~{identity}]"))
+  (let [granted-roles (-> identity current-authentication :roles)
+        xx (println (<< "granted-roles[~{granted-roles}]"))
+        xy (println (<< "roles[~{roles}]"))
+        xz (println (<< "result[~{(first (for [granted granted-roles
+                 required roles
+                 :when (isa? granted required)]
+             granted))}]"))
+        ]
+    (first (for [granted granted-roles
+                 required roles
+                 :when (isa? granted required)]
+             granted))))
+
+
 (defroutes app-routes
 
 
@@ -139,14 +176,8 @@
   (POST "/callbackGitkit" [ :as request & etal ]
 
     (println (<< "/callbackGitkit HANDLER [POST]: request[~{request}]) > etal[~{etal}]"))
-    ;;(println (<< ">> body: [~{(:body request)}]"))
-    (let  [;;xy  (throw (Exception. "Stop"))
-           ;;request-body (slurp (:body request))
-           ;;request (<< "~{(:form-params request)}&~{(:query-params request) }")
-           req (merge (:form-params request) (:query-params request))
-           ;;xx (println (<< "/callbackGitkit HANDLER [POST]: ~{req}"))
+    (let  [req (merge (:form-params request) (:query-params request))
            cb-resp (callbackHandlerCommon "POST" req)
-           ;;one (println (<< "cb-resp: ~{cb-resp}"))
            ru (getk/get-user (:verifiedEmail cb-resp))
            templ (enlive/html-resource "include/callbackUrlSuccess.html")]
 
@@ -160,7 +191,7 @@
           (session/put! :current-user logu)
           )
 
-        (let  [ notify-input { :email (:verifiedEmail rresp) :registered (-> rresp :exists str)}
+        (let  [notify-input { :email (:verifiedEmail rresp) :registered (-> rresp :exists str)}
                notify-input-str (clojure.data.json/json-str notify-input)]
           (apply str  (enlive/emit*  (enlive/transform
                                       templ
@@ -171,8 +202,15 @@
   ;; LANDING Page
   (GET "/landing" [ :as request ]
 
-       (friend/authorize #{::user}
+       #_(friend/authorized? #{::user}
          #(ring-response/file-response "landing.html" { :root "public" })
+         )
+       #_(authorized? #{ ::user } (merge (:logged-in-user @bkell/shell) { :current ::thing :authentications { ::thing { :roles #{ ::admin ::user } } } }  ))
+
+
+       (if (friend/authorized? #{ ::user } (merge (:logged-in-user @bkell/shell) { :current ::thing :authentications { ::thing { :roles #{ ::admin ::user } } } }  ))
+         (ring-response/file-response "landing.html" { :root "public" })
+         "No go"
        )
   )
 
@@ -182,15 +220,18 @@
   (route/resources "/")
   (route/not-found "Not Found")
 
+
 )
 
 
-(def app
-  (session/wrap-noir-session*
-   (handler/site
-    (friend/authenticate app-routes {})))
-)
+
 
 #_(def app
+  (session/wrap-noir-session*
+   (handler/site
+    (friend/authenticate app-routes { :credential-fn (partial credential-fn (:logged-in-user @bkell/shell)) })))
+)
+
+(def app
   (handler/site
-   (session/wrap-noir-session* (friend/authenticate app-routes))))
+   (session/wrap-noir-session* app-routes)))
