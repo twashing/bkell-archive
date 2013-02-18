@@ -245,6 +245,21 @@
     )
   )
 
+  (GET "/currencies" [:as raw-req]
+
+    (println (str "GET ; /currencies ; " raw-req))
+    (let [lin-user (authenticatek/logged-in-user)]
+
+      (let  [ cur (bkell/getk :currencies (:username lin-user))
+              fcur (map #(dissoc %1 :_id) cur)    ;; removing ObjectId
+            ]
+
+        (->      ;; JSON of MongoDB WriteResult;
+          fcur (hutils/handle-errors 400) hutils/substitute-body)
+      )
+    )
+  )
+
 
   ;; ======
   ;; Resource Routes
