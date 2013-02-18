@@ -173,6 +173,14 @@
                                       [[ :script (enlive/nth-of-type 3)]]  ;; get the 3rd script tag
                                       (enlive/content (str "window.google.identitytoolkit.notifyFederatedSuccess(" notify-input-str ");")))))))))
 
+
+  (GET "/logout" []
+
+    (session/remove! :current-user)
+    (authenticatek/logout-user)
+    (ring-response/redirect "/")
+  )
+
   ;; ======
   ;; LANDING Page
   (GET "/landing" [ :as request ]
