@@ -75,60 +75,7 @@
     <!--   }); -->
 
     :javascript
-      //$(document).ready(function() {
-
-        /***
-         * a GLOBAL namespace
-         */
-        global = {};
-        global.CURRENT_ENTRY_PANE = "#entries";
-        global.timerEntry = -1;
-
-        /***
-         * Adjust Entry panes based on right width
-         ***/
-        adjustEntryPanes = function() {
-
-          $('#entries, #entry, #entry-part')
-            .css('width', ( $('#right-wrapper').width() - $('#left-col').width() ) + "px");
-
-          var rightWidth = $(".bkell-container").width() - $("#left-col").width();
-          $("#right-col").css("width", rightWidth);
-        };
-
-
-        var scrollFn = function() {
-          $('#right-wrapper').scrollTo($(global.CURRENT_ENTRY_PANE), 500, { axis:'x' });
-        }
-
-        /***
-         * Bootstrap pane sizes
-         ***/
-        $(window).resize(function() {
-
-          //console.log("resizing window > args ["+ arguments +"]")
-          adjustEntryPanes();
-
-          clearTimeout(global.timerEntry);
-          global.timerEntry = setTimeout(scrollFn, 500);
-
-        });
-
-        adjustEntryPanes();
-
-        $("#logout-button").click(function() {
-
-          window.location = "/logout";
-        });
-
-        $("#mainTab a").click(function(e){e.preventDefault(); $(this).tab('show');})
-
-        $("#paywallTab a").click(function(e){e.preventDefault(); $(this).tab('show');})
-
-        (function() { $("#country , #currency").select2(); })();
-
-      //})
-
+      global = {}
 
 
   %body

@@ -18,6 +18,61 @@ require( ['bkeeping/bkeeping', 'bkeeping/bindings',  'bkeeping/util']
 
     console.log("landing LOADED / bkeeping[#{bkeeping.models}]")
 
+    $(document).ready(->
+
+
+        ###
+        # a GLOBAL namespace
+        ###
+        global.CURRENT_ENTRY_PANE = "#entries"
+        global.timerEntry = -1
+
+
+        ###
+        # Adjust Entry panes based on right width
+        ###
+        adjustEntryPanes = ->
+
+          $('#entries, #entry, #entry-part')
+            .css('width', ( $('#right-wrapper').width() - $('#left-col').width() ) + "px")
+
+          rightWidth = $(".bkell-container").width() - $("#left-col").width()
+          $("#right-col").css("width", rightWidth)
+
+
+
+        scrollFn = ->
+          $('#right-wrapper').scrollTo($(global.CURRENT_ENTRY_PANE), 500, { axis:'x' })
+
+
+        ###
+        # Bootstrap pane sizes
+        ###
+        $(window).resize(->
+
+          #console.log("resizing window > args ["+ arguments +"]")
+          adjustEntryPanes()
+
+          clearTimeout(global.timerEntry)
+          global.timerEntry = setTimeout(scrollFn, 500)
+        )
+
+        adjustEntryPanes()
+
+        $("#logout-button").click(->
+          window.location = "/logout"
+        )
+        $("#mainTab a").click((e) ->
+          e.preventDefault()
+          $(this).tab('show'))
+
+        $("#paywallTab a").click((e) ->
+          e.preventDefault()
+          $(this).tab('show'))
+
+        (-> $("#country , #currency").select2() )();
+    )
+
     String.prototype.isempty = util.isempty
 
     ###
