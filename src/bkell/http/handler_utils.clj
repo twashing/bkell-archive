@@ -1,7 +1,9 @@
 (ns bkell.http.handler-utils
 
   (:import [java.net URLEncoder NetworkInterface])
-  (:require [bkell.bkell :as bkell])
+  (:require [bkell.bkell :as bkell]
+            [clojure.data.json :as json]
+            [bkell.util :as util])
   )
 
 
@@ -65,3 +67,19 @@
 
     { :cb-resp cb-resp :new-user nil}   ;; otherwise just return the result
     ))
+
+  (defn substitute-body [input]
+
+    (if-let [body (:body input)]
+      (merge input { :body (json/json-str body) })
+      (json/json-str input))
+  )
+
+  (defn handle-errors [result status]
+
+    (if (or (= :error (:tag result))
+            (= :errors (:tag result)))
+      (util/wrap-error result status)
+      result
+    )
+  )

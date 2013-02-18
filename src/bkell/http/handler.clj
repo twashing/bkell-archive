@@ -1,4 +1,6 @@
 (ns bkell.http.handler
+
+  (:import [java.io FileReader InputStreamReader])
   (:use [compojure.core]
         [clojure.core.strint])
   (:require [compojure.handler :as handler]
@@ -20,6 +22,7 @@
             [bkell.http.handler-utils :as hutils]
             [bkell.commands.authenticate :as authenticatek]
             [bkell.domain :as domain]
+            [bkell.bjell :as bjell]
             ))
 
 
@@ -173,9 +176,7 @@
   ;; LANDING Page
   (GET "/landing" [ :as request ]
 
-       (println (<< "... ~{(pprint/pprint (:logged-in-user @bkell/shell))}"))
-
-
+       #_(println (<< "... ~{(pprint/pprint (:logged-in-user @bkell/shell))}"))
        #_(if (friend/authorized? #{ ::user } (merge (:logged-in-user @bkell/shell) { :current ::thing :authentications { ::thing { :roles #{ ::admin ::user } } } }  ))
          (ring-response/file-response "landing.html" { :root "public" })
          "No go"
@@ -187,6 +188,63 @@
          "No go"
        )
   )
+
+
+  ;; ======
+  ;; CRUD on Accounts
+  (PUT "/account/:id" [ :as raw-req ]
+
+     (println (str "PUT ; /account ; " raw-req))
+     (let [body (InputStreamReader. (:body raw-req))
+           lin-user (authenticatek/logged-in-user)]
+
+       (->      ;; JSON of MongoDB WriteResult;
+         body (bjell/add (:username lin-user)) (hutils/handle-errors 500) hutils/substitute-body)
+     )
+  )
+  (GET "/accounts" [ :as req ]
+
+    (println (str "GET ; /accounts ; " req))
+    (let [lin-user (authenticatek/logged-in-user)]
+
+      (->      ;; JSON of MongoDB WriteResult;
+        (bkell/getk :accounts (:username lin-user)) (hutils/handle-errors 400) hutils/substitute-body)
+    )
+  )
+  (GET "/account/:id" [id]
+
+    (println (str "GET ; /account/:id ; " id))
+    (let [lin-user (authenticatek/logged-in-user)]
+
+      (->      ;; JSON of MongoDB WriteResult;
+        (bkell/getk :account (:username lin-user) id ) (hutils/handle-errors 400) hutils/substitute-body)
+    )
+  )
+  (POST "/account/:id" [ id :as raw-req ]
+
+    (println (str "POST ; /account/:id ; " raw-req))
+    (let [body (InputStreamReader. (:body raw-req))
+          lin-user (authenticatek/logged-in-user)]
+
+      (->      ;; JSON of MongoDB WriteResult;
+        body (bjell/update (:username lin-user) ) (hutils/handle-errors 400) hutils/substitute-body)
+    )
+    #_(let [raw-req (request/ring-request)]
+
+    )
+  )
+  (DELETE "/account/:id" [id]
+
+    (println (str "DELETE ; /account/:id ; " id))
+
+    (let [lin-user (authenticatek/logged-in-user)]
+
+      (->      ;; JSON of MongoDB WriteResult;
+        (bkell/removek { :tag :account :id id } (:username lin-user)) (hutils/handle-errors 400) )
+      { :tag :account :id id }
+    )
+  )
+
 
   ;; ======
   ;; Resource Routes
