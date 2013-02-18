@@ -35,7 +35,7 @@
     (map
       #(mc/insert "currencies" %1)
       currency-list)
-    (map
+    #_(map
      #(mc/insert "countries" %1)
      country-list)
   )

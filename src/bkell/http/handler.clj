@@ -23,6 +23,7 @@
             [bkell.commands.authenticate :as authenticatek]
             [bkell.domain :as domain]
             [bkell.bjell :as bjell]
+            [bkell.util :as util]
             ))
 
 
@@ -245,6 +246,75 @@
     )
   )
 
+
+  ;; ======
+  ;; CRUD on Entries
+  (PUT  "/entry/:id" [:as raw-req]
+
+    (println (str "PUT ; /entry ; " raw-req))
+    (let [lin-user (authenticatek/logged-in-user)]
+      (if-let [body (InputStreamReader. (:body raw-req))]
+        (->      ;; JSON of MongoDB WriteResult;
+          body (bjell/add (:username lin-user)) (hutils/handle-errors 400) hutils/substitute-body)
+      )
+    )
+  )
+  (GET "/entries" [:as req]
+
+    (println (str "GET ; /entries ; " req))
+    (let [lin-user (authenticatek/logged-in-user)]
+
+      (->      ;; JSON of MongoDB WriteResult;
+        (bkell/getk :entries (:username lin-user)) (hutils/handle-errors 400) hutils/substitute-body)
+    )
+  )
+  (GET "/entry/:id" [id]
+
+    (println (str "GET ; /entry/:id ; " id))
+    (let [lin-user (authenticatek/logged-in-user)]
+
+      (->      ;; JSON of MongoDB WriteResult;
+        (bkell/getk :entry (:username lin-user) id ) (hutils/handle-errors 400) hutils/substitute-body)
+    )
+  )
+  (POST "/entry/:id" [id :as raw-req]
+
+    (println (str "POST ; /entry/:id ; " raw-req))
+    (let  [ lin-user (authenticatek/logged-in-user)
+            body (InputStreamReader. (:body raw-req))
+           ]
+      (->      ;; JSON of MongoDB WriteResult;
+        body (bjell/update (:username lin-user) ) (hutils/handle-errors 400) hutils/substitute-body)
+    )
+    #_(let [raw-req (request/ring-request)]
+    )
+  )
+  (DELETE "/entry/:id" [id]
+
+    (println (str "DELETE ; /entry/:id ; " id))
+
+    (let [lin-user (authenticatek/logged-in-user)]
+
+      (->      ;; JSON of MongoDB WriteResult; TODO - make a proper JSON string for client
+        (bkell/removek { :tag :entry :id id } (:username lin-user) ) (hutils/handle-errors 400) ) ;; TODO - stubbing in 'stub' user for now
+      { :tag :entry :id id }
+    )
+  )
+
+
+  ;; ======
+  ;; Generate a new ID
+  (GET "/generateid" [:as req]
+
+    (println (str "GET ; /generateid ; " req))
+    (let [lin-user (authenticatek/logged-in-user)]
+      (util/generate-id)
+    )
+  )
+
+
+  ;; ======
+  ;; Currencies
   (GET "/currencies" [:as raw-req]
 
     (println (str "GET ; /currencies ; " raw-req))
