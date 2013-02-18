@@ -26,18 +26,18 @@
       return adjustEntryPanes();
     });
     /*
-        # LIB imports 
+        # LIB imports
         */
     models = bkeeping.models;
     views = bkeeping.views;
     /*
-        # ACCOUNTS and ENTRIES objects 
+        # ACCOUNTS and ENTRIES objects
         */
     accounts = new models.Accounts();
     entries = new models.Entries();
     currencies = null;
     /*
-        # STATE MACHINEs for Accounts and Entries 
+        # STATE MACHINEs for Accounts and Entries
         */
     asm = bindings.asm;
     esm = bindings.esm;
@@ -141,9 +141,9 @@
         });
       });
     };
-    /* 
-    # LOAD Accounts & Entries
-    */
+    /*
+        # LOAD Accounts & Entries
+        */
     loadAccounts();
     /*
         # Load Footer
