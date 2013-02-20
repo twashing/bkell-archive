@@ -1,52 +1,22 @@
 (ns bkell.run.run-ring
-  (:require [noir.server :as server]
+  (:require
             [bkell.bjell :as bjell]
             [bkell.bkell :as bkell]
             [bkell.http.auth :as auth]
-            [ring.middleware.keyword-params :as keyword-params]
-            [ring.middleware.nested-params :as nested-params]
-            [ring.middleware.params :as params]
-            [ring.middleware.session :as session]
-            [cemerick.drawbridge]
+            [bkell.http.handler :as handler]
+            ;;[ring.middleware.keyword-params :as keyword-params]
+            ;;[ring.middleware.nested-params :as nested-params]
+            ;;[ring.middleware.params :as params]
+            ;;[ring.middleware.session :as session]
             )
-  (:use [clojure.core.strint]) )
-
-(def drawbridge-handler
-  (-> (cemerick.drawbridge/ring-handler)
-      (keyword-params/wrap-keyword-params)
-      (nested-params/wrap-nested-params)
-      (params/wrap-params)
-      (session/wrap-session)))
-
-(defn wrap-drawbridge [handler]
-  (fn [req]
-    (if (= "/repl" (:uri req))
-      (drawbridge-handler req)
-            (handler req))))
-
-(server/load-views "src/bkell/http/")
-
-(defn check-authorization [handler]
-  (fn [request]
-    (let [
-          ;; check request for :uri
-          ;; check that :uri is authorized for this
-          checkR (auth/is-authorized request)
-          resp (handler request)
-          ]
-
-      ;; if not,  return an HTTP 401 Unauthorized
-
-      (println (<< "check-authorization CALLED [~{request}]"))
-      resp)
-    ))
-(server/add-middleware check-authorization)
+  (:use [clojure.core.strint]
+        [ring.adapter.jetty]) )
 
 
-; the default mode is 'dev',
-; for heroku, you can set the environment variable with the command:
-; `heroku config:add MODE=prod`
-(defn -main [& m]
+;; the default mode is 'dev',
+;; for heroku, you can set the environment variable with the command:
+;; `heroku config:add MODE=prod`
+(defn main [& m]
   (let[ config (load-file "etc/config/config.clj")
         mode (keyword (or (get (System/getenv) "MODE" "dev")
                           (second m) ))
@@ -77,6 +47,10 @@
 
     ;; ====
     ;; Startup the Noir server (wraps Jetty)
-    (server/start (Integer. host-port) {  :mode mode :ns 'bkell  })
+    ;;(server/start (Integer. host-port) {  :mode mode :ns 'bkell  })
+    (defonce server
+      (run-jetty #'bkell.http.handler/app {:port 8080 :join? false}))
 
-  ))
+    ))
+
+#_(main)

@@ -1,0 +1,115 @@
+
+(use 'somnium.congomongo) 
+(mongo! :db "bkell")
+
+(pprint (keys (ns-publics 'somnium.congomongo))) 
+
+--- load stuff 
+(use 'somnium.congomongo) 
+(mongo! :db "bkell") 
+
+(require :reload 'commands.add) 
+(require :reload 'commands.get) 
+(require :reload 'commands.update) 
+(require :reload 'commands.authenticate) 
+(require :reload 'bkell) 
+
+(require :reload 'add_test) 
+(require :reload 'login_test) 
+
+
+(use 'clojure.data.json)
+(require 'clojure.data.json) 
+(require 'clojure.contrib.duck-streams)
+(import 'java.io.FileReader)
+
+
+WRITING json 
+(clojure.contrib.duck-streams/spit "user.js" (with-out-str (clojure.data.json/pprint-json (load-file "test/etc/data/stubu-two.clj")))) 
+
+
+READING json 
+(clojure.data.json/read-json (FileReader. "user.js")) 
+
+
+
+(update! :bookkeeping { :_id (:_id ru) } 
+  (domain/modify-currency 
+    (domain/traverse-tree ru :update { :id (:id rc) } currency) 
+    :update 
+    currency 
+    default) 
+) 
+
+
+db.groups.remove() 
+db.users.remove() 
+db.bookkeeping.remove() 
+
+---- 
+
+
+
+---- test suite 
+bkell-test bjell-test 
+
+
+---- initialize a bkell 
+
+(ns bkell) 
+(use 'bkell) 
+(init-shell) 
+(require 'somnium.congomongo) 
+(somnium.congomongo/mongo! :db "bkell") 
+
+
+---- some test commands 
+
+
+;; add a user (login
+(add {:content [{:content [{:content nil, :name "first.name", :value "Tim", :tag :profileDetail} {:content nil, :name "last.name", :value "Washington", :tag :profileDetail} {:content nil, :name "email", :value  "twashing@gmail.com", :tag :profileDetail} {:content nil, :name "country", :value "Canada", :tag :profileDetail}], :tag :profileDetails}], :username "twashing", :password "fubar", :tag :user}) 
+
+(def user {:content [{:content [{:content nil, :name "first.name", :value "Tim", :tag :profileDetail} {:content nil, :name "last.name", :value "Washington", :tag :profileDetail} {:content nil, :name "email", :value "twashing@gmail.com", :tag :profileDetail} {:content nil, :name "country", :value "Canada", :tag :profileDetail}], :tag :profileDetails}], :username "twashing", :password "5185e8b8fd8a71fc80545e144f91faf2", :tag :user}) 
+
+;; try doing stuff w/out being logged in 
+;; … 
+
+;; login a user 
+(login user) 
+
+
+;; CRUD a currency 
+
+;; CRUD an account 
+
+;; CRUD an entry 
+
+
+
+---- entire JSON into bkell? 
+
+(use 'clojure.data.json) 
+(require 'clojure.data.json) 
+
+(with-out-str (clojure.data.json/pprint-json '(login {:content [{:content [{:content nil, :name "first.name", :value "Tim", :tag :profileDetail} {:content nil, :name "last.name", :value "Washington", :tag :profileDetail} {:content nil, :name "email", :value "twashing@gmail.com", :tag :profileDetail} {:content nil, :name "country", :value "Canada", :tag :profileDetail}], :tag :profileDetails}], :username "twashing", :password "5185e8b8fd8a71fc80545e144f91faf2", :tag :user})  ))
+
+
+"[\"login\",\n {\"content\":\n  [{\"content\":\n    [{\"content\":null,\n      \"name\":\"first.name\",\n      \"value\":\"Tim\",\n      \"tag\":\"profileDetail\"},\n     {\"content\":null,\n      \"name\":\"last.name\",\n      \"value\":\"Washington\",\n      \"tag\":\"profileDetail\"},\n     {\"content\":null,\n      \"name\":\"email\",\n      \"value\":\"twashing@gmail.com\",\n      \"tag\":\"profileDetail\"},\n     {\"content\":null,\n      \"name\":\"country\",\n      \"value\":\"Canada\",\n      \"tag\":\"profileDetail\"}],\n    \"tag\":\"profileDetails\"}],\n  \"username\":\"twashing\",\n  \"password\":\"5185e8b8fd8a71fc80545e144f91faf2\",\n  \"tag\":\"user\"}]"
+
+
+;; 1. read a JSON string and put it into a vector 
+(into '() (clojure.data.json/read-json  "[\"login\",\n {\"content\":\n  [{\"content\":\n    [{\"content\":null,\n      \"name\":\"first.name\",\n      \"value\":\"Tim\",\n      \"tag\":\"profileDetail\"},\n     {\"content\":null,\n      \"name\":\"last.name\",\n      \"value\":\"Washington\",\n      \"tag\":\"profileDetail\"},\n     {\"content\":null,\n      \"name\":\"email\",\n      \"value\":\"twashing@gmail.com\",\n      \"tag\":\"profileDetail\"},\n     {\"content\":null,\n      \"name\":\"country\",\n      \"value\":\"Canada\",\n      \"tag\":\"profileDetail\"}],\n    \"tag\":\"profileDetails\"}],\n  \"username\":\"twashing\",\n  \"password\":\"5185e8b8fd8a71fc80545e144f91faf2\",\n  \"tag\":\"user\"}]"  )) 
+
+
+;; 2 if the function is the last thing in the list, reverse the list 
+(reverse '()) 
+
+
+;; 3 symbol'ize the function 
+
+
+;; 4 eval the function 
+(eval ((symbol "login") {:content [{:content [{:content nil, :name "first.name", :value "Tim", :tag "profileDetail"} {:content nil, :name "last.name", :value "Washington", :tag "profileDetail"} {:content nil, :name "email", :value "twashing@gmail.com", :tag "profileDetail"} {:content nil, :name "country", :value "Canada", :tag "profileDetail"}], :tag "profileDetails"}], :username "twashing", :password "5185e8b8fd8a71fc80545e144f91faf2", :tag "user"}) )
+
+
+

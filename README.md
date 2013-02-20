@@ -58,7 +58,7 @@ Run the webapp
 ````
 $ lein repl
   => (require 'bkell.run.run-ring)
-  => (bkell.run.run-ring/-main)
+  => (bkell.run.run-ring/main)
 ````
 
 Then in your browser, go to _localhost:8080_

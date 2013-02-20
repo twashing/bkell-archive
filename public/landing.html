@@ -22,9 +22,9 @@
     <script src='/js/lib/jquery.serialScroll.js'></script>
     <script src='/js/lib/jquery.scrollTo.js'></script>
     <!-- %script( src="/js/lib/enscroll-0.2.4.min.js" ) -->
-    <!-- %link{ :href => "/css/bootstrap.css", :media => "screen", :rel => "stylesheet", :type => "text/css" } -->
-    <!-- %link{ :href => "/css/bootstrap-responsive.css", :media => "screen", :rel => "stylesheet", :type => "text/css" } -->
-    <!-- %script( src="/js/lib/bootstrap.js" ) -->
+    <link href='/css/bootstrap.css' media='screen' rel='stylesheet' type='text/css' />
+    <link href='/css/bootstrap-responsive.css' media='screen' rel='stylesheet' type='text/css' />
+    <script src='/js/lib/bootstrap.js'></script>
     <!-- %script( src="/js/lib/require.js" data-main="test/run_tests" ) -->
     <script src='/js/lib/json2.js'></script>
     <script src='/js/lib/underscore.js'></script>
@@ -55,64 +55,8 @@
     <!--   }); -->
     <script type='text/javascript'>
       //<![CDATA[
+        global = {}
         Stripe.setPublishableKey('pk_test_CT5VaR5BAIH2ZneC0wGLTh9b');
-      //]]>
-    </script>
-    <script type='text/javascript'>
-      //<![CDATA[
-        $(document).ready(function() {
-        
-          /***
-           * a GLOBAL namespace
-           */
-          global = {};
-          global.CURRENT_ENTRY_PANE = "#entries";
-          global.timerEntry = -1;
-        
-          /***
-           * Adjust Entry panes based on right width
-           ***/
-          adjustEntryPanes = function() {
-        
-            $('#entries, #entry, #entry-part')
-              .css('width', ( $('#right-wrapper').width() - $('#left-col').width() ) + "px");
-        
-            var rightWidth = $(".bkell-container").width() - $("#left-col").width();
-            $("#right-col").css("width", rightWidth);
-          };
-        
-        
-          var scrollFn = function() {
-            $('#right-wrapper').scrollTo($(global.CURRENT_ENTRY_PANE), 500, { axis:'x' });
-          }
-        
-          /***
-           * Bootstrap pane sizes
-           ***/
-          $(window).resize(function() {
-        
-            //console.log("resizing window > args ["+ arguments +"]")
-            adjustEntryPanes();
-        
-            clearTimeout(global.timerEntry);
-            global.timerEntry = setTimeout(scrollFn, 500);
-        
-          });
-        
-          adjustEntryPanes();
-        
-          $("#logout-button").click(function() {
-        
-            window.location = "/logout";
-          });
-        
-          $("#mainTab a").click(function(e){e.preventDefault(); $(this).tab('show');})
-        
-          $("#paywallTab a").click(function(e){e.preventDefault(); $(this).tab('show');})
-        
-          (function() { $("#country , #currency").select2(); })();
-        
-        })
       //]]>
     </script>
   </head>

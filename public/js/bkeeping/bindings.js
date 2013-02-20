@@ -69,9 +69,9 @@
             } else {
               saveAccount = function(fdata) {
                 return args.data.account.saveS(_.extend(fdata, {
-                  name: $("#account-name").attr('value'),
-                  type: $("#account-type").attr("value"),
-                  counterWeight: $("#account-counterWeight").attr("value")
+                  name: $("#account-name").val(),
+                  type: $("#account-type").val(),
+                  counterWeight: $("#account-counterWeight").val()
                 }), {
                   wait: true,
                   type: args.data.account.isNew() ? "PUT" : "POST",
@@ -144,9 +144,9 @@
           }
         ],
         callbacks: {
-          /* 
-          # PART 1
-          */
+          /*
+                                          # PART 1
+                                          */
           onbeforeEsE: function(event, from, to, args) {
             console.log('START Transition from Es->E');
             /*
@@ -158,7 +158,7 @@
               accounts: args.data.accounts.models
             });
             /*
-                                              # scroll to the relevant pane 
+                                              # scroll to the relevant pane
                                               */
             $('#right-wrapper').scrollTo($('#entry'), 500, {
               axis: 'x'
@@ -180,9 +180,9 @@
               esm: args.data.esm
             });
           },
-          /* 
-          # PART 2
-          */
+          /*
+                                          # PART 2
+                                          */
           onbeforeEEpart: function(event, from, to, args) {
             var epart;
             console.log('START Transition from E->Epart');
@@ -371,7 +371,7 @@
                 });
               };
               /*
-                                                  # 2. update entry 
+                                                  # 2. update entry
                                                   */
               fdata = {};
               if (args.data.entry.isNew()) {
