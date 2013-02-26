@@ -104,10 +104,12 @@
       .row.pad-left
         .tabbable.tabs-left.tab-align
           %ul.nav.nav-tabs#mainTab
-            %li
-              %a{:href => "#books", "data-toggle" => "tab"} Books
-            %li.active
-              %a{:href => "#profile" , "data-toggle" => "tab"} Profile
+            %li.tab-list-item
+              %a.tab-link( href="#books" data-toggle="tab" )
+                .tab-text Books
+            %li.tab-list-item.active
+              %a.tab-link( href="#profile" data-toggle="tab" )
+                .tab-text Profile
           :javascript
             $("#mainTab a").click(function(e){e.preventDefault(); $(this).tab('show');});
           .tab-content
@@ -224,4 +226,3 @@
                       .tab-pane{:id => "basic"}
 
     #footer
-

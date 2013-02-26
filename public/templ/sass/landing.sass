@@ -2,6 +2,7 @@
 @import compass/layout
 @import compass/layout/stretching
 @import compass/css3/box
+@import compass/css3/transform-legacy
 @import ceaser-easing
 @import grid-coordinates
 
@@ -136,6 +137,14 @@ $grid-gutter-width: 1px
         width: 800px
         height: 100%
         overflow: auto
+
+
+/***
+ * User Profile Styles
+ ***/
+#mainTab > .tab-list-item > .tab-link > .tab-text
+  //+rotate(-90deg)
+
 /***
  * track and handle styles for enscroll
  ***/
@@ -198,4 +207,3 @@ table#entries-table > tbody > tr > td.editcolumn
 
 .align-button
   padding-left: 40px
-

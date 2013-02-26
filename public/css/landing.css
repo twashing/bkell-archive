@@ -5466,19 +5466,19 @@ a.thumbnail:hover {
   left: -671px;
 }
 
-/* line 26, ../templ/sass/landing.sass */
+/* line 27, ../templ/sass/landing.sass */
 .container-fluid {
   padding: 0px;
 }
 
-/* line 30, ../templ/sass/landing.sass */
+/* line 31, ../templ/sass/landing.sass */
 .sidebar-nav-fixed {
   position: relative;
   padding: 0px;
   width: 250px;
 }
 
-/* line 36, ../templ/sass/landing.sass */
+/* line 37, ../templ/sass/landing.sass */
 .span-fixed-sidebar {
   margin-left: 260px;
   min-width: 800px;
@@ -5487,26 +5487,26 @@ a.thumbnail:hover {
 /*****
  * !! have to do custom sizing on Landing page to have it match index page
  ***** */
-/* line 45, ../templ/sass/landing.sass */
+/* line 46, ../templ/sass/landing.sass */
 #header {
   z-index: 20;
 }
-/* line 48, ../templ/sass/landing.sass */
+/* line 49, ../templ/sass/landing.sass */
 #header #title-wrapper #title {
   font-size: 48;
   margin: 18 10;
   color: black;
 }
-/* line 52, ../templ/sass/landing.sass */
+/* line 53, ../templ/sass/landing.sass */
 #header #title-wrapper #subtitle {
   color: black;
 }
-/* line 54, ../templ/sass/landing.sass */
+/* line 55, ../templ/sass/landing.sass */
 #header #title-wrapper #subtitle #subtitle-default, #header #title-wrapper #subtitle #subtitle-black {
   font-size: 16;
 }
 
-/* line 57, ../templ/sass/landing.sass */
+/* line 58, ../templ/sass/landing.sass */
 #footer, #legal, .interruptlink {
   font-size: 16;
 }
@@ -5514,7 +5514,7 @@ a.thumbnail:hover {
 /*****
  * Left / Accounts Pane
  ***** */
-/* line 64, ../templ/sass/landing.sass */
+/* line 65, ../templ/sass/landing.sass */
 #left-col {
   position: absolute;
   top: 0;
@@ -5528,7 +5528,7 @@ a.thumbnail:hover {
   background: white;
   box-shadow: 0 4px 6px #554433;
 }
-/* line 74, ../templ/sass/landing.sass */
+/* line 75, ../templ/sass/landing.sass */
 #left-col #left-wrapper {
   float: left;
   width: 308;
@@ -5536,14 +5536,14 @@ a.thumbnail:hover {
   overflow: hidden;
   position: relative;
 }
-/* line 81, ../templ/sass/landing.sass */
+/* line 82, ../templ/sass/landing.sass */
 #left-col #left-wrapper #left-content {
   white-space: nowrap;
   position: absolute;
   height: 100%;
   width: 656;
 }
-/* line 89, ../templ/sass/landing.sass */
+/* line 90, ../templ/sass/landing.sass */
 #left-col #left-wrapper #left-content #accounts, #left-col #left-wrapper #left-content #account {
   width: 308;
   float: left;
@@ -5551,7 +5551,7 @@ a.thumbnail:hover {
   height: 100%;
   overflow-y: scroll;
 }
-/* line 97, ../templ/sass/landing.sass */
+/* line 98, ../templ/sass/landing.sass */
 #left-col #left-wrapper #left-content #left-toggler {
   width: 20;
   height: 20px;
@@ -5563,7 +5563,7 @@ a.thumbnail:hover {
 /*****
  * Right / Entries Pane
  ***** */
-/* line 108, ../templ/sass/landing.sass */
+/* line 109, ../templ/sass/landing.sass */
 #right-col {
   position: relative;
   float: left;
@@ -5571,7 +5571,7 @@ a.thumbnail:hover {
   margin-bottom: 0;
   margin-left: 310;
 }
-/* line 118, ../templ/sass/landing.sass */
+/* line 119, ../templ/sass/landing.sass */
 #right-col #right-wrapper {
   float: left;
   overflow: hidden;
@@ -5579,14 +5579,14 @@ a.thumbnail:hover {
   width: 100%;
   height: 100%;
 }
-/* line 127, ../templ/sass/landing.sass */
+/* line 128, ../templ/sass/landing.sass */
 #right-col #right-wrapper #right-content {
   white-space: nowrap;
   position: absolute;
   width: 100%;
   height: 100%;
 }
-/* line 134, ../templ/sass/landing.sass */
+/* line 135, ../templ/sass/landing.sass */
 #right-col #right-wrapper #right-content #entries, #right-col #right-wrapper #right-content #entry, #right-col #right-wrapper #right-content #entry-part {
   float: left;
   width: 800px;
@@ -5595,14 +5595,17 @@ a.thumbnail:hover {
 }
 
 /**
+ * User Profile Styles
+ ** */
+/**
  * track and handle styles for enscroll
  ** */
-/* line 142, ../templ/sass/landing.sass */
+/* line 151, ../templ/sass/landing.sass */
 .track3 {
   width: 10px;
 }
 
-/* line 145, ../templ/sass/landing.sass */
+/* line 154, ../templ/sass/landing.sass */
 .handle3 {
   width: 5px;
   background: black;
@@ -5614,72 +5617,72 @@ a.thumbnail:hover {
   border-radius: 7px;
 }
 
-/* line 156, ../templ/sass/landing.sass */
+/* line 165, ../templ/sass/landing.sass */
 table#entries-table > tbody > tr > td.editcolumn {
   width: 50px;
 }
 
-/* line 159, ../templ/sass/landing.sass */
+/* line 168, ../templ/sass/landing.sass */
 #logout-button.btn.btn-inverse {
   position: relative;
   float: right;
 }
 
-/* line 163, ../templ/sass/landing.sass */
+/* line 172, ../templ/sass/landing.sass */
 #entry-date {
   position: relative;
 }
-/* line 166, ../templ/sass/landing.sass */
+/* line 175, ../templ/sass/landing.sass */
 #entry-date input.span2 {
   height: 28px;
 }
 
-/* line 170, ../templ/sass/landing.sass */
+/* line 179, ../templ/sass/landing.sass */
 .entry-label {
   float: left;
   width: 100px;
 }
 
-/* line 174, ../templ/sass/landing.sass */
+/* line 183, ../templ/sass/landing.sass */
 .sorting_desc {
   background: url("/images/sort_desc.png");
   background-repeat: no-repeat;
   background-position: 100% 50%;
 }
 
-/* line 179, ../templ/sass/landing.sass */
+/* line 188, ../templ/sass/landing.sass */
 .sorting_asc {
   background: url("/images/sort_asc.png");
   background-repeat: no-repeat;
   background-position: 100% 50%;
 }
 
-/* line 184, ../templ/sass/landing.sass */
+/* line 193, ../templ/sass/landing.sass */
 .tab-align {
   padding-top: 30px;
 }
 
-/* line 187, ../templ/sass/landing.sass */
+/* line 196, ../templ/sass/landing.sass */
 .color-white {
   background-color: white;
 }
 
-/* line 190, ../templ/sass/landing.sass */
+/* line 199, ../templ/sass/landing.sass */
 .pad-left {
   padding-left: 40px;
 }
 
-/* line 193, ../templ/sass/landing.sass */
+/* line 202, ../templ/sass/landing.sass */
 .price-font {
   font-size: 22px;
 }
 
-/* line 196, ../templ/sass/landing.sass */
+/* line 205, ../templ/sass/landing.sass */
 .align-row {
   padding-left: 20px;
 }
 
-/* line 199, ../templ/sass/landing.sass */
+/* line 208, ../templ/sass/landing.sass */
 .align-button {
   padding-left: 40px;
 }
