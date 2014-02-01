@@ -8,6 +8,51 @@
   require(['bkeeping/bkeeping', 'bkeeping/bindings', 'bkeeping/util'], function(bkeeping, bindings, util) {
     var accountView, accounts, accountsView, adjustEntryPanes, asm, currencies, entries, entriesView, entryPartView, entryView, esm, loadAccounts, loadEntries, models, views;
     console.log("landing LOADED / bkeeping[" + bkeeping.models + "]");
+    $(document).ready(function() {
+      /*
+              # a GLOBAL namespace
+              */
+      var adjustEntryPanes, scrollFn;
+      global.CURRENT_ENTRY_PANE = "#entries";
+      global.timerEntry = -1;
+      /*
+              # Adjust Entry panes based on right width
+              */
+      adjustEntryPanes = function() {
+        var rightWidth;
+        $('#entries, #entry, #entry-part').css('width', ($('#right-wrapper').width() - $('#left-col').width()) + "px");
+        rightWidth = $(".bkell-container").width() - $("#left-col").width();
+        return $("#right-col").css("width", rightWidth);
+      };
+      scrollFn = function() {
+        return $('#right-wrapper').scrollTo($(global.CURRENT_ENTRY_PANE), 500, {
+          axis: 'x'
+        });
+      };
+      /*
+              # Bootstrap pane sizes
+              */
+      $(window).resize(function() {
+        adjustEntryPanes();
+        clearTimeout(global.timerEntry);
+        return global.timerEntry = setTimeout(scrollFn, 500);
+      });
+      adjustEntryPanes();
+      $("#logout-button").click(function() {
+        return window.location = "/logout";
+      });
+      $("#mainTab a").click(function(e) {
+        e.preventDefault();
+        return $(this).tab('show');
+      });
+      $("#paywallTab a").click(function(e) {
+        e.preventDefault();
+        return $(this).tab('show');
+      });
+      return (function() {
+        return $("#country , #currency").select2();
+      })();
+    });
     String.prototype.isempty = util.isempty;
     /*
         # Adjust Entry panes based on right width
@@ -26,18 +71,18 @@
       return adjustEntryPanes();
     });
     /*
-        # LIB imports 
+        # LIB imports
         */
     models = bkeeping.models;
     views = bkeeping.views;
     /*
-        # ACCOUNTS and ENTRIES objects 
+        # ACCOUNTS and ENTRIES objects
         */
     accounts = new models.Accounts();
     entries = new models.Entries();
     currencies = null;
     /*
-        # STATE MACHINEs for Accounts and Entries 
+        # STATE MACHINEs for Accounts and Entries
         */
     asm = bindings.asm;
     esm = bindings.esm;
@@ -141,9 +186,9 @@
         });
       });
     };
-    /* 
-    # LOAD Accounts & Entries
-    */
+    /*
+        # LOAD Accounts & Entries
+        */
     loadAccounts();
     /*
         # Load Footer
