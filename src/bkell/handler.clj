@@ -1,5 +1,6 @@
 (ns bkell.handler
-  (:use compojure.core)
+  (:use [compojure.core]
+        [clojure.core.strint])
   (:require [compojure.handler :as handler]
             [compojure.route :as route]
             [cemerick.friend :as friend]
@@ -7,8 +8,8 @@
             [bkell.bkell :as bkell]
             ))
 
-(defroutes app-routes
 
+(defroutes app-routes
 
   (defn generate-host-address [host-url host-port]
     (str  "http://"
@@ -17,12 +18,14 @@
           )
   )
   (defn goindex []
-    (let  [ templ (enlive/html-resource "index.html")
-            mode (:mode @bkell/shell)
-            host-url (-> mode (@bkell/shell) :host-url)
-            host-port (-> mode (@bkell/shell) :host-port)
-            developer-key (-> mode (@bkell/shell) :developer-key)
-            ruri  (str  (generate-host-address host-url (if (= mode :dev) host-port nil)) "/callbackGitkit" ) ;; conditionally assign the host-port
+    (let  [templ (enlive/html-resource "index.html")
+           mode (:mode @bkell/shell)
+           host-url (-> mode (@bkell/shell) :host-url)
+           host-port (-> mode (@bkell/shell) :host-port)
+           developer-key (-> mode (@bkell/shell) :developer-key)
+
+           xx (println (<< "(xfn ~{host-url} ~{(if (= mode :dev) host-port nil)})"))
+           ruri  (str  (generate-host-address host-url (if (= mode :dev) host-port nil)) "/callbackGitkit" ) ;; conditionally assign the host-port
           ]
 
       (apply str (enlive/emit*  (enlive/transform
@@ -75,29 +78,18 @@
     )
   )
 
-  ;;(GET "/" [] "Hello World")
+
   ;; ======
   ;; ROOT Page
   (GET "/" []   ;; index is the default page of the application
-    (let  [templ (enlive/html-resource "index.html")
-           mode (:mode @bkell/shell)
-           host-url (-> mode (@bkell/shell) :host-url)
-           host-port (-> mode (@bkell/shell) :host-port)
-           developer-key (-> mode (@bkell/shell) :developer-key)
-           ruri  (str  (generate-host-address host-url (if (= mode :dev) host-port nil)) "/callbackGitkit" ) ;; conditionally assign the host-port
-           ]
-      (goindex)
 
-    )
+    (goindex)
   )
-
 
   (GET "/authorized" request
        (friend/authorize #{::user} "This page can only be seen by authenticated users."))
   (GET "/login" [] "Here is our login page.")
   (route/not-found "Not Found")
-
-
 
   )
 

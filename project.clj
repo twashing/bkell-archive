@@ -24,7 +24,8 @@
                       [lein-midje "1.0.10"]
                       [com.stuartsierra/lazytest "1.2.3"]
                     ]
-  :plugins [[lein-ring "0.8.2"]]
+  :plugins [[lein-ring "0.8.2"]
+            [lein-swank "1.4.5"]]
   :ring {:handler bkell.handler/app}
 
 

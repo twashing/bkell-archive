@@ -7,7 +7,7 @@
     / Chromeframe plugin
     /%meta( http-equiv="X-UA-Compatible" content="chrome=1")
 
-    %script(src="https://github.com/kriskowal/es5-shim/blob/master/es5-shim.min.js")
+    /%script(src="https://github.com/kriskowal/es5-shim/blob/master/es5-shim.min.js")
     /%script( type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/chrome-frame/1/CFInstall.min.js" )
 
     %link( type="text/css" href="css/common.css" rel="stylesheet" )
@@ -15,25 +15,24 @@
 
 
     %script( src="//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js")
-    %script( src= "http://ajax.googleapis.com/ajax/libs/jqueryui/1.8/jquery-ui.min.js" )
-    %script( src= "https://ajax.googleapis.com/ajax/libs/googleapis/0.0.4/googleapis.min.js" )
-    %script( src= 'https://ajax.googleapis.com/jsapi' )
-    :javascript
-      google.load("identitytoolkit", "1", {packages: ["ac"], language:"en"});
-
-    %script( src="/js/lib/json2.js" )
-    %script( src="/js/lib/underscore.js" )
-    %script( src="/js/lib/backbone.js" )
+    %script( src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8/jquery-ui.min.js")
+    %script( src="https://ajax.googleapis.com/jsapi")
+    %script( src="/js/lib/json2.js")
+    %script( src="/js/lib/underscore.js")
+    %script( src="/js/lib/backbone.js")
     %script( src="js/bkeeping.js" type="text/javascript" )
     :javascript
-      $(document).ready(function() {
 
+      function init() {
+        google.load('identitytoolkit', '1', {packages: ['ac'], callback: callback});
+      }
+
+      function callback() {
 
         /*********
          * Some internal code is giving the body a margin - can't figure out what it is
          *********/
         $('body').css('margin', '0px');
-
 
         /*********
          * GITkit Account Chooser code
@@ -62,6 +61,7 @@
         $('#footer').load('/include/footerPart.html');
 
       });
+    %script( src= "https://apis.google.com/js/client.js?onload=init" )
 
   %body
     .bkell-container

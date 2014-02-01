@@ -1,28 +1,28 @@
 <html lang='en'>
   <head>
-    <meta charset='utf-8' />
+    <meta charset='utf-8'>
     <title>Bkeeping.com: Simple Online Bookkeeping</title>
     <!-- Chromeframe plugin -->
-    <meta content='chrome=1' http-equiv='X-UA-Compatible' />
+    <meta content='chrome=1' http-equiv='X-UA-Compatible'>
     <!-- /%link{ :href => "/css/styles.css", :media => "screen", :rel => "stylesheet", :type => "text/css" } -->
-    <link href='/css/screen.css' media='screen, projection' rel='stylesheet' type='text/css' />
-    <link href='/css/print.css' media='print' rel='stylesheet' type='text/css' />
+    <link href='/css/screen.css' media='screen, projection' rel='stylesheet' type='text/css'>
+    <link href='/css/print.css' media='print' rel='stylesheet' type='text/css'>
     <!--[if IE]>
-      <link href='/css/ie.css' media='screen, projection' rel='stylesheet' type='text/css' />
+      <link href='/css/ie.css' media='screen, projection' rel='stylesheet' type='text/css'>
     <![endif]-->
     <script src='/js/lib/jquery1.9.min.js'></script>
     <script src='/js/lib/jquery-ui-1.10.0.custom.min.js'></script>
-    <link href='/css/jquery-ui-1.10.0.custom.min.css' media='screen' rel='stylesheet' type='text/css' />
+    <link href='/css/jquery-ui-1.10.0.custom.min.css' media='screen' rel='stylesheet' type='text/css'>
     <!-- custom scrollbars -->
-    <link href='/css/scrollbars.css' media='screen' rel='stylesheet' type='text/css' />
+    <link href='/css/scrollbars.css' media='screen' rel='stylesheet' type='text/css'>
     <script src='/js/lib/jquery.easing.1.3.js'></script>
     <script src='/js/lib/pure.js'></script>
     <script src='/js/lib/jquery.dataTables.js'></script>
     <script src='/js/lib/jquery.serialScroll.js'></script>
     <script src='/js/lib/jquery.scrollTo.js'></script>
     <!-- %script( src="/js/lib/enscroll-0.2.4.min.js" ) -->
-    <link href='/css/bootstrap.css' media='screen' rel='stylesheet' type='text/css' />
-    <link href='/css/bootstrap-responsive.css' media='screen' rel='stylesheet' type='text/css' />
+    <link href='/css/bootstrap.css' media='screen' rel='stylesheet' type='text/css'>
+    <link href='/css/bootstrap-responsive.css' media='screen' rel='stylesheet' type='text/css'>
     <script src='/js/lib/bootstrap.js'></script>
     <!-- %script( src="/js/lib/require.js" data-main="test/run_tests" ) -->
     <script src='/js/lib/json2.js'></script>
@@ -34,10 +34,10 @@
     <script src='/js/lib/bootstrap-modal.js'></script>
     <script src='/js/lib/bootstrap-tab.js'></script>
     <script src='/js/lib/select2.min.js'></script>
-    <link href='/css/datepicker.css' media='screen' rel='stylesheet' type='text/css' />
+    <link href='/css/datepicker.css' media='screen' rel='stylesheet' type='text/css'>
     <script src='/js/lib/bootstrap-datepicker.js'></script>
-    <link href='/css/common.css' media='screen' rel='stylesheet' type='text/css' />
-    <link href='/css/landing.css' media='screen' rel='stylesheet' type='text/css' />
+    <link href='/css/common.css' media='screen' rel='stylesheet' type='text/css'>
+    <link href='/css/landing.css' media='screen' rel='stylesheet' type='text/css'>
     <!-- %link{ :href => "/css/bootstrap-verticaltabs.css", :media => "screen", :rel => "stylesheet", :type => "text/css" } -->
     <script data-main='js/bkeeping/landing' src='/js/lib/require.js'></script>
     <!-- :css -->
@@ -52,62 +52,60 @@
     <!--     $( "#tabs" ).tabs().addClass( "ui-tabs-vertical ui-helper-clearfix" ); -->
     <!--     $( "#tabs li" ).removeClass( "ui-corner-top" ).addClass( "ui-corner-left" ); -->
     <!--   }); -->
-    <script type='text/javascript'>
-      //<![CDATA[
-        $(document).ready(function() {
-        
-          /***
-           * a GLOBAL namespace
-           */
-          global = {};
-          global.CURRENT_ENTRY_PANE = "#entries";
-          global.timerEntry = -1;
-        
-          /***
-           * Adjust Entry panes based on right width
-           ***/
-          adjustEntryPanes = function() {
-        
-            $('#entries, #entry, #entry-part')
-              .css('width', ( $('#right-wrapper').width() - $('#left-col').width() ) + "px");
-        
-            var rightWidth = $(".bkell-container").width() - $("#left-col").width();
-            $("#right-col").css("width", rightWidth);
-          };
-        
-        
-          var scrollFn = function() {
-            $('#right-wrapper').scrollTo($(global.CURRENT_ENTRY_PANE), 500, { axis:'x' });
-          }
-        
-          /***
-           * Bootstrap pane sizes
-           ***/
-          $(window).resize(function() {
-        
-            //console.log("resizing window > args ["+ arguments +"]")
-            adjustEntryPanes();
-        
-            clearTimeout(global.timerEntry);
-            global.timerEntry = setTimeout(scrollFn, 500);
-        
-          });
-        
+    <script>
+      $(document).ready(function() {
+      
+        /***
+         * a GLOBAL namespace
+         */
+        global = {};
+        global.CURRENT_ENTRY_PANE = "#entries";
+        global.timerEntry = -1;
+      
+        /***
+         * Adjust Entry panes based on right width
+         ***/
+        adjustEntryPanes = function() {
+      
+          $('#entries, #entry, #entry-part')
+            .css('width', ( $('#right-wrapper').width() - $('#left-col').width() ) + "px");
+      
+          var rightWidth = $(".bkell-container").width() - $("#left-col").width();
+          $("#right-col").css("width", rightWidth);
+        };
+      
+      
+        var scrollFn = function() {
+          $('#right-wrapper').scrollTo($(global.CURRENT_ENTRY_PANE), 500, { axis:'x' });
+        }
+      
+        /***
+         * Bootstrap pane sizes
+         ***/
+        $(window).resize(function() {
+      
+          //console.log("resizing window > args ["+ arguments +"]")
           adjustEntryPanes();
-        
-          $("#logout-button").click(function() {
-        
-            window.location = "/logout";
-          });
-        
-          $("#mainTab a").click(function(e){e.preventDefault(); $(this).tab('show');})
-        
-          $("#paywallTab a").click(function(e){e.preventDefault(); $(this).tab('show');})
-        
-          (function() { $("#country , #currency").select2(); })();
-        
-        })
-      //]]>
+      
+          clearTimeout(global.timerEntry);
+          global.timerEntry = setTimeout(scrollFn, 500);
+      
+        });
+      
+        adjustEntryPanes();
+      
+        $("#logout-button").click(function() {
+      
+          window.location = "/logout";
+        });
+      
+        $("#mainTab a").click(function(e){e.preventDefault(); $(this).tab('show');})
+      
+        $("#paywallTab a").click(function(e){e.preventDefault(); $(this).tab('show');})
+      
+        (function() { $("#country , #currency").select2(); })();
+      
+      })
     </script>
   </head>
   <body>
@@ -150,10 +148,8 @@
             <a data-toggle='tab' href='#profile'>Profile</a>
           </li>
         </ul>
-        <script type='text/javascript'>
-          //<![CDATA[
-            $("#mainTab a").click(function(e){e.preventDefault(); $(this).tab('show');});
-          //]]>
+        <script>
+          $("#mainTab a").click(function(e){e.preventDefault(); $(this).tab('show');});
         </script>
         <div class='tab-content'>
           <div class='tab-pane' id='books'>
@@ -193,25 +189,25 @@
                     <div class='control-group'>
                       <label class='control-label'>First Name</label>
                       <div class='controls'>
-                        <input class='span2' placeholder='First Name' type='text' />
+                        <input class='span2' placeholder='First Name' type='text'>
                       </div>
                     </div>
                     <div class='control-group'>
                       <label class='control-label'>Last Name</label>
                       <div class='controls'>
-                        <input class='span2' placeholder='Last Name' type='text' />
+                        <input class='span2' placeholder='Last Name' type='text'>
                       </div>
                     </div>
                     <div class='control-group'>
                       <label class='control-label'>Email</label>
                       <div class='controls'>
-                        <input class='span2' placeholder='Email' type='email' />
+                        <input class='span2' placeholder='Email' type='email'>
                       </div>
                     </div>
                     <div class='control-group'>
                       <label class='control-label'>Company</label>
                       <div class='controls'>
-                        <input class='span2' placeholder='Company' type='text' />
+                        <input class='span2' placeholder='Company' type='text'>
                       </div>
                     </div>
                     <div class='control-group'>
@@ -268,10 +264,8 @@
                       <a data-toggle='tab' href='#enterprise'>Enterprise ($50)</a>
                     </li>
                   </ul>
-                  <script type='text/javascript'>
-                    //<![CDATA[
-                      $("#paywallTab a").click(function(e){e.preventDefault(); $(this).tab('show');});
-                    //]]>
+                  <script>
+                    $("#paywallTab a").click(function(e){e.preventDefault(); $(this).tab('show');});
                   </script>
                   <div class='tab-content'>
                     <div class='tab-pane active' id='trial'>
@@ -292,7 +286,7 @@
                           <div class='control-group'>
                             <label class='control-label'>Card Number</label>
                             <div class='controls'>
-                              <input placeholder='Card Number' type='text' />
+                              <input placeholder='Card Number' type='text'>
                             </div>
                           </div>
                         </div>
