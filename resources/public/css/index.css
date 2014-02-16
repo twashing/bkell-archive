@@ -79,6 +79,7 @@ footer {
 
 .main-message {
   max-width: 50%;
+  font-size: large;
 }
 .motto-left , .motto-right {
   float: left;
