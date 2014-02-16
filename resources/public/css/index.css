@@ -90,6 +90,26 @@ footer {
   color: #007821;
 }
 
+
+.footer-company:link {    /* unvisited link */
+  color: white;
+  text-decoration: none;
+}
+.footer-company:visited { /* visited link */
+  color: white;
+  text-decoration: none;
+}
+.footer-company:hover {   /* mouse over link */
+  color: white;
+  text-decoration: underline;
+}
+.footer-company:active {  /* selected link */
+  color: white;
+  text-decoration: none;
+}
+
+
+
 /* ==========================================================================
    Media Queries
    ========================================================================== */
