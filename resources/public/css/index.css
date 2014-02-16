@@ -46,6 +46,7 @@ footer {
     align-self: stretch;
     color: white;
     background-color: black;
+    height: 30px;
 }
 
 .center-container {
@@ -92,6 +93,9 @@ footer {
 }
 
 
+.footer-main-text {
+  font-size: small;
+}
 .footer-company:link {    /* unvisited link */
   color: white;
   text-decoration: none;
