@@ -3,11 +3,11 @@
    Author: Jonathan Verrecchia - verekia.com/initializr/responsive-template
    ========================================================================== */
 
+html { height: 100%; }
 body {
     font: 16px/26px Helvetica, Helvetica Neue, Arial;
     display: flex;
-    /*min-height: 100vh;*/
-    height: 100vh;
+    height: 100%;
     flex-direction: column;
 }
 
@@ -21,12 +21,13 @@ body {
 */
 
 header {
-    order: 0;
+    /*order: 0;
     -webkit-box-flex: 0;
     -moz-box-flex: 0;
     -webkit-flex: 0 1 auto;
     -ms-flex: 0 1 auto;
     flex: 0 1 auto;
+    */
     -webkit-align-self: stretch;
     -ms-flex-item-align: stretch;
     align-self: stretch;
@@ -34,25 +35,27 @@ header {
     background-color: #FFC700;
 }
 
-section {
-    order: 0;
+main {
+    /*order: 0;
     -webkit-box-flex: 0;
     -moz-box-flex: 0;
     -webkit-flex: 0 1 auto;
     -ms-flex: 0 1 auto;
-    flex: 1;
+    */
     -webkit-align-self: stretch;
     -ms-flex-item-align: stretch;
     align-self: stretch;
+    flex: 1;
     background-color: #FFE073;
 }
 
 footer {
-    order: 0;
+    /*order: 0;
     -webkit-box-flex: 0;
     -moz-box-flex: 0;
     -webkit-flex: 0 1 auto;
     -ms-flex: 0 1 auto;
+    */
     -webkit-align-self: stretch;
     -ms-flex-item-align: stretch;
     align-self: stretch;
