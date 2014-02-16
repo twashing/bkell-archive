@@ -32,7 +32,7 @@ header {
     -ms-flex-item-align: stretch;
     align-self: stretch;
     height: 60px;
-    background-color: #FFC700;
+    background-color: #EEE;
 }
 
 main {
@@ -46,7 +46,6 @@ main {
     -ms-flex-item-align: stretch;
     align-self: stretch;
     flex: 1;
-    background-color: #FFE073;
 }
 
 footer {
@@ -59,7 +58,8 @@ footer {
     -webkit-align-self: stretch;
     -ms-flex-item-align: stretch;
     align-self: stretch;
-    background-color: #A68100;
+    color: white;
+    background-color: black;
 }
 
 
