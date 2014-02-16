@@ -67,8 +67,27 @@ footer {
   justify-content: flex-start;
   padding: 0 20px;
 }
+
+.header-main-title {
+  font-size: xx-large;
+}
+.header-sub-title {
+  font-size: medium;
+  margin: 10px 0 0 20px;
+  color: #999;
+}
+
 .main-message {
   max-width: 50%;
+}
+.motto-left , .motto-right {
+  float: left;
+}
+.motto-left {
+  color: #132abf;
+}
+.motto-right {
+  color: #007821;
 }
 
 /* ==========================================================================
