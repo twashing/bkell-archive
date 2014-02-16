@@ -6,18 +6,19 @@
 body {
     font: 16px/26px Helvetica, Helvetica Neue, Arial;
     display: flex;
-    min-height: 100vh;
+    /*min-height: 100vh;*/
+    height: 100vh;
     flex-direction: column;
 }
 
 
-.flex-container {
+/*.flex-container {
   border: 1px red solid;
 }
 .flex-item {
   border: 1px black solid;
 }
-
+*/
 
 header {
     order: 0;
@@ -29,6 +30,8 @@ header {
     -webkit-align-self: stretch;
     -ms-flex-item-align: stretch;
     align-self: stretch;
+    height: 60px;
+    background-color: #FFC700;
 }
 
 section {
@@ -41,6 +44,7 @@ section {
     -webkit-align-self: stretch;
     -ms-flex-item-align: stretch;
     align-self: stretch;
+    background-color: #FFE073;
 }
 
 footer {
@@ -52,6 +56,7 @@ footer {
     -webkit-align-self: stretch;
     -ms-flex-item-align: stretch;
     align-self: stretch;
+    background-color: #A68100;
 }
 
 
