@@ -3,9 +3,14 @@
    Author: Jonathan Verrecchia - verekia.com/initializr/responsive-template
    ========================================================================== */
 
+@import url(http://fonts.googleapis.com/css?family=Gentium+Book+Basic:700italic);
+
 html { height: 100%; }
 body {
-    font: 16px/26px Helvetica, Helvetica Neue, Arial;
+    /* font: 16px/26px Helvetica, Helvetica Neue, Arial;
+    */
+    font-style: italic;
+    font-family: "Gentium Book Basic", serif;
     display: flex;
     height: 100%;
     flex-direction: column;
