@@ -1,6 +1,4 @@
 
-(at-import "url(http://fonts.googleapis.com/css?family=Gentium+Book+Basic:700italic);")
-
 [:html { :height "100%" }
   [:h1 :h2 [:a {:text-decoration "none" :color "green"}]]
 ]

@@ -8,6 +8,10 @@
   :ring {:handler bkell.handler/app}
 
   :resources-path "resources/public"
+
+  :plugins [[hiccup-watch "0.1.1"]
+            [garden-watch "0.1.1"]
+            ]
   :profiles
   {:dev {:dependencies [[javax.servlet/servlet-api "2.5"]
                         [ring-mock "0.1.5"]

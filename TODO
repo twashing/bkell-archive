@@ -1,2 +1,3 @@
 -- perfect left-justified navigation on this site: http://www.neilmarion.com/
-
+-- play around with auto-compile; in leiu of, use: 
+lein hicv 2html resources/templ/documents/one.edn && cp resources/templ/documents/one.html resources/public/
