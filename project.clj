@@ -16,6 +16,8 @@
                   [clj-http "0.4.1"]
                   [org.clojure/core.match "0.2.0-alpha9"]
                   [enlive "1.0.0"]
+                  [lib-noir "0.8.0"]
+                  [org.clojars.hozumi/session-expiry "1.0.0-SNAPSHOT"]
                   ;;[com.cemerick/drawbridge "0.0.6"]
                   ;;[ring/ring-core "1.1.1"]
                   ;;[swank-clojure "1.4.2"]
