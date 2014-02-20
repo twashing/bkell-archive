@@ -1,0 +1,1 @@
+{ "indexes" : [ { "v" : 1, "key" : { "_id" : 1 }, "ns" : "heroku_app2227080.objectlabs-system.admin.collections", "name" : "_id_" } ] }

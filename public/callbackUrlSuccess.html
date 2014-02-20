@@ -1,0 +1,13 @@
+<html lang='en'>
+  <head>
+    <meta charset='utf-8'>
+    <script src='https://ajax.googleapis.com/jsapi' type='text/javascript'></script>
+    <script>
+      google.load("identitytoolkit", "1.0", {packages: ["notify"]});
+    </script>
+    <script>
+      window.google.identitytoolkit.notifyFederatedSuccess({ "email": "name@email.com", "registered": true });
+      // use window.google.identitytoolkit.notifyFederatedError(); in case of error
+    </script>
+  </head>
+</html>
