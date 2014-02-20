@@ -1,0 +1,42 @@
+!!!5
+/[if lt IE 7]     <html class="no-js lt-ie9 lt-ie8 lt-ie7">
+/[if IE 7]        <html class="no-js lt-ie9 lt-ie8">
+/[if IE 8]        <html class="no-js lt-ie9">
+/[if gt IE 8]     <html class="no-js">
+%html{ :lang => "en" }
+  %head
+    %meta{ :charset => "utf-8" }
+    %meta{ 'http-equiv' => "X-UA-Compatible", :content => "IE=edge,chrome=1" } 
+    %title 
+      Bkeeping.com: Simple Online Bookkeeping
+    %meta{ :name => "description", :content => "" } 
+    %meta{ :name => "viewport", :content => "width=device-width" } 
+
+    %link{ :rel => "stylesheet", :href => "css/normalize.min.css" } 
+    %link{ :rel => "stylesheet", :href => "css/baseline.css" } 
+    %link{ :rel => "stylesheet", :href => "css/index.css" } 
+
+    %script{ :src => "/js/vendor/modernizr-2.6.2-respond-1.1.0.min.js" } 
+  
+  %body.flex-container.flex-container-style.fixed-height
+
+    /[if lt IE 7]
+      <p class="chromeframe">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> or <a href="http://www.google.com/chromeframe/?redirect=true">activate Google Chrome Frame</a> to improve your experience.</p>
+
+    %header.flex-item.center-container.header-container
+      .header-main-title
+        bkeeping
+      .header-sub-title
+        Your solution to simple online bookkeeping
+
+    %main.flex-item.center-container
+      .main-message
+        .motto-left
+          The fastest and easiest way to
+        .motto-right
+          &nbsp;manage your bookkeeping
+
+    %footer.flex-item.center-container.footer-container
+      .footer-main-text
+        %a.footer-company{ :href => "http://interruptsoftware.com" } 
+          Interrupt Software Inc.
