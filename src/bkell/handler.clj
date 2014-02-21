@@ -103,6 +103,10 @@
       (-> (ring-resp/response (goindex))
           (ring-resp/content-type "text/html")))
 
+ (GET "/landing" [:as request]
+      (-> (ring-resp/response "<html>Landing Page</html>")
+          (ring-resp/content-type "text/html")))
+
  (GET "/signedUploadParams" []
 
       (let  [policy-doc "{ 'expiration': '2015-12-01T12:00:00.000Z' ,
@@ -132,24 +136,27 @@
 
  ;; ======
  ;; ACCOUNT CHOOSER (GITkit) URL handlers
- (GET "/callbackGitkit" [:as request]
+ #_(GET "/callbackGitkit" [:as request]
       (println (<< "/callbackGitkit HANDLER [GET]: ~{request}"))
-      (response/render [:post "/callbackGitkit"] {:request request}))
+      (response/render [:post "/callbackGitkit"] {:request request} nil))
 
- (POST "/callbackGitkit" [ :as request & etal]
+ ;;(POST "/callbackGitkit" [:as request & etal]
+ (GET "/callbackGitkit" [:as request & etal]
 
        (println (<< "/callbackGitkit HANDLER [POST]: request[~{request}]) > etal[~{etal}]"))
        (let  [req (merge (:form-params request) (:query-params request))
               cb-resp (callbackHandlerCommon "POST" req)
               ;;ru (getk/get-user (:verifiedEmail cb-resp))
-              templ (enlive/html-resource "include/callbackUrlSuccess.html")]
+              ;;templ (enlive/html-resource "include/callbackUrlSuccess.html")
+              templ (enlive/html-resource "landing.html")]
 
-         (let  [;;rsetup (hutils/adduser-ifnil ru cb-resp)
+          templ
+         #_(let  [;;rsetup (hutils/adduser-ifnil ru cb-resp)
                 ;;rresp (:cb-resp rsetup)
                 ]
 
            ;; Log the user in; session should die after some inactivity
-           #_(let [logu (if (nil? (:new-user rsetup)) ru (:new-user rsetup))
+           (let [logu (if (nil? (:new-user rsetup)) ru (:new-user rsetup))
                  ]
 
              (authenticatek/login-user (merge logu { :current ::authentication}))
