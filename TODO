@@ -3,4 +3,9 @@
 lein hicv 2html resources/templ/documents/one.edn && cp resources/templ/documents/one.html resources/public/
 
 -- programatically set a div as upload zone
-dz = new Dropzone("div.motto-left", {url: "https://bkeeping.s3.amazonaws.com", clickable: true})
+  dz = new Dropzone("div.motto-left", {url: "https://bkeeping.s3.amazonaws.com", clickable: true})
+
+-- basic and multi-file upload is working; next fix
+  - button / dropzone UI 
+  - upload progress messages
+  - notify server of success: file-id, etc
