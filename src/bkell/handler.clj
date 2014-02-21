@@ -18,6 +18,51 @@
             [clojure.contrib.string :as cstring]
             [bkell.handler-utils :as hutils]))
 
+(defn goindex []
+  (let  [templ (enlive/html-resource "index.html")
+         ;;mode (:mode @bkell/shell)
+         host-url "172.16.210.128" ;;(-> mode (@bkell/shell) :host-url)
+         host-port "8080" ;;(-> mode (@bkell/shell) :host-port)
+         developer-key "AIzaSyDc7_lGZsmbtdOUpprPClKBOxXCQ6LztRE" ;;(-> mode (@bkell/shell) :developer-key)
+
+         ;;ruri (str (hutils/generate-host-address host-url (if (= mode :dev) host-port nil)) "/callbackGitkit") ;; conditionally assign the host-port
+         ruri (str (hutils/generate-host-address host-url host-port) "/callbackGitkit") ;; conditionally assign the host-port
+         ]
+
+    (apply str (enlive/emit*  (enlive/transform
+                               templ
+                               [[:script (enlive/nth-of-type 11)]]  ;; get the 3rd script tag
+                               (enlive/content
+                                (str
+                                 "
+    //<![CDATA[
+      function load() {
+        google.load('identitytoolkit', '1.0', {packages: ['ac'], callback: callback});
+      }
+      function callback() {
+        window.google.identitytoolkit.setConfig({
+
+          developerKey: '"developer-key"',
+          companyName: 'Interrupt Software Inc.',
+          callbackUrl: '" ruri "',
+
+          userStatusUrl: '/userStatusUrl', // these can just be partial paths
+          loginUrl: '/loginUrl',
+          signupUrl: '/register',
+          homeUrl: '/landing',
+          logoutUrl: '/logout',
+
+          realm: "", // optional
+          language: 'en',
+          idps: ['Gmail', 'AOL', 'Hotmail', 'Yahoo'],
+          tryFederatedFirst: true,
+          useCachedUserStatus: false
+        });
+        $('#login-control').accountChooser()
+      }
+    //]]>
+                                    ")))))))
+
 (defn callbackHandlerCommon [method request]
 
   ;; needs to call 'verifyAssertion' to parse response - should return a { :user :map }
@@ -32,7 +77,9 @@
 
         _ (println (str "ruri:[" ruri "]"))
 
-        final-url (str "https://www.googleapis.com/identitytoolkit/v1/relyingparty/verifyAssertion?key=" developer-key)
+        final-url (str
+                   "https://www.googleapis.com/identitytoolkit/v1/relyingparty/verifyAssertion?key="
+                   developer-key)
         final-body (str "{'requestUri':'" ruri "','postBody':'" pbody "'}")
 
         _ (println (str "final-url:[" final-url "]"))
@@ -51,7 +98,7 @@
 (defroutes app-routes
 
  (GET "/" []
-      (-> (ring-resp/response (slurp (io/resource "public/index.html")))
+      (-> (ring-resp/response (goindex))
           (ring-resp/content-type "text/html")))
 
  (GET "/signedUploadParams" []
@@ -116,8 +163,7 @@
                                          [[ :script (enlive/nth-of-type 3)]]  ;; get the 3rd script tag
                                          (enlive/content (str "window.google.identitytoolkit.notifyFederatedSuccess(" notify-input-str ");")))))))))
 
-
- (route/resources "/")
+ (route/resources "/" {:root "resources/public/"})
  (route/not-found "Not Found"))
 
 

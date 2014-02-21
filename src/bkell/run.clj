@@ -1,5 +1,6 @@
 (ns bkell.run
-  (:require [ring.adapter.jetty :refer :all]))
+  (:require [ring.adapter.jetty :refer :all]
+            [bkell.handler]))
 
 (defn run []
   (defonce server

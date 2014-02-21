@@ -12,7 +12,7 @@
 
   :ring {:handler bkell.handler/app}
 
-  :resources-path "resources/public"
+  :resource-paths ["." "resources/public"]
   :source-paths ["src/" "resources/templ/clojurescript/"]
 
   :plugins [[lein-cljsbuild "1.0.2"]
@@ -29,7 +29,8 @@
                                    :optimizations :whitespace
                                    :pretty-print true}}]}
 
-  :profiles {:dev {:dependencies [[javax.servlet/servlet-api "2.5"]
+  :profiles {:dev {:resource-paths ["." "resources/public"]
+                   :dependencies [[javax.servlet/servlet-api "2.5"]
                                   [ring-mock "0.1.5"]
 
                                   [ring/ring-jetty-adapter "1.2.1"]
