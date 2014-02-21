@@ -19,6 +19,35 @@
     /%script{ :src => "js/vendor/modernizr-2.6.2-respond-1.1.0.min.js", :type => "text/javascript" }
     %script{ :src => "js/vendor/dropzone.js", :type => "text/javascript" }
 
+    %script{ :src => "https://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js" }
+    %script{ :src => "https://ajax.googleapis.com/ajax/libs/jqueryui/1.8.2/jquery-ui.min.js" }
+    %script{ :src => "https://ajax.googleapis.com/jsapi", :type => "text/javascript" }
+    %script{ :type => "text/javascript" }
+    :javascript
+      function load() {
+        google.load("identitytoolkit", "1.0", {packages: ["ac"], callback: callback});
+      }
+      function callback() {
+        window.google.identitytoolkit.setConfig({
+          developerKey: "{your developer key}",
+          companyName: "Your company",
+          callbackUrl: "https://yoursite.com/callback", // must be a full URL
+          userStatusUrl: "/userStatus", // these can just be partial paths
+          loginUrl: "/login",
+          signupUrl: "/signup",
+          homeUrl: "/home",
+          logoutUrl: "/logout",
+          realm: "", // optional
+          language: "en",
+          idps: ["Gmail", "AOL", "Hotmail", "Yahoo"],
+          tryFederatedFirst: true,
+          useCachedUserStatus: false
+        });
+        $("#login-control").accountChooser()
+      }
+
+    %script{ :type => "text/javascript", :src => "https://apis.google.com/js/client.js?onload=load" }
+
   %body.flex-container.flex-container-style.fixed-height
 
     /[if lt IE 7]
@@ -29,6 +58,7 @@
         bkeeping
       .header-sub-title
         Your solution to simple online bookkeeping
+      #login-control
 
     %main.flex-item.center-container
       .main-message
