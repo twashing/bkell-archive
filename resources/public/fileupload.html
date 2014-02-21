@@ -1,0 +1,83 @@
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <title>Browser-connected REPL</title>
+
+    <script src="js/vendor/dropzone.js" type="text/javascript"></script>
+    <script>
+
+      window.onload = function load() {
+
+        //
+        dz = new Dropzone("div#upload-button", {url: "https://bkeeping.s3.amazonaws.com", clickable: true})
+
+        //
+        var xhReq = new XMLHttpRequest();
+        xhReq.open("GET", "/signedUploadParams", false);
+        xhReq.send(null);
+        var serverResponse = xhReq.responseText;
+
+        var jsonResponse = JSON.parse(serverResponse)
+        console.log(jsonResponse);
+
+        /*form = $("#fileupload")
+
+        addFn = function(event, jqfuData) {
+
+          console.log("addFn > event["+ event +"] > jqfuData["+ jqfuData +"]")
+
+          request = $.ajax({
+            url: "/signedUploadParams",
+            dataType: "json",
+            async:    false
+          })
+          request.done(function(awsData) {
+
+            form.find("input[name=bucket]").val(awsData.bucket)
+            form.find("input[name=key]").val(awsData.key)
+            form.find("input[name=AWSAccessKeyId]").val(awsData.AWSAccessKeyId)
+            form.find("input[name=acl]").val(awsData.acl)
+            form.find("input[name=policy]").val(awsData.policy)
+            form.find("input[name=signature]").val(awsData.signature)
+          })
+
+          jqfuData.submit()
+        }
+
+        result = form.fileupload({
+          autoupload: true,
+          add: addFn,
+          send: sendFn,
+          done: doneFn,
+          fail: failFn,
+          progress: progressFn
+        })
+        */
+      }
+
+    </script>
+  </head>
+  <body>
+
+    <div id="upload-button" style="width:50px; height:20px; background-color:grey;"/>
+    <!--
+    <div>
+      <script type="text/javascript" src="javascript/main.js"></script>
+      <script type="text/javascript">
+        goog.require('foo');
+      </script>
+    </div>
+
+    <form action='https://bkeeping.s3.amazonaws.com' enctype='multipart/form-data' id='fileupload' method='POST'>
+
+      <input id='bucket' name='bucket' type='hidden' />
+      <input id='key' name='key' type='hidden' />
+      <input id='AWSAccessKeyId' name='AWSAccessKeyId' type='hidden' />
+      <input id='acl' name='acl' type='hidden' />
+      <input id='policy' name='policy' type='hidden' />
+      <input id='signature' name='signature' type='hidden' />
+      <input accept='application/vnd.ms-powerpoint, application/vnd.openxmlformats-officedocument.presentationml.presentation, application/pdf, image/png, image/jpg, image/jpeg, video/quicktime, video/mpeg, video/mp4, video/divx, video/mkv, video/x-matroska, video/avi, video/wmv, audio/ogg, audio/m4a, audio/mp3, audio/wav, audio/wma' id='dialog-asset-upload' multiple='multiple' name='file' type='file' />
+    </form>
+    -->
+  </body>
+</html>
