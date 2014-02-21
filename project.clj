@@ -4,9 +4,11 @@
   :dependencies [[org.clojure/clojure "1.5.1"]
                  [org.clojure/clojurescript "0.0-2173"]
                  [org.clojure/clojure-contrib "1.2.0"]
-
+                 [org.clojure/core.incubator "0.1.3"]
                  [org.clojure/data.codec "0.1.0"]
-                 [compojure "1.1.6"]]
+                 [compojure "1.1.6"]
+                 [enlive "1.1.5"]
+                 [clj-http "0.7.9"]]
 
   :ring {:handler bkell.handler/app}
 

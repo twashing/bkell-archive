@@ -1,15 +1,51 @@
 (ns bkell.handler
+
   (:import  (javax.crypto Mac)
             (javax.crypto.spec SecretKeySpec))
-  (:use compojure.core)
-  (:require [compojure.handler :as handler]
+
+  (:require [compojure.core :refer :all]
+            [clojure.core.strint :refer :all]
+            [compojure.handler :as handler]
             [compojure.route :as route]
+            [compojure.response :as response]
             [clojure.java.io :as io]
             [ring.util.response :as ring-resp]
+            [clj-http.client :as client]
 
+            [net.cgrand.enlive-html :as enlive]
             [clojure.data.json :as json]
             [clojure.data.codec.base64 :as b64]
-            [clojure.contrib.string :as cstring]))
+            [clojure.contrib.string :as cstring]
+            [bkell.handler-utils :as hutils]))
+
+(defn callbackHandlerCommon [method request]
+
+  ;; needs to call 'verifyAssertion' to parse response - should return a { :user :map }
+  (let [;;mode (:mode @bkell/shell)
+        host-url "172.16.210.128" ;;(-> mode (@bkell/shell) :host-url)
+        host-port "8080" ;;(-> mode (@bkell/shell) :host-port)
+        developer-key "AIzaSyDc7_lGZsmbtdOUpprPClKBOxXCQ6LztRE" ;;(-> mode (@bkell/shell) :developer-key)
+        ;;ruri (str (hutils/generate-host-address host-url (if (= mode :dev) host-port nil)) "/callbackGitkit")
+        ruri (str (hutils/generate-host-address host-url host-port) "/callbackGitkit")
+
+        pbody (hutils/encode-params request)
+
+        _ (println (str "ruri:[" ruri "]"))
+
+        final-url (str "https://www.googleapis.com/identitytoolkit/v1/relyingparty/verifyAssertion?key=" developer-key)
+        final-body (str "{'requestUri':'" ruri "','postBody':'" pbody "'}")
+
+        _ (println (str "final-url:[" final-url "]"))
+        _ (println (str "final-body:[" final-body "]"))
+
+        verify-resp (client/post
+                     final-url
+                     {:body final-body
+                      :content-type :json})
+
+        _ (println (str "verify-resp: " verify-resp))]
+
+    (-> verify-resp :body clojure.data.json/read-json (merge { :exists false}))))
 
 
 (defroutes app-routes
@@ -43,6 +79,43 @@
                         :acl "public-read"
                         :policy policy
                         :signature signature})))
+
+
+ ;; ======
+ ;; ACCOUNT CHOOSER (GITkit) URL handlers
+ (GET "/callbackGitkit" [:as request]
+      (println (<< "/callbackGitkit HANDLER [GET]: ~{request}"))
+      (response/render [:post "/callbackGitkit"] {:request request}))
+
+ (POST "/callbackGitkit" [ :as request & etal]
+
+       (println (<< "/callbackGitkit HANDLER [POST]: request[~{request}]) > etal[~{etal}]"))
+       (let  [req (merge (:form-params request) (:query-params request))
+              cb-resp (callbackHandlerCommon "POST" req)
+              ;;ru (getk/get-user (:verifiedEmail cb-resp))
+              templ (enlive/html-resource "include/callbackUrlSuccess.html")]
+
+         (let  [;;rsetup (hutils/adduser-ifnil ru cb-resp)
+                ;;rresp (:cb-resp rsetup)
+                ]
+
+           ;; Log the user in; session should die after some inactivity
+           #_(let [logu (if (nil? (:new-user rsetup)) ru (:new-user rsetup))
+                 ]
+
+             (authenticatek/login-user (merge logu { :current ::authentication}))
+             ;;(session/clear!)
+             ;;(session/put! :current-user (merge logu { :current ::authentication }))
+             )
+
+           (let  [;;notify-input { :email (:verifiedEmail rresp) :registered (-> rresp :exists str) }
+                  notify-input { :email "twashing@gmail.com" :registered "true" }
+                  notify-input-str (clojure.data.json/json-str notify-input)]
+             (apply str  (enlive/emit*  (enlive/transform
+                                         templ
+                                         [[ :script (enlive/nth-of-type 3)]]  ;; get the 3rd script tag
+                                         (enlive/content (str "window.google.identitytoolkit.notifyFederatedSuccess(" notify-input-str ");")))))))))
+
 
  (route/resources "/")
  (route/not-found "Not Found"))
