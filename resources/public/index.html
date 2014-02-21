@@ -20,8 +20,8 @@
     <script src='https://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js'></script>
     <script src='https://ajax.googleapis.com/ajax/libs/jqueryui/1.8.2/jquery-ui.min.js'></script>
     <script src='https://ajax.googleapis.com/jsapi'></script>
-    <script type='text/javascript'></script>
     <script>
+      //<![CDATA[
       function load() {
         google.load("identitytoolkit", "1.0", {packages: ["ac"], callback: callback});
       }
@@ -38,7 +38,7 @@
           homeUrl: "/landing",
           logoutUrl: "/logout",
       
-          realm: "", // optional
+          realm: '', // optional
           language: "en",
           idps: ["Gmail", "AOL", "Hotmail", "Yahoo"],
           tryFederatedFirst: true,
@@ -46,6 +46,7 @@
         });
         $("#login-control").accountChooser()
       }
+      //]]>
     </script>
     <script src='https://apis.google.com/js/client.js?onload=load' type='text/javascript'></script>
   </head>

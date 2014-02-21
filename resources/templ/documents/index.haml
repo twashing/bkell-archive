@@ -22,9 +22,9 @@
     %script{ :src => "https://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js" }
     %script{ :src => "https://ajax.googleapis.com/ajax/libs/jqueryui/1.8.2/jquery-ui.min.js" }
     %script{ :src => "https://ajax.googleapis.com/jsapi" }
-    %script{ :type => "text/javascript" }
     :javascript
 
+      //<![CDATA[
       function load() {
         google.load("identitytoolkit", "1.0", {packages: ["ac"], callback: callback});
       }
@@ -41,7 +41,7 @@
           homeUrl: "/landing",
           logoutUrl: "/logout",
 
-          realm: "", // optional
+          realm: '', // optional
           language: "en",
           idps: ["Gmail", "AOL", "Hotmail", "Yahoo"],
           tryFederatedFirst: true,
@@ -49,7 +49,7 @@
         });
         $("#login-control").accountChooser()
       }
-
+      //]]>
     %script{ :type => "text/javascript", :src => "https://apis.google.com/js/client.js?onload=load" }
 
   %body.flex-container.flex-container-style.fixed-height

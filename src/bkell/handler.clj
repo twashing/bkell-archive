@@ -26,12 +26,14 @@
          developer-key "AIzaSyDc7_lGZsmbtdOUpprPClKBOxXCQ6LztRE" ;;(-> mode (@bkell/shell) :developer-key)
 
          ;;ruri (str (hutils/generate-host-address host-url (if (= mode :dev) host-port nil)) "/callbackGitkit") ;; conditionally assign the host-port
-         ruri (str (hutils/generate-host-address host-url host-port) "/callbackGitkit") ;; conditionally assign the host-port
+         ruri (str
+               (hutils/generate-host-address host-url host-port)
+               "/callbackGitkit") ;; conditionally assign the host-port
          ]
 
     (apply str (enlive/emit*  (enlive/transform
                                templ
-                               [[:script (enlive/nth-of-type 11)]]  ;; get the 3rd script tag
+                               [[:script (enlive/nth-of-type 6)]]
                                (enlive/content
                                 (str
                                  "
@@ -52,7 +54,7 @@
           homeUrl: '/landing',
           logoutUrl: '/logout',
 
-          realm: "", // optional
+          realm: '', // optional
           language: 'en',
           idps: ['Gmail', 'AOL', 'Hotmail', 'Yahoo'],
           tryFederatedFirst: true,
