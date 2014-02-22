@@ -147,17 +147,15 @@
        (let  [req (merge (:form-params request) (:query-params request))
               cb-resp (callbackHandlerCommon "POST" req)
               ;;ru (getk/get-user (:verifiedEmail cb-resp))
-              ;;templ (enlive/html-resource "include/callbackUrlSuccess.html")
-              templ (enlive/html-resource "landing.html")]
+              templ (enlive/html-resource "include/callbackUrlSuccess.html")
+              ]
 
-          templ
-         #_(let  [;;rsetup (hutils/adduser-ifnil ru cb-resp)
+         (let  [;;rsetup (hutils/adduser-ifnil ru cb-resp)
                 ;;rresp (:cb-resp rsetup)
                 ]
 
            ;; Log the user in; session should die after some inactivity
-           (let [logu (if (nil? (:new-user rsetup)) ru (:new-user rsetup))
-                 ]
+           #_(let [logu (if (nil? (:new-user rsetup)) ru (:new-user rsetup))]
 
              (authenticatek/login-user (merge logu { :current ::authentication}))
              ;;(session/clear!)
@@ -169,7 +167,7 @@
                   notify-input-str (clojure.data.json/json-str notify-input)]
              (apply str  (enlive/emit*  (enlive/transform
                                          templ
-                                         [[ :script (enlive/nth-of-type 3)]]  ;; get the 3rd script tag
+                                         [[:script (enlive/nth-of-type 3)]]  ;; get the 3rd script tag
                                          (enlive/content (str "window.google.identitytoolkit.notifyFederatedSuccess(" notify-input-str ");")))))))))
 
  (route/resources "/" {:root "resources/public/"})
