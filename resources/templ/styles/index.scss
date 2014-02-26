@@ -4,7 +4,7 @@
 
 @import url(http://fonts.googleapis.com/css?family=Gentium+Book+Basic:700italic);
 
-html { 
+html {
 
   height: 100%;
 
@@ -28,11 +28,25 @@ html {
 */
 
 header {
-    -webkit-align-self: stretch;
-    -ms-flex-item-align: stretch;
-    align-self: stretch;
-    height: 60px;
-    background-color: #EEE;
+
+  -webkit-align-self: stretch;
+  -ms-flex-item-align: stretch;
+  align-self: stretch;
+  height: 60px;
+  background-color: #EEE;
+
+  #login-container {
+
+    flex: 2;
+    display: flex;
+    direction: rtl;
+
+    #login-control {
+
+      display: flex;
+      direction: ltr;
+    }
+  }
 }
 
 main {
@@ -132,4 +146,3 @@ footer {
 @media only screen and (min-width: 1140px) {
 
 }
-

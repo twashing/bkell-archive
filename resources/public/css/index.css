@@ -24,6 +24,13 @@ header {
   align-self: stretch;
   height: 60px;
   background-color: #EEE; }
+  header #login-container {
+    flex: 2;
+    display: flex;
+    direction: rtl; }
+    header #login-container #login-control {
+      display: flex;
+      direction: ltr; }
 
 main {
   -webkit-align-self: stretch;
