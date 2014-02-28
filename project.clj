@@ -6,7 +6,8 @@
                  [org.clojure/clojure-contrib "1.2.0"]
 
                  [org.clojure/data.codec "0.1.0"]
-                 [compojure "1.1.6"]]
+                 [compojure "1.1.6"]
+                 [com.datomic/datomic-pro "0.9.4572"]]
 
   :ring {:handler bkell.handler/app}
 
