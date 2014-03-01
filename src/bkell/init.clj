@@ -1,6 +1,8 @@
 (ns bkell.init
   (:require [datomic.api :only [q db] :as d]
-            [bkell.spittoon :as spittoon]))
+            [bkell.spittoon :as spittoon]
+            [bkell.domain :as domain]))
+
 
 (defn init-db [conn]
 
@@ -49,3 +51,7 @@
 
     ;; run function over all lists
     (map write-fn [currency-list country-list account-types counter-weights])))
+
+
+(defn init-default-group [conn]
+  (domain/create-group conn ["webkell" "USD" "US"]))
