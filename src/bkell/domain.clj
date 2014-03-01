@@ -56,7 +56,7 @@
 ;; ...datomic entity ID: (ffirst (domain/find-country-by-id "US" conn))
 
 ;; create a nominal user (before wrapping in a group)
-(defn generate-user-nominal [conn uname passwd fname lname email country-ref]
+(defn generate-user-nominal [uname passwd fname lname email country-ref]
 
   [{:db/id (d/tempid :db.part/user)
     :bookkeeping.user/id (d/squuid)
@@ -74,16 +74,17 @@
 
 
 ;; construct a nominal group (before inserting user)
-(defn create-group-nominal [conn group-name default-currency-ref]
+(defn generate-group-nominal [group-name default-currency-ref]
 
-  {:bookkeeping.group/id (d/squuid)
-   :bookkeeping.group/name group-name
-   ;; :bookkeeping.group/owner "<>"
-   :bookkeeping.group/defaultCurrency default-currency-ref
+  [{:db/id (d/tempid :db.part/user)
+    :bookkeeping.group/id (d/squuid)
+    :bookkeeping.group/name group-name
+    ;; :bookkeeping.group/owner "<>"
+    :bookkeeping.group/defaultCurrency default-currency-ref
 
-   ;; :bookkeeping.group/users "<>" ;; list of users belonging to this group
-   ;; :bookkeeping.group/bookkeeping "<>"  ;; the set of books belonging to this group
-   })
+    ;; :bookkeeping.group/users "<>" ;; list of users belonging to this group
+    ;; :bookkeeping.group/bookkeeping "<>"  ;; the set of books belonging to this group
+    }])
 
 ;; create a group with a new (default)
 
