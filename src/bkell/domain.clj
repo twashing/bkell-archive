@@ -52,6 +52,24 @@
 (defn find-counterweight-by-name [name conn] (find-by-name :bookkeeping.counterWeight name conn))
 
 
+(defn list-nominal [prefix conn]
+  {:pre [(keyword? prefix)]}
+
+  (let [query-expression '[:find ?e ?id ?name
+                           :in $ [?attribute-id ?attribute-name]
+                           :where
+                           [?e ?attribute-id ?id]
+                           [?e ?attribute-name ?name]]
+        query-parameters [(generate-prefixed-attribute prefix "id")
+                          (generate-prefixed-attribute prefix "name")]]
+    (spittoon/query query-expression query-parameters conn)))
+
+(defn list-countries [conn] (list-nominal :bookkeeping.country conn))
+(defn list-currencies [conn] (list-nominal :bookkeeping.currency conn))
+(defn list-account-types [conn] (list-nominal :bookkeeping.accountType conn))
+(defn list-counter-weights [conn] (list-nominal :bookkeeping.counterWeight conn))
+
+
 ;; create a nominal user (before wrapping in a group)
 (defn generate-user-nominal [uname passwd fname lname email country-ref]
 
@@ -82,9 +100,8 @@
     }])
 
 
-;; create a full user (with an implicit group)
 (defn create-user
-  "Creates a user with an implicit group"
+  "Creates a user (with an implicit group)"
 
   [conn [username password currency-id country-id]]
 
@@ -113,7 +130,10 @@
     (spittoon/write-data conn (concat group-final user-final))))
 
 (defn create-group
-  "Creates a group with a default user, if one is not passed in."
+  "Creates a group with a default user, if one is not passed in. Possible arguments are:
+
+   => conn, group-vector(group-name currency-id country-id)
+   => conn, group-vector(group-name currency-id country-id), user-map, set-default-group-flag?"
 
   ([conn [group-name currency-id country-id]]
 
