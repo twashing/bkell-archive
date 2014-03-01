@@ -11,12 +11,12 @@
 (defn find-by-id [prefix cid conn]
   {:pre [(keyword? prefix)]}
 
-  (let [query-expression '[:find ?id ?name
-                          :in $ [?attribute-id ?attribute-name ?cid]
-                          :where
-                          [?e ?attribute-id ?cid]
-                          [?e ?attribute-id ?id]
-                          [?e ?attribute-name ?name]]
+  (let [query-expression '[:find ?e ?id ?name
+                           :in $ [?attribute-id ?attribute-name ?cid]
+                           :where
+                           [?e ?attribute-id ?cid]
+                           [?e ?attribute-id ?id]
+                           [?e ?attribute-name ?name]]
         query-parameters [(generate-prefixed-attribute prefix "id")
                           (generate-prefixed-attribute prefix "name")
                           cid]]
@@ -26,12 +26,12 @@
 (defn find-by-name [prefix cname conn]
   {:pre [(keyword? prefix)]}
 
-  (let [query-expression '[:find ?id ?name
-                          :in $ [?attribute-id ?attribute-name ?cname]
-                          :where
-                          [?e ?attribute-name ?cname]
-                          [?e ?attribute-id ?id]
-                          [?e ?attribute-name ?name]]
+  (let [query-expression '[:find ?e ?id ?name
+                           :in $ [?attribute-id ?attribute-name ?cname]
+                           :where
+                           [?e ?attribute-name ?cname]
+                           [?e ?attribute-id ?id]
+                           [?e ?attribute-name ?name]]
         query-parameters [(generate-prefixed-attribute prefix "id")
                           (generate-prefixed-attribute prefix "name")
                           cname]]
@@ -53,19 +53,22 @@
 
 
 
-;; create a nominal user (before wrapping in a group)
-(defn create-user-nominal [conn uname passwd fname lname email country-ref]
+;; ...datomic entity ID: (ffirst (domain/find-country-by-id "US" conn))
 
-  {:bookkeeping.user/id (d/squuid)
-   :bookkeeping.user/username uname
-   :bookkeeping.user/password passwd
-   ;; :bookkeeping.user/accountLevel "<>"
-   ;; :bookkeeping.user/defaultGroup "<>"
-   :bookkeeping.user/firstName fname
-   :bookkeeping.user/lastName lname
-   :bookkeeping.user/email email
-   :bookkeeping.user/country country-ref
-   })
+;; create a nominal user (before wrapping in a group)
+(defn generate-user-nominal [conn uname passwd fname lname email country-ref]
+
+  [{:db/id (d/tempid :db.part/user)
+    :bookkeeping.user/id (d/squuid)
+    :bookkeeping.user/username uname
+    :bookkeeping.user/password passwd
+    ;; :bookkeeping.user/accountLevel "<>"
+    ;; :bookkeeping.user/defaultGroup "<>"
+    :bookkeeping.user/firstName fname
+    :bookkeeping.user/lastName lname
+    :bookkeeping.user/email email
+    :bookkeeping.user/country country-ref
+    }])
 
 ;; create a full user (with an implicit group)
 
