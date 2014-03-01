@@ -1,5 +1,67 @@
 [
 
+ ;; account types
+ {:db/id #db/id [:db.part/db]
+  :db/unique :db.unique/identity
+  :db/ident :bookkeeping.accountType/id
+  :db/valueType :db.type/uuid
+  :db/cardinality :db.cardinality/one
+  :db/doc ""
+  :db.install/_attribute :db.part/db}
+ {:db/id #db/id [:db.part/db]
+  :db/ident :bookkeeping.accountType/name
+  :db/valueType :db.type/string
+  :db/cardinality :db.cardinality/one
+  :db/doc ""
+  :db.install/_attribute :db.part/db}
+
+
+ ;; counter weight
+ {:db/id #db/id [:db.part/db]
+  :db/unique :db.unique/identity
+  :db/ident :bookkeeping.counterWeight/id
+  :db/valueType :db.type/uuid
+  :db/cardinality :db.cardinality/one
+  :db/doc ""
+  :db.install/_attribute :db.part/db}
+ {:db/id #db/id [:db.part/db]
+  :db/ident :bookkeeping.counterWeight/name
+  :db/valueType :db.type/string
+  :db/cardinality :db.cardinality/one
+  :db/doc ""
+  :db.install/_attribute :db.part/db}
+
+ ;; currencies
+ {:db/id #db/id [:db.part/db]
+  :db/unique :db.unique/identity
+  :db/ident :bookkeeping.currency/id
+  :db/valueType :db.type/uuid
+  :db/cardinality :db.cardinality/one
+  :db/doc ""
+  :db.install/_attribute :db.part/db}
+ {:db/id #db/id [:db.part/db]
+  :db/ident :bookkeeping.currency/name
+  :db/valueType :db.type/string
+  :db/cardinality :db.cardinality/one
+  :db/doc ""
+  :db.install/_attribute :db.part/db}
+
+ ;; countries
+ {:db/id #db/id [:db.part/db]
+  :db/unique :db.unique/identity
+  :db/ident :bookkeeping.country/id
+  :db/valueType :db.type/uuid
+  :db/cardinality :db.cardinality/one
+  :db/doc ""
+  :db.install/_attribute :db.part/db}
+ {:db/id #db/id [:db.part/db]
+  :db/ident :bookkeeping.country/name
+  :db/valueType :db.type/string
+  :db/cardinality :db.cardinality/one
+  :db/doc ""
+  :db.install/_attribute :db.part/db}
+
+
  ;; users
  {:db/id #db/id [:db.part/db]
   :db/unique :db.unique/identity
