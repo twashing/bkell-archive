@@ -3,6 +3,42 @@
             [bkell.spittoon :as spittoon]))
 
 
+
+(defn generate-prefixed-attribute [prefix attribute]
+  (keyword (str (name prefix) "/" attribute)))
+
+
+(defn find-by-id [prefix cid conn]
+  {:pre [(keyword? prefix)]}
+
+  (let [query-expression '[:find ?id ?name
+                          :in $ [?attribute-id ?attribute-name ?cid]
+                          :where
+                          [?e ?attribute-id ?cid]
+                          [?e ?attribute-id ?id]
+                          [?e ?attribute-name ?name]]
+        query-parameters [(generate-prefixed-attribute prefix "id")
+                          (generate-prefixed-attribute prefix "name")
+                          cid]]
+
+    (spittoon/query query-expression query-parameters conn)))
+
+(defn find-by-name [prefix cname conn]
+  {:pre [(keyword? prefix)]}
+
+  (let [query-expression '[:find ?id ?name
+                          :in $ [?attribute-id ?attribute-name ?cname]
+                          :where
+                          [?e ?attribute-name ?cname]
+                          [?e ?attribute-id ?id]
+                          [?e ?attribute-name ?name]]
+        query-parameters [(generate-prefixed-attribute prefix "id")
+                          (generate-prefixed-attribute prefix "name")
+                          cname]]
+
+    (spittoon/query query-expression query-parameters conn)))
+
+
 (defn find-country-by-id [cid conn]
 
   (let [query-expression '[:find ?id ?name
@@ -26,6 +62,8 @@
         query-parameters [cname]]
 
     (spittoon/query query-expression query-parameters conn)))
+
+
 
 
 ;; create a nominal user (before wrapping in a group)
