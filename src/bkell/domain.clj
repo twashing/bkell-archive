@@ -87,5 +87,31 @@
     }])
 
 ;; create a group with a new (default)
+(defn create-group-anduser [conn group-name currency-id country-id]
+
+  (let [group-nominal (generate-group-nominal
+                       group-name
+                       (ffirst (find-currency-by-id currency-id conn)))
+
+        user-nominal (generate-user-nominal
+                      (str group-name "-user")
+                      "password"
+                      "" "" ""
+                      (ffirst (find-country-by-id country-id conn)))
+
+        ;; set the group's owner - :bookkeeping.group/owner
+        group-final (assoc-in
+                     group-nominal
+                     [0 :bookkeeping.group/owner]
+                     (-> user-nominal first :db/id))
+
+        ;; set the user's default group - :bookkeeping.user/defaultGroup
+        user-final (assoc-in
+                    user-nominal
+                    [0 :bookkeeping.user/defaultGroup]
+                    (-> group-nominal first :db/id))]
+
+    (spittoon/write-data conn (concat group-final user-final))))
+
 
 ;; create a group with an existing user
