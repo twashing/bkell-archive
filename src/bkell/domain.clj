@@ -87,31 +87,44 @@
     }])
 
 ;; create a group with a new (default)
-(defn create-group-anduser [conn group-name currency-id country-id]
+(defn create-group
+  "Creates a group with a default user, if one is not passed in."
 
-  (let [group-nominal (generate-group-nominal
-                       group-name
-                       (ffirst (find-currency-by-id currency-id conn)))
+  ([conn [group-name currency-id country-id]]
 
-        user-nominal (generate-user-nominal
-                      (str group-name "-user")
-                      "password"
-                      "" "" ""
-                      (ffirst (find-country-by-id country-id conn)))
+     (let [user-nominal (generate-user-nominal
+                         (str group-name "-user")
+                         "password"
+                         "" "" ""
+                         (ffirst (find-country-by-id country-id conn)))]
 
-        ;; set the group's owner - :bookkeeping.group/owner
-        group-final (assoc-in
-                     group-nominal
-                     [0 :bookkeeping.group/owner]
-                     (-> user-nominal first :db/id))
+       (create-group conn [group-name currency-id country-id] user-nominal true)))
 
-        ;; set the user's default group - :bookkeeping.user/defaultGroup
-        user-final (assoc-in
-                    user-nominal
-                    [0 :bookkeeping.user/defaultGroup]
-                    (-> group-nominal first :db/id))]
+  ([conn [group-name currency-id country-id] user set-default-group?]
 
-    (spittoon/write-data conn (concat group-final user-final))))
+     (let [group-nominal (generate-group-nominal
+                          group-name
+                          (ffirst (find-currency-by-id currency-id conn)))
+
+           ;; set the group's owner - :bookkeeping.group/owner
+           group-final (assoc-in
+                        group-nominal
+                        [0 :bookkeeping.group/owner]
+                        (-> user first :db/id))
+
+           ;; set the user's default group - :bookkeeping.user/defaultGroup
+           user-final (if set-default-group?
+
+                        ;; set the user's defaultGroup
+                        (assoc-in
+                         user
+                         [0 :bookkeeping.user/defaultGroup]
+                         (-> group-nominal first :db/id))
+
+                        ;; otherwise, not
+                        user)]
+
+       (spittoon/write-data conn (concat group-final user-final)))))
 
 
 ;; create a group with an existing user
