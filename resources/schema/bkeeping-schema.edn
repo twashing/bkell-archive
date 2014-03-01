@@ -144,7 +144,7 @@
   :db/doc "The groups's owner"
   :db.install/_attribute :db.part/db}
  {:db/id #db/id [:db.part/db]
-  :db/ident :bookkeeping.group/user
+  :db/ident :bookkeeping.group/users
   :db/valueType :db.type/ref
   :db/cardinality :db.cardinality/many
   :db/doc "The users belonging to this group"
