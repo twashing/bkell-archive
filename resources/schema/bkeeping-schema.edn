@@ -97,6 +97,7 @@
 
  {:db/id #db/id [:db.part/db]
   :db/ident :bookkeeping.group/bookkeeping
+  :db/isComponent true
   :db/valueType :db.type/ref
   :db/cardinality :db.cardinality/many
   :db/doc "The set of books belonging to this group"
@@ -114,6 +115,7 @@
 
  {:db/id #db/id [:db.part/db]
   :db/ident :bookkeeping.books/accounts
+  :db/isComponent true
   :db/valueType :db.type/ref
   :db/cardinality :db.cardinality/one
   :db/doc "Refencing the set of accounts belonging to this bookkeeping"
@@ -121,9 +123,85 @@
 
  {:db/id #db/id [:db.part/db]
   :db/ident :bookkeeping.books/journals
+  :db/isComponent true
   :db/valueType :db.type/ref
   :db/cardinality :db.cardinality/many
   :db/doc "Referencing the set of journals belonging to this bookkeeping"
   :db.install/_attribute :db.part/db}
+
+
+ ;; accounts
+ {:db/id #db/id [:db.part/db]
+  :db/unique :db.unique/identity
+  :db/ident :bookkeeping.account/id
+  :db/valueType :db.type/uuid
+  :db/cardinality :db.cardinality/one
+  :db/doc "System ID for one book's, list of accounts"
+  :db.install/_attribute :db.part/db}
+ {:db/id #db/id [:db.part/db]
+  :db/ident :bookkeeping.account/name
+  :db/valueType :db.type/string
+  :db/cardinality :db.cardinality/one
+  :db/doc ""
+  :db.install/_attribute :db.part/db}
+ {:db/id #db/id [:db.part/db]
+  :db/ident :bookkeeping.account/type
+  :db/valueType :db.type/string
+  :db/cardinality :db.cardinality/one
+  :db/doc ""
+  :db.install/_attribute :db.part/db}
+ {:db/id #db/id [:db.part/db]
+  :db/ident :bookkeeping.account/counterWeight
+  :db/valueType :db.type/ref
+  :db/cardinality :db.cardinality/one
+  :db/doc ""
+  :db.install/_attribute :db.part/db}
+
+
+ ;; journals
+ {:db/id #db/id [:db.part/db]
+  :db/unique :db.unique/identity
+  :db/ident :bookkeeping.journal/id
+  :db/valueType :db.type/uuid
+  :db/cardinality :db.cardinality/one
+  :db/doc "System ID for a set of book's journal"
+  :db.install/_attribute :db.part/db}
+ {:db/id #db/id [:db.part/db]
+  :db/ident :bookkeeping.journal/name
+  :db/valueType :db.type/string
+  :db/cardinality :db.cardinality/one
+  :db/doc "Display name for this Journal"
+  :db.install/_attribute :db.part/db}
+ {:db/id #db/id [:db.part/db]
+  :db/ident :bookkeeping.journal/entry
+  :db/isComponent true
+  :db/valueType :db.type/ref
+  :db/cardinality :db.cardinality/many
+  :db/doc "Pointer to a list of journal entires"
+  :db.install/_attribute :db.part/db}
+
+
+ ;; entries
+ {:db/id #db/id [:db.part/db]
+  :db/unique :db.unique/identity
+  :db/ident :bookkeeping.journalEntry/id
+  :db/valueType :db.type/uuid
+  :db/cardinality :db.cardinality/one
+  :db/doc ""
+  :db.install/_attribute :db.part/db}
+ {:db/id #db/id [:db.part/db]
+  :db/ident :bookkeeping.journalEntry/date
+  :db/valueType :db.type/instant
+  :db/cardinality :db.cardinality/one
+  :db/doc ""
+  :db.install/_attribute :db.part/db}
+ {:db/id #db/id [:db.part/db]
+  :db/ident :bookkeeping.journalEntry/currency
+  :db/valueType :db.type/ref
+  :db/cardinality :db.cardinality/one
+  :db/doc ""
+  :db.install/_attribute :db.part/db}
+
+
 
  ]
