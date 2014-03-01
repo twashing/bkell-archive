@@ -52,9 +52,6 @@
 (defn find-counterweight-by-name [name conn] (find-by-name :bookkeeping.counterWeight name conn))
 
 
-
-;; ...datomic entity ID: (ffirst (domain/find-country-by-id "US" conn))
-
 ;; create a nominal user (before wrapping in a group)
 (defn generate-user-nominal [uname passwd fname lname email country-ref]
 
@@ -70,8 +67,6 @@
     :bookkeeping.user/country country-ref
     }])
 
-;; create a full user (with an implicit group)
-
 
 ;; construct a nominal group (before inserting user)
 (defn generate-group-nominal [group-name default-currency-ref]
@@ -86,7 +81,37 @@
     ;; :bookkeeping.group/bookkeeping "<>"  ;; the set of books belonging to this group
     }])
 
-;; create a group with a new (default)
+
+;; create a full user (with an implicit group)
+(defn create-user
+  "Creates a user with an implicit group"
+
+  [conn [username password currency-id country-id]]
+
+  (let [group-nominal (generate-group-nominal
+                       (str "group-" username)
+                       (ffirst (find-currency-by-id currency-id conn)))
+
+        user-nominal (generate-user-nominal
+                      username
+                      password
+                      "" "" ""
+                      (ffirst (find-country-by-id country-id conn)))
+
+        ;; set the group's owner - :bookkeeping.group/owner
+        group-final (assoc-in
+                     group-nominal
+                     [0 :bookkeeping.group/owner]
+                     (-> user-nominal first :db/id))
+
+        ;; set the user's default group - :bookkeeping.user/defaultGroup
+        user-final (assoc-in
+                    user-nominal
+                    [0 :bookkeeping.user/defaultGroup]
+                    (-> group-nominal first :db/id))]
+
+    (spittoon/write-data conn (concat group-final user-final))))
+
 (defn create-group
   "Creates a group with a default user, if one is not passed in."
 
@@ -125,6 +150,3 @@
                         user)]
 
        (spittoon/write-data conn (concat group-final user-final)))))
-
-
-;; create a group with an existing user
