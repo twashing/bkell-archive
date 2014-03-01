@@ -1,7 +1,8 @@
 (ns bkell.init
-  (:require [datomic.api :only [q db] :as d]))
+  (:require [datomic.api :only [q db] :as d]
+            [bkell.spittoon :as spittoon]))
 
-(defn init-db []
+(defn init-db [conn]
 
   (let [
         currency-list
@@ -38,5 +39,13 @@
 
         counter-weights
         [ { :bookkeeping.counterWeight/id "dt" :bookkeeping.counterWeight/name "debit" }
-          { :bookkeeping.counterWeight/id "ct" :bookkeeping.counterWeight/name "credit" }]]
-    ))
+          { :bookkeeping.counterWeight/id "ct" :bookkeeping.counterWeight/name "credit" }]
+
+        ;; attach a datomic ID and write the data
+        write-fn (comp
+                  (partial spittoon/write-data conn)
+                  (partial map #(assoc % :db/id (d/tempid :db.part/user))))]
+
+
+    ;; run function over all lists
+    (map write-fn [currency-list country-list account-types counter-weights])))
