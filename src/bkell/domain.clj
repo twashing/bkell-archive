@@ -3,6 +3,31 @@
             [bkell.spittoon :as spittoon]))
 
 
+(defn find-country-by-id [cid conn]
+
+  (let [query-expression '[:find ?id ?name
+                           :in $ [?cid]
+                           :where
+                           [?e :bookkeeping.country/id ?cid]
+                           [?e :bookkeeping.country/id ?id]
+                           [?e :bookkeeping.country/name ?name]]
+        query-parameters [cid]]
+
+    (spittoon/query query-expression query-parameters conn)))
+
+(defn find-country-by-name [cname conn]
+
+  (let [query-expression '[:find ?id ?name
+                           :in $ [?cname]
+                           :where
+                           [?e :bookkeeping.country/name ?cname]
+                           [?e :bookkeeping.country/id ?id]
+                           [?e :bookkeeping.country/name ?name]]
+        query-parameters [cname]]
+
+    (spittoon/query query-expression query-parameters conn)))
+
+
 ;; create a nominal user (before wrapping in a group)
 (defn create-user-nominal [conn uname passwd fname lname email country-ref]
 
