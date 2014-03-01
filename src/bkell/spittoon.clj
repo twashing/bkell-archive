@@ -15,6 +15,9 @@
   (d/connect (if iurl iurl url)))
 
 
+(defn write-data [conn data]
+  @(d/transact conn data))
+
 (defn database-schema-create [conn]
-  (def schema-tx (read-string (slurp "resources/schema/bkeeping-schema.edn")))
-  @(d/transact conn schema-tx))
+  (let [schema-tx (read-string (slurp "resources/schema/bkeeping-schema.edn"))]
+    (write-data conn schema-tx)))
