@@ -235,7 +235,7 @@
   :db/doc "Display name for this Journal"
   :db.install/_attribute :db.part/db}
  {:db/id #db/id [:db.part/db]
-  :db/ident :bookkeeping.group.books.journal/entry
+  :db/ident :bookkeeping.group.books.journal/entries
   :db/isComponent true
   :db/valueType :db.type/ref
   :db/cardinality :db.cardinality/many
@@ -261,6 +261,13 @@
   :db/ident :bookkeeping.group.books.journal.entry/currency
   :db/valueType :db.type/ref
   :db/cardinality :db.cardinality/one
+  :db/doc ""
+  :db.install/_attribute :db.part/db}
+ {:db/id #db/id [:db.part/db]
+  :db/ident :bookkeeping.group.books.journal.entry/content
+  :db/isComponent true
+  :db/valueType :db.type/ref
+  :db/cardinality :db.cardinality/many
   :db/doc ""
   :db.install/_attribute :db.part/db}
 
@@ -297,5 +304,40 @@
   :db/cardinality :db.cardinality/one
   :db/doc ""
   :db.install/_attribute :db.part/db}
+
+
+;; assets
+{:db/id #db/id [:db.part/db]
+  :db/unique :db.unique/identity
+  :db/ident :bookkeeping.group.books.asset/id
+  :db/valueType :db.type/uuid
+  :db/cardinality :db.cardinality/one
+  :db/doc ""
+  :db.install/_attribute :db.part/db}
+{:db/id #db/id [:db.part/db]
+  :db/ident :bookkeeping.group.books.asset/externalid
+  :db/valueType :db.type/string
+  :db/cardinality :db.cardinality/one
+  :db/doc ""
+ :db.install/_attribute :db.part/db}
+{:db/id #db/id [:db.part/db]
+  :db/ident :bookkeeping.group.books.asset/filename
+  :db/valueType :db.type/string
+  :db/cardinality :db.cardinality/one
+  :db/doc ""
+ :db.install/_attribute :db.part/db}
+{:db/id #db/id [:db.part/db]
+  :db/ident :bookkeeping.group.books.asset/size
+  :db/valueType :db.type/string
+  :db/cardinality :db.cardinality/one
+  :db/doc ""
+ :db.install/_attribute :db.part/db}
+{:db/id #db/id [:db.part/db]
+  :db/ident :bookkeeping.group.books.asset/type
+  :db/valueType :db.type/string
+  :db/cardinality :db.cardinality/one
+  :db/doc ""
+ :db.install/_attribute :db.part/db}
+
 
  ]
