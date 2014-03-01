@@ -264,6 +264,12 @@
   :db/doc ""
   :db.install/_attribute :db.part/db}
  {:db/id #db/id [:db.part/db]
+  :db/ident :bookkeeping.group.books.journal.entry/assets
+  :db/valueType :db.type/ref
+  :db/cardinality :db.cardinality/many
+  :db/doc "Set of image or other assets, associated with this entry"
+  :db.install/_attribute :db.part/db}
+ {:db/id #db/id [:db.part/db]
   :db/ident :bookkeeping.group.books.journal.entry/content
   :db/isComponent true
   :db/valueType :db.type/ref
@@ -338,6 +344,11 @@
   :db/cardinality :db.cardinality/one
   :db/doc ""
  :db.install/_attribute :db.part/db}
-
+{:db/id #db/id [:db.part/db]
+  :db/ident :bookkeeping.group.books.asset/entry
+  :db/valueType :db.type/ref
+  :db/cardinality :db.cardinality/one
+  :db/doc "The journal entry associated with this asset"
+ :db.install/_attribute :db.part/db}
 
  ]
