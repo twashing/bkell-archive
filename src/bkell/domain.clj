@@ -39,30 +39,17 @@
     (spittoon/query query-expression query-parameters conn)))
 
 
-(defn find-country-by-id [cid conn]
+(defn find-country-by-id [id conn] (find-by-id :bookkeeping.country id conn))
+(defn find-country-by-name [name conn] (find-by-name :bookkeeping.country name conn))
 
-  (let [query-expression '[:find ?id ?name
-                           :in $ [?cid]
-                           :where
-                           [?e :bookkeeping.country/id ?cid]
-                           [?e :bookkeeping.country/id ?id]
-                           [?e :bookkeeping.country/name ?name]]
-        query-parameters [cid]]
+(defn find-currency-by-id [id conn] (find-by-id :bookkeeping.currency id conn))
+(defn find-currency-by-name [name conn] (find-by-name :bookkeeping.currency name conn))
 
-    (spittoon/query query-expression query-parameters conn)))
+(defn find-accounttype-by-id [id conn] (find-by-id :bookkeeping.accountType id conn))
+(defn find-accounttype-by-name [name conn] (find-by-name :bookkeeping.accountType name conn))
 
-(defn find-country-by-name [cname conn]
-
-  (let [query-expression '[:find ?id ?name
-                           :in $ [?cname]
-                           :where
-                           [?e :bookkeeping.country/name ?cname]
-                           [?e :bookkeeping.country/id ?id]
-                           [?e :bookkeeping.country/name ?name]]
-        query-parameters [cname]]
-
-    (spittoon/query query-expression query-parameters conn)))
-
+(defn find-counterweight-by-id [id conn] (find-by-id :bookkeeping.counterWeight id conn))
+(defn find-counterweight-by-name [name conn] (find-by-name :bookkeeping.counterWeight name conn))
 
 
 

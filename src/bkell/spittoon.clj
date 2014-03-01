@@ -23,7 +23,4 @@
     (write-data conn schema-tx)))
 
 (defn query [query-expression query-parameters conn]
-
-  (println "query-expression: " query-expression)
-  (println "query-aparameters: " query-parameters)
   (d/q query-expression (d/db conn) query-parameters))
