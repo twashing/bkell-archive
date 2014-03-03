@@ -135,8 +135,7 @@
         ;; potentially add content
         entry-f (if (not (empty? content))
                   (assoc-in entry-i [0 :bookkeeping.group.books.journal.entry/content] content)
-                  entry-i)
-        ]
+                  entry-i)]
 
     (spittoon/write-data conn (concat entry-f assets content))))
 
