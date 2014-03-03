@@ -1,4 +1,4 @@
-(ns bkell.domain
+(ns bkell.domain.identity
   (:require [datomic.api :only [q db] :as d]
             [bkell.spittoon :as spittoon]))
 
