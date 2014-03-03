@@ -116,22 +116,26 @@
 
 (defn create-entry [conn & params]
 
-  (let [[date currency-id assets content] params
+  (let [[group-name date currency-id assets content] params
 
         date-f (if date date (java.util.Date.))
 
-        ;; otherwise find :bookkeeping.group/defaultCurrency
-        ;; ... currency-f (if currency-id currency-id)
-        currency-f currency-id
+        ;; find :bookkeeping.group/defaultCurrency if none passed in
+        currency-f (if currency-id
+                     currency-id
+                     (-> (identity/find-group-by-name conn group-name) first (nth 3)))
+
         entry-nominal (generate-entry-nominal conn date-f currency-f)
 
         ;; potentially add assets
-        ;; ...
+        entry-i (if (not (empty? assets))
+                  (assoc-in entry-nominal [0 :bookkeeping.group.books.journal.entry/assets] assets)
+                  entry-nominal)
 
         ;; potentially add content
         entry-f (if (not (empty? content))
-                  (assoc-in entry-nominal [0 :bookkeeping.group.books.journal.entry/content] content)
-                  entry-nominal)
+                  (assoc-in entry-i [0 :bookkeeping.group.books.journal.entry/content] content)
+                  entry-i)
         ]
 
     (spittoon/write-data conn (concat entry-f assets content))))
@@ -149,6 +153,4 @@
       :bookkeeping.group.books.journal.entry.content/account
         (ffirst (accounts/find-account-by-name conn eaccount))
       :bookkeeping.group.books.journal.entry.content/currency
-        (ffirst (identity/find-currency-by-id ecurrency conn))}]
-
-    ))
+        (ffirst (identity/find-currency-by-id ecurrency conn))}]))

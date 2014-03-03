@@ -99,6 +99,29 @@
     ;; :bookkeeping.group/bookkeeping "<>"  ;; the set of books belonging to this group
     }])
 
+(defn find-group-by-name [conn gname]
+
+  (let [query-expression '[:find ?e ?name ?owner ?defaultCurrency
+                           :in $ [?name]
+                           :where
+                           [?e :bookkeeping.group/name ?name]
+                           [?e :bookkeeping.group/owner ?owner]
+                           [?e :bookkeeping.group/defaultCurrency ?defaultCurrency]]
+        query-parameters [gname]]
+    (spittoon/query query-expression query-parameters conn)))
+
+(defn find-user-by-username [conn username]
+
+  (let [query-expression '[:find ?e ?uname ?fname ?lname ?email
+                           :in $ [?uname]
+                           :where
+                           [?e :bookkeeping.user/username ?uname]
+                           [?e :bookkeeping.user/firstName ?fname]
+                           [?e :bookkeeping.user/lastName ?lname]
+                           [?e :bookkeeping.user/email ?email]]
+        query-parameters [username]]
+    (spittoon/query query-expression query-parameters conn)))
+
 
 (defn create-user
   "Creates a user (with an implicit group)"
@@ -156,6 +179,8 @@
                         group-nominal
                         [0 :bookkeeping.group/owner]
                         (-> user first :db/id))
+
+           _ (clojure.pprint/pprint user)
 
            ;; set the user's default group - :bookkeeping.user/defaultGroup
            user-final (if set-default-group?
