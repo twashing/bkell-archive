@@ -208,7 +208,7 @@
   :db.install/_attribute :db.part/db}
  {:db/id #db/id [:db.part/db]
   :db/ident :bookkeeping.group.books.account/type
-  :db/valueType :db.type/string
+  :db/valueType :db.type/ref
   :db/cardinality :db.cardinality/one
   :db/doc ""
   :db.install/_attribute :db.part/db}

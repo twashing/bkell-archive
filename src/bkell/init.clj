@@ -1,7 +1,7 @@
 (ns bkell.init
   (:require [datomic.api :only [q db] :as d]
             [bkell.spittoon :as spittoon]
-            [bkell.domain :as domain]))
+            [bkell.domain.identity :as identity]))
 
 
 (defn init-db [conn]
@@ -54,4 +54,4 @@
 
 
 (defn init-default-group [conn]
-  (domain/create-group conn ["webkell" "USD" "US"]))
+  (identity/create-group conn ["webkell" "USD" "US"]))
