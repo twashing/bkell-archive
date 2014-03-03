@@ -52,6 +52,49 @@
 
 
 
+(defn list-entries [conn]
+
+  (let [query-expression '[:find ?e ?id ?date ?currency
+                           :where
+                           [?e :bookkeeping.group.books.journal.entry/id ?id]
+                           [?e :bookkeeping.group.books.journal.entry/date ?date]
+                           [?e :bookkeeping.group.books.journal.entry/currency ?currency]]
+        query-parameters []]
+    (spittoon/query query-expression query-parameters conn)))
+
+
+(defn find-entry-by-id [conn eid]
+
+  (let [query-expression '[:find ?e ?id ?date ?currency
+                           :in $ [?id]
+                           :where
+                           [?e :bookkeeping.group.books.journal.entry/id ?id]
+                           [?e :bookkeeping.group.books.journal.entry/date ?date]
+                           [?e :bookkeeping.group.books.journal.entry/currency ?currency]]
+        query-parameters [eid]]
+    (spittoon/query query-expression query-parameters conn)))
+
+(defn find-entry-by-date [conn edate]
+
+  (let [query-expression '[:find ?e ?id ?date ?currency
+                           :in $ [?date]
+                           :where
+                           [?e :bookkeeping.group.books.journal.entry/id ?id]
+                           [?e :bookkeeping.group.books.journal.entry/date ?date]
+                           [?e :bookkeeping.group.books.journal.entry/currency ?currency]]
+        query-parameters [edate]]
+    (spittoon/query query-expression query-parameters conn)))
+
+(defn find-entry-by-currency [conn currency-id]
+
+  (let [query-expression '[:find ?e ?id ?date ?currency
+                           :in $ [?currency]
+                           :where
+                           [?e :bookkeeping.group.books.journal.entry/id ?id]
+                           [?e :bookkeeping.group.books.journal.entry/date ?date]
+                           [?e :bookkeeping.group.books.journal.entry/currency ?currency]]
+        query-parameters [currency-id]]
+    (spittoon/query query-expression query-parameters conn)))
 
 
 (defn generate-entry-nominal [conn currency-id]
