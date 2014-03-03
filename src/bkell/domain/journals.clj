@@ -48,3 +48,37 @@
 
   (let [journal-nominal (generate-journal-nominal jname)]
     (spittoon/write-data conn journal-nominal)))
+
+
+
+
+
+
+(defn generate-entry-nominal [conn currency-id]
+
+  [{:db/id (d/tempid :db.part/user)
+    :bookkeeping.group.books.journal.entry/id (d/squuid)
+    :bookkeeping.group.books.journal.entry/date (java.util.Date.)
+    :bookkeeping.group.books.journal.entry/currency (ffirst (identity/find-currency-by-id currency-id conn))
+    ;; :bookkeeping.group.books.journal.entry/assets ...
+    ;; :bookkeeping.group.books.journal.entry/content ...
+    }])
+
+(defn create-entry [conn & params]
+
+  (let [[date currency-id assets content] params
+
+        ;; otherwise find :bookkeeping.group/defaultCurrency
+        ;; ... currency-f (if currency-id currency-id)
+        currency-f currency-id
+        entry-nominal (generate-entry-nominal conn currency-f)
+
+        ;; potentially add assets
+        ;; ...
+
+        ;; potentially add content
+        ;; ...
+
+        entry-f entry-nominal]
+
+    (spittoon/write-data conn entry-f)))
