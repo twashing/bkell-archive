@@ -1,7 +1,8 @@
 (ns bkell.domain.journals
   (:require [datomic.api :only [q db] :as d]
             [bkell.spittoon :as spittoon]
-            [bkell.domain.identity :as identity]))
+            [bkell.domain.identity :as identity]
+            [bkell.domain.accounts :as accounts]))
 
 
 (defn list-journals [conn]
@@ -74,6 +75,7 @@
         query-parameters [eid]]
     (spittoon/query query-expression query-parameters conn)))
 
+;; find at (exactly)
 (defn find-entry-by-date [conn edate]
 
   (let [query-expression '[:find ?e ?id ?date ?currency
@@ -84,6 +86,11 @@
                            [?e :bookkeeping.group.books.journal.entry/currency ?currency]]
         query-parameters [edate]]
     (spittoon/query query-expression query-parameters conn)))
+
+;; find before
+;; find after
+;; find within a range
+
 
 (defn find-entry-by-currency [conn currency-id]
 
@@ -97,11 +104,11 @@
     (spittoon/query query-expression query-parameters conn)))
 
 
-(defn generate-entry-nominal [conn currency-id]
+(defn generate-entry-nominal [conn date currency-id]
 
   [{:db/id (d/tempid :db.part/user)
     :bookkeeping.group.books.journal.entry/id (d/squuid)
-    :bookkeeping.group.books.journal.entry/date (java.util.Date.)
+    :bookkeeping.group.books.journal.entry/date (if date date (java.util.Date.))
     :bookkeeping.group.books.journal.entry/currency (ffirst (identity/find-currency-by-id currency-id conn))
     ;; :bookkeeping.group.books.journal.entry/assets ...
     ;; :bookkeeping.group.books.journal.entry/content ...
@@ -111,17 +118,37 @@
 
   (let [[date currency-id assets content] params
 
+        date-f (if date date (java.util.Date.))
+
         ;; otherwise find :bookkeeping.group/defaultCurrency
         ;; ... currency-f (if currency-id currency-id)
         currency-f currency-id
-        entry-nominal (generate-entry-nominal conn currency-f)
+        entry-nominal (generate-entry-nominal conn date-f currency-f)
 
         ;; potentially add assets
         ;; ...
 
         ;; potentially add content
-        ;; ...
+        entry-f (if (not (empty? content))
+                  (assoc-in entry-nominal [0 :bookkeeping.group.books.journal.entry/content] content)
+                  entry-nominal)
+        ]
 
-        entry-f entry-nominal]
+    (spittoon/write-data conn (concat entry-f assets content))))
 
-    (spittoon/write-data conn entry-f)))
+
+(defn generate-entrypart-nominal [conn & params]
+
+  (let [[etype eamount eaccount ecurrency] params]
+
+    [{:db/id (d/tempid :db.part/user)
+      :bookkeeping.group.books.journal.entry.content/id (d/squuid)
+      :bookkeeping.group.books.journal.entry.content/type
+        (ffirst (identity/find-counterweight-by-name etype conn))
+      :bookkeeping.group.books.journal.entry.content/amount eamount
+      :bookkeeping.group.books.journal.entry.content/account
+        (ffirst (accounts/find-account-by-name conn eaccount))
+      :bookkeeping.group.books.journal.entry.content/currency
+        (ffirst (identity/find-currency-by-id ecurrency conn))}]
+
+    ))
