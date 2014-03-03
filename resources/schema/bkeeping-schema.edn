@@ -179,7 +179,7 @@
   :db/ident :bookkeeping.group.books/accounts
   :db/isComponent true
   :db/valueType :db.type/ref
-  :db/cardinality :db.cardinality/one
+  :db/cardinality :db.cardinality/many
   :db/doc "Refencing the set of accounts belonging to this bookkeeping"
   :db.install/_attribute :db.part/db}
 

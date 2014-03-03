@@ -20,10 +20,13 @@
         group-assert [:db/add group-ref-id :bookkeeping.group/bookkeeping (:db/id books)]
 
         ;; attaching default accounts
-        ;; ...
+        books-a (if (not (empty? default-accounts))
+                  (assoc-in books [0 :bookkeeping.group.books/accounts] default-accounts)
+                  books)
 
         ;; attaching default journals
-        ;; ...
-        ]
+        books-b (if (not (empty? default-journals))
+                  (assoc-in books-a [0 :bookkeeping.group.books/journals] default-journals)
+                  books-a)]
 
-    (spittoon/write-data conn (concat books group-assert))))
+    (spittoon/write-data conn (concat books-b group-assert))))
