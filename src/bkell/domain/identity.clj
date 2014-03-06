@@ -180,8 +180,6 @@
                         [0 :bookkeeping.group/owner]
                         (-> user first :db/id))
 
-           _ (clojure.pprint/pprint user)
-
            ;; set the user's default group - :bookkeeping.user/defaultGroup
            user-final (if set-default-group?
 
