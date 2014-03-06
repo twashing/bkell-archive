@@ -73,6 +73,7 @@
 
  {:db/id #db/id [:db.part/db]
   :db/ident :bookkeeping.user/username
+  :db/unique :db.unique/value
   :db/valueType :db.type/string
   :db/cardinality :db.cardinality/one
   :db/doc "A user's username"
@@ -132,6 +133,7 @@
 
  {:db/id #db/id [:db.part/db]
   :db/ident :bookkeeping.group/name
+  :db/unique :db.unique/value
   :db/valueType :db.type/string
   :db/cardinality :db.cardinality/one
   :db/doc "A group's name"
