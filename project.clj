@@ -5,6 +5,7 @@
                  [org.clojure/clojurescript "0.0-2173"]
                  [org.clojure/clojure-contrib "1.2.0"]
 
+                 [com.stuartsierra/component "0.2.1"]
                  [org.clojure/data.codec "0.1.0"]
                  [compojure "1.1.6"]
                  [com.datomic/datomic-pro "0.9.4572"]]
