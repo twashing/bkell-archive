@@ -4,7 +4,8 @@
         bkell.handler))
 
 (deftest test-app
-  (testing "main route"
+  
+  #_(testing "main route"
     (let [response (app (request :get "/"))]
       (is (= (:status response) 200))
       (is (= (:body response) "Hello World"))))

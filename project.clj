@@ -7,7 +7,10 @@
 
                  [org.clojure/data.codec "0.1.0"]
                  [compojure "1.1.6"]
-                 [com.datomic/datomic-pro "0.9.4572"]]
+                 [com.datomic/datomic-pro "0.9.4572"]
+
+                 [http-kit "2.1.17"]
+                 [com.taoensso/sente "0.8.2"]]
 
   :ring {:handler bkell.handler/app}
 
@@ -28,7 +31,8 @@
                                    :optimizations :whitespace
                                    :pretty-print true}}]}
 
-  :profiles {:dev {:dependencies [[javax.servlet/servlet-api "2.5"]
+  :profiles {:dev {:dependencies [[midje "1.6.3"]
+                                  [javax.servlet/servlet-api "2.5"]
                                   [ring-mock "0.1.5"]
 
                                   [ring/ring-jetty-adapter "1.2.1"]
