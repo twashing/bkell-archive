@@ -2,6 +2,8 @@
   (:require [datomic.api :only [q db] :as d]))
 
 
+(declare write-data)
+
 (def url "datomic:free://localhost:4334/bkeeping")
 
 
