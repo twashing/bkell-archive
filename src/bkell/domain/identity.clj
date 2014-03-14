@@ -193,3 +193,12 @@
                         user)]
 
        (spittoon/write-data conn (concat group-final user-final)))))
+
+(defn populate-group-from-transact [conn transact-result]
+
+  (let [populated-results (->> transact-result
+                               :tempids
+                               vals
+                               (map (fn [i] (spittoon/populate-entity conn i))))]
+
+    (first (filter #(contains? % :bookkeeping.group/id) populated-results))))
