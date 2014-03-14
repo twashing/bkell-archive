@@ -1,3 +1,8 @@
 {
- :dev {:url-datomic "datomic:mem//bkeeping"}
- :prod {:url-datomic "datomic:free://localhost:4334/bkeeping"}}
+ :test {:url-datomic "datomic:mem//bkeeping"
+        :ephemeral true  ;; dangerous - delete and creates DB each system refresh
+        }
+ :dev {:url-datomic "datomic:mem//bkeeping"
+       :ephemeral false}
+ :prod {:url-datomic "datomic:free://localhost:4334/bkeeping"
+        :ephemeral false}}

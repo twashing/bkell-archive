@@ -15,6 +15,7 @@
 
    [alembic.still]
 
+   [bkell.config :as config]
    [bkell.component.bkell :as ck]
    [bkell.component.datomic :as cd]))
 
@@ -23,11 +24,13 @@
   (alembic.still/load-project))
 
 
+(def env (:test (config/get-config-raw)))
 (def system nil)
+
 
 (defn init []
   (alter-var-root #'system
-                  (constantly (ck/component-bkell))))
+                  (constantly (ck/component-bkell env))))
 
 (defn start []
   (alter-var-root #'system component/start))
