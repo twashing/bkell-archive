@@ -21,5 +21,5 @@
 (defn component-root []
 
   (component/using
-   (map->Root {})
-   {:datomic (cd/component-datomic)}))
+   (map->Root {:datomic (cd/component-datomic)})
+   {:datomic :datomic}))
