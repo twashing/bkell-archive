@@ -1,6 +1,7 @@
 (ns bkell.component.datomic
   (:import java.lang.Exception)
   (:require [com.stuartsierra.component :as component]
+            [taoensso.timbre :as timbre]
             [bkell.config :as config]
             [bkell.spittoon :as spittoon]
             [bkell.init :as init]
@@ -17,12 +18,13 @@
         init-result (init/init-db conn)
         _ init-result ;; kludge - ensuring transact result is being evaluated
 
+        _ (timbre/debug "verifying conn[" conn "]")
         transact-result (init/init-default-group conn)
         group-populated (identity/populate-group-from-transact conn transact-result)
         aresults (accounts/create-default-accounts conn)
         jresults (journals/create-journal conn "generalledger")
 
-        _ (println "group DB id: " (:db/id group-populated))
+        _ (timbre/debug "group DB id: " (:db/id group-populated))
         _ (books/create-books conn (:db/id group-populated) aresults jresults)]
     ))
 
@@ -33,7 +35,7 @@
     (let [url (:url-datomic env)
           _ (try
               (spittoon/database-delete url)
-              (catch Exception e (println "DB Boot: no database to delete... skipping")))
+              (catch Exception e (timbre/debug "DB Boot: no database to delete... skipping")))
           _ (spittoon/database-create url)
           conn (spittoon/database-connect url)
           _ (database-construct conn)]
@@ -46,13 +48,13 @@
 
   (start [component]
 
-    (println "Datomic.start CALLED > " env)
+    (timbre/debug "Datomic.start CALLED > " env)
 
     (assoc component :conn (database-boot env)))
 
   (stop [component]
 
-    (println "Datomic.stop CALLED")
+    (timbre/debug "Datomic.stop CALLED")
     component))
 
 (defn component-datomic [env]

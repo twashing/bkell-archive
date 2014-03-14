@@ -1,5 +1,6 @@
 (ns bkell.component.bkell
   (:require [com.stuartsierra.component :as component]
+            [taoensso.timbre :as timbre]
             [bkell.component.datomic :as cd]))
 
 
@@ -10,12 +11,12 @@
 
   (start [this]
 
-    (println "Bkell.start CALLED > " env)
+    (timbre/debug "Bkell.start CALLED > " env)
     (component/start-system this system-components))
 
   (stop [this]
 
-    (println "Bkell.stop CALLED")
+    (timbre/debug "Bkell.stop CALLED")
     (component/stop-system this system-components)))
 
 (defn component-bkell [env]

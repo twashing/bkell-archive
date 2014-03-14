@@ -27,21 +27,17 @@
 
 (def env-key :test)
 (def system nil)
-
-
 (defn init []
-
   (let [env (env-key (config/get-config-raw))]
     (alter-var-root #'system
-                    (constantly (ck/component-bkell env)))))
-
+                    #_(constantly (ck/component-bkell env))
+                    (constantly (cd/component-datomic env)))))
 (defn start []
   (alter-var-root #'system component/start))
-
 (defn stop []
-
   (alter-var-root #'system
                   (fn [s] (when s (component/stop s)))))
+
 
 (defn go []
   (init)
