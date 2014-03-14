@@ -4,13 +4,15 @@
 (defrecord Datomic []
   component/Lifecycle
 
-  (start [this]
-    (println "Datomic.start CALLED")
-    this)
+  (start [component]
 
-  (stop [this]
+    (println "Datomic.start CALLED")
+    component)
+
+  (stop [component]
+
     (println "Datomic.stop CALLED")
-    this))
+    component))
 
 (defn component-datomic []
   (map->Datomic {}))
