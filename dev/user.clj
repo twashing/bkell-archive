@@ -15,7 +15,8 @@
 
    [alembic.still]
 
-   [bkell.component.root :as cr]))
+   [bkell.component.root :as cr]
+   [bkell.component.datomic :as cd]))
 
 
 (defn reload-project []
@@ -28,10 +29,10 @@
   (alter-var-root #'system
                   (constantly (cr/component-root))))
 
-(defn startz []
+(defn start []
   (alter-var-root #'system component/start))
 
-(defn stopz []
+(defn stop []
   (alter-var-root #'system
                   (fn [s] (when s (component/stop s)))))
 

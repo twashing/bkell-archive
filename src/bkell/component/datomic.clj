@@ -13,4 +13,4 @@
     this))
 
 (defn component-datomic []
-  (map->Datomic))
+  (map->Datomic {}))
