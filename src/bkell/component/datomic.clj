@@ -16,8 +16,9 @@
 
   (let [_ (spittoon/database-schema-create conn)
         init-result (init/init-db conn)
-        _ init-result ;; kludge - ensuring transact result is being evaluated
 
+        ;; kludge - ensuring transact result is being evaluated
+        _ (timbre/debug "verifying init-db[" init-result "]")
         _ (timbre/debug "verifying conn[" conn "]")
         transact-result (init/init-default-group conn)
         group-populated (identity/populate-group-from-transact conn transact-result)

@@ -1,5 +1,6 @@
 (ns bkell.domain.books
   (:require [datomic.api :only [q db] :as d]
+            [taoensso.timbre :as timbre]
             [bkell.spittoon :as spittoon]))
 
 
@@ -29,4 +30,5 @@
                   (assoc-in books-a [0 :bookkeeping.group.books/journals] default-journals)
                   books-a)]
 
+    (timbre/debug "books/create-books / books[" books-b "] / assert[" group-assert "]")
     (spittoon/write-data conn (concat books-b group-assert))))

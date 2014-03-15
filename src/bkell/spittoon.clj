@@ -1,5 +1,6 @@
 (ns bkell.spittoon
-  (:require [datomic.api :only [q db] :as d]))
+  (:require [datomic.api :only [q db] :as d]
+            [taoensso.timbre :as timbre]))
 
 
 (declare write-data)
@@ -20,6 +21,7 @@
 
 
 (defn write-data [conn data]
+  #_(timbre/debug "spittoon > writing data[" data "]")
   @(d/transact conn data))
 
 (defn query [query-expression query-parameters conn]
