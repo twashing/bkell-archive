@@ -1,25 +1,26 @@
-(ns bkell.component.root
+(ns bkell.component.bkell
+
   (:require [com.stuartsierra.component :as component]
             [bkell.component.datomic :as cd]))
 
 
 (def system-components [:datomic])
 
-(defrecord Root []
+(defrecord Bkell []
   component/Lifecycle
 
   (start [this]
 
-    (println "Root.start CALLED")
+    (println "Bkell.start CALLED")
     (component/start-system this system-components))
 
   (stop [this]
 
-    (println "Root.stop CALLED")
+    (println "Bkell.stop CALLED")
     (component/stop-system this system-components)))
 
-(defn component-root []
+(defn component-bkell []
 
   (component/using
-   (map->Root {:datomic (cd/component-datomic)})
+   (map->Bkell {:datomic (cd/component-datomic)})
    {:datomic :datomic}))
