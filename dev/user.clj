@@ -15,7 +15,7 @@
 
    [alembic.still]
 
-   [bkell.component.root :as cr]
+   [bkell.component.bkell :as bk]
    [bkell.component.datomic :as cd]))
 
 
@@ -27,7 +27,7 @@
 
 (defn init []
   (alter-var-root #'system
-                  (constantly (cr/component-root))))
+                  (constantly (bk/component-bkell))))
 
 (defn start []
   (alter-var-root #'system component/start))
