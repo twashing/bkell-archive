@@ -8,7 +8,8 @@
             [bkell.domain.journals :as journals]))
 
 
-(defn startd [url])
+(defn startd [url]
+  (spittoon/database-connect url))
 
 
 (defn startd-populate [conn]
@@ -33,10 +34,8 @@
         result-journals (journals/create-journal conn "generalledger")
         journal-list (->> result-journals :tempids vals (into []))
 
-
         result-books (books/create-books conn (:db/id group-entity) account-list journal-list)]
 
-    #_[result-default result-group result-accounts result-journals result-books]
     result-books))
 
 (defn startd-schema [conn]

@@ -18,6 +18,10 @@
 
 (deftest test-component
 
+  (testing "basic startd"
+    (let [conn (cd/startd (:url-datomic env))]
+      (is (-> conn nil? not))
+      (is (= datomic.peer.LocalConnection (type conn)))))
 
   (testing "ephemeral"
     (let [env (:test (config/get-config-raw))
