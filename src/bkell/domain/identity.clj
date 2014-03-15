@@ -1,5 +1,6 @@
 (ns bkell.domain.identity
   (:require [datomic.api :only [q db] :as d]
+            [taoensso.timbre :as timbre]
             [bkell.spittoon :as spittoon]))
 
 
@@ -172,7 +173,7 @@
 
      (let [group-nominal (generate-group-nominal
                           group-name
-                          (ffirst (find-currency-by-id currency-id conn)))
+                          (ffirst (find-currency-by-id "USD" conn)))
 
            ;; set the group's owner - :bookkeeping.group/owner
            group-final (assoc-in

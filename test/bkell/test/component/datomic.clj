@@ -40,4 +40,10 @@
 
       (is (= '(:db-after :db-before :tempids :tx-data) (sort (keys result))))
       (is (map? result))))
-)
+
+  (testing "populate"
+    (let [conn (cd/startd-delete-create (:url-datomic env))
+          result-schema (cd/startd-schema conn)
+          result-populate (cd/startd-populate conn)]
+
+      (timbre/debug result-populate))))
