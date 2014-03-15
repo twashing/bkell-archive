@@ -64,13 +64,17 @@
 (defrecord Datomic [env]
   component/Lifecycle
 
-  (start [this]
-    (println "Datomic.start CALLED / env[" env "]")
-    this)
+  (start [component]
 
-  (stop [this]
-    (println "Datomic.stop CALLED")
-    this))
+    (timbre/debug "Datomic.start CALLED / env[" env "]")
+    (let [start-fn (bootd env)
+          conn (start-fn)]
+      (assoc component :conn conn)))
+
+  (stop [component]
+
+    (timbre/debug "Datomic.stop CALLED")
+    (dissoc component :conn)))
 
 (defn component-datomic [env]
   (map->Datomic {:env env}))

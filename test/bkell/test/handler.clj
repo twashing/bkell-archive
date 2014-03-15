@@ -2,14 +2,15 @@
   (:use clojure.test
         ring.mock.request
         bkell.handler)
-  (:require [bkell.component.datomic :as dc]))
+  (:require [bkell.component.datomic :as dc]
+            [taoensso.timbre :as timbre]))
 
 
 (defn fixture-datomic [f]
-  (println "[FIXTURE] fixture-datomic"))
+  (timbre/debug "[FIXTURE] fixture-datomic"))
 
 (defn fixture-http-handler [f]
-  (println "[FIXTURE] fixture-http-handler"))
+  (timbre/debug "[FIXTURE] fixture-http-handler"))
 
 (use-fixtures :once fixture-http-handler)
 

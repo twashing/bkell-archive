@@ -1,6 +1,7 @@
 (ns bkell.test.component.datomic
   (:require [clojure.test :refer :all]
             [taoensso.timbre :as timbre]
+            [com.stuartsierra.component :as component]
 
             [bkell.config :as config]
             [bkell.component.datomic :as cd]))
@@ -52,4 +53,14 @@
 
       (is (-> result-populate nil? not))
       (is (= '(:db-after :db-before :tempids :tx-data) (sort (keys result-populate))))
-      (is (map? result-populate)))))
+      (is (map? result-populate))))
+
+  (testing "start component"
+    (let [cdatomic (cd/component-datomic env)
+          component (component/start cdatomic)]
+
+      (is (-> component nil? not))
+      (is (map? component))
+
+      (is (-> (:conn component) nil? not))
+      (is (= datomic.peer.LocalConnection  (type (:conn component)))))))

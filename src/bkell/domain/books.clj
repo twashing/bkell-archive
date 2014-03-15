@@ -21,7 +21,7 @@
         group-assert [[:db/add
                        group-ref-id
                        :bookkeeping.group/bookkeeping
-                       (->> books first :db/id)]]
+                       (->> books first :db/id) ]]
 
         ;; attaching default accounts
         books-a (if (not (empty? default-accounts))
@@ -34,9 +34,3 @@
                   books-a)]
 
     (spittoon/write-data conn (conj books-b (first group-assert)))))
-
-
-(require '[clojure.reflect :as r])
-(print-table
- (sort-by :name
-          (filter :exception-types (:members (r/reflect "foo")))))
