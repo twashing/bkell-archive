@@ -4,7 +4,7 @@
             [bkell.domain.identity :as identity]))
 
 
-(defn init-schema [conn]
+(defn init-default [conn]
 
   (let [
         currency-list

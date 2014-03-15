@@ -9,22 +9,28 @@
 
 (defn startd [url])
 
+
+(defn startd-populate [conn]
+  (let [result-default (init/init-default conn)
+        result-group (init/init-default-group conn)
+        result-accounts (accounts/create-default-accounts conn)
+        result-journals (journals/create-journal conn "generalledger")
+        result-books (books/create-books conn nil result-accounts result-journals)]
+    nil))
+
+(defn startd-schema [conn]
+  (spittoon/database-schema-create conn))
+
 (defn startd-delete-create [url]
   (let [_ (try (spittoon/database-delete url) (catch Exception e nil))
         _ (spittoon/database-create url)]
     (spittoon/database-connect url)))
 
 (defn startd-ephemeral [url]
-
   (let [conn (startd-delete-create url)
-
-        result-schema (init/init-schema conn)
-        result-group (init/init-default-group conn)
-        result-accounts (accounts/create-default-accounts conn)
-        result-journals (journals/create-journal conn "generalledger")
-        result-books (books/create-books conn nil result-accounts result-journals)]
-
-    ))
+        _ (startd-schema conn)
+        _ (startd-populate conn)]
+    conn))
 
 (defn bootd [env]
   (if (:ephemeral env)
