@@ -18,7 +18,10 @@
   (let [books (generate-books-nominal)
 
         ;; attaching to group
-        group-assert [:db/add group-ref-id :bookkeeping.group/bookkeeping (:db/id books)]
+        group-assert [[:db/add
+                       group-ref-id
+                       :bookkeeping.group/bookkeeping
+                       (->> books first :db/id) ]]
 
         ;; attaching default accounts
         books-a (if (not (empty? default-accounts))
@@ -30,5 +33,4 @@
                   (assoc-in books-a [0 :bookkeeping.group.books/journals] default-journals)
                   books-a)]
 
-    (timbre/debug "books/create-books / books[" books-b "] / assert[" group-assert "]")
-    (spittoon/write-data conn (concat books-b group-assert))))
+    (spittoon/write-data conn (conj books-b (first group-assert)))))

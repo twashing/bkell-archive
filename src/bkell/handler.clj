@@ -9,18 +9,39 @@
 
             [clojure.data.json :as json]
             [clojure.data.codec.base64 :as b64]
-            [clojure.contrib.string :as cstring]))
+            [clojure.contrib.string :as cstring]
+
+            ;; Sente stuff
+            [clojure.core.match :as match :refer (match)] ; Optional, useful
+            [clojure.core.async :as async :refer (<! <!! >! >!! put! chan go go-loop)]
+            [taoensso.sente :as sente]
+            ))
+
+
+;; Sente stuff
+(let [{:keys [ch-recv send-fn ajax-post-fn ajax-get-or-ws-handshake-fn]}
+      (sente/make-channel-socket! {})]
+  (def ring-ajax-post                ajax-post-fn)
+  (def ring-ajax-get-or-ws-handshake ajax-get-or-ws-handshake-fn)
+  (def ch-chsk                       ch-recv) ; ChannelSocket's receive channel
+  (def chsk-send!                    send-fn) ; ChannelSocket's send API fn
+  )
 
 
 (defroutes app-routes
 
- (GET "/" []
-      (-> (ring-resp/response (slurp (io/resource "public/index.html")))
-          (ring-resp/content-type "text/html")))
+  ;; Sente stuff
+  (GET  "/chsk" req (#'ring-ajax-get-or-ws-handshake req)) ; Note the #'
+  (POST "/chsk" req (#'ring-ajax-post                req))
 
- (GET "/signedUploadParams" []
 
-      (let  [policy-doc "{ 'expiration': '2015-12-01T12:00:00.000Z' ,
+  (GET "/" []
+       (-> (ring-resp/response (slurp (io/resource "public/index.html")))
+           (ring-resp/content-type "text/html")))
+
+  (GET "/signedUploadParams" []
+
+       (let  [policy-doc "{ 'expiration': '2015-12-01T12:00:00.000Z' ,
                            'conditions': [
                                         {'bucket': 'bkeeping'},
                                         ['starts-with', '$key', ''],
@@ -28,24 +49,24 @@
                                       ]
                          }"
 
-             pdoc-filtered (cstring/replace-re #"\r" "" (cstring/replace-re #"\n" "" policy-doc))
-             policy (apply str (map char (-> pdoc-filtered .getBytes b64/encode)))
+              pdoc-filtered (cstring/replace-re #"\r" "" (cstring/replace-re #"\n" "" policy-doc))
+              policy (apply str (map char (-> pdoc-filtered .getBytes b64/encode)))
 
-             hmac-sha1 "HmacSHA1"
-             signing-key (SecretKeySpec. (.getBytes "EVnk7c840v0OouypchuzRnnq7qSbJMZLooDUtobL") hmac-sha1)
-             mac (doto (Mac/getInstance hmac-sha1) (.init signing-key))
-             signature (String. (b64/encode (.doFinal mac (.getBytes policy))))]
+              hmac-sha1 "HmacSHA1"
+              signing-key (SecretKeySpec. (.getBytes "EVnk7c840v0OouypchuzRnnq7qSbJMZLooDUtobL") hmac-sha1)
+              mac (doto (Mac/getInstance hmac-sha1) (.init signing-key))
+              signature (String. (b64/encode (.doFinal mac (.getBytes policy))))]
 
-        (json/json-str {
-                        :bucket "bkeeping"
-                        :key "${filename}"
-                        :AWSAccessKeyId "AKIAI7QL4ENX5KZ4QQCQ"
-                        :acl "public-read"
-                        :policy policy
-                        :signature signature})))
+         (json/json-str {
+                         :bucket "bkeeping"
+                         :key "${filename}"
+                         :AWSAccessKeyId "AKIAI7QL4ENX5KZ4QQCQ"
+                         :acl "public-read"
+                         :policy policy
+                         :signature signature})))
 
- (route/resources "/")
- (route/not-found "Not Found"))
+  (route/resources "/")
+  (route/not-found "Not Found"))
 
 
 (def app

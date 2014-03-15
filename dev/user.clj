@@ -15,10 +15,9 @@
 
    [alembic.still]
 
-   [bkell.config :as config]
-   [bkell.component.bkell :as ck]
+   [bkell.component.bkell :as bk]
    [bkell.component.datomic :as cd]
-   :reload-all))
+   [bkell.config :as config]))
 
 
 (defn reload-project []
@@ -28,10 +27,9 @@
 (def env-key :test)
 (def system nil)
 (defn init []
-  (let [env (env-key (config/get-config-raw))]
-    (alter-var-root #'system
-                    #_(constantly (ck/component-bkell env))
-                    (constantly (cd/component-datomic env)))))
+  (alter-var-root #'system
+                  (constantly (bk/component-bkell (env-key (config/get-config-raw))))))
+
 (defn start []
   (alter-var-root #'system component/start))
 (defn stop []

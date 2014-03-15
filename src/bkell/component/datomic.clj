@@ -1,47 +1,65 @@
 (ns bkell.component.datomic
-  (:import java.lang.Exception)
   (:require [com.stuartsierra.component :as component]
             [taoensso.timbre :as timbre]
-            [bkell.config :as config]
-            [bkell.spittoon :as spittoon]
             [bkell.init :as init]
+            [bkell.spittoon :as spittoon]
             [bkell.domain.books :as books]
             [bkell.domain.accounts :as accounts]
-            [bkell.domain.journals :as journals]
-            [bkell.domain.identity :as identity]))
+            [bkell.domain.journals :as journals]))
 
 
-
-(defn database-construct [conn]
-
-  (let [_ (spittoon/database-schema-create conn)
-        init-result (init/init-db conn)
-
-        ;; kludge - ensuring transact result is being evaluated
-        _ (timbre/debug "verifying init-db[" init-result "]")
-        _ (timbre/debug "verifying conn[" conn "]")
-        transact-result (init/init-default-group conn)
-        group-populated (identity/populate-group-from-transact conn transact-result)
-        aresults (accounts/create-default-accounts conn)
-        jresults (journals/create-journal conn "generalledger")
-
-        _ (timbre/debug "group DB id: " (:db/id group-populated))
-        _ (books/create-books conn (:db/id group-populated) aresults jresults)]
-    ))
+(defn startd [url]
+  (spittoon/database-connect url))
 
 
-(defn database-boot [env]
+(defn startd-populate [conn]
+  (let [result-default (init/init-default conn)
+        _ (vals result-default)  ;; kludge - needed elements won't transact unless realized here
 
+        result-group (init/init-default-group conn)
+        _ (vals result-group)
+
+        group-entity (->> result-group
+                          :tempids
+                          seq
+                          (map second)
+                          (map #(spittoon/populate-entity conn %))
+                          (filter #(not (nil? (:bookkeeping.group/name %))))
+                          first)
+
+        result-accounts (accounts/create-default-accounts conn)
+        account-list (->> result-accounts :tempids vals (into []))
+
+
+        result-journals (journals/create-journal conn "generalledger")
+        journal-list (->> result-journals :tempids vals (into []))
+
+        result-books (books/create-books conn (:db/id group-entity) account-list journal-list)]
+
+    result-books))
+
+(defn startd-schema [conn]
+  (spittoon/database-schema-create conn))
+
+(defn startd-delete-create [url]
+  (let [_ (try (spittoon/database-delete url) (catch Exception e nil))
+        _ (spittoon/database-create url)]
+    (spittoon/database-connect url)))
+
+(defn startd-ephemeral [url]
+  (let [conn (startd-delete-create url)
+        _ (startd-schema conn)
+        _ (startd-populate conn)]
+    conn))
+
+(defn bootd [env]
   (if (:ephemeral env)
-    (let [url (:url-datomic env)
-          _ (try
-              (spittoon/database-delete url)
-              (catch Exception e (timbre/debug "DB Boot: no database to delete... skipping")))
-          _ (spittoon/database-create url)
-          conn (spittoon/database-connect url)
-          _ (database-construct conn)]
-
-      conn)))
+    (with-meta
+      (partial startd-ephemeral (:url-datomic env))
+      {:name :startd-ephemeral})
+    (with-meta
+      (partial startd (:url-datomic env))
+      {:name :startd})))
 
 
 (defrecord Datomic [env]
@@ -49,14 +67,16 @@
 
   (start [component]
 
-    (timbre/debug "Datomic.start CALLED > " env)
-
-    (assoc component :conn (database-boot env)))
+    (timbre/debug "Datomic.start CALLED / env[" env "]")
+    (let [start-fn (bootd env)
+          conn (start-fn)]
+      (assoc component :conn conn)))
 
   (stop [component]
 
     (timbre/debug "Datomic.stop CALLED")
-    component))
+    (dissoc component :conn)))
+
 
 (defn component-datomic [env]
   (map->Datomic {:env env}))
