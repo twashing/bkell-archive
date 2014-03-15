@@ -18,7 +18,13 @@
   (let [books (generate-books-nominal)
 
         ;; attaching to group
-        group-assert [[:db/add group-ref-id :bookkeeping.group/bookkeeping (-> books first :db/id)]]
+        group-assert [[:db/add
+                       group-ref-id
+                       :bookkeeping.group/bookkeeping
+                       (->> books first :db/id)
+                       ;;:bookkeeping.group/name "fubar"
+                       ]
+                      ]
 
         ;; attaching default accounts
         books-a (if (not (empty? default-accounts))
@@ -35,6 +41,13 @@
                   books-a)]
 
 
-    (timbre/debug "...[" group-assert "]")
-    (spittoon/write-data conn books-b)
-    (spittoon/write-data conn group-assert)))
+    (timbre/debug "...[" (conj books-b (first group-assert)) "]")
+    (spittoon/write-data conn (conj books-b (first group-assert)))
+    ;;(spittoon/write-data conn group-assert)
+    ))
+
+
+(require '[clojure.reflect :as r])
+(print-table
+ (sort-by :name
+          (filter :exception-types (:members (r/reflect "foo")))))
