@@ -16,18 +16,20 @@
    [alembic.still]
 
    [bkell.component.bkell :as bk]
-   [bkell.component.datomic :as cd]))
+   [bkell.component.datomic :as cd]
+   [bkell.config :as config]))
 
 
 (defn reload-project []
   (alembic.still/load-project))
 
 
+(def env-key :test)
 (def system nil)
 
 (defn init []
   (alter-var-root #'system
-                  (constantly (bk/component-bkell))))
+                  (constantly (bk/component-bkell (env-key (config/get-config-raw))))))
 
 (defn start []
   (alter-var-root #'system component/start))

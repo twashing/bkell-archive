@@ -1,18 +1,21 @@
 (ns bkell.test.component.datomic
-  (:require [bkell.test.component.datomic :refer :all]
-            [clojure.test :refer :all]
-            [midje.sweet :refer :all]
-            [bkell.component.datomic :as dc]))
+  (:require [clojure.test :refer :all]
+            [taoensso.timbre :as timbre]
+
+            [bkell.config :as config]
+            [bkell.component.datomic :as cd]))
 
 
 (defn fixture-datomic [f]
-  (println "[FIXTURE] fixture-datomic"))
-
-
+  (timbre/debug "[FIXTURE] fixture-datomic")
+  (f))
 (use-fixtures :once fixture-datomic)
 
 
-(deftest test-app
+(deftest test-component
 
-  (testing "not-found route"
-    (is (= 1 1))))
+  (let [env (:test (config/get-config-raw))
+        rslt (cd/bootd env) ]
+
+    (is (fn? rslt))
+    (is (= :startd-ephemeral (-> rslt meta :name)))))

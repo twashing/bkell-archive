@@ -12,6 +12,7 @@
 
                  [http-kit "2.1.17"]
                  [com.taoensso/sente "0.8.2"]
+                 [com.taoensso/encore "0.9.6"]
                  [com.taoensso/timbre "3.1.6"]
 
                  [org.clojure/core.match "0.2.1"]
@@ -23,7 +24,8 @@
   :source-paths ["src/" "resources/templ/clojurescript/"]
 
   :plugins [[lein-cljsbuild "1.0.2"]
-            [com.cemerick/austin "0.1.4"]]
+            [com.cemerick/austin "0.1.4"]
+            [quickie "0.2.5"]]
 
   :cljsbuild {:builds [{
                         ;; The path to the top-level ClojureScript source directory:
