@@ -6,7 +6,7 @@
             [bkell.domain.journals :as journals]))
 
 
-(defn refresh []
+#_(defn refresh []
 
   (database-delete url)
   (database-create url)
