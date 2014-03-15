@@ -6,16 +6,29 @@
             [bkell.component.datomic :as cd]))
 
 
+(def env nil)
+
 (defn fixture-datomic [f]
-  (timbre/debug "[FIXTURE] fixture-datomic")
+
+  (alter-var-root #'env (constantly (:test (config/get-config-raw))))
+
+  (timbre/debug "[FIXTURE] fixture-datomic / env[" env "]")
   (f))
+
 (use-fixtures :once fixture-datomic)
 
 
 (deftest test-component
 
-  (let [env (:test (config/get-config-raw))
-        rslt (cd/bootd env) ]
+  (testing "ephemeral"
+    (let [env (:test (config/get-config-raw))
+          rslt (cd/bootd env) ]
 
-    (is (fn? rslt))
-    (is (= :startd-ephemeral (-> rslt meta :name)))))
+      (is (fn? rslt))
+      (is (= :startd-ephemeral (-> rslt meta :name)))))
+
+  (testing "delete-create"
+    (let [conn (cd/startd-delete-create (:url-datomic env))]
+
+      (is (-> conn nil? not))
+      (is (= datomic.peer.LocalConnection (type conn))))))

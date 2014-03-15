@@ -14,7 +14,7 @@
   (database-schema-create conn)
 
 
-  (init/init-db conn)
+  (init/init-schema conn)
 
 
   (def gresults (init/init-default-group conn))

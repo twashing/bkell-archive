@@ -4,28 +4,23 @@
 
 (declare write-data)
 
-(def url "datomic:free://localhost:4334/bkeeping")
 
+(defn database-create [url] (d/create-database url))
+(defn database-delete [url] (d/delete-database url))
 
-(defn database-create [iurl]
-  (d/create-database (if iurl iurl url)))
-(defn database-delete [iurl]
-  (d/delete-database (if iurl iurl url)))
-
-
-(defn database-connect [iurl]
-  (d/connect (if iurl iurl url)))
+(defn database-connect [url]
+  (d/connect url))
 
 (defn database-schema-create [conn]
   (let [schema-tx (read-string (slurp "resources/schema/bkeeping-schema.edn"))]
     (write-data conn schema-tx)))
 
 
-(defn write-data [conn data]
-  @(d/transact conn data))
-
 (defn query [query-expression query-parameters conn]
   (d/q query-expression (d/db conn) query-parameters))
+
+(defn write-data [conn data]
+  @(d/transact conn data))
 
 
 (defn populate-entity [conn eid]
