@@ -46,4 +46,6 @@
           result-schema (cd/startd-schema conn)
           result-populate (cd/startd-populate conn)]
 
-      (timbre/debug result-populate))))
+      (is (-> result-populate nil? not))
+      (is (= '(:db-after :db-before :tempids :tx-data) (sort (keys result-populate))))
+      (is (map? result-populate)))))

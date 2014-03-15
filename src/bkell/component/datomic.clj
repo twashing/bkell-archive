@@ -13,10 +13,10 @@
 
 (defn startd-populate [conn]
   (let [result-default (init/init-default conn)
-        _ (timbre/debug "verify default create [" result-default "]")
+        _ (vals result-default)  ;; kludge - needed elements won't transact unless realized here
 
         result-group (init/init-default-group conn)
-        _ (timbre/debug "verify group creation [" result-group "]")
+        _ (vals result-group)
 
         group-entity (->> result-group
                           :tempids
@@ -33,13 +33,6 @@
         result-journals (journals/create-journal conn "generalledger")
         journal-list (->> result-journals :tempids vals (into []))
 
-        _ (timbre/debug account-list)
-
-
-        #_account-list #_(map #(spittoon/populate-entity conn %)
-                          (map first (accounts/list-accounts conn)))
-        #_journal-list #_(map #(spittoon/populate-entity conn %)
-                          (map first (journals/list-journals conn)))
 
         result-books (books/create-books conn (:db/id group-entity) account-list journal-list)]
 
