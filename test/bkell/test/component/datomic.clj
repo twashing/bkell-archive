@@ -20,7 +20,8 @@
 (deftest test-component
 
   (testing "basic startd"
-    (let [conn (cd/startd (:url-datomic env))]
+    (let [_ (cd/startd-delete-create (:url-datomic env))
+          conn (cd/startd (:url-datomic env))]
       (is (-> conn nil? not))
       (is (= datomic.peer.LocalConnection (type conn)))))
 
