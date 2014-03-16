@@ -30,6 +30,7 @@
   (alter-var-root #'system
                   (constantly (bk/component-bkell (env-key (config/get-config-raw))))))
 
+
 (defn start []
   (alter-var-root #'system component/start))
 (defn stop []
