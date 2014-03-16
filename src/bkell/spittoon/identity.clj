@@ -1,10 +1,7 @@
 (ns bkell.spittoon.identity
   (:require [datomic.api :only [q db] :as d]
             [taoensso.timbre :as timbre]
-            [bkell.spittoon :as spittoon]
-            [bkell.spittoon.accounts :as sa]
-            [bkell.spittoon.journals :as sj]
-            [bkell.spittoon.books :as sb]))
+            [bkell.spittoon :as spittoon]))
 
 
 (defn generate-prefixed-attribute [prefix attribute]
@@ -205,18 +202,3 @@
                                (map (fn [i] (spittoon/populate-entity conn i))))]
 
     (first (filter #(contains? % :bookkeeping.group/id) populated-results))))
-
-
-(defn build-group-internals
-  "Builds the default accounts, journals and books for the group"
-  [conn group-entity]
-
-  (let [result-accounts (sa/create-default-accounts conn)
-        account-list (->> result-accounts :tempids vals (into []))
-
-        result-journals (sj/create-journal conn "generalledger")
-        journal-list (->> result-journals :tempids vals (into []))
-
-        result-books (sb/create-books conn (:db/id group-entity) account-list journal-list)]
-
-    (spittoon/populate-entity conn (:db/id group-entity))))
