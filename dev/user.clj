@@ -17,7 +17,8 @@
 
    [bkell.component.bkell :as bk]
    [bkell.component.datomic :as cd]
-   [bkell.config :as config]))
+   [bkell.config :as config]
+   [bkell.spittoon :as spittoon]))
 
 
 (defn reload-project []
