@@ -1,7 +1,7 @@
 (ns bkell.init
   (:require [datomic.api :only [q db] :as d]
             [bkell.spittoon :as spittoon]
-            [bkell.domain.identity :as identity]))
+            [bkell.spittoon.identity :as identity]))
 
 
 (defn init-default [conn]

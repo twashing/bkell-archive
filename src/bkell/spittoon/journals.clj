@@ -1,8 +1,8 @@
-(ns bkell.domain.journals
+(ns bkell.spittoon.journals
   (:require [datomic.api :only [q db] :as d]
             [bkell.spittoon :as spittoon]
-            [bkell.domain.identity :as identity]
-            [bkell.domain.accounts :as accounts]))
+            [bkell.spittoon.identity :as identity]
+            [bkell.spittoon.accounts :as accounts]))
 
 
 (defn list-journals [conn]

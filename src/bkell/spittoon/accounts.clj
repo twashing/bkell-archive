@@ -1,7 +1,7 @@
-(ns bkell.domain.accounts
+(ns bkell.spittoon.accounts
   (:require [datomic.api :only [q db] :as d]
             [bkell.spittoon :as spittoon]
-            [bkell.domain.identity :as identity]))
+            [bkell.spittoon.identity :as identity]))
 
 
 (defn list-accounts [conn]

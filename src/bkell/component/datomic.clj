@@ -3,9 +3,9 @@
             [taoensso.timbre :as timbre]
             [bkell.init :as init]
             [bkell.spittoon :as spittoon]
-            [bkell.domain.books :as books]
-            [bkell.domain.accounts :as accounts]
-            [bkell.domain.journals :as journals]))
+            [bkell.spittoon.books :as books]
+            [bkell.spittoon.accounts :as accounts]
+            [bkell.spittoon.journals :as journals]))
 
 
 (defn startd [url]

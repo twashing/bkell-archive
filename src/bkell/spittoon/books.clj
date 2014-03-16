@@ -1,4 +1,4 @@
-(ns bkell.domain.books
+(ns bkell.spittoon.books
   (:require [datomic.api :only [q db] :as d]
             [taoensso.timbre :as timbre]
             [bkell.spittoon :as spittoon]))
