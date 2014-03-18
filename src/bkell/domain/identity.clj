@@ -29,6 +29,10 @@
 
     result-group))
 
+(defn load-group [conn gname]
+  (let [r1 (si/find-group-by-name conn gname)]
+    (spittoon/populate-entity conn (ffirst r1))))
+
 
 ;; login / logout
 ;; add user to group
@@ -68,25 +72,38 @@
 (defn account-exists? [conn gname jname name]
   (let [r1 (si/find-group-by-name conn gname)
         group-entity (spittoon/populate-entity conn (ffirst r1))
+
         as (list-accounts-forgroup conn group-entity)
         anames (account-names-forentities conn as)]
 
     (not (empty? (filter #(= name %) anames)))))
 
+(defn accounttype-exists? [conn atype]
+
+  (let [atypes (si/list-account-types conn)
+        anames (map #(second %) atypes)]
+    (not (empty? (filter #(= atype %) anames)))))
 
 (defn add-account
 
-  ([conn gname name counter-weight]
-     (add-account conn "generalledger" name counter-weight))
+  ([conn gname aname atype aweight]
+     (add-account conn gname "generalledger" aname atype aweight))
 
-  ([conn gname jname name counter-weight]
-
-     ;; verify no duplicate accounts
+  ([conn gname jname aname atype aweight]
      {:pre [(group-exists? conn gname)
-            (not (journal-exists? conn jname))
-            (not (account-exists? conn gname jname name))]}
+            (journal-exists? conn gname jname)
+            (not (account-exists? conn gname jname aname))
+            (accounttype-exists? conn atype)]}
 
-     ))
+     (let [gid (ffirst (si/find-group-by-name conn gname))
+           group-entity (spittoon/populate-entity conn gid)
+           tx-result (sa/create-account conn aname atype aweight)
+
+           aid (-> tx-result :tempids vals first)
+           bid (->> group-entity :bookkeeping.group/bookkeeping first :db/id)
+           add-to-group [[:db/add bid :bookkeeping.group.books/accounts aid]]]
+
+       (spittoon/write-data conn add-to-group))))
 
 
 ;; add journal entry
