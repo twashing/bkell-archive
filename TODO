@@ -11,3 +11,5 @@ lein hicv 2html resources/templ/documents/one.edn && cp resources/templ/document
   - notify server of success: file-id, etc
 
 -- setup DB constraints for the below. Currently only implemented in code
+
+-- cache lookup manipulation in domain/identity

@@ -18,7 +18,11 @@
    [bkell.component.bkell :as bk]
    [bkell.component.datomic :as cd]
    [bkell.config :as config]
-   [bkell.spittoon :as spittoon]))
+   [bkell.spittoon :as spittoon]
+   [bkell.spittoon.identity :as si]
+   [bkell.spittoon.books :as sb]
+   [bkell.spittoon.accounts :as sa]
+   [bkell.spittoon.journals :as sj]))
 
 
 (defn reload-project []

@@ -37,14 +37,54 @@
   )
 
 
-;; add account
-;;  - no duplicate names
+(defn group-exists? [conn gname]
+  (not (empty? (si/find-group-by-name conn gname))))
+
+(defn list-journals-forgroup [conn gname]
+  (let [r1 (si/find-group-by-name conn gname)
+        r2 (spittoon/populate-entity conn (ffirst r1))]
+
+    (->> r2
+         :bookkeeping.group/bookkeeping
+         first
+         :bookkeeping.group.books/journals
+         (map #(spittoon/populate-entity conn (:db/id %))))))
+
+(defn journal-exists? [conn gname jname]
+  (let [js (list-journals-forgroup conn gname)]
+    (not (empty? (filter #(= jname (:bookkeeping.group.books.journal/name %)) js)))))
+
+
+(defn account-names-forentities [conn account-entities]
+  (map :bookkeeping.group.books.account/name account-entities))
+
+(defn list-accounts-forgroup [conn group-entity]
+  (->> group-entity
+       :bookkeeping.group/bookkeeping
+       first
+       :bookkeeping.group.books/accounts
+       (map #(spittoon/populate-entity conn (:db/id %)))))
+
+(defn account-exists? [conn gname jname name]
+  (let [r1 (si/find-group-by-name conn gname)
+        group-entity (spittoon/populate-entity conn (ffirst r1))
+        as (list-accounts-forgroup conn group-entity)
+        anames (account-names-forentities conn as)]
+
+    (not (empty? (filter #(= name %) anames)))))
+
+
 (defn add-account
 
-  ([conn name counter-weight]
+  ([conn gname name counter-weight]
      (add-account conn "generalledger" name counter-weight))
 
-  ([conn journal name counter-weight]
+  ([conn gname jname name counter-weight]
+
+     ;; verify no duplicate accounts
+     {:pre [(group-exists? conn gname)
+            (not (journal-exists? conn jname))
+            (not (account-exists? conn gname jname name))]}
 
      ))
 
