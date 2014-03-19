@@ -1,4 +1,4 @@
-(ns bkell.test.domain.journals
+(ns bkell.test.domain.domain
   (:require [clojure.test :refer :all]
             [taoensso.timbre :as timbre]
             [com.stuartsierra.component :as component]
@@ -24,5 +24,8 @@
 
 (deftest test-account-for-entry
 
-  (testing "account-for-entry?" )
+  (testing "account-for-entry?"
+
+    (let [entry-full (config/load-edn "test-entry-bal.edn")]))
+
   (testing "entry-balanced?" ))

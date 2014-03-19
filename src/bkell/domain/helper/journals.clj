@@ -29,7 +29,7 @@
       (if (< 1 (count y))
         (recur x (rest y))))))
 
-(defn account-for-entry? [gname entry accounts]
+(defn account-for-entry? [conn entry accounts]
   (empty?
    (filter
     (fn [a]
@@ -37,14 +37,19 @@
       ;; given main.account list, loop through dt / ct in entrys and see if accountid matches
       (loop [x a y accounts]
 
-        ;;(println ">> entry-part [" x "] / account-list [" (count y) "]")
-        (if (= (:bookkeeping.group.books.journal.entry.content/account x)
-               (:db/id (first y)))
-          false
-          (if (< 1 (count y))
-            (recur x (rest y))
-            true     ;; entry added to filter if there was no accountid(s) that matched its reference
-            ))))
+        (let [araw (:bookkeeping.group.books.journal.entry.content/account x)
+              avalue (if (string? araw)
+                       (ffirst (sa/find-account-by-name conn araw))
+                       araw)]
+
+          (println ">> araw [" araw "] / avalue[" avalue "]")
+          #_(println ">> entry-part [" x "] / account-list [" (count y) "]")
+          (if (= avalue (:db/id (first y)))
+            false
+            (if (< 1 (count y))
+              (recur x (rest y))
+              true     ;; entry added to filter if there was no accountid(s) that matched its reference
+              )))))
     (:bookkeeping.group.books.journal.entry/content entry))))
 
 (defn entry-balanced?
