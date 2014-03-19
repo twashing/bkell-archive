@@ -20,7 +20,7 @@
   (let [js (list-journals-forgroup conn gname)]
     (not (empty? (filter #(= jname (:bookkeeping.group.books.journal/name %)) js)))))
 
-(defn find-linked-account [uname dtct accounts]
+(defn find-linked-account [dtct accounts]
 
   ;; given main.account list, loop through dt / ct in entrys and see if accountid matches
   (loop [x dtct y accounts]
@@ -37,7 +37,7 @@
       ;; given main.account list, loop through dt / ct in entrys and see if accountid matches
       (loop [x a y accounts]
 
-        (println ">> entry-part [" x "] / account-list [" (count y) "]")
+        ;;(println ">> entry-part [" x "] / account-list [" (count y) "]")
         (if (= (:bookkeeping.group.books.journal.entry.content/account x)
                (:db/id (first y)))
           false
@@ -52,17 +52,27 @@
 
     :lhs -> dt/dt == ct/ct
     :rhs -> dt/cr == ct/dt "
-  [uname entry accounts]
+  [entry accounts]
 
   ;;(println (str "entry-balanced? > uname[" uname "] > entry[" entry "]"))
   (let [result  (reduce (fn [a b]
-                          (let [acct (find-linked-account uname b accounts)]
-                            (if (or (and (= "debit" (:counterWeight acct)) (= :debit (keyword (:tag b))))
-                                    (and (= "credit" (:counterWeight acct)) (= :credit (keyword (:tag b)))))
-                              (merge a { :lhs (+ (:lhs a) (:amount b))})     ;; increase :lhs if debit(ing) a debit account OR credit(ing) a credit account
-                              (merge a { :rhs (+ (:rhs a) (:amount b))}))))
+                          (let [acct (find-linked-account b accounts)]
+                            (if (or (and (= "debit" (:bookkeeping.group.books.account/counterWeight acct))
+                                         (= "dt" (:bookkeeping.group.books.journal.entry.content/type a)))
+
+                                    (and (= "credit" (:bookkeeping.group.books.account/counterWeight acct))
+                                         (= "ct" (:bookkeeping.group.books.journal.entry.content/type a))))
+
+                              ;; increase :lhs if debit(ing) a debit account OR credit(ing) a credit account
+                              (merge a {:lhs
+                                        (+ (:lhs a)
+                                           (:bookkeeping.group.books.journal.entry.content/amount b))})
+
+                              (merge a {:rhs
+                                        (+ (:rhs a)
+                                           (:bookkeeping.group.books.journal.entry.content/amount b))}))))
                         {:lhs 0.0 :rhs 0.0}   ;; beginning tally
-                        (:content entry))]       ;; list of debits and credits
+                        (:bookkeeping.group.books.journal.entry/content entry))] ;; list of debits and credits
 
     ;;(println (str "entry-balanced? > result[" result "]"))
     (= (:lhs result) (:rhs result))))
