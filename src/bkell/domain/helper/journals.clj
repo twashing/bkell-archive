@@ -20,14 +20,20 @@
   (let [js (list-journals-forgroup conn gname)]
     (not (empty? (filter #(= jname (:bookkeeping.group.books.journal/name %)) js)))))
 
-(defn find-linked-account [dtct accounts]
+(defn find-linked-account [conn dtct accounts]
 
   ;; given main.account list, loop through dt / ct in entrys and see if accountid matches
   (loop [x dtct y accounts]
-    (if (= (:accountid x) (:id (first y)))
-      (first y)
-      (if (< 1 (count y))
-        (recur x (rest y))))))
+
+    (let [araw (:bookkeeping.group.books.journal.entry.content/account x)
+          avalue (if (string? araw)
+                   (ffirst (sa/find-account-by-name conn araw))
+                   araw)]
+
+      (if (= avalue (:db/id (first y)))
+        (first y)
+        (if (< 1 (count y))
+          (recur x (rest y)))))))
 
 (defn account-for-entry? [conn entry accounts]
   (empty?
@@ -42,8 +48,8 @@
                        (ffirst (sa/find-account-by-name conn araw))
                        araw)]
 
-          (println ">> araw [" araw "] / avalue[" avalue "]")
-          #_(println ">> entry-part [" x "] / account-list [" (count y) "]")
+          ;;(println ">> araw [" araw "] / avalue[" avalue "]")
+          ;;(println ">> entry-part [" x "] / account-list [" (count y) "]")
           (if (= avalue (:db/id (first y)))
             false
             (if (< 1 (count y))
@@ -57,11 +63,11 @@
 
     :lhs -> dt/dt == ct/ct
     :rhs -> dt/cr == ct/dt "
-  [entry accounts]
+  [conn entry accounts]
 
   ;;(println (str "entry-balanced? > uname[" uname "] > entry[" entry "]"))
   (let [result  (reduce (fn [a b]
-                          (let [acct (find-linked-account b accounts)]
+                          (let [acct (find-linked-account conn b accounts)]
                             (if (or (and (= "debit" (:bookkeeping.group.books.account/counterWeight acct))
                                          (= "dt" (:bookkeeping.group.books.journal.entry.content/type a)))
 
@@ -79,5 +85,5 @@
                         {:lhs 0.0 :rhs 0.0}   ;; beginning tally
                         (:bookkeeping.group.books.journal.entry/content entry))] ;; list of debits and credits
 
-    ;;(println (str "entry-balanced? > result[" result "]"))
+    (println (str "entry-balanced? > result[" result "]"))
     (= (:lhs result) (:rhs result))))
