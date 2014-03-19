@@ -3,30 +3,17 @@
             [bkell.spittoon.identity :as si]
             [bkell.spittoon.accounts :as sa]
             [bkell.spittoon.journals :as sj]
-            [bkell.spittoon.books :as sb]))
+            [bkell.spittoon.books :as sb]
 
+            [bkell.domain.helper.identity :as helperi]
+            [bkell.domain.helper.journals :as helperj]
+            [bkell.domain.helper.accounts :as helpera]))
 
-(defn build-group-internals
-  "Builds the default accounts, journals and books for the group"
-  [conn group-entity]
-
-  (let [result-accounts (sa/create-default-accounts conn)
-        account-list (->> result-accounts :tempids vals (into []))
-
-        result-journals (sj/create-journal conn "generalledger")
-        journal-list (->> result-journals :tempids vals (into []))
-
-        result-books (sb/create-books conn (:db/id group-entity) account-list journal-list)]
-
-    (spittoon/populate-entity conn (:db/id group-entity))))
 
 (defn create-group [conn name currencyid countryid]
-
   (let [transact-result (si/create-group conn [name currencyid countryid])
         populated-group (si/populate-group-from-transact conn transact-result)
-
-        result-group (build-group-internals conn populated-group)]
-
+        result-group (helperi/build-group-internals conn populated-group)]
     result-group))
 
 (defn load-group [conn gname]
@@ -37,52 +24,8 @@
 ;; login / logout
 ;; add user to group
 ;; add journal (set of books) to group
-(defn add-journal [conn name]
-  )
+(defn add-journal [conn name])
 
-
-(defn group-exists? [conn gname]
-  (not (empty? (si/find-group-by-name conn gname))))
-
-(defn list-journals-forgroup [conn gname]
-  (let [r1 (si/find-group-by-name conn gname)
-        r2 (spittoon/populate-entity conn (ffirst r1))]
-
-    (->> r2
-         :bookkeeping.group/bookkeeping
-         first
-         :bookkeeping.group.books/journals
-         (map #(spittoon/populate-entity conn (:db/id %))))))
-
-(defn journal-exists? [conn gname jname]
-  (let [js (list-journals-forgroup conn gname)]
-    (not (empty? (filter #(= jname (:bookkeeping.group.books.journal/name %)) js)))))
-
-
-(defn account-names-forentities [conn account-entities]
-  (map :bookkeeping.group.books.account/name account-entities))
-
-(defn list-accounts-forgroup [conn group-entity]
-  (->> group-entity
-       :bookkeeping.group/bookkeeping
-       first
-       :bookkeeping.group.books/accounts
-       (map #(spittoon/populate-entity conn (:db/id %)))))
-
-(defn account-exists? [conn gname jname name]
-  (let [r1 (si/find-group-by-name conn gname)
-        group-entity (spittoon/populate-entity conn (ffirst r1))
-
-        as (list-accounts-forgroup conn group-entity)
-        anames (account-names-forentities conn as)]
-
-    (not (empty? (filter #(= name %) anames)))))
-
-(defn accounttype-exists? [conn atype]
-
-  (let [atypes (si/list-account-types conn)
-        anames (map #(second %) atypes)]
-    (not (empty? (filter #(= atype %) anames)))))
 
 (defn add-account
 
@@ -90,10 +33,10 @@
      (add-account conn gname "generalledger" aname atype aweight))
 
   ([conn gname jname aname atype aweight]
-     {:pre [(group-exists? conn gname)
-            (journal-exists? conn gname jname)
-            (not (account-exists? conn gname jname aname))
-            (accounttype-exists? conn atype)]}
+     {:pre [(helperi/group-exists? conn gname)
+            (helperj/journal-exists? conn gname jname)
+            (not (helpera/account-exists? conn gname jname aname))
+            (helpera/accounttype-exists? conn atype)]}
 
      (let [gid (ffirst (si/find-group-by-name conn gname))
            group-entity (spittoon/populate-entity conn gid)
@@ -109,5 +52,80 @@
 ;; add journal entry
 ;;   - balanced
 ;;   - linked against valid accounts
-(defn add-journal-entry [conn entry]
+(defn add-entry [conn gname jname entry]
+  {:pre  [(not (nil? gname))
+          (not (nil? jname))
+          (not (nil? entry))
+          (not (clojure.string/blank?
+                (:bookkeeping.group.books.journal.entry/id entry)))
+          (not (clojure.string/blank?
+                (:bookkeeping.group.books.journal.entry/date entry)))
+          (not (clojure.string/blank?
+                (:bookkeeping.group.books.journal.entry/currency entry)))
+
+           ;; ASSERT that accounts correspond with existing accounts
+           ;;(bkell.domain/account-for-entry? uname entry (getk/get-accounts uname))
+
+
+           ;; ASSERT that entry is balanced
+           ;; :lhs -> dt/dt == ct/ct
+           ;; :rhs -> dt/cr == ct/dt
+           ;;(bkell.domain/entry-balanced? uname entry (getk/get-accounts uname))
+          ]}
+
   )
+
+(comment
+
+  (defn account-for-entry? [uname entry accounts]
+    (empty?
+     (filter
+      (fn [a]
+        (loop [x a y accounts]    ;; given main.account list, loop through dt / ct in entrys and see if accountid matches
+
+          (if (= (:accountid x) (:id (first y)))
+            false
+            (if (< 1 (count y))
+              (recur x (rest y))
+              true                ;; entry added to filter if there was no accountid(s) that matched its reference
+              ))))
+      (:content entry))))
+
+  (defn entry-balanced?
+    " Entry balance criteria is:
+
+    :lhs -> dt/dt == ct/ct
+    :rhs -> dt/cr == ct/dt "
+    [uname entry accounts]
+
+    ;;(println (str "entry-balanced? > uname[" uname "] > entry[" entry "]"))
+    (let [result  (reduce (fn [a b]
+                            (let [acct (find-linked-account uname b accounts)]
+                              (if (or (and (= "debit" (:counterWeight acct)) (= :debit (keyword (:tag b))))
+                                      (and (= "credit" (:counterWeight acct)) (= :credit (keyword (:tag b)))))
+                                (merge a { :lhs (+ (:lhs a) (:amount b))})     ;; increase :lhs if debit(ing) a debit account OR credit(ing) a credit account
+                                (merge a { :rhs (+ (:rhs a) (:amount b))}))))
+                          { :lhs 0.0 :rhs 0.0}   ;; beginning tally
+                          (:content entry))]       ;; list of debits and credits
+
+      ;;(println (str "entry-balanced? > result[" result "]"))
+      (= (:lhs result) (:rhs result))))
+
+  (defn add-entry [entry uname]
+
+    { :pre  [ (not (nil? uname))
+              (not (nil? entry))
+              (not (clojure.string/blank? (:id entry)))
+              (not (clojure.string/blank? (:date entry)))
+
+              ;; ASSERT that accounts correspond with existing accounts
+              (bkell.domain/account-for-entry? uname entry (getk/get-accounts uname))
+
+
+              ;; ASSERT that entry is balanced
+              ;; :lhs -> dt/dt == ct/ct
+              ;; :rhs -> dt/cr == ct/dt
+              (bkell.domain/entry-balanced? uname entry (getk/get-accounts uname))]}
+
+    (mc/update "bookkeeping" { :owner uname "content.content.content.id" "main.entries"} { mop/$push { :content.$.content.0.content.0.content entry}})
+    entry))
