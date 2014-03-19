@@ -39,7 +39,8 @@
                                    :optimizations :whitespace
                                    :pretty-print true}}]}
 
-  :profiles {:dev {:dependencies [[midje "1.6.3"]
+  :profiles {:dev {;;:source-paths ["dev" "src/" "resources/templ/clojurescript/"]
+                   :dependencies [[midje "1.6.3"]
                                   [javax.servlet/servlet-api "2.5"]
                                   [ring-mock "0.1.5"]
                                   [ring/ring-jetty-adapter "1.2.1"]
