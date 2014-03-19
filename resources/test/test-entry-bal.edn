@@ -1,12 +1,12 @@
-{:tag :entry
-      :id ""
-      :date ""
-      :content
-      [{:tag :debit
-        :id "dtS"
-        :amount 120.00
-        :accountid "" }
-       {:tag :credit
-        :id "crS"
-        :amount 120.00
-        :accountid "" }]}
+{:bookkeeping.group.books.journal.entry/id "testid"
+ :bookkeeping.group.books.journal.entry/date "03/22/2011"
+ :bookkeeping.group.books.journal.entry/currency "USD"
+ :bookkeeping.group.books.journal.entry/content
+ [{:bookkeeping.group.books.journal.entry.content/type "dt"
+   :bookkeeping.group.books.journal.entry.content/id "dtS"
+   :bookkeeping.group.books.journal.entry.content/amount 120.00
+   :bookkeeping.group.books.journal.entry.content/account "cash" }
+  {:bookkeeping.group.books.journal.entry.content/type "ct"
+   :bookkeeping.group.books.journal.entry.content/id "crS"
+   :bookkeeping.group.books.journal.entry.content/amount 120.00
+   :bookkeeping.group.books.journal.entry.content/account "revenue"}]}
