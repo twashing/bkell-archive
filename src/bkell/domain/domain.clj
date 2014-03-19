@@ -67,16 +67,17 @@
             (not (pred-fn (:bookkeeping.group.books.journal.entry/currency entry))))
 
 
-          ;; ASSERT that accounts correspond with existing accounts
           (let [group-entity (load-group conn gname)
                 account-list (helpera/list-accounts-forgroup conn group-entity)]
-            (helperj/account-for-entry? entry account-list))
 
+            (and
 
-          ;; ASSERT that entry is balanced
-          ;; :lhs -> dt/dt == ct/ct
-          ;; :rhs -> dt/cr == ct/dt
-          ;;(bkell.domain/entry-balanced? uname entry (getk/get-accounts uname))
-          ]}
+             ;; ASSERT that accounts correspond with existing accounts
+             (helperj/account-for-entry? entry account-list)
+
+             ;; ASSERT that entry is balanced
+             ;; :lhs -> dt/dt == ct/ct
+             ;; :rhs -> dt/cr == ct/dt
+             (helperj/entry-balanced? conn entry account-list)))]}
 
   )
