@@ -37,13 +37,15 @@
       ;; given main.account list, loop through dt / ct in entrys and see if accountid matches
       (loop [x a y accounts]
 
-        (if (= (:accountid x) (:id (first y)))
+        (println ">> entry-part [" x "] / account-list [" (count y) "]")
+        (if (= (:bookkeeping.group.books.journal.entry.content/account x)
+               (:db/id (first y)))
           false
           (if (< 1 (count y))
             (recur x (rest y))
             true     ;; entry added to filter if there was no accountid(s) that matched its reference
             ))))
-    (:content entry))))
+    (:bookkeeping.group.books.journal.entry/content entry))))
 
 (defn entry-balanced?
   " Entry balance criteria is:

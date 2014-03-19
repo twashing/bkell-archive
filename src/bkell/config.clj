@@ -3,8 +3,11 @@
             [clojure.edn :as edn]))
 
 
-(defn get-config-raw []
-  (let [pbreader (java.io.PushbackReader. (io/reader (io/resource "config.edn")))]
+(defn load-edn [fname]
+  (let [pbreader (java.io.PushbackReader. (io/reader (io/resource fname)))]
     (edn/read pbreader)))
+
+(defn get-config-raw []
+  (load-edn "config.edn"))
 
 (def get-config (memoize get-config-raw))

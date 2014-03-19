@@ -1,6 +1,7 @@
 (ns bkell.spittoon
   (:require [datomic.api :only [q db] :as d]
-            [taoensso.timbre :as timbre]))
+            [taoensso.timbre :as timbre]
+            [bkell.config :as config]))
 
 
 (declare write-data)

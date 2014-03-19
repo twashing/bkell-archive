@@ -21,7 +21,8 @@
 
   :ring {:handler bkell.handler/app}
 
-  :resources-path "resources/public"
+  ;;:resources-path "resources/public"
+  :resource-paths ["resources" "resources/public" "resources/schema" "resources/test"]
   :source-paths ["src/" "resources/templ/clojurescript/"]
 
   :plugins [[lein-cljsbuild "1.0.2"]
@@ -39,7 +40,8 @@
                                    :optimizations :whitespace
                                    :pretty-print true}}]}
 
-  :profiles {:dev {;;:source-paths ["dev" "src/" "resources/templ/clojurescript/"]
+  :profiles {:dev {:resource-paths ["resources" "resources/public" "resources/schema" "resources/test"]
+                   ;;:source-paths ["dev" "src/" "resources/templ/clojurescript/"]
                    :dependencies [[midje "1.6.3"]
                                   [javax.servlet/servlet-api "2.5"]
                                   [ring-mock "0.1.5"]
