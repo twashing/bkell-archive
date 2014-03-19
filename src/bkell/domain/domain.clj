@@ -1,4 +1,4 @@
-(ns bkell.domain.identity
+(ns bkell.domain.domain
   (:require [bkell.spittoon :as spittoon]
             [bkell.spittoon.identity :as si]
             [bkell.spittoon.accounts :as sa]
