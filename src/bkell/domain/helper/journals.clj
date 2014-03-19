@@ -67,12 +67,21 @@
 
   ;;(println (str "entry-balanced? > uname[" uname "] > entry[" entry "]"))
   (let [result  (reduce (fn [a b]
-                          (let [acct (find-linked-account conn b accounts)]
-                            (if (or (and (= "debit" (:bookkeeping.group.books.account/counterWeight acct))
-                                         (= "dt" (:bookkeeping.group.books.journal.entry.content/type a)))
 
-                                    (and (= "credit" (:bookkeeping.group.books.account/counterWeight acct))
-                                         (= "ct" (:bookkeeping.group.books.journal.entry.content/type a))))
+                          (let [acct (find-linked-account conn b accounts)
+                                acw (:bookkeeping.group.books.account/counterWeight acct)
+                                acw-full (spittoon/populate-entity conn (:db/id acw))
+                                acw-name (:bookkeeping.counterWeight/name acw-full)
+
+                                entry-ctype (:bookkeeping.group.books.journal.entry.content/type b)]
+
+                            ;;(println "... acw-name [" acw-name "] / entry-ctype [" entry-ctype "]")
+
+                            (if (or (and (= "debit" acw-name)
+                                         (= "dt" entry-ctype))
+
+                                    (and (= "credit" acw-name)
+                                         (= "ct" entry-ctype)))
 
                               ;; increase :lhs if debit(ing) a debit account OR credit(ing) a credit account
                               (merge a {:lhs
@@ -85,5 +94,5 @@
                         {:lhs 0.0 :rhs 0.0}   ;; beginning tally
                         (:bookkeeping.group.books.journal.entry/content entry))] ;; list of debits and credits
 
-    (println (str "entry-balanced? > result[" result "]"))
+    ;;(println (str "entry-balanced? > result[" result "]"))
     (= (:lhs result) (:rhs result))))
