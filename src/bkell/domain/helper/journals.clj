@@ -20,6 +20,15 @@
   (let [js (list-journals-forgroup conn gname)]
     (not (empty? (filter #(= jname (:bookkeeping.group.books.journal/name %)) js)))))
 
+(defn find-linked-account [uname dtct accounts]
+
+  ;; given main.account list, loop through dt / ct in entrys and see if accountid matches
+  (loop [x dtct y accounts]
+    (if (= (:accountid x) (:id (first y)))
+      (first y)
+      (if (< 1 (count y))
+        (recur x (rest y))))))
+
 (defn account-for-entry? [gname entry accounts]
   (empty?
    (filter
@@ -36,7 +45,7 @@
             ))))
     (:content entry))))
 
-#_(defn entry-balanced?
+(defn entry-balanced?
   " Entry balance criteria is:
 
     :lhs -> dt/dt == ct/ct
