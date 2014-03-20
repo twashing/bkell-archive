@@ -1,7 +1,8 @@
 (ns bkell.spittoon.identity
   (:require [datomic.api :only [q db] :as d]
             [taoensso.timbre :as timbre]
-            [bkell.spittoon :as spittoon]))
+            [bkell.spittoon :as spittoon]
+            [bkell.spittoon.identity :as si]))
 
 
 (defn generate-prefixed-attribute [prefix attribute]
@@ -121,6 +122,11 @@
                            [?e :bookkeeping.user/email ?email]]
         query-parameters [username]]
     (spittoon/query query-expression query-parameters conn)))
+
+
+(defn load-group [conn gname]
+  (let [r1 (si/find-group-by-name conn gname)]
+    (spittoon/populate-entity conn (ffirst r1))))
 
 
 (defn create-user

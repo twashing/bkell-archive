@@ -16,10 +16,6 @@
         result-group (helperi/build-group-internals conn populated-group)]
     result-group))
 
-(defn load-group [conn gname]
-  (let [r1 (si/find-group-by-name conn gname)]
-    (spittoon/populate-entity conn (ffirst r1))))
-
 
 ;; login / logout
 ;; add user to group
@@ -49,9 +45,6 @@
        (spittoon/write-data conn add-to-group))))
 
 
-;; add journal entry
-;;   - balanced
-;;   - linked against valid accounts
 (defn add-entry [conn gname jname entry]
   {:pre  [(not (nil? gname))
           (not (nil? jname))
@@ -67,7 +60,7 @@
             (not (pred-fn (:bookkeeping.group.books.journal.entry/currency entry))))
 
 
-          (let [group-entity (load-group conn gname)
+          (let [group-entity (sj/load-group conn gname)
                 account-list (helpera/list-accounts-forgroup conn group-entity)]
 
             (and

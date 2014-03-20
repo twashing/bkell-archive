@@ -239,11 +239,22 @@
                            (ffirst (identity/find-currency-by-id cvalue conn)))
                          entry-3)))
 
+           ;; replace current entry content
            entry-5 (assoc entry-4
                      :bookkeeping.group.books.journal.entry/content
                      (entrypart-conversion conn entry-4))
+
+           ;; apply entry to containing journals
+           journal-id (-> (identity/load-group conn gname)
+                          :bookkeeping.group/bookkeeping
+                          first
+                          :bookkeeping.group.books/journals
+                          first
+                          :db/id)
+
+           add-to-journal [:db/add journal-id :bookkeeping.group.books.journal/entries (:db/id entry-5)]
            ]
 
-       (clojure.pprint/pprint [entry-5])
-       (spittoon/write-data conn [entry-5])
+       (clojure.pprint/pprint [entry-5 add-to-journal])
+       (spittoon/write-data conn [entry-5 add-to-journal])
        )))
