@@ -114,6 +114,53 @@
     ;; :bookkeeping.group.books.journal.entry/content ...
     }])
 
+(defn generate-entrypart-nominal [conn & params]
+
+  (let [[etype eamount eaccount ecurrency] params]
+
+    [{:db/id (d/tempid :db.part/user)
+      :bookkeeping.group.books.journal.entry.content/id (d/squuid)
+      :bookkeeping.group.books.journal.entry.content/type
+        (ffirst (identity/find-counterweight-by-name etype conn))
+      :bookkeeping.group.books.journal.entry.content/amount eamount
+      :bookkeeping.group.books.journal.entry.content/account
+        (ffirst (accounts/find-account-by-name conn eaccount))
+      :bookkeeping.group.books.journal.entry.content/currency
+        (ffirst (identity/find-currency-by-id ecurrency conn))}]))
+
+(defn entrypart-conversion [conn entry]
+
+  ;;(println (str "entry-balanced? > uname[" uname "] > entry[" entry "]"))
+  (let [result  (map (fn [epart]
+
+                       (let [
+                             ;; :bookkeeping.group.books.journal.entry.content/type "dt" ; conversion
+                             epart-1 (if (string? (:bookkeeping.group.books.journal.entry.content/type epart))
+                                       (let [cwvalue
+                                             (:bookkeeping.group.books.journal.entry.content/type epart)
+                                             cwid (ffirst (identity/find-counterweight-by-id cwvalue conn))]
+
+                                         (assoc epart
+                                           :bookkeeping.group.books.journal.entry.content/type cwid))
+                                       epart)
+
+                             ;; :bookkeeping.group.books.journal.entry.content/account "cash" ; conversion
+                             epart-2 (if (string? (:bookkeeping.group.books.journal.entry.content/account
+                                                   epart-1))
+                                       (let [avalue
+                                             (:bookkeeping.group.books.journal.entry.content/account epart-1)
+                                             aid (ffirst (accounts/find-account-by-name conn avalue))]
+
+                                         (assoc epart-1
+                                           :bookkeeping.group.books.journal.entry.content/account aid))
+                                       epart-1)]
+
+                         epart-2))
+                     (:bookkeeping.group.books.journal.entry/content entry))] ;; list of debits and credits
+
+    ;;(println (str "entry-balanced? > result[" result "]"))
+    (into [] result)))
+
 (defn create-entry
 
   ([conn gname date currencyid assets content]
@@ -177,23 +224,12 @@
                            :bookkeeping.group.books.journal.entry/currency
                            (ffirst (identity/find-currency-by-id cvalue conn)))
                          entry-3)))
+
+           entry-5 (assoc entry-4
+                     :bookkeeping.group.books.journal.entry/content
+                     (entrypart-conversion conn entry-4))
            ]
 
-       (clojure.pprint/pprint [entry-4])
-       (spittoon/write-data conn [entry-4])
+       (clojure.pprint/pprint [entry-5])
+       (spittoon/write-data conn [entry-5])
        )))
-
-
-(defn generate-entrypart-nominal [conn & params]
-
-  (let [[etype eamount eaccount ecurrency] params]
-
-    [{:db/id (d/tempid :db.part/user)
-      :bookkeeping.group.books.journal.entry.content/id (d/squuid)
-      :bookkeeping.group.books.journal.entry.content/type
-        (ffirst (identity/find-counterweight-by-name etype conn))
-      :bookkeeping.group.books.journal.entry.content/amount eamount
-      :bookkeeping.group.books.journal.entry.content/account
-        (ffirst (accounts/find-account-by-name conn eaccount))
-      :bookkeeping.group.books.journal.entry.content/currency
-        (ffirst (identity/find-currency-by-id ecurrency conn))}]))
