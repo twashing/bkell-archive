@@ -153,9 +153,23 @@
 
                                          (assoc epart-1
                                            :bookkeeping.group.books.journal.entry.content/account aid))
-                                       epart-1)]
+                                       epart-1)
 
-                         epart-2))
+                             ;; :db/id ; conversion
+                             epart-3 (if (nil? (:db/id epart-2))
+                                       (assoc epart-2 :db/id (d/tempid :db.part/user))
+                                       epart-2)
+
+                             ;; :bookkeeping.group.books.journal.entry.content/id ; conversion
+                             epart-4 (let [eid (:bookkeeping.group.books.journal.entry.content/id epart-3)]
+
+                                       (if (or (nil? eid) (string? eid))
+                                         (assoc epart-3
+                                           :bookkeeping.group.books.journal.entry.content/id
+                                           (d/squuid))
+                                         epart-3))]
+
+                         epart-4))
                      (:bookkeeping.group.books.journal.entry/content entry))] ;; list of debits and credits
 
     ;;(println (str "entry-balanced? > result[" result "]"))
