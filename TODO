@@ -15,5 +15,9 @@ lein hicv 2html resources/templ/documents/one.edn && cp resources/templ/document
 -- cache lookup manipulation in domain/identity
 -- instead of directly creating the account, return the transact expression that can be used
    - also bkell.domain.helper.journals; account-for-entry?, entry-balanced?
+   - spittoon.journal/create-entry
 
 -- make sure "resources/schema/bkeeping-schema.edn" can be read from the resource path list
+
+
+-- reverse the argument order in (si/find-currency-by-id "USD" conn)

@@ -73,11 +73,11 @@
             (and
 
              ;; ASSERT that accounts correspond with existing accounts
-             (helperj/account-for-entry? entry account-list)
+             (helperj/account-for-entry? conn entry account-list)
 
              ;; ASSERT that entry is balanced
              ;; :lhs -> dt/dt == ct/ct
              ;; :rhs -> dt/cr == ct/dt
              (helperj/entry-balanced? conn entry account-list)))]}
 
-  )
+  (sj/create-entry conn entry))

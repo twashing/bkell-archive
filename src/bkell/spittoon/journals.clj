@@ -114,30 +114,74 @@
     ;; :bookkeeping.group.books.journal.entry/content ...
     }])
 
-(defn create-entry [conn & params]
+(defn create-entry
 
-  (let [[group-name date currency-id assets content] params
+  ([conn gname date currencyid assets content]
 
-        date-f (if date date (java.util.Date.))
+     (let [date-f (if date date (java.util.Date.))
 
-        ;; find :bookkeeping.group/defaultCurrency if none passed in
-        currency-f (if currency-id
-                     currency-id
-                     (-> (identity/find-group-by-name conn group-name) first (nth 3)))
+           ;; find :bookkeeping.group/defaultCurrency if none passed in
+           currency-f (if currencyid
+                        currencyid
+                        (-> (identity/find-group-by-name conn gname) first (nth 3)))
 
-        entry-nominal (generate-entry-nominal conn date-f currency-f)
+           entry-nominal (generate-entry-nominal conn date-f currency-f)
 
-        ;; potentially add assets
-        entry-i (if (not (empty? assets))
-                  (assoc-in entry-nominal [0 :bookkeeping.group.books.journal.entry/assets] assets)
-                  entry-nominal)
+           ;; potentially add assets
+           entry-i (if (not (empty? assets))
+                     (assoc-in entry-nominal [0 :bookkeeping.group.books.journal.entry/assets] assets)
+                     entry-nominal)
 
-        ;; potentially add content
-        entry-f (if (not (empty? content))
-                  (assoc-in entry-i [0 :bookkeeping.group.books.journal.entry/content] content)
-                  entry-i)]
+           ;; potentially add content
+           entry-f (if (not (empty? content))
+                     (assoc-in entry-i [0 :bookkeeping.group.books.journal.entry/content] content)
+                     entry-i)]
 
-    (spittoon/write-data conn (concat entry-f assets content))))
+       (create-entry conn gname entry-f)))
+
+  ([conn gname entry]
+
+     (let [
+
+           ;; create :db/id, conditionally
+           entry-1 (if-not (:db/id entry)
+                    (assoc entry :db/id (d/tempid :db.part/user))
+                    entry)
+
+           ;; create id, conditionally
+           entry-2 (if-not (= java.util.UUID (type (:bookkeeping.group.books.journal.entry/id entry-1)))
+                     (assoc entry-1 :bookkeeping.group.books.journal.entry/id (d/squuid))
+                     entry-1)
+
+           ;; convert date, conditionally
+           entry-3 (if (nil? (type (:bookkeeping.group.books.journal.entry/date entry-2)))
+                     (assoc entry-2 :bookkeeping.group.books.journal.entry/date (java.util.Date.))
+                     (if (string? (:bookkeeping.group.books.journal.entry/date entry-2))
+                       (assoc entry-2
+                         :bookkeeping.group.books.journal.entry/date
+                         (java.util.Date. (:bookkeeping.group.books.journal.entry/date entry-2)))
+                       entry-2))
+
+           ;; convert currency, conditionally
+           entry-4 (if (nil? (:bookkeeping.group.books.journal.entry/currency entry-3))
+
+                     ;; use default currency if existing is nil
+                     (assoc entry-3
+                       :bookkeeping.group.books.journal.entry/currency
+                       (-> (identity/find-group-by-name conn gname) first (nth 3)))
+
+                     ;; otherwise, lookup a string version
+                     (let [cvalue (:bookkeeping.group.books.journal.entry/currency entry-3)]
+                       (if (string? cvalue)
+                         (assoc entry-3
+                           :bookkeeping.group.books.journal.entry/currency
+                           (ffirst (identity/find-currency-by-id cvalue conn)))
+                         entry-3)))
+           ]
+
+       (clojure.pprint/pprint [entry-4])
+       (spittoon/write-data conn [entry-4])
+       )))
 
 
 (defn generate-entrypart-nominal [conn & params]
