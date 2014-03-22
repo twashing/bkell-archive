@@ -6,6 +6,18 @@ lein hicv 2html resources/templ/documents/one.edn && cp resources/templ/document
   dz = new Dropzone("div.motto-left", {url: "https://bkeeping.s3.amazonaws.com", clickable: true})
 
 -- basic and multi-file upload is working; next fix
-  - button / dropzone UI 
+  - button / dropzone UI
   - upload progress messages
   - notify server of success: file-id, etc
+
+-- setup DB constraints for the below. Currently only implemented in code
+
+-- cache lookup manipulation in domain/identity
+-- instead of directly creating the account, return the transact expression that can be used
+   - also bkell.domain.helper.journals; account-for-entry?, entry-balanced?
+   - spittoon.journal/create-entry
+
+-- make sure "resources/schema/bkeeping-schema.edn" can be read from the resource path list
+
+
+-- reverse the argument order in (si/find-currency-by-id "USD" conn)

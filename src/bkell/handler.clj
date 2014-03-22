@@ -16,13 +16,30 @@
             [clojure.data.json :as json]
             [clojure.data.codec.base64 :as b64]
             [clojure.contrib.string :as cstring]
-            [bkell.handler-utils :as hutils]))
+
+            ;; Sente stuff
+            [clojure.core.match :as match :refer (match)] ; Optional, useful
+            [clojure.core.async :as async :refer (<! <!! >! >!! put! chan go go-loop)]
+            [taoensso.sente :as sente]
+            [bkell.handler-utils :as hutils]
+            ))
+
+
+;; Sente stuff
+(let [{:keys [ch-recv send-fn ajax-post-fn ajax-get-or-ws-handshake-fn]}
+      (sente/make-channel-socket! {})]
+  (def ring-ajax-post                ajax-post-fn)
+  (def ring-ajax-get-or-ws-handshake ajax-get-or-ws-handshake-fn)
+  (def ch-chsk                       ch-recv) ; ChannelSocket's receive channel
+  (def chsk-send!                    send-fn) ; ChannelSocket's send API fn
+  )
+
 
 (defn goindex []
   (let  [templ (enlive/html-resource "index.html")
          ;;mode (:mode @bkell/shell)
          host-url "172.16.210.128" ;;(-> mode (@bkell/shell) :host-url)
-         host-port "8080" ;;(-> mode (@bkell/shell) :host-port)
+         host-port "8090" ;;(-> mode (@bkell/shell) :host-port)
          developer-key "AIzaSyDc7_lGZsmbtdOUpprPClKBOxXCQ6LztRE" ;;(-> mode (@bkell/shell) :developer-key)
 
          ;;ruri (str (hutils/generate-host-address host-url (if (= mode :dev) host-port nil)) "/callbackGitkit") ;; conditionally assign the host-port
@@ -70,7 +87,7 @@
   ;; needs to call 'verifyAssertion' to parse response - should return a { :user :map }
   (let [;;mode (:mode @bkell/shell)
         host-url "172.16.210.128" ;;(-> mode (@bkell/shell) :host-url)
-        host-port "8080" ;;(-> mode (@bkell/shell) :host-port)
+        host-port "8090" ;;(-> mode (@bkell/shell) :host-port)
         developer-key "AIzaSyDc7_lGZsmbtdOUpprPClKBOxXCQ6LztRE" ;;(-> mode (@bkell/shell) :developer-key)
         ;;ruri (str (hutils/generate-host-address host-url (if (= mode :dev) host-port nil)) "/callbackGitkit")
         ruri (str (hutils/generate-host-address host-url host-port) "/callbackGitkit")
@@ -96,8 +113,11 @@
 
     (-> verify-resp :body clojure.data.json/read-json (merge { :exists false}))))
 
-
 (defroutes app-routes
+
+ ;; Sente stuff
+ (GET  "/chsk" req (#'ring-ajax-get-or-ws-handshake req)) ; Note the #'
+ (POST "/chsk" req (#'ring-ajax-post                req))
 
  (GET "/" []
       (-> (ring-resp/response (goindex))
@@ -107,9 +127,9 @@
       (-> (ring-resp/response "<html>Landing Page</html>")
           (ring-resp/content-type "text/html")))
 
- (GET "/signedUploadParams" []
+  (GET "/signedUploadParams" []
 
-      (let  [policy-doc "{ 'expiration': '2015-12-01T12:00:00.000Z' ,
+       (let  [policy-doc "{ 'expiration': '2015-12-01T12:00:00.000Z' ,
                            'conditions': [
                                         {'bucket': 'bkeeping'},
                                         ['starts-with', '$key', ''],
@@ -117,30 +137,22 @@
                                       ]
                          }"
 
-             pdoc-filtered (cstring/replace-re #"\r" "" (cstring/replace-re #"\n" "" policy-doc))
-             policy (apply str (map char (-> pdoc-filtered .getBytes b64/encode)))
+              pdoc-filtered (cstring/replace-re #"\r" "" (cstring/replace-re #"\n" "" policy-doc))
+              policy (apply str (map char (-> pdoc-filtered .getBytes b64/encode)))
 
-             hmac-sha1 "HmacSHA1"
-             signing-key (SecretKeySpec. (.getBytes "EVnk7c840v0OouypchuzRnnq7qSbJMZLooDUtobL") hmac-sha1)
-             mac (doto (Mac/getInstance hmac-sha1) (.init signing-key))
-             signature (String. (b64/encode (.doFinal mac (.getBytes policy))))]
+              hmac-sha1 "HmacSHA1"
+              signing-key (SecretKeySpec. (.getBytes "EVnk7c840v0OouypchuzRnnq7qSbJMZLooDUtobL") hmac-sha1)
+              mac (doto (Mac/getInstance hmac-sha1) (.init signing-key))
+              signature (String. (b64/encode (.doFinal mac (.getBytes policy))))]
 
-        (json/json-str {
-                        :bucket "bkeeping"
-                        :key "${filename}"
-                        :AWSAccessKeyId "AKIAI7QL4ENX5KZ4QQCQ"
-                        :acl "public-read"
-                        :policy policy
-                        :signature signature})))
+         (json/json-str {
+                         :bucket "bkeeping"
+                         :key "${filename}"
+                         :AWSAccessKeyId "AKIAI7QL4ENX5KZ4QQCQ"
+                         :acl "public-read"
+                         :policy policy
+                         :signature signature})))
 
-
- ;; ======
- ;; ACCOUNT CHOOSER (GITkit) URL handlers
- #_(GET "/callbackGitkit" [:as request]
-      (println (<< "/callbackGitkit HANDLER [GET]: ~{request}"))
-      (response/render [:post "/callbackGitkit"] {:request request} nil))
-
- ;;(POST "/callbackGitkit" [:as request & etal]
  (GET "/callbackGitkit" [:as request & etal]
 
        (println (<< "/callbackGitkit HANDLER [POST]: request[~{request}]) > etal[~{etal}]"))
