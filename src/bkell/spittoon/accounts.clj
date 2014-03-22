@@ -49,7 +49,7 @@
                            [?e :bookkeeping.group.books.account/name ?name]
                            [?e :bookkeeping.group.books.account/type ?type]
                            [?e :bookkeeping.group.books.account/counterWeight ?counterWeight]]
-        query-parameters [(ffirst (identity/find-accounttype-by-name atype conn))]]
+        query-parameters [(ffirst (identity/find-accounttype-by-name conn atype))]]
     (spittoon/query query-expression query-parameters conn)))
 
 (defn find-account-by-counterWeight [conn aweight]
@@ -61,7 +61,7 @@
                            [?e :bookkeeping.group.books.account/name ?name]
                            [?e :bookkeeping.group.books.account/type ?type]
                            [?e :bookkeeping.group.books.account/counterWeight ?counterWeight]]
-        query-parameters [(ffirst (identity/find-counterweight-by-name aweight conn))]]
+        query-parameters [(ffirst (identity/find-counterweight-by-name conn aweight))]]
     (spittoon/query query-expression query-parameters conn)))
 
 
@@ -77,25 +77,25 @@
 
   (let [account (generate-account-nominal
                  aname
-                 (ffirst (identity/find-accounttype-by-name atype conn))
-                 (ffirst (identity/find-counterweight-by-name counterWeight conn)))]
+                 (ffirst (identity/find-accounttype-by-name conn atype))
+                 (ffirst (identity/find-counterweight-by-name conn counterWeight)))]
 
     (spittoon/write-data conn account)))
 
 (defn create-default-accounts [conn]
 
   (let [account-inputs [["cash"
-                         (ffirst (identity/find-accounttype-by-name "asset" conn))
-                         (ffirst (identity/find-counterweight-by-name "debit" conn))]
+                         (ffirst (identity/find-accounttype-by-name conn "asset"))
+                         (ffirst (identity/find-counterweight-by-name conn "debit"))]
                         ["expense"
-                         (ffirst (identity/find-accounttype-by-name "expense" conn))
-                         (ffirst (identity/find-counterweight-by-name "credit" conn))]
+                         (ffirst (identity/find-accounttype-by-name conn "expense"))
+                         (ffirst (identity/find-counterweight-by-name conn "credit"))]
                         ["revenue"
-                         (ffirst (identity/find-accounttype-by-name "revenue" conn))
-                         (ffirst (identity/find-counterweight-by-name "debit" conn))]
+                         (ffirst (identity/find-accounttype-by-name conn "revenue"))
+                         (ffirst (identity/find-counterweight-by-name conn "debit"))]
                         ["accounts payable"
-                         (ffirst (identity/find-accounttype-by-name "liability" conn))
-                         (ffirst (identity/find-counterweight-by-name "credit" conn))]]
+                         (ffirst (identity/find-accounttype-by-name conn "liability"))
+                         (ffirst (identity/find-counterweight-by-name conn "credit"))]]
 
         create-fn (fn [each-inputs]
                     (apply generate-account-nominal each-inputs))

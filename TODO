@@ -21,3 +21,6 @@ lein hicv 2html resources/templ/documents/one.edn && cp resources/templ/document
 
 
 -- reverse the argument order in (si/find-currency-by-id "USD" conn)
+-- TESTing
+   - domain CRUD functions
+   - handler functions

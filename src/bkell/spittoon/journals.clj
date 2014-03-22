@@ -109,7 +109,7 @@
   [{:db/id (d/tempid :db.part/user)
     :bookkeeping.group.books.journal.entry/id (d/squuid)
     :bookkeeping.group.books.journal.entry/date (if date date (java.util.Date.))
-    :bookkeeping.group.books.journal.entry/currency (ffirst (identity/find-currency-by-id currency-id conn))
+    :bookkeeping.group.books.journal.entry/currency (ffirst (identity/find-currency-by-id conn currency-id))
     ;; :bookkeeping.group.books.journal.entry/assets ...
     ;; :bookkeeping.group.books.journal.entry/content ...
     }])
@@ -121,12 +121,12 @@
     [{:db/id (d/tempid :db.part/user)
       :bookkeeping.group.books.journal.entry.content/id (d/squuid)
       :bookkeeping.group.books.journal.entry.content/type
-        (ffirst (identity/find-counterweight-by-name etype conn))
+        (ffirst (identity/find-counterweight-by-name conn etype))
       :bookkeeping.group.books.journal.entry.content/amount eamount
       :bookkeeping.group.books.journal.entry.content/account
         (ffirst (accounts/find-account-by-name conn eaccount))
       :bookkeeping.group.books.journal.entry.content/currency
-        (ffirst (identity/find-currency-by-id ecurrency conn))}]))
+        (ffirst (identity/find-currency-by-id conn ecurrency))}]))
 
 (defn entrypart-conversion [conn entry]
 
@@ -138,7 +138,7 @@
                              epart-1 (if (string? (:bookkeeping.group.books.journal.entry.content/type epart))
                                        (let [cwvalue
                                              (:bookkeeping.group.books.journal.entry.content/type epart)
-                                             cwid (ffirst (identity/find-counterweight-by-id cwvalue conn))]
+                                             cwid (ffirst (identity/find-counterweight-by-id conn cwvalue))]
 
                                          (assoc epart
                                            :bookkeeping.group.books.journal.entry.content/type cwid))
@@ -236,7 +236,7 @@
                        (if (string? cvalue)
                          (assoc entry-3
                            :bookkeeping.group.books.journal.entry/currency
-                           (ffirst (identity/find-currency-by-id cvalue conn)))
+                           (ffirst (identity/find-currency-by-id conn cvalue)))
                          entry-3)))
 
            ;; replace current entry content

@@ -40,17 +40,17 @@
     (spittoon/query query-expression query-parameters conn)))
 
 
-(defn find-country-by-id [id conn] (find-by-id :bookkeeping.country id conn))
-(defn find-country-by-name [name conn] (find-by-name :bookkeeping.country name conn))
+(defn find-country-by-id [conn id] (find-by-id :bookkeeping.country id conn))
+(defn find-country-by-name [conn name] (find-by-name :bookkeeping.country name conn))
 
-(defn find-currency-by-id [id conn] (find-by-id :bookkeeping.currency id conn))
-(defn find-currency-by-name [name conn] (find-by-name :bookkeeping.currency name conn))
+(defn find-currency-by-id [conn id] (find-by-id :bookkeeping.currency id conn))
+(defn find-currency-by-name [conn name] (find-by-name :bookkeeping.currency name conn))
 
-(defn find-accounttype-by-id [id conn] (find-by-id :bookkeeping.accountType id conn))
-(defn find-accounttype-by-name [name conn] (find-by-name :bookkeeping.accountType name conn))
+(defn find-accounttype-by-id [conn id] (find-by-id :bookkeeping.accountType id conn))
+(defn find-accounttype-by-name [conn name] (find-by-name :bookkeeping.accountType name conn))
 
-(defn find-counterweight-by-id [id conn] (find-by-id :bookkeeping.counterWeight id conn))
-(defn find-counterweight-by-name [name conn] (find-by-name :bookkeeping.counterWeight name conn))
+(defn find-counterweight-by-id [conn id] (find-by-id :bookkeeping.counterWeight id conn))
+(defn find-counterweight-by-name [conn name] (find-by-name :bookkeeping.counterWeight name conn))
 
 
 (defn list-nominal [prefix conn]
@@ -136,13 +136,13 @@
 
   (let [group-nominal (generate-group-nominal
                        (str "group-" username)
-                       (ffirst (find-currency-by-id currency-id conn)))
+                       (ffirst (find-currency-by-id conn currency-id)))
 
         user-nominal (generate-user-nominal
                       username
                       password
                       "" "" ""
-                      (ffirst (find-country-by-id country-id conn)))
+                      (ffirst (find-country-by-id conn country-id)))
 
         ;; set the group's owner - :bookkeeping.group/owner
         group-final (assoc-in
@@ -170,7 +170,7 @@
                          (str group-name "-user")
                          "password"
                          "" "" ""
-                         (ffirst (find-country-by-id country-id conn)))]
+                         (ffirst (find-country-by-id conn country-id)))]
 
        (create-group conn [group-name currency-id country-id] user-nominal true)))
 
@@ -178,7 +178,7 @@
 
      (let [group-nominal (generate-group-nominal
                           group-name
-                          (ffirst (find-currency-by-id "USD" conn)))
+                          (ffirst (find-currency-by-id conn "USD")))
 
            ;; set the group's owner - :bookkeeping.group/owner
            group-final (assoc-in
