@@ -60,7 +60,7 @@
             (not (pred-fn (:bookkeeping.group.books.journal.entry/currency entry))))
 
 
-          (let [group-entity (sj/load-group conn gname)
+          (let [group-entity (si/load-group conn gname)
                 account-list (helpera/list-accounts-forgroup conn group-entity)]
 
             (and

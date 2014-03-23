@@ -25,7 +25,6 @@
 (deftest test-account-for-entry
 
   (testing "account-for-entry?"
-
     (let [entry-full (config/load-edn "test-entry-bal.edn")]))
 
   (testing "entry-balanced?" ))
