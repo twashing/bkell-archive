@@ -1,8 +1,7 @@
 (ns bkell.spittoon.identity
   (:require [datomic.api :only [q db] :as d]
             [taoensso.timbre :as timbre]
-            [bkell.spittoon :as spittoon]
-            [bkell.spittoon.identity :as si]))
+            [bkell.spittoon :as spittoon]))
 
 
 (defn generate-prefixed-attribute [prefix attribute]
@@ -125,7 +124,7 @@
 
 
 (defn load-group [conn gname]
-  (let [r1 (si/find-group-by-name conn gname)]
+  (let [r1 (find-group-by-name conn gname)]
     (spittoon/populate-entity conn (ffirst r1))))
 
 
