@@ -22,14 +22,14 @@
 (use-fixtures :each fixture-datomic)
 
 
-(deftest test-add-user
+#_(deftest test-add-user
 
   ;; add a user
   ;;   verify that associated group was created
   ;;   verify that associated journal and set of books was created
 
   )
-(deftest test-crud-user
+#_(deftest test-crud-user
 
   ;; retrieve user
   ;; update user
@@ -39,8 +39,8 @@
   ;; list user(s)
   )
 
-(deftest test-add-account)
-(deftest test-crud-account
+#_(deftest test-add-account)
+#_(deftest test-crud-account
 
   ;; retrieve account
   ;; update account (except for counterweight)
@@ -50,14 +50,14 @@
   ;; list account(s) for a given group
   )
 
-(deftest test-add-entry
+#_(deftest test-add-entry
 
   (testing "account-for-entry?"
     (let [entry-full (config/load-edn "test-entry-bal.edn")]))
 
   (testing "entry-balanced?"
     ))
-(deftest test-crud-entry
+#_(deftest test-crud-entry
 
   ;; retrieve entry
   ;; update entry

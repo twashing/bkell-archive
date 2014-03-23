@@ -171,7 +171,7 @@
                          "" "" ""
                          (ffirst (find-country-by-id conn country-id)))]
 
-       (create-group conn [group-name currency-id country-id] user-nominal true)))
+       (create-group conn group-name currency-id country-id user-nominal true)))
 
   ([conn group-name currency-id country-id user set-default-group?]
 
