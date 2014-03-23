@@ -18,6 +18,7 @@
     (si/load-user conn uname)))
 
 (defn create-group [conn name currencyid countryid]
+
   (let [transact-result (si/create-group conn name currencyid countryid)
         populated-group (si/populate-group-from-transact conn transact-result)
         result-group (helperi/build-group-internals conn populated-group)]

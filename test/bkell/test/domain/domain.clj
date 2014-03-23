@@ -6,7 +6,9 @@
             [bkell.config :as config]
             [bkell.domain.domain :as domain]
             [bkell.component.datomic :as cd]
-            [bkell.spittoon.identity :as si]))
+            [bkell.spittoon :as spittoon]
+            [bkell.spittoon.identity :as si]
+            [bkell.spittoon.journals :as sj]))
 
 
 (def env nil)
@@ -31,13 +33,17 @@
 
   ;; add a user
   ;;   verify that associated group was created
-  ;;   verify that associated journal and set of books was created
+  ;;   verify that associated set of books was created
   (let [uname "fubar"
+        gname (si/generate-groupname-from-username uname)
         conn (:conn system)]
 
     (domain/create-user conn uname "password" "USD" "US")
     (let [assoc-user (si/load-user conn "fubar")
-          assoc-group (si/load-group conn (str "group-" uname))]
+          assoc-group (si/load-group conn gname)
+
+          rb (sj/find-books-by-group conn gname)
+          assoc-books (map #(spittoon/populate-entity conn (first %)) rb)]
 
 
       (is (not (nil? assoc-user)))
@@ -45,7 +51,17 @@
 
       (is (not (nil? assoc-group)))
       (is (= (-> assoc-user :db/id)
-             (-> assoc-group :bookkeeping.group/owner :db/id))))))
+             (-> assoc-group :bookkeeping.group/owner :db/id)))
+
+      (is (= 1 (count rb)))
+
+      (is (= 1 (-> assoc-books first :bookkeeping.group.books/journals count)))
+      (is (= "generalledger" (-> assoc-books
+                                 first
+                                 :bookkeeping.group.books/journals
+                                 first
+                                 :bookkeeping.group.books.journal/name)))
+      )))
 
 
 #_(deftest test-crud-user

@@ -37,6 +37,17 @@
     (spittoon/query query-expression query-parameters conn)))
 
 
+(defn find-books-by-group [conn gname]
+
+  (let [query-expression '[:find ?books
+                           :in $ [?gname]
+                           :where
+                           [?e :bookkeeping.group/name ?gname]
+                           [?e :bookkeeping.group/bookkeeping ?books]]
+        query-parameters [gname]]
+    (spittoon/query query-expression query-parameters conn)))
+
+
 (defn generate-journal-nominal [jname]
 
   [{:db/id (d/tempid :db.part/user)
