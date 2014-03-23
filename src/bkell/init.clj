@@ -54,4 +54,4 @@
 
 
 (defn init-default-group [conn]
-  (identity/create-group conn ["webkell" "USD" "US"]))
+  (identity/create-group conn "webkell" "USD" "US"))

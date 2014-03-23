@@ -22,9 +22,46 @@
 (use-fixtures :each fixture-datomic)
 
 
-(deftest test-account-for-entry
+(deftest test-add-user
+
+  ;; add a user
+  ;;   verify that associated group was created
+  ;;   verify that associated journal and set of books was created
+
+  )
+(deftest test-crud-user
+
+  ;; retrieve user
+  ;; update user
+  ;; delete user
+  ;;   verify that associated group is deleted (when there are no other users)
+
+  ;; list user(s)
+  )
+
+(deftest test-add-account)
+(deftest test-crud-account
+
+  ;; retrieve account
+  ;; update account (except for counterweight)
+  ;; delete account
+  ;;   verify that there are no attached journal entries
+
+  ;; list account(s) for a given group
+  )
+
+(deftest test-add-entry
 
   (testing "account-for-entry?"
     (let [entry-full (config/load-edn "test-entry-bal.edn")]))
 
-  (testing "entry-balanced?" ))
+  (testing "entry-balanced?"
+    ))
+(deftest test-crud-entry
+
+  ;; retrieve entry
+  ;; update entry
+  ;; delete entry
+
+  ;; list entries, for a given group
+  )

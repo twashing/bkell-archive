@@ -131,7 +131,7 @@
 (defn create-user
   "Creates a user (with an implicit group)"
 
-  [conn [username password currency-id country-id]]
+  [conn username password currency-id country-id]
 
   (let [group-nominal (generate-group-nominal
                        (str "group-" username)
@@ -163,7 +163,7 @@
    => conn, group-vector(group-name currency-id country-id)
    => conn, group-vector(group-name currency-id country-id), user-map, set-default-group-flag?"
 
-  ([conn [group-name currency-id country-id]]
+  ([conn group-name currency-id country-id]
 
      (let [user-nominal (generate-user-nominal
                          (str group-name "-user")
@@ -173,7 +173,7 @@
 
        (create-group conn [group-name currency-id country-id] user-nominal true)))
 
-  ([conn [group-name currency-id country-id] user set-default-group?]
+  ([conn group-name currency-id country-id user set-default-group?]
 
      (let [group-nominal (generate-group-nominal
                           group-name
