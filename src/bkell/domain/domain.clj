@@ -10,6 +10,13 @@
             [bkell.domain.helper.accounts :as helpera]))
 
 
+(defn create-user [conn uname password currencyid countryid]
+
+  (let [r1 (si/create-user conn uname password currencyid countryid)
+        r2 (si/load-group conn (si/generate-groupname-from-username uname))
+        result-group (helperi/build-group-internals conn r2)]
+    (si/load-user conn uname)))
+
 (defn create-group [conn name currencyid countryid]
   (let [transact-result (si/create-group conn name currencyid countryid)
         populated-group (si/populate-group-from-transact conn transact-result)

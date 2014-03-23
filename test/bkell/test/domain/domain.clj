@@ -4,10 +4,13 @@
             [com.stuartsierra.component :as component]
 
             [bkell.config :as config]
-            [bkell.component.datomic :as cd]))
+            [bkell.domain.domain :as domain]
+            [bkell.component.datomic :as cd]
+            [bkell.spittoon.identity :as si]))
 
 
 (def env nil)
+(def system nil)
 
 (defn fixture-datomic [f]
 
@@ -15,20 +18,36 @@
   (let [cdatomic (cd/component-datomic env)
         component (component/start cdatomic)
         conn (:conn component)]
-    )
+    (alter-var-root #'system (fn [x] component))
 
-  (f))
+    (f)
+
+    (component/stop cdatomic)))
 
 (use-fixtures :each fixture-datomic)
 
 
-#_(deftest test-add-user
+(deftest test-add-user
 
   ;; add a user
   ;;   verify that associated group was created
   ;;   verify that associated journal and set of books was created
+  (let [uname "fubar"
+        conn (:conn system)]
 
-  )
+    (domain/create-user conn uname "password" "USD" "US")
+    (let [assoc-user (si/load-user conn "fubar")
+          assoc-group (si/load-group conn (str "group-" uname))]
+
+
+      (is (not (nil? assoc-user)))
+      (is (= uname (:bookkeeping.user/username assoc-user)))
+
+      (is (not (nil? assoc-group)))
+      (is (= (-> assoc-user :db/id)
+             (-> assoc-group :bookkeeping.group/owner :db/id))))))
+
+
 #_(deftest test-crud-user
 
   ;; retrieve user

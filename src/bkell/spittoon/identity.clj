@@ -7,6 +7,8 @@
 (defn generate-prefixed-attribute [prefix attribute]
   (keyword (str (name prefix) "/" attribute)))
 
+(defn generate-groupname-from-username [uname]
+  (str "group-" uname))
 
 (defn find-by-id [prefix cid conn]
   {:pre [(keyword? prefix)]}
@@ -122,6 +124,10 @@
         query-parameters [username]]
     (spittoon/query query-expression query-parameters conn)))
 
+
+(defn load-user [conn uname]
+  (let [r1 (find-user-by-username conn uname)]
+    (spittoon/populate-entity conn (ffirst r1))))
 
 (defn load-group [conn gname]
   (let [r1 (find-group-by-name conn gname)]
