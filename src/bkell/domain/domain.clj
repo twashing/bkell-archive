@@ -10,12 +10,29 @@
             [bkell.domain.helper.accounts :as helpera]))
 
 
+(defn convert-user-from-entitymap [user-entity-map]
+
+  (assoc (into {} user-entity-map)
+    :db/id (:db/id user-entity-map)
+    :bookkeeping.user/country {:db/id (-> user-entity-map :bookkeeping.user/country :db/id)}
+    :bookkeeping.user/defaultGroup {:db/id (-> user-entity-map :bookkeeping.user/defaultGroup :db/id)}))
+
 (defn create-user [conn uname password currencyid countryid]
 
   (let [r1 (si/create-user conn uname password currencyid countryid)
         r2 (si/load-group conn (si/generate-groupname-from-username uname))
-        result-group (helperi/build-group-internals conn r2)]
-    (si/load-user conn uname)))
+        result-group (helperi/build-group-internals conn r2)
+        result-user (si/load-user conn uname)]
+    (convert-user-from-entitymap result-user)))
+
+(defn retrieve-user [conn uname]
+
+  (let [result-user (si/load-user conn uname)]
+    (convert-user-from-entitymap result-user)))
+
+(defn update-user [conn user]
+  (spittoon/write-data conn [user]))
+
 
 (defn create-group [conn name currencyid countryid]
 

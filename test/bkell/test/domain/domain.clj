@@ -1,5 +1,6 @@
 (ns bkell.test.domain.domain
   (:require [clojure.test :refer :all]
+            [clojure.pprint :as pprint]
             [taoensso.timbre :as timbre]
             [com.stuartsierra.component :as component]
 
@@ -38,13 +39,13 @@
         gname (si/generate-groupname-from-username uname)
         conn (:conn system)]
 
-    (domain/create-user conn uname "password" "USD" "US")
-    (let [assoc-user (si/load-user conn "fubar")
+
+    (let [_ (domain/create-user conn uname "password" "USD" "US")
+          assoc-user (si/load-user conn "fubar")
           assoc-group (si/load-group conn gname)
 
           rb (sj/find-books-by-group conn gname)
           assoc-books (map #(spittoon/populate-entity conn (first %)) rb)]
-
 
       (is (not (nil? assoc-user)))
       (is (= uname (:bookkeeping.user/username assoc-user)))
@@ -54,20 +55,56 @@
              (-> assoc-group :bookkeeping.group/owner :db/id)))
 
       (is (= 1 (count rb)))
-
       (is (= 1 (-> assoc-books first :bookkeeping.group.books/journals count)))
       (is (= "generalledger" (-> assoc-books
                                  first
                                  :bookkeeping.group.books/journals
                                  first
-                                 :bookkeeping.group.books.journal/name)))
-      )))
+                                 :bookkeeping.group.books.journal/name))))))
 
 
-#_(deftest test-crud-user
+(deftest test-crud-user
 
-  ;; retrieve user
-  ;; update user
+  (testing "retrieve a user"
+
+    (let [uname "fubar1"
+          gname (si/generate-groupname-from-username uname)
+          conn (:conn system)]
+
+      (let [_ (domain/create-user conn uname "password" "USD" "US")
+            assoc-user (domain/retrieve-user conn uname)]
+
+        (is (not (nil? assoc-user)))
+        (is (= uname (:bookkeeping.user/username assoc-user))))))
+
+  (testing "update a user"
+
+    (let [uname "fubar2"
+          gname (si/generate-groupname-from-username uname)
+          conn (:conn system)]
+
+      (let [_ (domain/create-user conn uname "password" "USD" "US")
+            intermmediate-user (domain/retrieve-user conn uname)
+
+            fname "Noam"
+            lname "Chomsky"
+            email "chomsky@mit.edu"
+
+            updated-user (assoc intermmediate-user
+                           :bookkeeping.user/firstName fname
+                           :bookkeeping.user/lastName lname
+                           :bookkeeping.user/email email)
+
+            _ (domain/update-user conn updated-user)]
+
+        (let [result-user (domain/retrieve-user conn uname)]
+
+          (is (not (nil? result-user)))
+          (is (= uname (:bookkeeping.user/username result-user)))
+          (is (= fname (:bookkeeping.user/firstName result-user)))
+          (is (= lname (:bookkeeping.user/lastName result-user)))
+          (is (= email (:bookkeeping.user/email result-user)))))))
+
   ;; delete user
   ;;   verify that associated group is deleted (when there are no other users)
 
