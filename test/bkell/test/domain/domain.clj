@@ -114,13 +114,16 @@
 (deftest test-add-account
 
   (testing "add an account"
-    (let [conn (-> system :datomic :conn)
+    (let [conn (:conn system)
 
           gname "webkell"
           aname "New Account"
           r1 (domain/add-account conn gname aname "asset")]
 
-      (let [ra (domain/retrieve-account conn gname aname)]))))
+      (let [ra (domain/retrieve-account conn gname aname)]
+
+        (is (not (nil? ra)))
+        (is (= aname (:bookkeeping.group.books.account/name ra)))))))
 
 #_(deftest test-crud-account
 

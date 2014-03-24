@@ -87,7 +87,10 @@
 
 (defn retrieve-account [conn gname aname]
 
-  )
+  (let [result-account (sa/find-groupaccount-byname conn gname aname)
+        account-entity (spittoon/populate-entity conn (ffirst result-account))]
+    (assoc (into {} account-entity)
+      :db/id (:db/id account-entity))))
 
 (defn add-entry [conn gname jname entry]
   {:pre  [(not (nil? gname))
