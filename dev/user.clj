@@ -31,13 +31,15 @@
 
 (def env-key :test)
 (def system nil)
+(def conn nil)
 (defn init []
   (alter-var-root #'system
                   (constantly (bk/component-bkell (env-key (config/get-config-raw))))))
 
 
 (defn start []
-  (alter-var-root #'system component/start))
+  (alter-var-root #'system component/start)
+  (alter-var-root #'conn (fn [x] (-> system :datomic :conn))))
 (defn stop []
   (alter-var-root #'system
                   (fn [s] (when s (component/stop s)))))

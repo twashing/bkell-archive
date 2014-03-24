@@ -111,7 +111,17 @@
   ;; list user(s)
   )
 
-#_(deftest test-add-account)
+(deftest test-add-account
+
+  (testing "add an account"
+    (let [conn (-> system :datomic :conn)
+
+          gname "webkell"
+          aname "New Account"
+          r1 (domain/add-account conn gname aname "asset")]
+
+      (let [ra (domain/retrieve-account conn gname aname)]))))
+
 #_(deftest test-crud-account
 
   ;; retrieve account

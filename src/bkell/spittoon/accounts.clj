@@ -64,6 +64,20 @@
         query-parameters [(ffirst (identity/find-counterweight-by-name conn aweight))]]
     (spittoon/query query-expression query-parameters conn)))
 
+(defn find-groupaccount-byname [conn gname aname]
+
+  (let [query-expression '[:find ?a
+                           :in $ [?gname ?aname]
+                           :where
+                           [?g :bookkeeping.group/name ?gname]
+                           [?g :bookkeeping.group/bookkeeping ?b]
+                           [?b :bookkeeping.group.books/accounts ?a]
+                           [?a :bookkeeping.group.books.account/name ?aname]]
+        query-parameters [gname aname]
+
+        query-result (spittoon/query query-expression query-parameters conn)]
+
+    query-result))
 
 (defn generate-account-nominal [aname type-id weight-id]
 

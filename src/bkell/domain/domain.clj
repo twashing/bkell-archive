@@ -26,12 +26,18 @@
     (convert-user-from-entitymap result-user)))
 
 (defn retrieve-user [conn uname]
-
   (let [result-user (si/load-user conn uname)]
     (convert-user-from-entitymap result-user)))
 
 (defn update-user [conn user]
   (spittoon/write-data conn [user]))
+
+(defn delete-user [conn uname]
+  ;; delete group that it owns
+  )
+(defn list-users [conn]
+  ;; TODO
+  )
 
 
 (defn create-group [conn name currencyid countryid]
@@ -43,12 +49,22 @@
 
 
 ;; login / logout
-;; add user to group
-;; add journal (set of books) to group
-(defn add-journal [conn name])
+
+(defn add-user [conn gname uname]  ;; add user to group
+  )
+(defn add-journal [conn gname jname]  ;; add journal (set of books) to group
+  )
 
 
 (defn add-account
+
+  ([conn gname aname atype]
+     (let [aweight (case atype
+                     "asset" "debit"
+                     "liability" "credit"
+                     "revenue" "debit"
+                     "expense" "credit")]
+       (add-account conn gname "generalledger" aname atype aweight)))
 
   ([conn gname aname atype aweight]
      (add-account conn gname "generalledger" aname atype aweight))
@@ -69,6 +85,9 @@
 
        (spittoon/write-data conn add-to-group))))
 
+(defn retrieve-account [conn gname aname]
+
+  )
 
 (defn add-entry [conn gname jname entry]
   {:pre  [(not (nil? gname))
