@@ -125,10 +125,39 @@
         (is (not (nil? ra)))
         (is (= aname (:bookkeeping.group.books.account/name ra)))))))
 
-#_(deftest test-crud-account
+(deftest test-crud-account
 
-  ;; retrieve account
-  ;; update account (except for counterweight)
+  (testing "retrieve account"
+
+    (let [conn (:conn system)
+
+          gname "webkell"
+          aname "accounts payable"
+          ra (domain/retrieve-account conn gname aname)]
+
+      (is (not (nil? ra)))
+      (is (= aname (:bookkeeping.group.books.account/name ra)))))
+
+
+  (testing "update an account"  ;; except for counterweight
+
+    (let [conn (:conn system)
+
+          gname "webkell"
+          aname "New Account"
+          uname "Updated Account"
+
+          r1 (domain/add-account conn gname aname "asset")
+          r2 (domain/retrieve-account conn gname aname)
+
+          intermmediate-account (assoc r2 :bookkeeping.group.books.account/name uname)
+          r3 (domain/update-account conn intermmediate-account)
+
+          r4 (domain/retrieve-account conn gname uname)]
+
+      (is (not (nil? r4)))
+      (is (= uname (:bookkeeping.group.books.account/name r4)))))
+
   ;; delete account
   ;;   verify that there are no attached journal entries
 

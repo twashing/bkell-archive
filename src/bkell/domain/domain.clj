@@ -90,7 +90,17 @@
   (let [result-account (sa/find-groupaccount-byname conn gname aname)
         account-entity (spittoon/populate-entity conn (ffirst result-account))]
     (assoc (into {} account-entity)
-      :db/id (:db/id account-entity))))
+      :db/id (:db/id account-entity)
+
+      :bookkeeping.group.books.account/type
+      {:db/id (-> account-entity :bookkeeping.group.books.account/type :db/id)}
+
+      :bookkeeping.group.books.account/counterWeight
+      {:db/id (-> account-entity :bookkeeping.group.books.account/counterWeight :db/id)} )))
+
+(defn update-account [conn account]
+  (spittoon/write-data conn [account]))
+
 
 (defn add-entry [conn gname jname entry]
   {:pre  [(not (nil? gname))
