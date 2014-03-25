@@ -8,12 +8,20 @@
 (defn account-names-forentities [conn account-entities]
   (map :bookkeeping.group.books.account/name account-entities))
 
-(defn list-accounts-forgroup [conn group-entity]
-  (->> group-entity
-       :bookkeeping.group/bookkeeping
-       first
-       :bookkeeping.group.books/accounts
-       (map #(spittoon/populate-entity conn (:db/id %)))))
+(defn list-accounts-forgroup [conn input-group]
+  {:pre [(or (string? input-group)
+             (map? input-group)
+             (= datomic.query.EntityMap (type input-group)))]}
+
+  (let [group-entity (if (string? input-group)
+                       (si/load-group conn input-group)
+                       input-group)]
+
+    (->> group-entity
+         :bookkeeping.group/bookkeeping
+         first
+         :bookkeeping.group.books/accounts
+         (map #(spittoon/populate-entity conn (:db/id %))))))
 
 (defn account-exists? [conn gname jname name]
   (let [r1 (si/find-group-by-name conn gname)

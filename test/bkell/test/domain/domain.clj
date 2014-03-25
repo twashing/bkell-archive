@@ -9,7 +9,11 @@
             [bkell.component.datomic :as cd]
             [bkell.spittoon :as spittoon]
             [bkell.spittoon.identity :as si]
-            [bkell.spittoon.journals :as sj]))
+            [bkell.spittoon.journals :as sj]
+
+            [bkell.domain.helper.identity :as helperi]
+            [bkell.domain.helper.journals :as helperj]
+            [bkell.domain.helper.accounts :as helpera]))
 
 
 (def env nil)
@@ -139,7 +143,7 @@
       (is (= aname (:bookkeeping.group.books.account/name ra)))))
 
 
-  (testing "update an account"  ;; except for counterweight
+  (testing "update an account"
 
     (let [conn (:conn system)
 
@@ -156,7 +160,10 @@
           r4 (domain/retrieve-account conn gname uname)]
 
       (is (not (nil? r4)))
-      (is (= uname (:bookkeeping.group.books.account/name r4)))))
+      (is (= uname (:bookkeeping.group.books.account/name r4))))
+
+    ;; TODO - except for counterweight
+    )
 
   ;; delete account
   ;;   verify that there are no attached journal entries
@@ -164,13 +171,33 @@
   ;; list account(s) for a given group
   )
 
-#_(deftest test-add-entry
+(deftest test-add-entry
 
   (testing "account-for-entry?"
-    (let [entry-full (config/load-edn "test-entry-bal.edn")]))
+
+    (let [conn (:conn system)
+          gname "webkell"
+
+          entry-full (config/load-edn "test-entry-bal.edn")
+          account-list (helpera/list-accounts-forgroup conn gname)
+
+          r1 (helperj/account-for-entry? conn entry-full account-list)]
+
+      (is r1))
+
+    (let [conn (:conn system)
+          gname "webkell"
+
+          entry-full (config/load-edn "test-entry-badaccount.edn")
+          account-list (helpera/list-accounts-forgroup conn gname)
+
+          r2 (helperj/account-for-entry? conn entry-full account-list)]
+
+      (is (not r2))))
 
   (testing "entry-balanced?"
     ))
+
 #_(deftest test-crud-entry
 
   ;; retrieve entry
