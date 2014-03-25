@@ -168,7 +168,7 @@
   ;; delete account
   ;;   verify that there are no attached journal entries
 
-  ;; list account(s) for a given group
+  ;; TODO - list account(s) for a given group
   )
 
 
@@ -220,8 +220,6 @@
 
           r1 (domain/add-entry conn "webkell" "generalledger" entry-bal)
           rE (->> r1 :tempids vals last (spittoon/populate-entity conn))]
-
-      (println rE)
 
       (is (not (nil? r1)))
       (is (not (nil? rE)))
