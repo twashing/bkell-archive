@@ -47,8 +47,6 @@
   "__utma"
   {:value "13559287.769963255.1384610327.1391274421.1391819922.3"}},
  :websocket? false,
- :async-channel
- #<AsyncChannel /172.16.210.128:8090<->/172.16.210.1:62618>,
  :uri "/callbackGitkit",
  :session/key nil,
  :server-name "172.16.210.128",

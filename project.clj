@@ -22,12 +22,14 @@
                  [com.taoensso/timbre "3.1.6"]
 
                  [org.clojure/core.match "0.2.1"]
-                 [org.clojure/core.async "0.1.267.0-0d7780-alpha"]]
+                 [org.clojure/core.async "0.1.267.0-0d7780-alpha"]
+
+                 [com.cemerick/pomegranate "0.3.0"]]
 
   :ring {:handler bkell.handler/app}
 
-  :resource-paths ["." "resources" "resources/public" "resources/schema" "resources/test"]
-  :source-paths ["src/" "resources/templ/clojurescript/"]
+  ;;:resource-paths ["." "resources" "resources/public" "resources/schema" "resources/test"]
+  ;;:source-paths ["src/" "resources/templ/clojurescript/"]
 
   :plugins [[lein-cljsbuild "1.0.2"]
             [com.cemerick/austin "0.1.4"]
@@ -44,7 +46,8 @@
                                    :optimizations :whitespace
                                    :pretty-print true}}]}
 
-  :profiles {:dev {:resource-paths ["." "resources/public"]
+  :profiles {:dev {:source-paths ["dev"]
+                   :resource-paths ["." "resources/public" "resources/test"]
                    :dependencies [[javax.servlet/servlet-api "2.5"]
                                   [midje "1.6.3"]
                                   [javax.servlet/servlet-api "2.5"]
