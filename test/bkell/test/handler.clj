@@ -23,10 +23,9 @@
 
     (f)
 
-    (component/stop cbkell))
-  )
+    (component/stop cbkell)))
 
-(use-fixtures :once fixture-http-handler)
+(use-fixtures :each fixture-http-handler)
 
 
 (deftest test-defaults

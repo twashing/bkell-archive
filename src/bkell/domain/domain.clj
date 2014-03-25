@@ -52,6 +52,7 @@
 
 (defn add-user [conn gname uname]  ;; add user to group
   )
+
 (defn add-journal [conn gname jname]  ;; add journal (set of books) to group
   )
 

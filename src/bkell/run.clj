@@ -6,8 +6,8 @@
 
 (def server nil)
 
-(defn run []
-  (alter-var-root #'server (fn [f] (httpkit/run-server handler/app {}))))
+(defn run [app]
+  (alter-var-root #'server (fn [f] (httpkit/run-server app {}))))
 
-(defn start [] (run))
+(defn start [app] (run app))
 (defn stop [] (if-not (nil? server) (server)))
