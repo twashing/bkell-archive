@@ -5,14 +5,14 @@
             [bkell.component.httphandler :as ch]))
 
 
-(def system-components [:datomic])
+(def system-components [:datomic :httphandler])
 
 (defrecord Bkell [env]
   component/Lifecycle
 
   (start [this]
 
-    (timbre/debug "Bkell.start CALLED > " env)
+    (timbre/debug "Bkell.start CALLED / env[" env "]")
     (component/start-system this system-components))
 
   (stop [this]
@@ -22,10 +22,12 @@
 
 (defn component-bkell [env]
 
-  (component/using
-   (map->Bkell {:env env
-                :datomic (cd/component-datomic env)
-                :httphandler (component/using
-                              (ch/component-httphandler env)
-                              {:datomic :datomic})})
-   {:datomic :datomic}))
+  (component/system-map
+   :datomic (cd/component-datomic env)
+   :httphandler (component/using
+                 (ch/component-httphandler env)
+                 {:datomic :datomic})
+   :bkell (component/using
+           (map->Bkell env)
+           {:datomic :datomic
+            :httphandler :httphandler})))

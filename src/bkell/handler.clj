@@ -114,23 +114,25 @@
 
     (-> verify-resp :body clojure.data.json/read-json (merge { :exists false}))))
 
-(defroutes app-routes
+(defn create-approutes [conn]
 
- ;; Sente stuff
- (GET  "/chsk" req (#'ring-ajax-get-or-ws-handshake req)) ; Note the #'
- (POST "/chsk" req (#'ring-ajax-post                req))
+  (defroutes approutes
 
- (GET "/" []
-      (-> (ring-resp/response (goindex))
-          (ring-resp/content-type "text/html")))
+    ;; Sente stuff
+    (GET  "/chsk" req (#'ring-ajax-get-or-ws-handshake req)) ; Note the #'
+    (POST "/chsk" req (#'ring-ajax-post                req))
 
- (GET "/landing" [:as request]
-      (-> (ring-resp/response "<html>Landing Page</html>")
-          (ring-resp/content-type "text/html")))
+    (GET "/" []
+         (-> (ring-resp/response (goindex))
+             (ring-resp/content-type "text/html")))
 
-  (GET "/signedUploadParams" []
+    (GET "/landing" [:as request]
+         (-> (ring-resp/response "<html>Landing Page</html>")
+             (ring-resp/content-type "text/html")))
 
-       (let  [policy-doc "{ 'expiration': '2015-12-01T12:00:00.000Z' ,
+    (GET "/signedUploadParams" []
+
+         (let  [policy-doc "{ 'expiration': '2015-12-01T12:00:00.000Z' ,
                            'conditions': [
                                         {'bucket': 'bkeeping'},
                                         ['starts-with', '$key', ''],
@@ -138,60 +140,61 @@
                                       ]
                          }"
 
-              pdoc-filtered (cstring/replace-re #"\r" "" (cstring/replace-re #"\n" "" policy-doc))
-              policy (apply str (map char (-> pdoc-filtered .getBytes b64/encode)))
+                pdoc-filtered (cstring/replace-re #"\r" "" (cstring/replace-re #"\n" "" policy-doc))
+                policy (apply str (map char (-> pdoc-filtered .getBytes b64/encode)))
 
-              hmac-sha1 "HmacSHA1"
-              signing-key (SecretKeySpec. (.getBytes "EVnk7c840v0OouypchuzRnnq7qSbJMZLooDUtobL") hmac-sha1)
-              mac (doto (Mac/getInstance hmac-sha1) (.init signing-key))
-              signature (String. (b64/encode (.doFinal mac (.getBytes policy))))]
+                hmac-sha1 "HmacSHA1"
+                signing-key (SecretKeySpec. (.getBytes "EVnk7c840v0OouypchuzRnnq7qSbJMZLooDUtobL") hmac-sha1)
+                mac (doto (Mac/getInstance hmac-sha1) (.init signing-key))
+                signature (String. (b64/encode (.doFinal mac (.getBytes policy))))]
 
-         (json/json-str {
-                         :bucket "bkeeping"
-                         :key "${filename}"
-                         :AWSAccessKeyId "AKIAI7QL4ENX5KZ4QQCQ"
-                         :acl "public-read"
-                         :policy policy
-                         :signature signature})))
+           (json/json-str {
+                           :bucket "bkeeping"
+                           :key "${filename}"
+                           :AWSAccessKeyId "AKIAI7QL4ENX5KZ4QQCQ"
+                           :acl "public-read"
+                           :policy policy
+                           :signature signature})))
 
- (GET "/callbackGitkit" [:as request & etal]
+    (GET "/callbackGitkit" [:as request & etal]
 
-      (timbre/debug (<< "/callbackGitkit HANDLER [GET]: request[~{(keys request)}] > etal[~{(keys etal)}]"))
+         (timbre/debug (<< "/callbackGitkit HANDLER [GET]: request[~{(keys request)}] > etal[~{(keys etal)}]"))
 
-      ;;(spit "one.edn" (with-out-str (>pprint request)))
-      ;;(spit "two.edn" (with-out-str (>pprint etal)))
+         ;;(spit "one.edn" (with-out-str (>pprint request)))
+         ;;(spit "two.edn" (with-out-str (>pprint etal)))
 
-      (let  [req (merge (:form-params request) (:query-params request))
-             cb-resp (callbackHandlerCommon "POST" req)
+         (let  [req (merge (:form-params request) (:query-params request))
+                cb-resp (callbackHandlerCommon "POST" req)
 
-             ;; ru (domain/retrieve-user conn (:verifiedEmail cb-resp))
-             ;; ru (getk/get-user (:verifiedEmail cb-resp))
+                ru (domain/retrieve-user conn (:verifiedEmail cb-resp))
+                ;; ru (getk/get-user (:verifiedEmail cb-resp))
 
-             templ (enlive/html-resource "include/callbackUrlSuccess.html")]
+                templ (enlive/html-resource "include/callbackUrlSuccess.html")]
 
-        (let  [;;rsetup (hutils/adduser-ifnil ru cb-resp)
-               ;;rresp (:cb-resp rsetup)
-               ]
+           (let  [;;rsetup (hutils/adduser-ifnil ru cb-resp)
+                  ;;rresp (:cb-resp rsetup)
+                  ]
 
-          ;; Log the user in; session should die after some inactivity
-          #_(let [logu (if (nil? (:new-user rsetup)) ru (:new-user rsetup))]
+             ;; Log the user in; session should die after some inactivity
+             #_(let [logu (if (nil? (:new-user rsetup)) ru (:new-user rsetup))]
 
-              (authenticatek/login-user (merge logu {:current ::authentication}))
-              ;;(session/clear!)
-              ;;(session/put! :current-user (merge logu { :current ::authentication }))
-              )
+                 (authenticatek/login-user (merge logu {:current ::authentication}))
+                 ;;(session/clear!)
+                 ;;(session/put! :current-user (merge logu { :current ::authentication }))
+                 )
 
-          (let  [;;notify-input { :email (:verifiedEmail rresp) :registered (-> rresp :exists str) }
-                 notify-input { :email "twashing@gmail.com" :registered "true" }
-                 notify-input-str (clojure.data.json/json-str notify-input)]
-            (apply str  (enlive/emit*  (enlive/transform
-                                        templ
-                                        [[:script (enlive/nth-of-type 3)]]  ;; get the 3rd script tag
-                                        (enlive/content (str "window.google.identitytoolkit.notifyFederatedSuccess(" notify-input-str ");")))))))))
+             (let  [;;notify-input { :email (:verifiedEmail rresp) :registered (-> rresp :exists str) }
+                    notify-input { :email "twashing@gmail.com" :registered "true" }
+                    notify-input-str (clojure.data.json/json-str notify-input)]
+               (apply str  (enlive/emit*  (enlive/transform
+                                           templ
+                                           [[:script (enlive/nth-of-type 3)]]  ;; get the 3rd script tag
+                                           (enlive/content (str "window.google.identitytoolkit.notifyFederatedSuccess(" notify-input-str ");")))))))))
 
- (route/resources "/" {:root "resources/public/"})
- (route/not-found "Not Found"))
+    (route/resources "/" {:root "resources/public/"})
+    (route/not-found "Not Found")))
 
 
-(def app
-  (handler/site app-routes))
+(defn create-app [conn]
+  (def app
+    (handler/site (create-approutes conn))))
