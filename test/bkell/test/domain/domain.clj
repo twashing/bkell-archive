@@ -171,6 +171,7 @@
   ;; list account(s) for a given group
   )
 
+
 (deftest test-add-entry
 
   (testing "account-for-entry?"
@@ -179,24 +180,36 @@
           gname "webkell"
 
           entry-full (config/load-edn "test-entry-bal.edn")
-          account-list (helpera/list-accounts-forgroup conn gname)
+          account-list (helpera/list-accounts-forgroup conn gname)]
 
-          r1 (helperj/account-for-entry? conn entry-full account-list)]
-
-      (is r1))
+      (is  (helperj/account-for-entry? conn entry-full account-list)))
 
     (let [conn (:conn system)
           gname "webkell"
 
           entry-full (config/load-edn "test-entry-badaccount.edn")
-          account-list (helpera/list-accounts-forgroup conn gname)
+          account-list (helpera/list-accounts-forgroup conn gname)]
 
-          r2 (helperj/account-for-entry? conn entry-full account-list)]
-
-      (is (not r2))))
+      (is (not (helperj/account-for-entry? conn entry-full account-list)))))
 
   (testing "entry-balanced?"
-    ))
+
+    (let [conn (:conn system)
+          gname "webkell"
+
+          entry-bal (config/load-edn "test-entry-bal.edn")
+          account-list (helpera/list-accounts-forgroup conn gname)]
+
+      (is (helperj/entry-balanced? conn entry-bal account-list)))
+
+    (let [conn (:conn system)
+          gname "webkell"
+
+          entry-unbal (config/load-edn "test-entry-unbal.edn")
+          account-list (helpera/list-accounts-forgroup conn gname)]
+
+      (is (not (helperj/entry-balanced? conn entry-unbal account-list))))))
+
 
 #_(deftest test-crud-entry
 
