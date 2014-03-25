@@ -1,0 +1,31 @@
+{"openid.ext1.type.attr0" "http://axschema.org/contact/email",
+ "openid.return_to"
+ "http://172.16.210.128:8090/callbackGitkit?rp_target=callback&rp_purpose=signin&rp_input_email=twashing@gmail.com&gx.rp_st=AEp4C1s08JfnaVY1oNEu1KWhcDmuojOMWIuOMBxCOmIt16Ki1wQQ-T3W9Qkibd2QYU5KjJn91vc8lSxAZ1k5GcIq9d4HDJfIMY-A1GHIBxYqcb5dzxZ5tY0",
+ "openid.ext1.type.auto2"
+ "http://www.google.com/accounts/api/federated-login/id",
+ "openid.ext1.type.attr5" "http://axschema.org/namePerson/first",
+ "openid.signed"
+ "op_endpoint,claimed_id,identity,return_to,response_nonce,assoc_handle,ns.ext1,ext1.mode,ext1.type.attr5,ext1.value.attr5,ext1.type.attr6,ext1.value.attr6,ext1.type.auto2,ext1.value.auto2,ext1.type.attr0,ext1.value.attr0",
+ "gx.rp_st"
+ "AEp4C1s08JfnaVY1oNEu1KWhcDmuojOMWIuOMBxCOmIt16Ki1wQQ-T3W9Qkibd2QYU5KjJn91vc8lSxAZ1k5GcIq9d4HDJfIMY-A1GHIBxYqcb5dzxZ5tY0",
+ "openid.ext1.type.attr6" "http://axschema.org/namePerson/last",
+ "openid.identity"
+ "https://www.google.com/accounts/o8/id?id=AItOawkk7Y22GICXx3RyrnaYHtA0zY3iOM9JRZ4",
+ "openid.sig" "RjfU56KoZjPYFO5Tin/Dw5ob6Io=",
+ "openid.claimed_id"
+ "https://www.google.com/accounts/o8/id?id=AItOawkk7Y22GICXx3RyrnaYHtA0zY3iOM9JRZ4",
+ "openid.op_endpoint" "https://www.google.com/accounts/o8/ud",
+ "openid.mode" "id_res",
+ :rp_input_email "twashing@gmail.com",
+ "openid.ext1.value.attr0" "twashing@gmail.com",
+ "openid.ns" "http://specs.openid.net/auth/2.0",
+ "openid.ns.ext1" "http://openid.net/srv/ax/1.0",
+ :rp_target "callback",
+ "openid.ext1.value.auto2" "109724965185934037912",
+ "openid.ext1.value.attr5" "Timothy",
+ "openid.ext1.value.attr6" "Washington",
+ :rp_purpose "signin",
+ "openid.ext1.mode" "fetch_response",
+ "openid.response_nonce" "2014-03-30T20:03:04Z_M7JVzLmGLzWGA",
+ "openid.assoc_handle"
+ "1.AMlYA9UzXhF6ZH6MobKJLk77muHqmX63Vn9b50Q0yM-sPpFKotHbErv3j2RKCw"}

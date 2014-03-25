@@ -1,0 +1,104 @@
+{:remote-addr "172.16.210.1",
+ :scheme :http,
+ :query-params
+ {"openid.ext1.type.attr0" "http://axschema.org/contact/email",
+  "openid.return_to"
+  "http://172.16.210.128:8090/callbackGitkit?rp_target=callback&rp_purpose=signin&rp_input_email=twashing@gmail.com&gx.rp_st=AEp4C1s08JfnaVY1oNEu1KWhcDmuojOMWIuOMBxCOmIt16Ki1wQQ-T3W9Qkibd2QYU5KjJn91vc8lSxAZ1k5GcIq9d4HDJfIMY-A1GHIBxYqcb5dzxZ5tY0",
+  "openid.ext1.type.auto2"
+  "http://www.google.com/accounts/api/federated-login/id",
+  "openid.ext1.type.attr5" "http://axschema.org/namePerson/first",
+  "openid.signed"
+  "op_endpoint,claimed_id,identity,return_to,response_nonce,assoc_handle,ns.ext1,ext1.mode,ext1.type.attr5,ext1.value.attr5,ext1.type.attr6,ext1.value.attr6,ext1.type.auto2,ext1.value.auto2,ext1.type.attr0,ext1.value.attr0",
+  "gx.rp_st"
+  "AEp4C1s08JfnaVY1oNEu1KWhcDmuojOMWIuOMBxCOmIt16Ki1wQQ-T3W9Qkibd2QYU5KjJn91vc8lSxAZ1k5GcIq9d4HDJfIMY-A1GHIBxYqcb5dzxZ5tY0",
+  "openid.ext1.type.attr6" "http://axschema.org/namePerson/last",
+  "rp_input_email" "twashing@gmail.com",
+  "openid.identity"
+  "https://www.google.com/accounts/o8/id?id=AItOawkk7Y22GICXx3RyrnaYHtA0zY3iOM9JRZ4",
+  "openid.sig" "RjfU56KoZjPYFO5Tin/Dw5ob6Io=",
+  "openid.claimed_id"
+  "https://www.google.com/accounts/o8/id?id=AItOawkk7Y22GICXx3RyrnaYHtA0zY3iOM9JRZ4",
+  "openid.op_endpoint" "https://www.google.com/accounts/o8/ud",
+  "openid.mode" "id_res",
+  "openid.ext1.value.attr0" "twashing@gmail.com",
+  "openid.ns" "http://specs.openid.net/auth/2.0",
+  "openid.ns.ext1" "http://openid.net/srv/ax/1.0",
+  "openid.ext1.value.auto2" "109724965185934037912",
+  "openid.ext1.value.attr5" "Timothy",
+  "rp_target" "callback",
+  "openid.ext1.value.attr6" "Washington",
+  "openid.ext1.mode" "fetch_response",
+  "openid.response_nonce" "2014-03-30T20:03:04Z_M7JVzLmGLzWGA",
+  "openid.assoc_handle"
+  "1.AMlYA9UzXhF6ZH6MobKJLk77muHqmX63Vn9b50Q0yM-sPpFKotHbErv3j2RKCw",
+  "rp_purpose" "signin"},
+ :session {},
+ :form-params {},
+ :multipart-params {},
+ :request-method :get,
+ :query-string
+ "rp_target=callback&rp_purpose=signin&rp_input_email=twashing@gmail.com&gx.rp_st=AEp4C1s08JfnaVY1oNEu1KWhcDmuojOMWIuOMBxCOmIt16Ki1wQQ-T3W9Qkibd2QYU5KjJn91vc8lSxAZ1k5GcIq9d4HDJfIMY-A1GHIBxYqcb5dzxZ5tY0&openid.ns=http%3A%2F%2Fspecs.openid.net%2Fauth%2F2.0&openid.mode=id_res&openid.op_endpoint=https%3A%2F%2Fwww.google.com%2Faccounts%2Fo8%2Fud&openid.response_nonce=2014-03-30T20%3A03%3A04Z_M7JVzLmGLzWGA&openid.return_to=http%3A%2F%2F172.16.210.128%3A8090%2FcallbackGitkit%3Frp_target%3Dcallback%26rp_purpose%3Dsignin%26rp_input_email%3Dtwashing%40gmail.com%26gx.rp_st%3DAEp4C1s08JfnaVY1oNEu1KWhcDmuojOMWIuOMBxCOmIt16Ki1wQQ-T3W9Qkibd2QYU5KjJn91vc8lSxAZ1k5GcIq9d4HDJfIMY-A1GHIBxYqcb5dzxZ5tY0&openid.assoc_handle=1.AMlYA9UzXhF6ZH6MobKJLk77muHqmX63Vn9b50Q0yM-sPpFKotHbErv3j2RKCw&openid.signed=op_endpoint%2Cclaimed_id%2Cidentity%2Creturn_to%2Cresponse_nonce%2Cassoc_handle%2Cns.ext1%2Cext1.mode%2Cext1.type.attr5%2Cext1.value.attr5%2Cext1.type.attr6%2Cext1.value.attr6%2Cext1.type.auto2%2Cext1.value.auto2%2Cext1.type.attr0%2Cext1.value.attr0&openid.sig=RjfU56KoZjPYFO5Tin%2FDw5ob6Io%3D&openid.identity=https%3A%2F%2Fwww.google.com%2Faccounts%2Fo8%2Fid%3Fid%3DAItOawkk7Y22GICXx3RyrnaYHtA0zY3iOM9JRZ4&openid.claimed_id=https%3A%2F%2Fwww.google.com%2Faccounts%2Fo8%2Fid%3Fid%3DAItOawkk7Y22GICXx3RyrnaYHtA0zY3iOM9JRZ4&openid.ns.ext1=http%3A%2F%2Fopenid.net%2Fsrv%2Fax%2F1.0&openid.ext1.mode=fetch_response&openid.ext1.type.attr5=http%3A%2F%2Faxschema.org%2FnamePerson%2Ffirst&openid.ext1.value.attr5=Timothy&openid.ext1.type.attr6=http%3A%2F%2Faxschema.org%2FnamePerson%2Flast&openid.ext1.value.attr6=Washington&openid.ext1.type.auto2=http%3A%2F%2Fwww.google.com%2Faccounts%2Fapi%2Ffederated-login%2Fid&openid.ext1.value.auto2=109724965185934037912&openid.ext1.type.attr0=http%3A%2F%2Faxschema.org%2Fcontact%2Femail&openid.ext1.value.attr0=twashing%40gmail.com",
+ :route-params {},
+ :content-type nil,
+ :cookies
+ {"JSESSIONID" {:value "q0ykozmtb3ted7mgpsyjnj33"},
+  "__utmz" {:value "13559287.1384610327.1.1.utmcsr"},
+  "__utmc" {:value "13559287"},
+  "__utma"
+  {:value "13559287.769963255.1384610327.1391274421.1391819922.3"}},
+ :websocket? false,
+ :async-channel
+ #<AsyncChannel /172.16.210.128:8090<->/172.16.210.1:62618>,
+ :uri "/callbackGitkit",
+ :session/key nil,
+ :server-name "172.16.210.128",
+ :params
+ {"openid.ext1.type.attr0" "http://axschema.org/contact/email",
+  "openid.return_to"
+  "http://172.16.210.128:8090/callbackGitkit?rp_target=callback&rp_purpose=signin&rp_input_email=twashing@gmail.com&gx.rp_st=AEp4C1s08JfnaVY1oNEu1KWhcDmuojOMWIuOMBxCOmIt16Ki1wQQ-T3W9Qkibd2QYU5KjJn91vc8lSxAZ1k5GcIq9d4HDJfIMY-A1GHIBxYqcb5dzxZ5tY0",
+  "openid.ext1.type.auto2"
+  "http://www.google.com/accounts/api/federated-login/id",
+  "openid.ext1.type.attr5" "http://axschema.org/namePerson/first",
+  "openid.signed"
+  "op_endpoint,claimed_id,identity,return_to,response_nonce,assoc_handle,ns.ext1,ext1.mode,ext1.type.attr5,ext1.value.attr5,ext1.type.attr6,ext1.value.attr6,ext1.type.auto2,ext1.value.auto2,ext1.type.attr0,ext1.value.attr0",
+  "gx.rp_st"
+  "AEp4C1s08JfnaVY1oNEu1KWhcDmuojOMWIuOMBxCOmIt16Ki1wQQ-T3W9Qkibd2QYU5KjJn91vc8lSxAZ1k5GcIq9d4HDJfIMY-A1GHIBxYqcb5dzxZ5tY0",
+  "openid.ext1.type.attr6" "http://axschema.org/namePerson/last",
+  "openid.identity"
+  "https://www.google.com/accounts/o8/id?id=AItOawkk7Y22GICXx3RyrnaYHtA0zY3iOM9JRZ4",
+  "openid.sig" "RjfU56KoZjPYFO5Tin/Dw5ob6Io=",
+  "openid.claimed_id"
+  "https://www.google.com/accounts/o8/id?id=AItOawkk7Y22GICXx3RyrnaYHtA0zY3iOM9JRZ4",
+  "openid.op_endpoint" "https://www.google.com/accounts/o8/ud",
+  "openid.mode" "id_res",
+  :rp_input_email "twashing@gmail.com",
+  "openid.ext1.value.attr0" "twashing@gmail.com",
+  "openid.ns" "http://specs.openid.net/auth/2.0",
+  "openid.ns.ext1" "http://openid.net/srv/ax/1.0",
+  :rp_target "callback",
+  "openid.ext1.value.auto2" "109724965185934037912",
+  "openid.ext1.value.attr5" "Timothy",
+  "openid.ext1.value.attr6" "Washington",
+  :rp_purpose "signin",
+  "openid.ext1.mode" "fetch_response",
+  "openid.response_nonce" "2014-03-30T20:03:04Z_M7JVzLmGLzWGA",
+  "openid.assoc_handle"
+  "1.AMlYA9UzXhF6ZH6MobKJLk77muHqmX63Vn9b50Q0yM-sPpFKotHbErv3j2RKCw"},
+ :headers
+ {"user-agent"
+  "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_8_5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/33.0.1750.152 Safari/537.36",
+  "cookie"
+  "__utma=13559287.769963255.1384610327.1391274421.1391819922.3; __utmc=13559287; __utmz=13559287.1384610327.1.1.utmcsr=(direct)|utmccn=(direct)|utmcmd=(none); JSESSIONID=q0ykozmtb3ted7mgpsyjnj33",
+  "accept"
+  "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8",
+  "host" "172.16.210.128:8090",
+  "referer" "http://172.16.210.128:8090/",
+  "x-client-data" "CNy1yQEIkLbJAQimtskBCKm2yQEIwbbJAQi5iMoBCNiIygE=",
+  "accept-encoding" "gzip,deflate,sdch",
+  "accept-language" "en-US,en;q=0.8",
+  "connection" "keep-alive"},
+ :content-length 0,
+ :server-port 8090,
+ :character-encoding "utf8",
+ :body nil,
+ :flash nil}

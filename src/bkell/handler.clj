@@ -21,8 +21,8 @@
             [clojure.core.match :as match :refer (match)] ; Optional, useful
             [clojure.core.async :as async :refer (<! <!! >! >!! put! chan go go-loop)]
             [taoensso.sente :as sente]
-            [bkell.handler-utils :as hutils]
-            ))
+            [taoensso.timbre :as timbre]
+            [bkell.handler-utils :as hutils]))
 
 
 ;; Sente stuff
@@ -94,22 +94,22 @@
 
         pbody (hutils/encode-params request)
 
-        _ (println (str "ruri:[" ruri "]"))
+        _ (timbre/debug (str "ruri:[" ruri "]"))
 
         final-url (str
                    "https://www.googleapis.com/identitytoolkit/v1/relyingparty/verifyAssertion?key="
                    developer-key)
         final-body (str "{'requestUri':'" ruri "','postBody':'" pbody "'}")
 
-        _ (println (str "final-url:[" final-url "]"))
-        _ (println (str "final-body:[" final-body "]"))
+        _ (timbre/debug (str "final-url:[" final-url "]"))
+        _ (timbre/debug (str "final-body:[" final-body "]"))
 
         verify-resp (client/post
                      final-url
                      {:body final-body
                       :content-type :json})
 
-        _ (println (str "verify-resp: " verify-resp))]
+        _ (timbre/debug (str "verify-resp: " verify-resp))]
 
     (-> verify-resp :body clojure.data.json/read-json (merge { :exists false}))))
 
@@ -155,32 +155,36 @@
 
  (GET "/callbackGitkit" [:as request & etal]
 
-       (println (<< "/callbackGitkit HANDLER [POST]: request[~{request}]) > etal[~{etal}]"))
-       (let  [req (merge (:form-params request) (:query-params request))
-              cb-resp (callbackHandlerCommon "POST" req)
-              ;;ru (getk/get-user (:verifiedEmail cb-resp))
-              templ (enlive/html-resource "include/callbackUrlSuccess.html")
-              ]
+      (timbre/debug (<< "/callbackGitkit HANDLER [GET]: request[~{(keys request)}] > etal[~{(keys etal)}]"))
 
-         (let  [;;rsetup (hutils/adduser-ifnil ru cb-resp)
-                ;;rresp (:cb-resp rsetup)
-                ]
+      (spit "one.edn" (with-out-str (>pprint request)))
+      (spit "two.edn" (with-out-str (>pprint etal)))
 
-           ;; Log the user in; session should die after some inactivity
-           #_(let [logu (if (nil? (:new-user rsetup)) ru (:new-user rsetup))]
+      (let  [req (merge (:form-params request) (:query-params request))
+             cb-resp (callbackHandlerCommon "POST" req)
 
-             (authenticatek/login-user (merge logu { :current ::authentication}))
-             ;;(session/clear!)
-             ;;(session/put! :current-user (merge logu { :current ::authentication }))
-             )
+             ;; ru (getk/get-user (:verifiedEmail cb-resp))
+             templ (enlive/html-resource "include/callbackUrlSuccess.html")]
 
-           (let  [;;notify-input { :email (:verifiedEmail rresp) :registered (-> rresp :exists str) }
-                  notify-input { :email "twashing@gmail.com" :registered "true" }
-                  notify-input-str (clojure.data.json/json-str notify-input)]
-             (apply str  (enlive/emit*  (enlive/transform
-                                         templ
-                                         [[:script (enlive/nth-of-type 3)]]  ;; get the 3rd script tag
-                                         (enlive/content (str "window.google.identitytoolkit.notifyFederatedSuccess(" notify-input-str ");")))))))))
+        (let  [;;rsetup (hutils/adduser-ifnil ru cb-resp)
+               ;;rresp (:cb-resp rsetup)
+               ]
+
+          ;; Log the user in; session should die after some inactivity
+          #_(let [logu (if (nil? (:new-user rsetup)) ru (:new-user rsetup))]
+
+              (authenticatek/login-user (merge logu { :current ::authentication}))
+              ;;(session/clear!)
+              ;;(session/put! :current-user (merge logu { :current ::authentication }))
+              )
+
+          (let  [;;notify-input { :email (:verifiedEmail rresp) :registered (-> rresp :exists str) }
+                 notify-input { :email "twashing@gmail.com" :registered "true" }
+                 notify-input-str (clojure.data.json/json-str notify-input)]
+            (apply str  (enlive/emit*  (enlive/transform
+                                        templ
+                                        [[:script (enlive/nth-of-type 3)]]  ;; get the 3rd script tag
+                                        (enlive/content (str "window.google.identitytoolkit.notifyFederatedSuccess(" notify-input-str ");")))))))))
 
  (route/resources "/" {:root "resources/public/"})
  (route/not-found "Not Found"))
