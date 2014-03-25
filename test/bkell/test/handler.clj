@@ -2,16 +2,29 @@
   (:require [clojure.test :refer :all]
             [ring.mock.request :as mock]
             [taoensso.timbre :as timbre]
+            [com.stuartsierra.component :as component]
 
             [bkell.config :as config]
             [bkell.handler :as handler]
-            [bkell.component.datomic :as dc]))
+            [bkell.component.bkell :as kc]))
 
+
+(def env nil)
+(def system nil)
 
 (defn fixture-http-handler [f]
 
   (timbre/debug "[FIXTURE] fixture-http-handler")
-  (f))
+
+  (alter-var-root #'env (constantly (:test (config/get-config-raw))))
+  (let [cbkell (kc/component-bkell env)
+        component (component/start cbkell)]
+    (alter-var-root #'system (fn [x] component))
+
+    (f)
+
+    (component/stop cbkell))
+  )
 
 (use-fixtures :once fixture-http-handler)
 
