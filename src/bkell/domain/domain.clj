@@ -129,4 +129,13 @@
              ;; :rhs -> dt/cr == ct/dt
              (helperj/entry-balanced? conn entry account-list)))]}
 
-  (sj/create-entry conn entry))
+  (sj/create-entry conn gname entry))
+
+(defn retrieve-entry-byid [conn gname eid]
+  )
+
+(defn retrieve-entry-bydate [conn gname edate]
+  )
+
+(defn retrieve-entry-bycurrency [conn gname currencyid]
+  )

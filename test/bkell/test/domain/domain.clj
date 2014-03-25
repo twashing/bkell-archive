@@ -208,7 +208,28 @@
           entry-unbal (config/load-edn "test-entry-unbal.edn")
           account-list (helpera/list-accounts-forgroup conn gname)]
 
-      (is (not (helperj/entry-balanced? conn entry-unbal account-list))))))
+      (is (not (helperj/entry-balanced? conn entry-unbal account-list)))))
+
+  (testing "add an entry"
+
+    (let [conn (:conn system)
+          gname "webkell"
+
+          entry-bal (config/load-edn "test-entry-bal.edn")
+          account-list (helpera/list-accounts-forgroup conn gname)
+
+          r1 (domain/add-entry conn "webkell" "generalledger" entry-bal)
+          rE (->> r1 :tempids vals last (spittoon/populate-entity conn))]
+
+      (println rE)
+
+      (is (not (nil? r1)))
+      (is (not (nil? rE)))
+      (is (= (-> r1 :tempids vals last)
+             (-> rE :db/id)))
+
+      ;;(is (helperj/entry-balanced? conn rE account-list))
+      )))
 
 
 #_(deftest test-crud-entry

@@ -70,6 +70,7 @@
 
                           (let [acct (find-linked-account conn b accounts)
                                 acw (:bookkeeping.group.books.account/counterWeight acct)
+
                                 acw-full (spittoon/populate-entity conn (:db/id acw))
                                 acw-name (:bookkeeping.counterWeight/name acw-full)
 

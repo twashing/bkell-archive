@@ -266,6 +266,4 @@
            add-to-journal [:db/add journal-id :bookkeeping.group.books.journal/entries (:db/id entry-5)]
            ]
 
-       (clojure.pprint/pprint [entry-5 add-to-journal])
-       (spittoon/write-data conn [entry-5 add-to-journal])
-       )))
+       (spittoon/write-data conn [entry-5 add-to-journal]))))
