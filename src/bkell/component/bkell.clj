@@ -1,7 +1,8 @@
 (ns bkell.component.bkell
   (:require [com.stuartsierra.component :as component]
             [taoensso.timbre :as timbre]
-            [bkell.component.datomic :as cd]))
+            [bkell.component.datomic :as cd]
+            [bkell.component.httphandler :as ch]))
 
 
 (def system-components [:datomic])
@@ -23,5 +24,8 @@
 
   (component/using
    (map->Bkell {:env env
-                :datomic (cd/component-datomic env)})
+                :datomic (cd/component-datomic env)
+                :httphandler (component/using
+                              (ch/component-httphandler env)
+                              {:datomic :datomic})})
    {:datomic :datomic}))

@@ -22,7 +22,8 @@
             [clojure.core.async :as async :refer (<! <!! >! >!! put! chan go go-loop)]
             [taoensso.sente :as sente]
             [taoensso.timbre :as timbre]
-            [bkell.handler-utils :as hutils]))
+            [bkell.handler-utils :as hutils]
+            [bkell.domain.domain :as domain]))
 
 
 ;; Sente stuff
@@ -163,7 +164,9 @@
       (let  [req (merge (:form-params request) (:query-params request))
              cb-resp (callbackHandlerCommon "POST" req)
 
+             ;; ru (domain/retrieve-user conn (:verifiedEmail cb-resp))
              ;; ru (getk/get-user (:verifiedEmail cb-resp))
+
              templ (enlive/html-resource "include/callbackUrlSuccess.html")]
 
         (let  [;;rsetup (hutils/adduser-ifnil ru cb-resp)
@@ -173,7 +176,7 @@
           ;; Log the user in; session should die after some inactivity
           #_(let [logu (if (nil? (:new-user rsetup)) ru (:new-user rsetup))]
 
-              (authenticatek/login-user (merge logu { :current ::authentication}))
+              (authenticatek/login-user (merge logu {:current ::authentication}))
               ;;(session/clear!)
               ;;(session/put! :current-user (merge logu { :current ::authentication }))
               )

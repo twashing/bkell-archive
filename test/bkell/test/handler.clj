@@ -9,7 +9,9 @@
 
 
 (defn fixture-http-handler [f]
-  (timbre/debug "[FIXTURE] fixture-http-handler"))
+
+  (timbre/debug "[FIXTURE] fixture-http-handler")
+  (f))
 
 (use-fixtures :once fixture-http-handler)
 
@@ -31,9 +33,8 @@
   (testing "calbackGitkit"
 
     (let [request-params (config/load-edn "test-request.edn")
-          cbresp (mock/request :get "/callbackGitkit" request-params)]
+          cbresp (mock/request :get "/callbackGitkit" (:params request-params))]
 
-      (timbre/debug "1... " cbresp)
-
+      ;;(timbre/debug "1... " cbresp)
       (is (not (nil? cbresp)))
       (is (map? cbresp)))))
