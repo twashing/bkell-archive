@@ -127,6 +127,11 @@
       (scheckfn (:session request-or-session))
       (scheckfn request-or-session))))
 
+(defmacro with-session [request & body]
+  `(if (check-live-session ~request)
+     ~@body
+     (rresp/redirect "/")))
+
 (defn create-approutes [conn]
 
   (defroutes approutes
@@ -187,12 +192,9 @@
 
     (GET "/landing" [:as request]
 
-         (if (check-live-session request)
-
+         (with-session request
            (-> (rresp/response "<html>Landing Page</html>")
-               (rresp/content-type "text/html"))
-
-           (rresp/redirect "/")))
+               (rresp/content-type "text/html"))))
 
     (PUT "/account" [:as request])
     (GET "/account/:id" [:as request])
@@ -200,11 +202,8 @@
     (DELETE "/account" [:as request])
     (GET "/accounts" [:as request]
 
-         (let [result (check-live-session request)]
-
-           (if result
-             (timbre/debug "/accounts CALLED / session[" (:session request) "]")
-             (rresp/redirect "/"))))
+         (with-session request
+           (timbre/debug "/accounts CALLED / session[" (:session request) "]")))
 
     ;; ====
     ;; AWS Upload
