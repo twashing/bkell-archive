@@ -11,15 +11,15 @@
 
   (start [component]
 
-    (timbre/debug "Runner.start CALLED")
-    (let [server (run/start (:app component))]
+    (timbre/debug "Runner.start CALLED / " component)
+    (let [server (run/start (-> component :httphandler :app))]
       (assoc component :server server)))
 
   (stop [component]
 
     (timbre/debug "Runner.stop CALLED")
+    ((:server component))
     (dissoc component :server)))
-
 
 (defn component-runner [env]
   (map->Runner env))

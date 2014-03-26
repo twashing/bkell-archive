@@ -158,7 +158,8 @@
 
     (GET "/callbackGitkit" [:as request & etal]
 
-         (timbre/debug (<< "/callbackGitkit HANDLER [GET]: request[~{(keys request)}] > etal[~{(keys etal)}]"))
+         (timbre/debug
+          (<< "/callbackGitkit HANDLER [GET]: request[~{(keys request)}] > etal[~{(keys etal)}]"))
 
          ;;(spit "one.edn" (with-out-str (>pprint request)))
          ;;(spit "two.edn" (with-out-str (>pprint etal)))

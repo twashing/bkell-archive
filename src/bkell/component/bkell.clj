@@ -30,7 +30,7 @@
                  {:datomic :datomic})
    :runner (component/using
             (cr/component-runner env)
-            {:datomic :datomic})
+            {:httphandler :httphandler})
    :bkell (component/using
            (map->Bkell env)
            {:datomic :datomic

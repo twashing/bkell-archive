@@ -6,7 +6,8 @@
 
             [bkell.config :as config]
             [bkell.handler :as handler]
-            [bkell.component.bkell :as kc]))
+            [bkell.component.bkell :as kc]
+            [bkell.domain.domain :as domain]))
 
 
 (def env nil)
@@ -49,4 +50,16 @@
 
       ;;(timbre/debug "1... " cbresp)
       (is (not (nil? cbresp)))
-      (is (map? cbresp)))))
+      (is (map? cbresp))
+
+      ;; adduser-ifnil
+      (let [r1 (domain/retrieve-user
+                (-> system :datomic :conn)
+                (-> request-params :params :rp_input_email))]
+
+        (is (not (nil? r1))))
+
+      ;; arrive at landing page
+
+      ;; session is active
+      )))
