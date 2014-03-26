@@ -201,9 +201,16 @@
     (POST "/account" [:as request])
     (DELETE "/account" [:as request])
     (GET "/accounts" [:as request]
-
          (with-session request
            (timbre/debug "/accounts CALLED / session[" (:session request) "]")))
+
+    (PUT "/entry" [:as request])
+    (GET "/entry/:id" [:as request])
+    (POST "/entry" [:as request])
+    (DELETE "/entry" [:as request])
+    (GET "/entries" [:as request]
+         (with-session request
+           (timbre/debug "/entries CALLED / session[" (:session request) "]")))
 
     ;; ====
     ;; AWS Upload
