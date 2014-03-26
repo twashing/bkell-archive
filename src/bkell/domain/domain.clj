@@ -37,9 +37,9 @@
 (defn delete-user [conn uname]
   ;; delete group that it owns
   )
+
 (defn list-users [conn]
-  ;; TODO
-  )
+  (si/find-all-users conn))
 
 
 (defn create-group [conn name currencyid countryid]

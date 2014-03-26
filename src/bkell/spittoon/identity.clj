@@ -124,6 +124,17 @@
         query-parameters [username]]
     (spittoon/query query-expression query-parameters conn)))
 
+(defn find-all-users [conn]
+
+  (let [query-expression '[:find ?e ?uname ?fname ?lname ?email
+                           :in $ []
+                           :where
+                           [?e :bookkeeping.user/username ?uname]
+                           [?e :bookkeeping.user/firstName ?fname]
+                           [?e :bookkeeping.user/lastName ?lname]
+                           [?e :bookkeeping.user/email ?email]]
+        query-parameters []]
+    (spittoon/query query-expression query-parameters conn)))
 
 (defn load-user [conn uname]
   (let [r1 (find-user-by-username conn uname)]
