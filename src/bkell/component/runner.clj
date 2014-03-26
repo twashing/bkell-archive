@@ -12,8 +12,10 @@
   (start [component]
 
     (timbre/debug "Runner.start CALLED / " component)
-    (let [server (run/start (-> component :httphandler :app))]
-      (assoc component :server server)))
+    (if-not (:server component)
+      (let [server (run/start (-> component :httphandler :app))]
+        (assoc component :server server))
+      component))
 
   (stop [component]
 

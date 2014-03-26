@@ -20,40 +20,32 @@
   (alter-var-root #'env (constantly (:test (config/get-config-raw))))
   (let [cbkell (kc/component-bkell env)
         component (component/start cbkell)]
+
     (alter-var-root #'system (fn [x] component))
-
     (f)
-
     (component/stop cbkell)))
 
 (use-fixtures :each fixture-http-handler)
 
 
-(deftest test-defaults
-
-  #_(testing "main route"
-    (let [response (app (request :get "/"))]
-      (is (= (:status response) 200))
-      (is (= (:body response) "Hello World"))))
-
-  (testing "not-found route"
-    (let [response (handler/app (mock/request :get "/invalid"))]
-      (is (= (:status response) 404)))))
-
-
 (deftest test-gitkit
 
-  (testing "calbackGitkit"
+  (testing "callbackGitkit"
 
     (let [request-params (config/load-edn "test-request.edn")
-          cbresp (mock/request :get "/callbackGitkit" (:params request-params))]
+          request (mock/request :get "/callbackGitkit" (:params request-params))
 
-      ;;(timbre/debug "1... " cbresp)
-      (is (not (nil? cbresp)))
-      (is (map? cbresp))
+          conn (-> system :datomic :conn)
+          appfn (handler/create-app conn)
+          resp (appfn request)]
+
+      (timbre/debug "1... " resp)
+      (is (not (nil? resp)))
+      (is (map? resp))
+
 
       ;; adduser-ifnil
-      (let [r1 (domain/retrieve-user
+      #_(let [r1 (domain/retrieve-user
                 (-> system :datomic :conn)
                 (-> request-params :params :rp_input_email))]
 

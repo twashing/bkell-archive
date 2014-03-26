@@ -14,7 +14,12 @@
   (start [this]
 
     (timbre/debug "Bkell.start CALLED / env[" env "]")
-    (component/start-system this system-components))
+
+    (if-not (:env this)
+      (component/start-system
+       (assoc this :env env)
+       system-components)
+      this))
 
   (stop [this]
 
@@ -34,4 +39,5 @@
    :bkell (component/using
            (map->Bkell env)
            {:datomic :datomic
-            :httphandler :httphandler})))
+            :httphandler :httphandler
+            })))

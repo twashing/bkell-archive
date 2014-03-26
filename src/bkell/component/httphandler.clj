@@ -11,7 +11,10 @@
   (start [component]
 
     (timbre/debug "HttpHandler.start CALLED / " (-> component :datomic :conn))
-    (assoc component :app (handler/create-app (-> component :datomic :conn))))
+
+    (if-not (:app component)
+      (assoc component :app (handler/create-app (-> component :datomic :conn)))
+      component))
 
   (stop [component]
 

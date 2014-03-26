@@ -191,12 +191,14 @@
              (apply str  (enlive/emit*  (enlive/transform
                                          templ
                                          [[:script (enlive/nth-of-type 3)]]  ;; get the 3rd script tag
-                                         (enlive/content (str "window.google.identitytoolkit.notifyFederatedSuccess(" notify-input-str ");"))))))))
+                                         (enlive/content
+                                          (str "window.google.identitytoolkit.notifyFederatedSuccess("
+                                               notify-input-str ");"))))))))
 
     (route/resources "/" {:root "resources/public/"})
     (route/not-found "Not Found")))
 
 
+(def app nil)
 (defn create-app [conn]
-  (def app
-    (handler/site (create-approutes conn))))
+  (alter-var-root #'app (fn [x] (handler/site (create-approutes conn)))))

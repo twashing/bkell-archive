@@ -18,6 +18,7 @@
    [bkell.component.bkell :as bk]
    [bkell.component.datomic :as cd]
    [bkell.config :as config]
+   [bkell.handler :as handler]
    [bkell.run :as run]
    [bkell.domain.domain :as domain]
    [bkell.spittoon :as spittoon]

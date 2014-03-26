@@ -28,9 +28,6 @@
 
   :ring {:handler bkell.handler/app}
 
-  ;;:resource-paths ["." "resources" "resources/public" "resources/schema" "resources/test"]
-  ;;:source-paths ["src/" "resources/templ/clojurescript/"]
-
   :plugins [[lein-cljsbuild "1.0.2"]
             [com.cemerick/austin "0.1.4"]
             [quickie "0.2.5"]]

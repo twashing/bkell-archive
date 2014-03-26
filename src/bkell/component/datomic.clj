@@ -68,9 +68,14 @@
   (start [component]
 
     (timbre/debug "Datomic.start CALLED / env[" env "]")
-    (let [start-fn (bootd env)
-          conn (start-fn)]
-      (assoc component :conn conn)))
+
+    (if-not (:conn component)
+
+      (let [start-fn (bootd env)
+            conn (start-fn)]
+        (assoc component :conn conn))
+
+      component))
 
   (stop [component]
 
