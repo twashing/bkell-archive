@@ -127,11 +127,15 @@
 
 (defn load-user [conn uname]
   (let [r1 (find-user-by-username conn uname)]
-    (spittoon/populate-entity conn (ffirst r1))))
+    (if-not (nil? (ffirst r1))
+      (spittoon/populate-entity conn (ffirst r1))
+      nil)))
 
 (defn load-group [conn gname]
   (let [r1 (find-group-by-name conn gname)]
-    (spittoon/populate-entity conn (ffirst r1))))
+    (if-not (nil? (ffirst r1))
+      (spittoon/populate-entity conn (ffirst r1))
+      nil)))
 
 
 (defn create-user

@@ -27,7 +27,9 @@
 
 (defn retrieve-user [conn uname]
   (let [result-user (si/load-user conn uname)]
-    (convert-user-from-entitymap result-user)))
+    (if-not (nil? result-user)
+      (convert-user-from-entitymap result-user)
+      nil)))
 
 (defn update-user [conn user]
   (spittoon/write-data conn [user]))
