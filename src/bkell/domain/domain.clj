@@ -49,6 +49,9 @@
         result-group (helperi/build-group-internals conn populated-group)]
     result-group))
 
+(defn list-groups [conn]
+  (si/find-all-groups conn))
+
 
 ;; login / logout
 

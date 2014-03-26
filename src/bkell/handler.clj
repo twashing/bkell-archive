@@ -161,9 +161,6 @@
          (timbre/debug
           (<< "/callbackGitkit HANDLER [GET]: request[~{(keys request)}] > etal[~{(keys etal)}]"))
 
-         ;;(spit "one.edn" (with-out-str (>pprint request)))
-         ;;(spit "two.edn" (with-out-str (>pprint etal)))
-
          (let  [req (merge (:form-params request) (:query-params request))
                 cb-resp (callbackHandlerCommon "POST" req)
 

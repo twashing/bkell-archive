@@ -45,7 +45,7 @@
 
 
       ;; adduser-ifnil
-      #_(let [r1 (domain/retrieve-user
+      (let [r1 (domain/retrieve-user
                 (-> system :datomic :conn)
                 (-> request-params :params :rp_input_email))]
 

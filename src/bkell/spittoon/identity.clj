@@ -136,6 +136,17 @@
         query-parameters []]
     (spittoon/query query-expression query-parameters conn)))
 
+(defn find-all-groups [conn]
+
+  (let [query-expression '[:find ?e ?name ?owner ?defaultCurrency
+                           :in $ []
+                           :where
+                           [?e :bookkeeping.group/name ?name]
+                           [?e :bookkeeping.group/owner ?owner]
+                           [?e :bookkeeping.group/defaultCurrency ?defaultCurrency]]
+        query-parameters []]
+    (spittoon/query query-expression query-parameters conn)))
+
 (defn load-user [conn uname]
   (let [r1 (find-user-by-username conn uname)]
     (if-not (nil? (ffirst r1))
