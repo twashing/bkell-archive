@@ -175,18 +175,19 @@
 
     (GET "/create-session" [:as request]
 
-         (let [session (:session request)]
+         (let [result (check-live-session request)]
 
-           (if (nil? session)
+           (timbre/debug "check-live-session > " result)
+           (if-not result
              (-> (rresp/response "create-session")
                  (rresp/content-type "text/html")
                  (assoc :session {:fu :bar}))
-             (-> (rresp/response (str "existing-session[" session "]"))
+             (-> (rresp/response (str "existing-session[" (:session request) "]"))
                  (rresp/content-type "text/html")))))
 
     (GET "/landing" [:as request]
 
-         (if-not (nil? (:session request))
+         (if (check-live-session request)
 
            (-> (rresp/response "<html>Landing Page</html>")
                (rresp/content-type "text/html"))
@@ -199,10 +200,10 @@
     (DELETE "/account" [:as request])
     (GET "/accounts" [:as request]
 
-         (let [session (:session request)]
+         (let [result (check-live-session request)]
 
-           (if-not (nil? session)
-             (timbre/debug "/accounts CALLED / session[" session "]")
+           (if result
+             (timbre/debug "/accounts CALLED / session[" (:session request) "]")
              (rresp/redirect "/"))))
 
     ;; ====
