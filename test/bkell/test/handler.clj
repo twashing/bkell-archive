@@ -39,7 +39,6 @@
           appfn (handler/create-app conn)
           resp (appfn request)]
 
-      (timbre/debug "1... " resp)
       (is (not (nil? resp)))
       (is (map? resp))
 

@@ -122,14 +122,61 @@
     (GET  "/chsk" req (#'ring-ajax-get-or-ws-handshake req)) ; Note the #'
     (POST "/chsk" req (#'ring-ajax-post                req))
 
+    (GET "/callbackGitkit" [:as request & etal]
+
+         (timbre/debug
+          (<< "/callbackGitkit HANDLER [GET]: request[~{(keys request)}] > etal[~{(keys etal)}]"))
+
+         (let  [req (merge (:form-params request) (:query-params request))
+                cb-resp (callbackHandlerCommon "POST" req)
+
+                ru (domain/retrieve-user conn (:verifiedEmail cb-resp))
+                ra (if (nil? ru)
+                     (domain/create-user conn (:verifiedEmail cb-resp) "default" "USD" "US")
+                     ru)
+
+                templ (enlive/html-resource "include/callbackUrlSuccess.html")]
+
+
+           ;; Log the user in; session should die after some inactivity
+           #_(let [logu (if (nil? (:new-user rsetup)) ru (:new-user rsetup))]
+
+               (authenticatek/login-user (merge logu {:current ::authentication}))
+               ;;(session/clear!)
+               ;;(session/put! :current-user (merge logu { :current ::authentication }))
+               )
+
+           (let  [;;notify-input { :email (:verifiedEmail rresp) :registered (-> rresp :exists str) }
+                  notify-input { :email "twashing@gmail.com" :registered "true" }
+                  notify-input-str (clojure.data.json/json-str notify-input)]
+             (apply str  (enlive/emit*  (enlive/transform
+                                         templ
+                                         [[:script (enlive/nth-of-type 3)]]  ;; get the 3rd script tag
+                                         (enlive/content
+                                          (str "window.google.identitytoolkit.notifyFederatedSuccess("
+                                               notify-input-str ");"))))))))
+
     (GET "/" []
          (-> (ring-resp/response (goindex))
              (ring-resp/content-type "text/html")))
 
     (GET "/landing" [:as request]
          (-> (ring-resp/response "<html>Landing Page</html>")
-             (ring-resp/content-type "text/html")))
+             (ring-resp/content-type "text/html")
+             (assoc :session {:fu :bar})))
 
+    (PUT "/account" [:as request])
+    (GET "/account/:id" [:as request])
+    (POST "/account" [:as request])
+    (DELETE "/account" [:as request])
+    (GET "/accounts" [:as request]
+
+         (let [session (:session request)]
+
+           (timbre/debug "/accounts CALLED / session[" session "]")))
+
+    ;; ====
+    ;; AWS Upload
     (GET "/signedUploadParams" []
 
          (let  [policy-doc "{ 'expiration': '2015-12-01T12:00:00.000Z' ,
@@ -156,46 +203,15 @@
                            :policy policy
                            :signature signature})))
 
-    (GET "/callbackGitkit" [:as request & etal]
 
-         (timbre/debug
-          (<< "/callbackGitkit HANDLER [GET]: request[~{(keys request)}] > etal[~{(keys etal)}]"))
-
-         (let  [req (merge (:form-params request) (:query-params request))
-                cb-resp (callbackHandlerCommon "POST" req)
-
-                ru (domain/retrieve-user conn (:verifiedEmail cb-resp))
-                _ (timbre/set-level! :trace)
-                _ (timbre/debug "0... " ru)
-                ra (if (nil? ru)
-                     (domain/create-user conn (:verifiedEmail cb-resp) "default" "USD" "US")
-                     ru)
-
-                templ (enlive/html-resource "include/callbackUrlSuccess.html")]
-
-
-           ;; Log the user in; session should die after some inactivity
-           #_(let [logu (if (nil? (:new-user rsetup)) ru (:new-user rsetup))]
-
-               (authenticatek/login-user (merge logu {:current ::authentication}))
-               ;;(session/clear!)
-               ;;(session/put! :current-user (merge logu { :current ::authentication }))
-               )
-
-           (let  [;;notify-input { :email (:verifiedEmail rresp) :registered (-> rresp :exists str) }
-                  notify-input { :email "twashing@gmail.com" :registered "true" }
-                  notify-input-str (clojure.data.json/json-str notify-input)]
-             (apply str  (enlive/emit*  (enlive/transform
-                                         templ
-                                         [[:script (enlive/nth-of-type 3)]]  ;; get the 3rd script tag
-                                         (enlive/content
-                                          (str "window.google.identitytoolkit.notifyFederatedSuccess("
-                                               notify-input-str ");"))))))))
-
+    ;; ====
+    ;; Resources
     (route/resources "/" {:root "resources/public/"})
     (route/not-found "Not Found")))
 
 
 (def app nil)
 (defn create-app [conn]
-  (alter-var-root #'app (fn [x] (handler/site (create-approutes conn)))))
+  (alter-var-root #'app (fn [x] (handler/site
+                                (create-approutes conn)
+                                {:session {:cookie-attrs {:max-age 100}}}))))
