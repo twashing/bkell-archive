@@ -9,7 +9,7 @@
             [compojure.route :as route]
             [compojure.response :as response]
             [clojure.java.io :as io]
-            [ring.util.response :as ring-resp]
+            [ring.util.response :as rresp]
             [clj-http.client :as client]
 
             [net.cgrand.enlive-html :as enlive]
@@ -22,6 +22,7 @@
             [clojure.core.async :as async :refer (<! <!! >! >!! put! chan go go-loop)]
             [taoensso.sente :as sente]
             [taoensso.timbre :as timbre]
+            [bkell.utils :as utils]
             [bkell.handler-utils :as hutils]
             [bkell.domain.domain :as domain]))
 
@@ -114,6 +115,18 @@
 
     (-> verify-resp :body clojure.data.json/read-json (merge { :exists false}))))
 
+(defn check-live-session [request-or-session]
+  {:pre [(map? request-or-session)]}
+
+  (let [scheckfn (fn [ros]
+                   (and (not (nil? ros))
+                        (not (empty? ros))))]
+
+    ;; operate on a ring request OR a session map directly
+    (if-not (nil? (:uri request-or-session))
+      (scheckfn (:session request-or-session))
+      (scheckfn request-or-session))))
+
 (defn create-approutes [conn]
 
   (defroutes approutes
@@ -157,13 +170,28 @@
                                                notify-input-str ");"))))))))
 
     (GET "/" []
-         (-> (ring-resp/response (goindex))
-             (ring-resp/content-type "text/html")))
+         (-> (rresp/response (goindex))
+             (rresp/content-type "text/html")))
+
+    (GET "/create-session" [:as request]
+
+         (let [session (:session request)]
+
+           (if (nil? session)
+             (-> (rresp/response "create-session")
+                 (rresp/content-type "text/html")
+                 (assoc :session {:fu :bar}))
+             (-> (rresp/response (str "existing-session[" session "]"))
+                 (rresp/content-type "text/html")))))
 
     (GET "/landing" [:as request]
-         (-> (ring-resp/response "<html>Landing Page</html>")
-             (ring-resp/content-type "text/html")
-             (assoc :session {:fu :bar})))
+
+         (if-not (nil? (:session request))
+
+           (-> (rresp/response "<html>Landing Page</html>")
+               (rresp/content-type "text/html"))
+
+           (rresp/redirect "/")))
 
     (PUT "/account" [:as request])
     (GET "/account/:id" [:as request])
@@ -173,7 +201,9 @@
 
          (let [session (:session request)]
 
-           (timbre/debug "/accounts CALLED / session[" session "]")))
+           (if-not (nil? session)
+             (timbre/debug "/accounts CALLED / session[" session "]")
+             (rresp/redirect "/"))))
 
     ;; ====
     ;; AWS Upload

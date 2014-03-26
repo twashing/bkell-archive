@@ -12,6 +12,7 @@
    [clojure.test :as test]
    [clojure.tools.namespace.repl :refer (refresh refresh-all)]
    [com.stuartsierra.component :as component]
+   [ring.mock.request :as mock]
 
    [alembic.still]
 
@@ -20,6 +21,7 @@
    [bkell.config :as config]
    [bkell.handler :as handler]
    [bkell.run :as run]
+   [bkell.utils :as utils]
    [bkell.domain.domain :as domain]
    [bkell.spittoon :as spittoon]
 
