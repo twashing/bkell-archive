@@ -114,3 +114,9 @@ html body footer .footer-company:active {
   text-decoration: none;
   color: white;
 }
+
+html body footer-container {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+}

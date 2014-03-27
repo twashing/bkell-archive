@@ -40,7 +40,7 @@
       "\n          The fastest and easiest way to\n        "]
      [:div.motto-right
       "\n           manage your bookkeeping\n        "]]]
-   [:footer.flex-item.center-container.footer-container
+   [:footer.flex-item.footer-container
     [:div.footer-main-text
      [:a.footer-company
       {:href "http://interruptsoftware.com"}

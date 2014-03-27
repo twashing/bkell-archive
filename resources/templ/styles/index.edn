@@ -75,6 +75,13 @@
     [:.footer-company:hover {:color "white"
                              :text-decoration "underline"}]
     [:.footer-company:active {:color "white"
-                              :text-decoration "none" }]]]]
+                              :text-decoration "none" }]]
+   [:footer-container {:justify-content "flex-start"
+                       :align-items "center"
+                       :display "flex"}]]]
+
+ ;;@media only screen and (min-width: 480px) {}
+ ;;@media only screen and (min-width: 768px) {}
+ ;;@media only screen and (min-width: 1140px) {}
 
  ]
