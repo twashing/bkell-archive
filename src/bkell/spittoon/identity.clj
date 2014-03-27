@@ -8,7 +8,9 @@
   (keyword (str (name prefix) "/" attribute)))
 
 (defn generate-groupname-from-username [uname]
-  (str "group-" uname))
+  (if (= "webkell-user" uname)
+    "webkell"
+    (str "group-" uname)))
 
 (defn find-by-id [prefix cid conn]
   {:pre [(keyword? prefix)]}

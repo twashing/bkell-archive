@@ -44,7 +44,7 @@
                                    :pretty-print true}}]}
 
   :profiles {:dev {:source-paths ["dev"]
-                   :resource-paths ["." "resources/public" "resources/test"]
+                   :resource-paths ["." "resources/" "resources/public/" "resources/test/"]
                    :dependencies [[javax.servlet/servlet-api "2.5"]
                                   [midje "1.6.3"]
                                   [javax.servlet/servlet-api "2.5"]

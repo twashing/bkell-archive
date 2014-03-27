@@ -22,9 +22,11 @@
             [clojure.core.async :as async :refer (<! <!! >! >!! put! chan go go-loop)]
             [taoensso.sente :as sente]
             [taoensso.timbre :as timbre]
+
             [bkell.utils :as utils]
             [bkell.handler-utils :as hutils]
-            [bkell.domain.domain :as domain]))
+            [bkell.domain.domain :as domain]
+            [bkell.spittoon.identity :as si]))
 
 
 ;; Sente stuff
@@ -128,9 +130,22 @@
       (scheckfn request-or-session))))
 
 (defmacro with-session [request & body]
+
   `(if (check-live-session ~request)
-     ~@body
+     (do ~@body)
      (rresp/redirect "/")))
+
+(defn create-session-response [request]
+
+  (let [result (check-live-session request)]
+
+           (timbre/debug "check-live-session > " result)
+           (if-not result
+             (-> (rresp/response "create-session")
+                 (rresp/content-type "text/html")
+                 (assoc :session {:username "webkell-user"}))
+             (-> (rresp/response (str "existing-session[" (:session request) "]"))
+                 (rresp/content-type "text/html")))))
 
 (defn create-approutes [conn]
 
@@ -155,18 +170,9 @@
 
                 templ (enlive/html-resource "include/callbackUrlSuccess.html")]
 
-
-           ;; Log the user in; session should die after some inactivity
-           #_(let [logu (if (nil? (:new-user rsetup)) ru (:new-user rsetup))]
-
-               (authenticatek/login-user (merge logu {:current ::authentication}))
-               ;;(session/clear!)
-               ;;(session/put! :current-user (merge logu { :current ::authentication }))
-               )
-
-           (let  [;;notify-input { :email (:verifiedEmail rresp) :registered (-> rresp :exists str) }
-                  notify-input { :email "twashing@gmail.com" :registered "true" }
+           (let  [notify-input { :email (:verifiedEmail cb-resp) :registered (-> cb-resp :exists str) }
                   notify-input-str (clojure.data.json/json-str notify-input)]
+
              (apply str  (enlive/emit*  (enlive/transform
                                          templ
                                          [[:script (enlive/nth-of-type 3)]]  ;; get the 3rd script tag
@@ -180,20 +186,16 @@
 
     (GET "/create-session" [:as request]
 
-         (let [result (check-live-session request)]
-
-           (timbre/debug "check-live-session > " result)
-           (if-not result
-             (-> (rresp/response "create-session")
-                 (rresp/content-type "text/html")
-                 (assoc :session {:fu :bar}))
-             (-> (rresp/response (str "existing-session[" (:session request) "]"))
-                 (rresp/content-type "text/html")))))
+         (create-session-response request))
 
     (GET "/landing" [:as request]
 
-         (with-session request
-           (-> (rresp/response "<html>Landing Page</html>")
+         (-> (rresp/file-response "landing.html" { :root "resources/public" })
+             ;;(rresp/response "<html>Landing Page</html>")
+             (rresp/content-type "text/html"))
+         #_(with-session request
+           (-> (rresp/file-response "landing.html" { :root "public"})
+               ;;(rresp/response "<html>Landing Page</html>")
                (rresp/content-type "text/html"))))
 
     (PUT "/account" [:as request])
@@ -201,8 +203,16 @@
     (POST "/account" [:as request])
     (DELETE "/account" [:as request])
     (GET "/accounts" [:as request]
+
          (with-session request
-           (timbre/debug "/accounts CALLED / session[" (:session request) "]")))
+
+           (timbre/debug "/accounts CALLED / session[" (:session request) "]")
+           (let [uname (-> request :session :username)
+                 gname (si/generate-groupname-from-username uname)
+                 account-list (domain/list-accounts conn gname)]
+
+             (-> (rresp/response account-list)
+                 (rresp/content-type "text/html")))))
 
     (PUT "/entry" [:as request])
     (GET "/entry/:id" [:as request])

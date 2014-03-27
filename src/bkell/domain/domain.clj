@@ -107,6 +107,12 @@
 (defn update-account [conn account]
   (spittoon/write-data conn [account]))
 
+(defn list-accounts [conn gname]
+
+  ;; TODO - for each account, populate the following
+  ;; :bookkeeping.group.books.account/type
+  ;; :bookkeeping.group.books.account/counterWeight
+  (helpera/list-accounts-forgroup conn gname))
 
 (defn add-entry [conn gname jname entry]
   {:pre  [(not (nil? gname))
