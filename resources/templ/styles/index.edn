@@ -1,0 +1,38 @@
+[
+
+ ;; @import url(http://fonts.googleapis.com/css?family=Gentium+Book+Basic:700italic);
+
+ [:html {:height "100%"}
+
+  [:body {:font-style "italic"
+          :font-family "\"Gentium Book Basic\", serif"
+          :display "flex"
+          :height "100%"
+          :flex-direction "column"}
+
+   [:header {:-webkit-align-self "stretch"
+             :-ms-flex-item-align "stretch"
+             :align-self "stretch"
+             :height "60px"
+             :background-color "#EEE"}
+
+    [:#login-container {:flex "2"
+                        :display "flex"
+                        :direction "rtl"}
+     [:#login-control {:display "flex"
+                       :direction "ltr"}]]]
+
+   [:main {:-webkit-align-self "stretch"
+           :-ms-flex-item-align "stretch"
+           :align-self "stretch"
+           :flex "1"}]
+
+   [:footer {:-webkit-align-self "stretch"
+             :-ms-flex-item-align "stretch"
+             :align-self "stretch"
+             :color "white"
+             :background-color "black"
+             :height "30px"
+             }]]]
+
+ ]

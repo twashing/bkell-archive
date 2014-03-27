@@ -1,112 +1,46 @@
-/* ===== Initializr Styles ==================================================
-   Author: Jonathan Verrecchia - verekia.com/initializr/responsive-template
-   ========================================================================== */
-@import url(http://fonts.googleapis.com/css?family=Gentium+Book+Basic:700italic);
 html {
-  height: 100%; }
-  html body {
-    font-style: italic;
-    font-family: "Gentium Book Basic", serif;
-    display: flex;
-    height: 100%;
-    flex-direction: column; }
-
-/*.flex-container {
-  border: 1px red solid;
+  height: 100%;
 }
-.flex-item {
-  border: 1px black solid;
-}
-*/
-header {
-  -webkit-align-self: stretch;
-  -ms-flex-item-align: stretch;
-  align-self: stretch;
-  height: 60px;
-  background-color: #EEE; }
-  header #login-container {
-    flex: 2;
-    display: flex;
-    direction: rtl; }
-    header #login-container #login-control {
-      display: flex;
-      direction: ltr; }
 
-main {
-  -webkit-align-self: stretch;
-  -ms-flex-item-align: stretch;
-  align-self: stretch;
-  flex: 1; }
-
-footer {
-  -webkit-align-self: stretch;
-  -ms-flex-item-align: stretch;
-  align-self: stretch;
-  color: white;
-  background-color: black;
-  height: 30px; }
-
-.center-container {
-  -webkit-box-align: center;
-  -webkit-align-items: center;
-  -moz-box-align: center;
-  -ms-flex-align: center;
-  -webkit-box-pack: center;
-  -webkit-justify-content: center;
-  -moz-box-pack: center;
-  -ms-flex-pack: center;
+html body {
+  flex-direction: column;
+  height: 100%;
   display: flex;
-  align-items: center;
-  justify-content: center; }
+  font-family: "Gentium Book Basic", serif;
+  font-style: italic;
+}
 
-.header-container, .footer-container {
-  justify-content: flex-start;
-  padding: 0 20px; }
+html body header {
+  background-color: #EEE;
+  height: 60px;
+  align-self: stretch;
+  -ms-flex-item-align: stretch;
+  -webkit-align-self: stretch;
+}
 
-.header-main-title {
-  font-size: xx-large; }
+html body header #login-container {
+  direction: rtl;
+  display: flex;
+  flex: 2;
+}
 
-.header-sub-title {
-  font-size: medium;
-  margin: 10px 0 0 20px;
-  color: #999; }
+html body header #login-container #login-control {
+  direction: ltr;
+  display: flex;
+}
 
-.main-message {
-  max-width: 50%;
-  font-size: large; }
+html body main {
+  flex: 1;
+  align-self: stretch;
+  -ms-flex-item-align: stretch;
+  -webkit-align-self: stretch;
+}
 
-.motto-left, .motto-right {
-  float: left; }
-
-.motto-left {
-  color: #132abf; }
-
-.motto-right {
-  color: #007821; }
-
-.footer-main-text {
-  font-size: small; }
-
-.footer-company:link {
-  /* unvisited link */
+html body footer {
+  height: 30px;
+  background-color: black;
   color: white;
-  text-decoration: none; }
-
-.footer-company:visited {
-  /* visited link */
-  color: white;
-  text-decoration: none; }
-
-.footer-company:hover {
-  /* mouse over link */
-  color: white;
-  text-decoration: underline; }
-
-.footer-company:active {
-  /* selected link */
-  color: white;
-  text-decoration: none; }
-
-/* ==========================================================================
-   Media Queries
-   ========================================================================== */
+  align-self: stretch;
+  -ms-flex-item-align: stretch;
+  -webkit-align-self: stretch;
+}
