@@ -29,11 +29,57 @@ html body header #login-container #login-control {
   display: flex;
 }
 
+html body .header-container, html body .footer-container {
+  padding: 0 20px;
+  justify-content: flex-start;
+}
+
+html body .header-container .header-main-title, html body .footer-container .header-main-title {
+  font-size: xx-large;
+}
+
+html body .header-container .header-sub-title, html body .footer-container .header-sub-title {
+  color: #999;
+  margin: 10px 0 0 20px;
+  font-size: medium;
+}
+
 html body main {
   flex: 1;
   align-self: stretch;
   -ms-flex-item-align: stretch;
   -webkit-align-self: stretch;
+}
+
+html body main .main-message {
+  font-size: large;
+  max-width: 50%;
+}
+
+html body main .main-message .motto-left, html body main .main-message .motto-right {
+  float: left;
+}
+
+html body main .main-message .motto-left {
+  color: #132abf;
+}
+
+html body main .main-message .motto-right {
+  color: #007821;
+}
+
+html body .center-container {
+  -moz-box-align: center;
+  display: flex;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  -ms-flex-pack: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -webkit-align-items: center;
+  justify-content: center;
+  -moz-box-pack: center;
+  -webkit-justify-content: center;
 }
 
 html body footer {
@@ -43,4 +89,28 @@ html body footer {
   align-self: stretch;
   -ms-flex-item-align: stretch;
   -webkit-align-self: stretch;
+}
+
+html body footer .footer-main-text {
+  font-size: small;
+}
+
+html body footer .footer-company:link {
+  text-decoration: none;
+  color: white;
+}
+
+html body footer .footer-company:visited {
+  text-decoration: none;
+  color: white;
+}
+
+html body footer .footer-company:hover {
+  text-decoration: underline;
+  color: white;
+}
+
+html body footer .footer-company:active {
+  text-decoration: none;
+  color: white;
 }

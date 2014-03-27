@@ -1,5 +1,6 @@
 [
 
+
  ;; @import url(http://fonts.googleapis.com/css?family=Gentium+Book+Basic:700italic);
 
  [:html {:height "100%"}
@@ -10,6 +11,8 @@
           :height "100%"
           :flex-direction "column"}
 
+
+   ;; Header
    [:header {:-webkit-align-self "stretch"
              :-ms-flex-item-align "stretch"
              :align-self "stretch"
@@ -22,17 +25,56 @@
      [:#login-control {:display "flex"
                        :direction "ltr"}]]]
 
+   [:.header-container :.footer-container {:justify-content "flex-start"
+                                           :padding "0 20px"}
+    [:.header-main-title {:font-size "xx-large"}]
+    [:.header-sub-title {:font-size "medium"
+                         :margin "10px 0 0 20px"
+                         :color "#999"}]]
+
+
+   ;; Main
    [:main {:-webkit-align-self "stretch"
            :-ms-flex-item-align "stretch"
            :align-self "stretch"
-           :flex "1"}]
+           :flex "1"}
+    [:.main-message {:max-width "50%"
+                     :font-size "large" }
 
+     [:.motto-left :.motto-right { :float "left" }]
+     [:.motto-left { :color "#132abf" }]
+     [:.motto-right { :color "#007821" }]
+     ]]
+
+   [:.center-container {:-webkit-box-align "center"
+                        :-webkit-align-items "center"
+                        :-moz-box-align "center"
+                        :-ms-flex-align "center"
+                        :-webkit-box-pack "center"
+                        :-webkit-justify-content "center"
+                        :-moz-box-pack "center"
+                        :-ms-flex-pack "center"
+                        :display "flex"
+                        :align-items "center"
+                        :justify-content "center"}]
+
+
+   ;; Footer
    [:footer {:-webkit-align-self "stretch"
              :-ms-flex-item-align "stretch"
              :align-self "stretch"
              :color "white"
              :background-color "black"
-             :height "30px"
-             }]]]
+             :height "30px"}
+
+    [:.footer-main-text {:font-size "small"}]
+    [:.footer-company:link {:color "white"
+                            :text-decoration "none"}]
+    [:.footer-company:visited {:color "white"
+                               :text-decoration "none"}]
+    [:.footer-company:hover {:color "white"
+                             :text-decoration "underline"}]
+    [:.footer-company:active {:color "white"
+                              :text-decoration "none" }]]]]
 
  ]
