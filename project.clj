@@ -7,6 +7,7 @@
                  [org.clojure/core.incubator "0.1.3"]
                  [org.clojure/data.codec "0.1.0"]
                  [compojure "1.1.6"]
+                 [om "0.5.3"]
                  [enlive "1.1.5"]
                  [clj-http "0.7.9"]
 
@@ -30,7 +31,8 @@
 
   :plugins [[lein-cljsbuild "1.0.2"]
             [com.cemerick/austin "0.1.4"]
-            [quickie "0.2.5"]]
+            [hiccup-watch "0.1.1"]
+            [hiccup-bridge "1.0.0-SNAPSHOT"]]
 
   :cljsbuild {:builds [{
                         ;; The path to the top-level ClojureScript source directory:
@@ -40,8 +42,11 @@
                         ;; (See the ClojureScript compiler documentation for details.)
                         :compiler {
                                    :output-to "resources/public/js/main.js"
-                                   :optimizations :whitespace
-                                   :pretty-print true}}]}
+                                   :pretty-print true
+
+                                   :output-dir "out"
+                                   :optimizations :none
+                                   :source-map true}}]}
 
   :profiles {:dev {:source-paths ["dev"]
                    :resource-paths ["." "resources/" "resources/public/" "resources/test/"]

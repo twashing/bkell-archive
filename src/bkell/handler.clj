@@ -190,13 +190,9 @@
 
     (GET "/landing" [:as request]
 
-         (-> (rresp/file-response "landing.html" { :root "resources/public" })
-             ;;(rresp/response "<html>Landing Page</html>")
-             (rresp/content-type "text/html"))
-         #_(with-session request
-           (-> (rresp/file-response "landing.html" { :root "public"})
-               ;;(rresp/response "<html>Landing Page</html>")
-               (rresp/content-type "text/html"))))
+         (with-session request
+           (-> (rresp/file-response "landing.html" { :root "resources/public" })
+             (rresp/content-type "text/html"))))
 
     (PUT "/account" [:as request])
     (GET "/account/:id" [:as request])
@@ -253,7 +249,7 @@
 
     ;; ====
     ;; Resources
-    (route/resources "/" {:root "resources/public/"})
+    (route/resources "/" { :root "resources/public/" })
     (route/not-found "Not Found")))
 
 

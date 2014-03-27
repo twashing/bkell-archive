@@ -1,0 +1,47 @@
+("<!--[if lt IE 7]> <html class=\"no-js lt-ie9 lt-ie8 lt-ie7\"> <![endif]-->"
+ "<!--[if IE 7]> <html class=\"no-js lt-ie9 lt-ie8\"> <![endif]-->"
+ "<!--[if IE 8]> <html class=\"no-js lt-ie9\"> <![endif]-->"
+ "<!--[if gt IE 8]> <html class=\"no-js\"> <![endif]-->"
+ [:html.no-js
+  {:lang "en"}
+  [:head
+   [:meta {:charset "utf-8"}]
+   [:meta {:http-equiv "X-UA-Compatible", :content "IE=edge,chrome=1"}]
+   [:title "\n      Bkeeping.com: Simple Online Bookkeeping\n    "]
+   [:meta {:name "description", :content ""}]
+   [:meta {:name "viewport", :content "width=device-width"}]
+   [:link {:rel "stylesheet", :href "css/normalize.min.css"}]
+   [:link {:rel "stylesheet", :href "css/baseline.css"}]
+   [:link {:rel "stylesheet", :href "css/index.css"}]
+   [:script {:src "js/vendor/modernizr-2.6.2-respond-1.1.0.min.js"}]
+   [:script {:src "js/vendor/dropzone.js"}]
+   [:script
+    {:src
+     "https://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js"}]
+   [:script
+    {:src
+     "https://ajax.googleapis.com/ajax/libs/jqueryui/1.8.2/jquery-ui.min.js"}]
+   [:script {:src "https://ajax.googleapis.com/jsapi"}]
+   [:script
+    "\n      //<![CDATA[\n      function load() {\n        google.load(\"identitytoolkit\", \"1.0\", {packages: [\"ac\"], callback: callback});\n      }\n      function callback() {\n        window.google.identitytoolkit.setConfig({\n      \n          developerKey: \"AIzaSyDc7_lGZsmbtdOUpprPClKBOxXCQ6LztRE\",\n          companyName: \"Interrupt Software Inc.\",\n          callbackUrl: \"http://<to-be-generated>/callbackGitkit\", // must be a full URL\n      \n          userStatusUrl: \"/userStatusUrl\", // these can just be partial paths\n          loginUrl: \"/loginUrl\",\n          signupUrl: \"/register\",\n          homeUrl: \"/landing\",\n          logoutUrl: \"/logout\",\n      \n          realm: '', // optional\n          language: \"en\",\n          idps: [\"Gmail\", \"AOL\", \"Hotmail\", \"Yahoo\"],\n          tryFederatedFirst: true,\n          useCachedUserStatus: false\n        });\n        $(\"#login-control\").accountChooser()\n      }\n      //]]>\n    "]
+   [:script
+    {:type "text/javascript",
+     :src "https://apis.google.com/js/client.js?onload=load"}]]
+  [:body.flex-container.flex-container-style.fixed-height
+   "<!--[if lt IE 7]>\n      <p class=\"chromeframe\">You are using an <strong>outdated</strong> browser. Please <a href=\"http://browsehappy.com/\">upgrade your browser</a> or <a href=\"http://www.google.com/chromeframe/?redirect=true\">activate Google Chrome Frame</a> to improve your experience.</p>\n    <![endif]-->"
+   [:header.flex-item.center-container.header-container
+    [:div.header-main-title "\n        bkeeping\n      "]
+    [:div.header-sub-title
+     "\n        Your solution to simple online bookkeeping\n      "]
+    [:div#login-container [:div#login-control]]]
+   [:main.flex-item.center-container
+    [:div.main-message
+     [:div.motto-left
+      "\n          The fastest and easiest way to\n        "]
+     [:div.motto-right
+      "\n           manage your bookkeeping\n        "]]]
+   [:footer.flex-item.center-container.footer-container
+    [:div.footer-main-text
+     [:a.footer-company
+      {:href "http://interruptsoftware.com"}
+      "\n          Interrupt Software Inc.\n        "]]]]])
