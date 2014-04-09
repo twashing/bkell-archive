@@ -76,7 +76,7 @@
                              :-ms-flex-item-align "stretch"
                              :align-self "stretch"
                             }]
- [:.flex-item:nth-child (3) {:-webkit-box-ordinal-group "1"
+ [:.flex-item:nth-child(3) {:-webkit-box-ordinal-group "1"
                              :-moz-box-ordinal-group "1"
                              :-webkit-order "0"
                              :-ms-flex-order "0"
@@ -91,50 +91,33 @@
                              :align-self "stretch"
                             }]
 
+ ;;Legacy Firefox implementation treats all flex containers
+ ;;as inline-block elements.
+ [:@-moz-document :url-prefix() {:.flex-container {:width "100%"
+                                                   :-moz-box-sizing "border-box"}}]
+
+
+ [:@media :only :screen :and ("min-width" "480px")
+  [:.flex-container {:-webkit-flex-direction "row"
+                     :-ms-flex-direction "row"
+                     :flex-direction "row"}]
+  [:.flex-item:nth-child (1) {:width "200px"}]
+  [:.flex-item:nth-child (2) {:width "300px"}]]
+
+ [:@media :only :screen :and ("min-width" "768px") {}]
+
+ [:@media :only :screen :and ("min-width" "1140px") {}]
+
  ]
 
 
 
-/*
-    Legacy Firefox implementation treats all flex containers
-    as inline-block elements.
-*/
 
-@-moz-document url-prefix() {
-.flex-container {
-    width 100%
-    -moz-box-sizing border-box
-    }
-
-}
 
 
 /* ==========================================================================
    Media Queries
    ========================================================================== */
-
-@media only screen and (min-width 480px) {
-
-  .flex-container {
-    -webkit-flex-direction row
-    -ms-flex-direction row
-    flex-direction row
-  }
-  .flex-item:nth-child(1) {
-    width: 200px
-  }
-  .flex-item:nth-child(2) {
-    width: 300px
-  }
-}
-
-@media only screen and (min-width 768px) {
-
-}
-
-@media only screen and (min-width 1140px) {
-
-}
 
 /* ==========================================================================
    Helper classes
