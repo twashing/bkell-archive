@@ -79,3 +79,12 @@ bkell=> (login {:username "twashing", :password "5f4dcc3b5aa765d61d8327deb882cf9
 {:previous {:username "twashing", :password "<...>", :tag :user}, :logged-in-user {:username "twashing", :password "5f4dcc3b5aa765d61d8327deb882cf99", :tag :user}, :active true}
 bkell=>
 ````
+
+
+## License
+
+Copyright © 2014 Interrupt Software Inc.
+
+Distributed under the Eclipse Public License either version 1.0 or (at
+your option) any later version.
+
