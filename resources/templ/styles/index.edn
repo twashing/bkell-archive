@@ -1,6 +1,6 @@
 [
-
  ;; @import url(http://fonts.googleapis.com/css?family=Gentium+Book+Basic:700italic);
+ [:at-import {:url "http://fonts.googleapis.com/css?family=Gentium+Book+Basic:700italic"}]
 
  [:html {:height "100%"}
 
@@ -82,5 +82,9 @@
  ;;@media only screen and (min-width: 480px) {}
  ;;@media only screen and (min-width: 768px) {}
  ;;@media only screen and (min-width: 1140px) {}
+ [[:at-media {:media-queries ["only" "screen" "and" (:min-width "480px")]}
+   [:.myclass {:display "none"}]]
+  [:at-media {:media-queries ["only" "screen" "and" (:min-width "768px")]}]
+  [:at-media {:media-queries ["only" "screen" "and" (:min-width "1140px")]}]]
 
  ]
