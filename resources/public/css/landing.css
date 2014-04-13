@@ -1,27 +1,174 @@
-html, button, input, select, textarea {
-  color: #222;
-}
 
-body {
-  font: 16px/26px Helvetica, Helvetica Neue, Arial;
-  line-height: 1.4;
-  font-size: 1em;
-}
 
-img {
-  vertical-align: middle;
-}
+html{ 
+  color : #222; }
+button{ 
+  color : #222; }
+input{ 
+  color : #222; }
+select{ 
+  color : #222; }
+textarea{ 
+  color : #222; }
 
-fieldset {
-  padding: 0;
-  margin: 0;
-  border: 0;
-}
+ html body, button body, input body, select body, textarea body{ 
+  font-size : 1em; 
+  line-height : 1.4; 
+  font : 16px/26px Helvetica, Helvetica Neue, Arial; }
 
-textarea {
-  resize: vertical;
-}
+img{ 
+  vertical-align : middle; }
 
-.ie7, .title {
-  padding-top: 20px;
+fieldset{ 
+  border : 0; 
+  margin : 0; 
+  padding : 0; }
+
+textarea{ 
+  resize : vertical; }
+
+.ie7{ 
+  padding-top : 20px; }
+.title{ 
+  padding-top : 20px; }
+
+.flex-container{ 
+  -webkit-box-orient : horizontal; 
+  -ms-flex-direction : column; 
+  -webkit-box-align : start; 
+  flex-direction : column; 
+  -ms-flex-align : start; 
+  border : 1px red solid; 
+  -webkit-flex-wrap : nowrap; 
+  display : flex; 
+  -moz-box-direction : normal; 
+  -webkit-justify-content : flex-start; 
+  -webkit-box-pack : start; 
+  -ms-flex-line-pack : start; 
+  align-items : flex-start; 
+  justify-content : flex-start; 
+  align-content : flex-start; 
+  -ms-flex-pack : start; 
+  -ms-flex-wrap : nowrap; 
+  -moz-box-align : start; 
+  -moz-box-pack : start; 
+  flex-wrap : nowrap; 
+  -webkit-align-content : flex-start; 
+  -webkit-box-direction : normal; 
+  -moz-box-orient : horizontal; 
+  -webkit-flex-direction : column; 
+  -webkit-align-items : flex-start; }
+
+.flex-item{ 
+  border : 1px black solid; }
+
+.flex-item:nth-child(1){ 
+  -webkit-flex : 0 1 auto; 
+  align-self : stretch; 
+  -webkit-box-ordinal-group : 1; 
+  flex : 0 1 auto; 
+  -webkit-box-flex : 0; 
+  -webkit-align-self : stretch; 
+  -ms-flex-item-align : stretch; 
+  -moz-box-ordinal-group : 1; 
+  -ms-flex-order : 0; 
+  order : 0; 
+  -moz-box-flex : 0; 
+  -webkit-order : 0; 
+  -ms-flex : 0 1 auto; }
+
+.flex-item:nth-child(2){ 
+  -webkit-flex : 0 1 auto; 
+  align-self : stretch; 
+  -webkit-box-ordinal-group : 1; 
+  flex : 0 1 auto; 
+  -webkit-box-flex : 0; 
+  -webkit-align-self : stretch; 
+  -ms-flex-item-align : stretch; 
+  -moz-box-ordinal-group : 1; 
+  -ms-flex-order : 0; 
+  order : 0; 
+  -moz-box-flex : 0; 
+  -webkit-order : 0; 
+  -ms-flex : 0 1 auto; }
+
+.flex-item:nth-child(3){ 
+  -webkit-flex : 0 1 auto; 
+  align-self : stretch; 
+  -webkit-box-ordinal-group : 1; 
+  flex : 1 1 auto; 
+  -webkit-box-flex : 0; 
+  -webkit-align-self : stretch; 
+  -ms-flex-item-align : stretch; 
+  -moz-box-ordinal-group : 1; 
+  -ms-flex-order : 0; 
+  order : 0; 
+  -moz-box-flex : 0; 
+  -webkit-order : 0; 
+  -ms-flex : 0 1 auto; }
+@media {
+
+.flex-container{ 
+  -webkit-flex-direction : row; 
+  -ms-flex-direction : row; 
+  flex-direction : row; }
 }
+@media {}
+@media {}
+
+.ir{ 
+  background-color : transparent; 
+  border : 0; 
+  overflow : hidden; 
+  *text-indent : -9999px; }
+
+.ir:before{ 
+  content : ; 
+  display : block; 
+  width : 0; 
+  height : 150%; }
+
+.hidden{ 
+  display : none !important; 
+  visibility : hidden; }
+
+.visuallyhidden{ 
+  border : 0; 
+  clip : rect(0 0 0 0); 
+  height : 1px; 
+  margin : -1px; 
+  overflow : hidden; 
+  padding : 0; 
+  position : absolute; 
+  width : 1px; }
+
+.visuallyhidden .visuallyhidden.focusable:active{ 
+  clip : auto; 
+  height : auto; 
+  margin : 0; 
+  overflow : visible; 
+  position : static; 
+  width : auto; }
+.visuallyhidden .visuallyhidden.focusable:focus{ 
+  clip : auto; 
+  height : auto; 
+  margin : 0; 
+  overflow : visible; 
+  position : static; 
+  width : auto; }
+
+.invisible{ 
+  visibility : hidden; }
+
+.clearfix:before{ 
+  content :  ; 
+  display : table; }
+.clearfix:after{ 
+  content :  ; 
+  display : table; }
+
+.clearfix:after{ 
+  clear : both; }
+
+.clearfix{ 
+  *zoom : 1; }
