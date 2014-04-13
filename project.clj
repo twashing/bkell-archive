@@ -31,9 +31,9 @@
 
   :plugins [[lein-cljsbuild "1.0.2"]
             [com.cemerick/austin "0.1.4"]
-            [hiccup-watch "0.1.1"]
             [hiccup-bridge "1.0.0-SNAPSHOT"]
-            [garden-watch "0.1.2-SNAPSHOT"]]
+            [hiccup-watch "0.1.2"]
+            [garden-watch "0.1.2"]]
 
   :cljsbuild {:builds [{
                         ;; The path to the top-level ClojureScript source directory:

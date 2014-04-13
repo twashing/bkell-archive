@@ -16,6 +16,11 @@
    [:script {:src "js/vendor/modernizr-2.6.2-respond-1.1.0.min.js"}]]
   [:body
    "<!--[if lt IE 7]>\n            <p class=\"chromeframe\">You are using an <strong>outdated</strong> browser. Please <a href=\"http://browsehappy.com/\">upgrade your browser</a> or <a href=\"http://www.google.com/chromeframe/?redirect=true\">activate Google Chrome Frame</a> to improve your experience.</p>\n        <![endif]-->"
+
+
+   [:div.thing "content"
+    [:div.stuff {:foo "bar"}]]
+
    [:div.flex-container.flex-container-style.fixed-height
     "<!--\n        -->"
     [:div.flex-item
