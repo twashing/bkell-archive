@@ -257,4 +257,4 @@
 (defn create-app [conn]
   (alter-var-root #'app (fn [x] (handler/site
                                 (create-approutes conn)
-                                {:session {:cookie-attrs {:max-age 100}}}))))
+                                {:session {:cookie-attrs {:max-age 600}}}))))

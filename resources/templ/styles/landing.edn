@@ -1,5 +1,4 @@
 [
-
  [:html :button :input :select :textarea {:color "#222"}
 
   [:body {:font-size "1em"
@@ -44,6 +43,7 @@
                     :align-items "flex-start"
 
                     :border "1px red solid"}]
+
 
  [:.flex-item {:border "1px black solid" }]
  [:.flex-item:nth-child (1) {:-webkit-box-ordinal-group "1"
@@ -91,34 +91,44 @@
  #_[:at-moz-document :url-prefix() {:.flex-container {:width "100%"
                                                     :-moz-box-sizing "border-box"}}]
 
-
  [:at-media {:media-queries ["only" "screen" "and" (:min-width "480px")]}
   [:.flex-container {:-webkit-flex-direction "row"
                      :-ms-flex-direction "row"
-                     :flex-direction "row"}]
-  [:.flex-item:nth-child (1) {:width "200px"}]
-  [:.flex-item:nth-child (2) {:width "300px"}]]
+                     :flex-direction "row"}
+   [:.flex-item {:width "100%"}]]]
 
- [:at-media {:media-queries ["only" "screen" "and" (:min-width "768px")]} {}]
+ [:at-media {:media-queries ["only" "screen" "and" (:min-width "481px")]}
+  [:.flex-container
+   [:.flex-item:nth-child (1) {:width "200px"}]
+   [:.flex-item:nth-child (2) {:width "300px"}]]]
 
- [:at-media {:media-queries ["only" "screen" "and" (:min-width "1140px")]} {}]
+ #_[:at-media {:media-queries ["only" "screen" "and" (:min-width "768px")]}
+  [:.flex-container
+   [:.flex-item:nth-child (1) {:width "200px"}]
+   [:.flex-item:nth-child (2) {:width "300px"}]]]
+
+
+ #_[:at-media {:media-queries ["only" "screen" "and" (:min-width "1140px")]}
+  [:.flex-container
+   [:.flex-item:nth-child (1) {:width "200px"}]
+   [:.flex-item:nth-child (2) {:width "300px"}]]]
 
 
  ;; Helper Classes
- [:.ir {:background-color "transparent"
+[:.ir {:background-color "transparent"
         :border "0"
         :overflow "hidden"
         :*text-indent "-9999px"}]
 
- [:.ir:before {:content ""
+[:.ir:before {:content ""
                :display "block"
                :width "0"
                :height "150%"}]
 
- [:.hidden {:display "none !important"
+[:.hidden {:display "none !important"
             :visibility "hidden"}]
 
- [:.visuallyhidden {:border "0"
+[:.visuallyhidden {:border "0"
                     :clip "rect(0 0 0 0)"
                     :height "1px"
                     :margin "-1px"
@@ -134,11 +144,11 @@
                                                                        :position "static"
                                                                        :width "auto"}]]
 
- [:.invisible {:visibility "hidden"}]
+[:.invisible {:visibility "hidden"}]
 
- [:.clearfix:before :.clearfix:after {:content " "
+[:.clearfix:before :.clearfix:after {:content " "
                                       :display "table"}]
 
- [:.clearfix:after {:clear "both"}]
+[:.clearfix:after {:clear "both"}]
 
- [:.clearfix {:*zoom "1"}]]
+[:.clearfix {:*zoom "1"}]]

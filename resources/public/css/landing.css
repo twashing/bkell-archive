@@ -112,9 +112,21 @@ textarea{
   -webkit-flex-direction : row; 
   -ms-flex-direction : row; 
   flex-direction : row; }
+
+.flex-container .flex-item{ 
+  width : 100%; }
 }
-@media {}
-@media {}
+@media only screen and (min-width: 481px) {
+
+.flex-container{}
+
+.flex-container .flex-item:nth-child(1){ 
+  width : 200px; }
+.flex-container{}
+
+.flex-container .flex-item:nth-child(2){ 
+  width : 300px; }
+}
 
 .ir{ 
   background-color : transparent; 
