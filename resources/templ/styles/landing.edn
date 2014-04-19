@@ -1,4 +1,5 @@
 [
+
  [:html :button :input :select :textarea {:color "#222"}
 
   [:body {:font-size "1em"
@@ -91,16 +92,16 @@
                                                     :-moz-box-sizing "border-box"}}]
 
 
- [:at-media :only :screen :and (:min-width "480px")
+ [:at-media {:media-queries ["only" "screen" "and" (:min-width "480px")]}
   [:.flex-container {:-webkit-flex-direction "row"
                      :-ms-flex-direction "row"
                      :flex-direction "row"}]
   [:.flex-item:nth-child (1) {:width "200px"}]
   [:.flex-item:nth-child (2) {:width "300px"}]]
 
- [:at-media :only :screen :and (:min-width "768px") {}]
+ [:at-media {:media-queries ["only" "screen" "and" (:min-width "768px")]} {}]
 
- [:at-media :only :screen :and (:min-width "1140px") {}]
+ [:at-media {:media-queries ["only" "screen" "and" (:min-width "1140px")]} {}]
 
 
  ;; Helper Classes

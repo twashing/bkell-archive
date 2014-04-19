@@ -106,7 +106,7 @@ textarea{
   -moz-box-flex : 0; 
   -webkit-order : 0; 
   -ms-flex : 0 1 auto; }
-@media {
+@media only screen and (min-width: 480px) {
 
 .flex-container{ 
   -webkit-flex-direction : row; 
