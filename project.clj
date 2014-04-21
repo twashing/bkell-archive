@@ -45,7 +45,7 @@
                                    :output-to "resources/public/js/main.js"
                                    :pretty-print true
 
-                                   :output-dir "out"
+                                   :output-dir "resources/public/js/"
                                    :optimizations :none
                                    :source-map true}}]}
 
