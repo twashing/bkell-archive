@@ -2,6 +2,9 @@
 @import url("http://fonts.googleapis.com/css?family=Gentium+Book+Basic:700italic");
 
 html{ 
+  height : 100%; }
+
+html{ 
   color : #222; }
 button{ 
   color : #222; }
@@ -15,7 +18,12 @@ textarea{
  html body, button body, input body, select body, textarea body{ 
   font-size : 1em; 
   line-height : 1.4; 
-  font : 16px/26px Helvetica, Helvetica Neue, Arial; }
+  font : 16px/26px Helvetica, Helvetica Neue, Arial; 
+  display : flex; 
+  flex-direction : column; 
+  align-content : flex-start; 
+  justify-content : flex-start; 
+  height : 100%; }
 
 img{ 
   vertical-align : middle; }
@@ -41,8 +49,10 @@ textarea{
   -ms-flex-align : start; 
   border : 1px red solid; 
   -webkit-flex-wrap : nowrap; 
+  align-self : stretch; 
   display : flex; 
   -moz-box-direction : normal; 
+  flex : 1; 
   -webkit-justify-content : flex-start; 
   -webkit-box-pack : start; 
   -ms-flex-line-pack : start; 
