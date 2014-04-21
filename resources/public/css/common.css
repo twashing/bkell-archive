@@ -1,0 +1,76 @@
+
+@import url("http://fonts.googleapis.com/css?family=Gentium+Book+Basic:700italic");
+
+html{}
+
+html body{}
+
+html body footer{ 
+  align-self : stretch; 
+  display : flex; 
+  color : white; 
+  font-style : italic; 
+  -webkit-align-self : stretch; 
+  -ms-flex-item-align : stretch; 
+  background-color : black; 
+  font-family : "Gentium Book Basic", serif; 
+  height : 30px; }
+
+html body footer .footer-main-text{ 
+  font-size : small; }
+html body footer{ 
+  align-self : stretch; 
+  display : flex; 
+  color : white; 
+  font-style : italic; 
+  -webkit-align-self : stretch; 
+  -ms-flex-item-align : stretch; 
+  background-color : black; 
+  font-family : "Gentium Book Basic", serif; 
+  height : 30px; }
+
+html body footer .footer-company:link{ 
+  color : white; 
+  text-decoration : none; }
+html body footer{ 
+  align-self : stretch; 
+  display : flex; 
+  color : white; 
+  font-style : italic; 
+  -webkit-align-self : stretch; 
+  -ms-flex-item-align : stretch; 
+  background-color : black; 
+  font-family : "Gentium Book Basic", serif; 
+  height : 30px; }
+
+html body footer .footer-company:visited{ 
+  color : white; 
+  text-decoration : none; }
+html body footer{ 
+  align-self : stretch; 
+  display : flex; 
+  color : white; 
+  font-style : italic; 
+  -webkit-align-self : stretch; 
+  -ms-flex-item-align : stretch; 
+  background-color : black; 
+  font-family : "Gentium Book Basic", serif; 
+  height : 30px; }
+
+html body footer .footer-company:hover{ 
+  color : white; 
+  text-decoration : underline; }
+html body footer{ 
+  align-self : stretch; 
+  display : flex; 
+  color : white; 
+  font-style : italic; 
+  -webkit-align-self : stretch; 
+  -ms-flex-item-align : stretch; 
+  background-color : black; 
+  font-family : "Gentium Book Basic", serif; 
+  height : 30px; }
+
+html body footer .footer-company:active{ 
+  color : white; 
+  text-decoration : none; }

@@ -1,4 +1,5 @@
 [
+ [:at-import {:url "http://fonts.googleapis.com/css?family=Gentium+Book+Basic:700italic"}]
  [:html :button :input :select :textarea {:color "#222"}
 
   [:body {:font-size "1em"

@@ -1,5 +1,4 @@
 [
-
  ;; @import url(http://fonts.googleapis.com/css?family=Gentium+Book+Basic:700italic);
  [:at-import {:url "http://fonts.googleapis.com/css?family=Gentium+Book+Basic:700italic"}]
 
@@ -43,8 +42,7 @@
 
      [:.motto-left :.motto-right { :float "left" }]
      [:.motto-left { :color "#132abf" }]
-     [:.motto-right { :color "#007821" }]
-     ]]
+     [:.motto-right { :color "#007821" }]]]
 
    [:.center-container {:-webkit-box-align "center"
                         :-webkit-align-items "center"
@@ -58,34 +56,6 @@
                         :align-items "center"
                         :justify-content "center"}]
 
-
-   ;; Footer
-   [:footer {:-webkit-align-self "stretch"
-             :-ms-flex-item-align "stretch"
-             :align-self "stretch"
-             :color "white"
-             :background-color "black"
-             :height "30px"}
-
-    [:.footer-main-text {:font-size "small"}]
-    [:.footer-company:link {:color "white"
-                            :text-decoration "none"}]
-    [:.footer-company:visited {:color "white"
-                               :text-decoration "none"}]
-    [:.footer-company:hover {:color "white"
-                             :text-decoration "underline"}]
-    [:.footer-company:active {:color "white"
-                              :text-decoration "none" }]]
    [:footer-container {:justify-content "flex-start"
                        :align-items "center"
-                       :display "flex"}]]]
-
- ;;@media only screen and (min-width: 480px) {}
- ;;@media only screen and (min-width: 768px) {}
- ;;@media only screen and (min-width: 1140px) {}
- #_[[:at-media {:media-queries ["only" "screen" "and" (:min-width "480px")]}
-   [:.myclass {:display "none"}]]
-  [:at-media {:media-queries ["only" "screen" "and" (:min-width "768px")]}]
-  [:at-media {:media-queries ["only" "screen" "and" (:min-width "1140px")]}]]
-
- ]
+                       :display "flex"}]]]]

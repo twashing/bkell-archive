@@ -1,0 +1,24 @@
+[
+ [:at-import {:url "http://fonts.googleapis.com/css?family=Gentium+Book+Basic:700italic"}]
+
+ [:html
+   [:body
+    [:footer {:font-style "italic"
+              :font-family "\"Gentium Book Basic\", serif"
+              :display "flex"
+              :-webkit-align-self "stretch"
+              :-ms-flex-item-align "stretch"
+              :align-self "stretch"
+              :color "white"
+              :background-color "black"
+              :height "30px"}
+
+     [:.footer-main-text {:font-size "small"}]
+     [:.footer-company:link {:color "white"
+                             :text-decoration "none"}]
+     [:.footer-company:visited {:color "white"
+                                :text-decoration "none"}]
+     [:.footer-company:hover {:color "white"
+                              :text-decoration "underline"}]
+     [:.footer-company:active {:color "white"
+                               :text-decoration "none" }]]]]]

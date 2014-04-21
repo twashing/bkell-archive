@@ -112,67 +112,6 @@ html body{
   height : 100%; 
   flex-direction : column; }
 
-html body footer{ 
-  -webkit-align-self : stretch; 
-  -ms-flex-item-align : stretch; 
-  align-self : stretch; 
-  color : white; 
-  background-color : black; 
-  height : 30px; }
-
-html body footer .footer-main-text{ 
-  font-size : small; }
-html body footer{ 
-  -webkit-align-self : stretch; 
-  -ms-flex-item-align : stretch; 
-  align-self : stretch; 
-  color : white; 
-  background-color : black; 
-  height : 30px; }
-
-html body footer .footer-company:link{ 
-  color : white; 
-  text-decoration : none; }
-html body footer{ 
-  -webkit-align-self : stretch; 
-  -ms-flex-item-align : stretch; 
-  align-self : stretch; 
-  color : white; 
-  background-color : black; 
-  height : 30px; }
-
-html body footer .footer-company:visited{ 
-  color : white; 
-  text-decoration : none; }
-html body footer{ 
-  -webkit-align-self : stretch; 
-  -ms-flex-item-align : stretch; 
-  align-self : stretch; 
-  color : white; 
-  background-color : black; 
-  height : 30px; }
-
-html body footer .footer-company:hover{ 
-  color : white; 
-  text-decoration : underline; }
-html body footer{ 
-  -webkit-align-self : stretch; 
-  -ms-flex-item-align : stretch; 
-  align-self : stretch; 
-  color : white; 
-  background-color : black; 
-  height : 30px; }
-
-html body footer .footer-company:active{ 
-  color : white; 
-  text-decoration : none; }
-html body{ 
-  font-style : italic; 
-  font-family : "Gentium Book Basic", serif; 
-  display : flex; 
-  height : 100%; 
-  flex-direction : column; }
-
 html body footer-container{ 
   justify-content : flex-start; 
   align-items : center; 
