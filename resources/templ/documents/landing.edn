@@ -11,8 +11,8 @@
    [:title]
    [:meta {:content "", :name "description"}]
    [:meta {:content "width=device-width", :name "viewport"}]
-   [:link {:href "css/normalize.min.css", :rel "stylesheet"}]
-   ;;[:link {:href "css/flexbox.css", :rel "stylesheet"}]
+   [:link {:rel "stylesheet" :href "css/normalize.min.css"}]
+   [:link {:rel "stylesheet" :href "css/index.css"}]
    [:link {:href "css/landing.css", :rel "stylesheet"}]
    [:script {:src "js/vendor/modernizr-2.6.2-respond-1.1.0.min.js"}]]
   [:body
@@ -28,4 +28,11 @@
      [:span.counter "duo"]]
     [:div.flex-item
      [:span {:contenteditable ""}]
-     [:span.counter "tres"]]]]])
+     [:span.counter "tres"]]]
+
+   [:footer.flex-item.footer-container
+    [:div.footer-main-text
+     [:a.footer-company
+      {:href "http://interruptsoftware.com"}
+      "\n          Interrupt Software Inc.\n        "]]]
+   ]])

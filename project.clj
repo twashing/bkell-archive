@@ -7,7 +7,7 @@
                  [org.clojure/core.incubator "0.1.3"]
                  [org.clojure/data.codec "0.1.0"]
                  [compojure "1.1.6"]
-                 [om "0.5.3"]
+                 [om "0.6.0"]
                  [enlive "1.1.5"]
                  [clj-http "0.7.9"]
 

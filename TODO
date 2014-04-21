@@ -29,3 +29,16 @@ lein hicv 2html resources/templ/documents/one.edn && cp resources/templ/document
 -- TESTing
    - domain CRUD functions
    - handler functions
+
+
+-- AWS S3 direct upload handshake
+
+i) get AWS policy and AWSAccessKeyId
+i) your form
+ii) your form connects with S3
+
+iii) your form gets signed parameters from server
+iv) your form uploads assets to an S3 bucket using signed parameters
+v) handle feedback and success callbacks
+
+vi) add visualizing code for uploads
