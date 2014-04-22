@@ -15,7 +15,6 @@
                  [org.clojure/data.codec "0.1.0"]
                  [compojure "1.1.6"]
                  [com.datomic/datomic-pro "0.9.4572"]
-                 [com.taoensso/timbre "3.1.4"]
 
                  [http-kit "2.1.17"]
                  [com.taoensso/sente "0.8.2"]

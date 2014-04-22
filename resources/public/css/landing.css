@@ -132,11 +132,11 @@ textarea{
 .flex-container{}
 
 .flex-container .flex-item:nth-child(1){ 
-  width : 200px; }
+  width : 400px; }
 .flex-container{}
 
 .flex-container .flex-item:nth-child(2){ 
-  width : 300px; }
+  width : 400px; }
 }
 
 .ir{ 
