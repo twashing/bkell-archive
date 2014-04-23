@@ -47,3 +47,4 @@ goog.addDependency("structs/priorityqueue.js", ['goog.structs.PriorityQueue'], [
 goog.addDependency("structs/prioritypool.js", ['goog.structs.PriorityPool'], ['goog.structs.Pool', 'goog.structs.PriorityQueue']);
 goog.addDependency("net/xhriopool.js", ['goog.net.XhrIoPool'], ['goog.net.XhrIo', 'goog.structs', 'goog.structs.PriorityPool']);
 goog.addDependency("string/stringformat.js", ['goog.string.format'], ['goog.string']);
+goog.addDependency("ui/idgenerator.js", ['goog.ui.IdGenerator'], []);

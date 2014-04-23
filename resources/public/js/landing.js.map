@@ -1,11 +1,13 @@
 {"version":3,
  "file":"/home/webkell/Projects/bkell/resources/public/js/landing.js",
  "sources":["landing.cljs"],
- "lineCount":17,
+ "lineCount":21,
  "mappings":
- ";AAAA;;;;;;;;;AASA,IAAAA,mRAAAA,uBAAA,EAAA,AAAAC,+BAAAD,mBAAA,AAAAE,0BAAAC,mBAAAH,kBAAAA,sCAAA,AAAAI,wBAAAJ,qBAAA,gFAAA,AAAAI,wBAAAJ,qBAAA,6EAAA,AAAAI,wBAAAJ,qBAAA,sDAAA,hHAAcK,7HAAKC,7HAAQC,haACrB,mDAAA,QAAA,mCAAA,2CAAA,qDAAA,9LAACC,0wBAEL,AAAKC,eAAWJ;AAChB,AAAKK,kBAAWJ;AAChB,AAAKK,0BAAWJ;AAGlB,iBAAA,mBAAA,AAAA,pCAAMK",
+ ";AAAA;;;;;;;;;;;;;AAWA,IAAAA,mRAAAA,uBAAA,EAAA,AAAAC,+BAAAD,mBAAA,AAAAE,0BAAAC,mBAAAH,kBAAAA,sCAAA,AAAAI,wBAAAJ,qBAAA,gFAAA,AAAAI,wBAAAJ,qBAAA,6EAAA,AAAAI,wBAAAJ,qBAAA,sDAAA,hHAAcK,7HAAKC,7HAAQC,haACrB,mDAAA,QAAA,mCAAA,2CAAA,qDAAA,9LAACC,0wBAEL,AAAKC,eAAWJ;AAChB,AAAKK,kBAAWJ;AAChB,AAAKK,0BAAWJ;AAGlB,AAAKK,oBACH,yBAAA,mFAAA,2CAAA,8GAAA,uCAAA,kHAAA,UAAA,kHAAA,2CAAA,oDAAA,uBAAA,oIAAA,2CAAA,oDAAA,uBAAA,oDAAA,uBAAA,2CAAA,8GAAA,uCAAA,kHAAA,OAAA,kHAAA,2CAAA,oDAAA,uBAAA,oIAAA,2CAAA,oDAAA,uBAAA,oDAAA,uBAAA,2CAAA,8GAAA,uCAAA,kHAAA,mBAAA,kHAAA,2CAAA,oDAAA,uBAAA,oIAAA,2CAAA,oDAAA,uBAAA,oDAAA,uBAAA,2CAAA,8GAAA,uCAAA,kHAAA,UAAA,kHAAA,2CAAA,oDAAA,uBAAA,oIAAA,2CAAA,oDAAA,uBAAA,oDAAA,//GAACC;AAqBH,8DAAA,2CAAA,zGAACC,uBAAQC,qBAAaH,sHACJ,wBAAA,xBAAiBI",
  "names":
- ["map__20254", "cljs.core/seq?", "cljs.core/apply",
+ ["map__25585", "cljs.core/seq?", "cljs.core/apply",
   "cljs.core/hash-map", "cljs.core/get", "chsk", "ch-recv", "send-fn",
   "taoensso.sente/make-channel-socket!", "landing/chsk",
-  "landing/ch-chsk", "landing/chsk-send!", "landing/thingp"]}
+  "landing/ch-chsk", "landing/chsk-send!", "landing/app-state",
+  "cljs.core/atom", "om.core/root", "landing/bkeeping-app",
+  "js/document"]}

@@ -112,7 +112,7 @@
  [:at-media {:media-queries ["only" "screen" "and" (:min-width "481px")]}
   [:.flex-container
    [:.flex-item:nth-child (1) {:width "400px"}]
-   [:.flex-item:nth-child (2) {:width "400px"}]]]
+   [:.flex-item:nth-child (2) {:width "500px"}]]]
 
  #_[:at-media {:media-queries ["only" "screen" "and" (:min-width "768px")]}
   [:.flex-container
