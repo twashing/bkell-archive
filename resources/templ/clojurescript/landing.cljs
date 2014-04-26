@@ -1,4 +1,4 @@
-#_(ns landing
+(ns landing
   (:require-macros
    [cljs.core.match.macros :refer (match)] ; Optional, useful
    [cljs.core.async.macros :as asyncm :refer (go go-loop)])
@@ -9,7 +9,10 @@
    [cljs.core.async :as async :refer (<! >! put! chan)]
    [taoensso.sente :as sente :refer (cb-success?)]))
 
-#_(let [{:keys [chsk ch-recv send-fn]}
+
+(enable-console-print!)
+
+(let [{:keys [chsk ch-recv send-fn]}
       (sente/make-channel-socket! "/chsk" {} {:type :auto})]
 
   (def chsk       chsk)
@@ -17,7 +20,7 @@
   (def chsk-send! send-fn) ; ChannelSocket's send API fn
   )
 
-#_(def app-state
+(def app-state
   (atom {:list [{:bookkeeping.group.books.account/id "535724e0-aab9-4710-ae55-f7adbae1b991",
                   :bookkeeping.group.books.account/name "expense",
                   :bookkeeping.group.books.account/type {:db/id 17592186045445},
@@ -39,26 +42,12 @@
                   :bookkeeping.group.books.account/counterWeight {:db/id 17592186045447},
                   :db/id 17592186045455}]}))
 
-#_(defn bkeeping-app [app owner]
+(defn bkeeping-app [app owner]
   (apply dom/ul nil
          (map (fn [ech] (dom/li nil
-                               "fubar" #_(:bookkeeping.group.books.account/name ech)))
+                               (:bookkeeping.group.books.account/name ech)))
               (:list app))))
 
-#_(om/root bkeeping-app
+(om/root bkeeping-app
          app-state
          {:target (.getElementById js/document "duo")})
-
-(ns landing
-  (:require [om.core :as om :include-macros true]
-            [om.dom :as dom :include-macros true]))
-
-(enable-console-print!)
-
-(def app-state (atom {:text "Hello world!"}))
-
-(om/root
- (fn [app owner]
-   (dom/h1 nil (:text app)))
- app-state
- {:target (. js/document (getElementById "duo"))})

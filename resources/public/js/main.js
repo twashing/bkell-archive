@@ -15,4 +15,4 @@ goog.addDependency("../cljs/core/match.js", ['cljs.core.match'], ['cljs.core']);
 goog.addDependency("../index.js", ['index'], ['cljs.core', 'taoensso.sente', 'cljs.core.match', 'cljs.core.async']);
 goog.addDependency("../om/dom.js", ['om.dom'], ['cljs.core']);
 goog.addDependency("../om/core.js", ['om.core'], ['cljs.core', 'om.dom', 'goog.ui.IdGenerator']);
-goog.addDependency("../landing.js", ['landing'], ['cljs.core', 'om.core', 'om.dom']);
+goog.addDependency("../landing.js", ['landing'], ['cljs.core', 'taoensso.sente', 'om.core', 'cljs.core.match', 'om.dom', 'cljs.core.async']);
