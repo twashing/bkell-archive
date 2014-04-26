@@ -33,7 +33,7 @@
 
 
 ;; Sente stuff
-#_(let [{:keys [ch-recv send-fn ajax-post-fn ajax-get-or-ws-handshake-fn]}
+(let [{:keys [ch-recv send-fn ajax-post-fn ajax-get-or-ws-handshake-fn]}
       (sente/make-channel-socket! {})]
   (def ring-ajax-post                ajax-post-fn)
   (def ring-ajax-get-or-ws-handshake ajax-get-or-ws-handshake-fn)
@@ -155,8 +155,8 @@
   (defroutes approutes
 
     ;; Sente stuff
-    #_(GET  "/chsk" req (#'ring-ajax-get-or-ws-handshake req)) ; Note the #'
-    #_(POST "/chsk" req (#'ring-ajax-post                req))
+    (GET  "/chsk" req (#'ring-ajax-get-or-ws-handshake req)) ; Note the #'
+    (POST "/chsk" req (#'ring-ajax-post                req))
 
     (GET "/callbackGitkit" [:as request & etal]
 
@@ -194,10 +194,12 @@
     (GET "/landing" [:as request]
 
          (with-session request
-           (let [landing-page (if true   ;; flag for DEV or PROD
+           (let [_ (timbre/debug "request params["request "]")
+                 landing-page (if true   ;; flag for DEV or PROD
 
                                 (let [repl-env (reset! cemerick.austin.repls/browser-repl-env
-                                                       (cemerick.austin/repl-env :host "172.16.210.128"))]
+                                                       (cemerick.austin/repl-env
+                                                        :host (:server-name request)))]
                                   (rresp/response
                                    (apply str (enlive/emit*
                                                (enlive/transform (enlive/html-resource "landing.html")

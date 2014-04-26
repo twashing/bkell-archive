@@ -38,15 +38,21 @@
   (alembic.still/load-project))
 
 (defn load-browser-repl
-  "After this is called, point your browser to the host (defaults to \"localhost\")"
+  "1. Call this after loading /landing
+   2. After this function is called, point your browser to the host (defaults to \"localhost\")
+   3. browser repl is now ready"
 
   ([] (load-browser-repl "localhost"))
   ([host]
 
-     (let [ repl-env (reset! cemerick.austin.repls/browser-repl-env
+     ;; this chunk of code is now happening in the handler.clj route
+     ;; when loading landing page, we need to rewrite it, with a <script>
+     ;; that connects to this repl instance
+     #_(let [ repl-env (reset! cemerick.austin.repls/browser-repl-env
                             (cemerick.austin/repl-env :host host))]
+       (cemerick.austin.repls/cljs-repl repl-env))
 
-       (cemerick.austin.repls/cljs-repl repl-env))))
+     (cemerick.austin.repls/cljs-repl @cemerick.austin.repls/browser-repl-env)))
 
 (def env-key :test)
 (def system nil)
