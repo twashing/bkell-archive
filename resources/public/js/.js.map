@@ -1,0 +1,9 @@
+{"version":3,
+ "file":"/home/webkell/Projects/bkell/resources/public/js/.js",
+ "sources":["landing.cljs"],
+ "lineCount":6,
+ "mappings":
+ ";AAmDA,AAAKA,aAAU,yBAAA,2CAAA,qDAAA,zHAACC;AAEhB,AAACC,kBACA,sBAAA,XAAKC,IAAIC,OACP,wBAAA,jBAACC,sBAAW,AAAA,mFAAOF;cAFtB,2CAAA,tDAGCH,+GACS,wBAAA,xBAAGM",
+ "names":
+ ["/app-state", "cljs.core/atom", "om/root", "app", "owner", "dom/h1",
+  "js/document"]}

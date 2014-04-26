@@ -23,6 +23,9 @@
             [taoensso.sente :as sente]
             [taoensso.timbre :as timbre]
 
+            ;; Autstin Stuff
+            [cemerick.austin.repls :refer (browser-connected-repl-js)]
+
             [bkell.utils :as utils]
             [bkell.handler-utils :as hutils]
             [bkell.domain.domain :as domain]
@@ -30,7 +33,7 @@
 
 
 ;; Sente stuff
-(let [{:keys [ch-recv send-fn ajax-post-fn ajax-get-or-ws-handshake-fn]}
+#_(let [{:keys [ch-recv send-fn ajax-post-fn ajax-get-or-ws-handshake-fn]}
       (sente/make-channel-socket! {})]
   (def ring-ajax-post                ajax-post-fn)
   (def ring-ajax-get-or-ws-handshake ajax-get-or-ws-handshake-fn)
@@ -152,8 +155,8 @@
   (defroutes approutes
 
     ;; Sente stuff
-    (GET  "/chsk" req (#'ring-ajax-get-or-ws-handshake req)) ; Note the #'
-    (POST "/chsk" req (#'ring-ajax-post                req))
+    #_(GET  "/chsk" req (#'ring-ajax-get-or-ws-handshake req)) ; Note the #'
+    #_(POST "/chsk" req (#'ring-ajax-post                req))
 
     (GET "/callbackGitkit" [:as request & etal]
 
@@ -191,8 +194,22 @@
     (GET "/landing" [:as request]
 
          (with-session request
-           (-> (rresp/file-response "landing.html" { :root "resources/public" })
-             (rresp/content-type "text/html"))))
+           (let [landing-page (if true   ;; flag for DEV or PROD
+
+                                (let [repl-env (reset! cemerick.austin.repls/browser-repl-env
+                                                       (cemerick.austin/repl-env :host "172.16.210.128"))]
+                                  (rresp/response
+                                   (apply str (enlive/emit*
+                                               (enlive/transform (enlive/html-resource "landing.html")
+                                                                 [:#repl-connection]
+                                                                 (fn [node]
+                                                                   (assoc node
+                                                                     :content (browser-connected-repl-js))))))))
+
+                                (rresp/file-response "landing.html" { :root "resources/public" }))]
+
+             (rresp/content-type landing-page "text/html"))))
+
 
     (PUT "/account" [:as request])
     (GET "/account/:id" [:as request])
@@ -257,4 +274,4 @@
 (defn create-app [conn]
   (alter-var-root #'app (fn [x] (handler/site
                                 (create-approutes conn)
-                                {:session {:cookie-attrs {:max-age 600}}}))))
+                                {:session {:cookie-attrs {:max-age 60000}}}))))

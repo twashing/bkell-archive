@@ -7,7 +7,9 @@
    [om.dom :as dom :include-macros true]
    [cljs.core.match] ; Optional, useful
    [cljs.core.async :as async :refer (<! >! put! chan)]
-   [taoensso.sente :as sente :refer (cb-success?)]))
+   [taoensso.sente :as sente :refer (cb-success?)]
+
+   [clojure.browser.repl]))
 
 
 (enable-console-print!)

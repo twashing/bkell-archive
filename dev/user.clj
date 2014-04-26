@@ -13,6 +13,9 @@
    [clojure.tools.namespace.repl :refer (refresh refresh-all)]
    [com.stuartsierra.component :as component]
    [ring.mock.request :as mock]
+   [cemerick.austin]
+   [cemerick.austin.repls :refer :all]
+   [net.cgrand.enlive-html :as enlive]
 
    [alembic.still]
 
@@ -34,6 +37,16 @@
 (defn reload-project []
   (alembic.still/load-project))
 
+(defn load-browser-repl
+  "After this is called, point your browser to the host (defaults to \"localhost\")"
+
+  ([] (load-browser-repl "localhost"))
+  ([host]
+
+     (let [ repl-env (reset! cemerick.austin.repls/browser-repl-env
+                            (cemerick.austin/repl-env :host host))]
+
+       (cemerick.austin.repls/cljs-repl repl-env))))
 
 (def env-key :test)
 (def system nil)

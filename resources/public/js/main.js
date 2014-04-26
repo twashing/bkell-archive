@@ -13,6 +13,9 @@ goog.addDependency("../cljs/core/async.js", ['cljs.core.async'], ['cljs.core.asy
 goog.addDependency("../taoensso/sente.js", ['taoensso.sente'], ['cljs.core', 'taoensso.encore', 'clojure.string', 'cljs.reader', 'cljs.core.async']);
 goog.addDependency("../cljs/core/match.js", ['cljs.core.match'], ['cljs.core']);
 goog.addDependency("../index.js", ['index'], ['cljs.core', 'taoensso.sente', 'cljs.core.match', 'cljs.core.async']);
+goog.addDependency("../clojure/browser/event.js", ['clojure.browser.event'], ['cljs.core', 'goog.events.EventType', 'goog.events.EventTarget', 'goog.events']);
+goog.addDependency("../clojure/browser/net.js", ['clojure.browser.net'], ['goog.net.xpc.CrossPageChannel', 'clojure.browser.event', 'goog.net.xpc.CfgFields', 'cljs.core', 'goog.net.EventType', 'goog.json', 'goog.net.XhrIo']);
 goog.addDependency("../om/dom.js", ['om.dom'], ['cljs.core']);
 goog.addDependency("../om/core.js", ['om.core'], ['cljs.core', 'om.dom', 'goog.ui.IdGenerator']);
-goog.addDependency("../landing.js", ['landing'], ['cljs.core', 'taoensso.sente', 'om.core', 'cljs.core.match', 'om.dom', 'cljs.core.async']);
+goog.addDependency("../clojure/browser/repl.js", ['clojure.browser.repl'], ['clojure.browser.event', 'clojure.browser.net', 'cljs.core']);
+goog.addDependency("../landing.js", ['landing'], ['cljs.core', 'taoensso.sente', 'om.core', 'cljs.core.match', 'om.dom', 'clojure.browser.repl', 'cljs.core.async']);
