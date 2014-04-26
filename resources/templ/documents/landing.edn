@@ -13,9 +13,8 @@
    [:meta {:content "width=device-width", :name "viewport"}]
    [:link {:rel "stylesheet" :href "css/normalize.min.css"}]
    [:link {:rel "stylesheet" :href "css/common.css"}]
-   [:link {:href "css/landing.css", :rel "stylesheet"}]
-   [:script {:src "js/vendor/modernizr-2.6.2-respond-1.1.0.min.js"}]
-   [:script {:src "js/main.js"}]]
+   [:link {:href "css/landing.css", :rel "stylesheet"}]]
+
   [:body
    "<!--[if lt IE 7]>\n            <p class=\"chromeframe\">You are using an <strong>outdated</strong> browser. Please <a href=\"http://browsehappy.com/\">upgrade your browser</a> or <a href=\"http://www.google.com/chromeframe/?redirect=true\">activate Google Chrome Frame</a> to improve your experience.</p>\n        <![endif]-->"
 
@@ -23,17 +22,22 @@
     "<!--\n        -->"
     [:div#assets-pane.flex-item
      [:span {:contenteditable ""}]
-     [:span.counter "uno"]]
+     [:span#uno.counter "uno"]]
     [:div#accounts-pane.flex-item
      [:span {:contenteditable ""}]
-     [:span.counter "duo"]]
+     [:span#duo.counter "Zzz"]]
     [:div#entries-pane.flex-item
      [:span {:contenteditable ""}]
-     [:span.counter "tres"]]]
+     [:span#duo.counter "tres"]]]
 
    [:footer.flex-item.footer-container
     [:div.footer-main-text
      [:a.footer-company
       {:href "http://interruptsoftware.com"}
-      "\n          Interrupt Software Inc.\n        "]]]
-   ]])
+      "\n          Interrupt Software Inc.\n        "]]]]
+
+  [:script {:src "js/vendor/modernizr-2.6.2-respond-1.1.0.min.js"}]
+  [:script {:src "http://fb.me/react-0.9.0.js"}]
+  [:script {:src "js/goog/base.js"}]
+  [:script {:src "js/main.js"}]
+  [:script {:type "text/javascript"} "goog.require(\"landing\")"]])

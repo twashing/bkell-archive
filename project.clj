@@ -40,15 +40,14 @@
 
                         ;; The standard ClojureScript compiler options:
                         ;; (See the ClojureScript compiler documentation for details.)
-                        :compiler {
-                                   :output-to "resources/public/js/main.js"
-                                   :pretty-print true
-
+                        :compiler {:output-to "resources/public/js/main.js"
                                    :output-dir "resources/public/js/"
                                    :optimizations :none
-                                   :source-map true}}]}
+                                   :source-map true
+                                   :pretty-print true}}]}
 
-  :profiles {:dev {:source-paths ["dev"]
+  :profiles {:dev {:id "bkeeping"
+                   :source-paths ["dev"]
                    :resource-paths ["." "resources/" "resources/public/" "resources/test/"]
                    :dependencies [[javax.servlet/servlet-api "2.5"]
                                   [midje "1.6.3"]

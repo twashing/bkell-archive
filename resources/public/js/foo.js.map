@@ -1,7 +1,0 @@
-{"version":3,
- "file":"/home/webkell/Projects/bkell/resources/public/js/foo.js",
- "sources":["foo.cljs"],
- "lineCount":11,
- "mappings":
- ";AAAA;;AAEA,YAAA,mBAAA,/BAAeA,4BAAOC,GACpB,sBAAA,wBAAcA;;;AAEhB,YAAA,kBAAA,AAAA,9BAAeC",
- "names":["foo/greet", "n", "foo/thing"]}
