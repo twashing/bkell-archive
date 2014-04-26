@@ -2,23 +2,23 @@
   :description "FIXME: write description"
   :url "http://example.com/FIXME"
   :dependencies [[org.clojure/clojure "1.5.1"]
-                 [org.clojure/clojurescript "0.0-2173"]
+                 [org.clojure/clojurescript "0.0-2202"]
                  [org.clojure/clojure-contrib "1.2.0"]
                  [org.clojure/core.incubator "0.1.3"]
                  [org.clojure/data.codec "0.1.0"]
                  [compojure "1.1.6"]
-                 [om "0.6.0"]
+                 [om "0.6.2"]
                  [enlive "1.1.5"]
-                 [clj-http "0.7.9"]
+                 [clj-http "0.9.1"]
 
                  [com.stuartsierra/component "0.2.1"]
                  [org.clojure/data.codec "0.1.0"]
                  [compojure "1.1.6"]
                  [com.datomic/datomic-pro "0.9.4572"]
 
-                 [http-kit "2.1.17"]
-                 [com.taoensso/sente "0.8.2"]
-                 [com.taoensso/encore "0.9.6"]
+                 [http-kit "2.1.18"]
+                 [com.taoensso/sente "0.11.0"]
+                 [com.taoensso/encore "1.4.0"]
                  [com.taoensso/timbre "3.1.6"]
 
                  [org.clojure/core.match "0.2.1"]
@@ -53,7 +53,7 @@
                                   [midje "1.6.3"]
                                   [javax.servlet/servlet-api "2.5"]
                                   [ring-mock "0.1.5"]
-                                  [ring/ring-jetty-adapter "1.2.1"]
+                                  [ring/ring-jetty-adapter "1.2.2"]
 
                                   [com.cemerick/austin "0.1.4"]
                                   [alembic "0.2.1"]]}})
