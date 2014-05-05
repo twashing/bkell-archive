@@ -133,7 +133,6 @@
       (scheckfn request-or-session))))
 
 (defmacro with-session [request & body]
-
   `(if (check-live-session ~request)
      (do ~@body)
      (rresp/redirect "/")))
@@ -220,7 +219,6 @@
     (GET "/accounts" [:as request]
 
          (with-session request
-
            (timbre/debug "/accounts CALLED / session[" (:session request) "]")
            (let [uname (-> request :session :username)
                  gname (si/generate-groupname-from-username uname)
@@ -273,7 +271,9 @@
 
 
 (def app nil)
-(defn create-app [conn]
-  (alter-var-root #'app (fn [x] (handler/site
-                                (create-approutes conn)
-                                {:session {:cookie-attrs {:max-age 60000}}}))))
+(defn create-app
+  ([conn] (create-app conn true))
+  ([conn use-session?]
+     (alter-var-root #'app (fn [x] (handler/site
+                                   (create-approutes conn)
+                                   {:session {:cookie-attrs {:max-age 60000}}})))))

@@ -6,7 +6,7 @@
             [bkell.component.runner :as cr]))
 
 
-(def system-components [:datomic :httphandler])
+(def system-components [:datomic :httphandler :runner])
 
 (defrecord Bkell [env]
   component/Lifecycle
@@ -16,20 +16,21 @@
     (timbre/debug "Bkell.start CALLED / env[" env "]")
 
     (if-not (:env this)
-      (component/start-system
-       (assoc this :env env)
-       system-components)
+      (component/start-system (assoc this :env env)
+                              system-components)
       this))
 
   (stop [this]
 
-    (timbre/debug "Bkell.stop CALLED")
+    (timbre/debug "Bkell.stop CALLED / " (with-out-str (clojure.pprint/pprint this)))
     (component/stop-system this system-components)))
 
 (defn component-bkell [env]
 
   (component/system-map
-   :datomic (cd/component-datomic env)
+   :datomic (component/using
+             (cd/component-datomic env)
+             {})
    :httphandler (component/using
                  (ch/component-httphandler env)
                  {:datomic :datomic})
@@ -37,7 +38,7 @@
             (cr/component-runner env)
             {:httphandler :httphandler})
    :bkell (component/using
-           (map->Bkell env)
+           (map->Bkell {:env env})
            {:datomic :datomic
             :httphandler :httphandler
-            })))
+            :runner :runner})))

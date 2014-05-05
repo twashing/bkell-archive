@@ -79,7 +79,7 @@
 
   (stop [component]
 
-    (timbre/debug "Datomic.stop CALLED")
+    (timbre/debug "Datomic.stop CALLED / " (with-out-str (clojure.pprint/pprint component)))
     (dissoc component :conn)))
 
 

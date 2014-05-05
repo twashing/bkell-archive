@@ -11,17 +11,16 @@
 
   (start [component]
 
-    (timbre/debug "Runner.start CALLED / " component)
+    (timbre/debug "Runner.start CALLED / " (with-out-str (clojure.pprint/pprint component)))
     (if-not (:server component)
-      (let [server (run/start (-> component :httphandler :app))]
-        (assoc component :server server))
+      (assoc component :server (run/start (-> component :httphandler :app)))
       component))
 
   (stop [component]
 
-    (timbre/debug "Runner.stop CALLED")
+    (timbre/debug "Runner.stop CALLED / " (with-out-str (clojure.pprint/pprint component)))
     ((:server component))
     (dissoc component :server)))
 
 (defn component-runner [env]
-  (map->Runner env))
+  (map->Runner {:env env}))

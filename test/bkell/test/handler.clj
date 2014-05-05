@@ -3,6 +3,7 @@
             [ring.mock.request :as mock]
             [taoensso.timbre :as timbre]
             [com.stuartsierra.component :as component]
+            [ring.util.response :as rresp]
 
             [bkell.config :as config]
             [bkell.handler :as handler]
@@ -11,24 +12,38 @@
 
 
 (def env nil)
-(def system nil)
 
 (defn fixture-http-handler [f]
 
   (timbre/debug "[FIXTURE] fixture-http-handler")
-
   (alter-var-root #'env (constantly (:test (config/get-config-raw))))
-  (let [cbkell (kc/component-bkell env)
-        component (component/start cbkell)]
-
-    (alter-var-root #'system (fn [x] component))
-    (f)
-    (component/stop cbkell)))
+  (f))
 
 (use-fixtures :each fixture-http-handler)
 
+#_(alter-var-root #'system (fn [x] component))
+#_(let [cbkell (kc/component-bkell env)
+        component (component/start cbkell)]
 
-(deftest test-gitkit
+    (component/stop cbkell))
+
+
+#_(deftest test-with-session
+
+  (testing "turn session on"
+
+    (let [request-params (config/load-edn "test-request.edn")
+
+          request (mock/request :get "/accounts" (:params request-params))
+          response (handler/with-session request (rresp/redirect "/accounts"))]
+
+      (timbre/debug "ASDF: " response)))
+
+
+  (testing "turn session off"
+    ))
+
+#_(deftest test-gitkit
 
   (testing "callbackGitkit"
 
