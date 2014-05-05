@@ -1,14 +1,13 @@
 {"version":3,
  "file":"/home/webkell/Projects/bkell/resources/public/js/landing.js",
  "sources":["landing.cljs"],
- "lineCount":26,
+ "lineCount":25,
  "mappings":
- ";AAAA;;;;;;;;;;;;;;AAcA,AAACA;AAED,IAAAC,mRAAAA,uBAAA,EAAA,AAAAC,+BAAAD,mBAAA,AAAAE,0BAAAC,mBAAAH,kBAAAA,sCAAA,AAAAI,wBAAAJ,qBAAA,gFAAA,AAAAI,wBAAAJ,qBAAA,6EAAA,AAAAI,wBAAAJ,qBAAA,sDAAA,hHAAcK,7HAAKC,7HAAQC,haACrB,mDAAA,QAAA,mCAAA,2CAAA,qDAAA,9LAACC,0wBAEL,AAAKC,eAAWJ;AAChB,AAAKK,kBAAWJ;AAChB,AAAKK,0BAAWJ;AAGlB,AAAKK,oBACH,yBAAA,2CAAA,qDAAA,mFAAA,2CAAA,8GAAA,uCAAA,kHAAA,UAAA,kHAAA,2CAAA,oDAAA,uBAAA,oIAAA,2CAAA,oDAAA,uBAAA,oDAAA,uBAAA,2CAAA,8GAAA,uCAAA,kHAAA,OAAA,kHAAA,2CAAA,oDAAA,uBAAA,oIAAA,2CAAA,oDAAA,uBAAA,oDAAA,uBAAA,2CAAA,8GAAA,uCAAA,kHAAA,mBAAA,kHAAA,2CAAA,oDAAA,uBAAA,oIAAA,2CAAA,oDAAA,uBAAA,oDAAA,uBAAA,2CAAA,8GAAA,uCAAA,kHAAA,UAAA,kHAAA,2CAAA,oDAAA,uBAAA,oIAAA,2CAAA,oDAAA,uBAAA,oDAAA,/lHAACC;AAqBH,uBAAA,kCAAA,zDAAMC,8CAAcC,IAAIC,OACtB,2CAAA,pCAACd,0BAAMe,eACA,AAACC,wBAAI,gBAAA,LAAKC,KAAK,OAAAC,aAAA,KACO,AAAA,gJAAuCD;GACxD,AAAA,mFAAOJ;;AAErB,8DAAA,2CAAA,zGAACM,uBAAQP,qBACAF,sHACS,wBAAA,xBAAiBU",
+ ";AAAA;;;;;;;;;;;;;;;;AAeA,AAACA;AAED,IAAAC,mRAAAA,uBAAA,EAAA,AAAAC,+BAAAD,mBAAA,AAAAE,0BAAAC,mBAAAH,kBAAAA,sCAAA,AAAAI,wBAAAJ,qBAAA,gFAAA,AAAAI,wBAAAJ,qBAAA,6EAAA,AAAAI,wBAAAJ,qBAAA,sDAAA,hHAAcK,7HAAKC,7HAAQC,haACrB,mDAAA,QAAA,mCAAA,2CAAA,qDAAA,9LAACC,0wBAEL,AAAKC,eAAWJ;AAChB,AAAKK,kBAAWJ;AAChB,AAAKK,0BAAWJ;AAGlB,oBAAA,2CAAA,qDAAA,mFAAA,2CAAA,8GAAA,uCAAA,kHAAA,UAAA,kHAAA,2CAAA,oDAAA,uBAAA,oIAAA,2CAAA,oDAAA,uBAAA,oDAAA,uBAAA,2CAAA,8GAAA,uCAAA,kHAAA,OAAA,kHAAA,2CAAA,oDAAA,uBAAA,oIAAA,2CAAA,oDAAA,uBAAA,oDAAA,uBAAA,2CAAA,8GAAA,uCAAA,kHAAA,mBAAA,kHAAA,2CAAA,oDAAA,uBAAA,oIAAA,2CAAA,oDAAA,uBAAA,oDAAA,uBAAA,2CAAA,8GAAA,uCAAA,kHAAA,UAAA,kHAAA,2CAAA,oDAAA,uBAAA,oIAAA,2CAAA,oDAAA,uBAAA,oDAAA,1lHAAKK;AAsBL,8DAAA,2CAAA,zGAACC,uBAAQC,qBACAF,sHACS,wBAAA,xBAAiBG",
  "names":
- ["cljs.core/enable-console-print!", "map__21144", "cljs.core/seq?",
+ ["cljs.core/enable-console-print!", "map__23757", "cljs.core/seq?",
   "cljs.core/apply", "cljs.core/hash-map", "cljs.core/get", "chsk",
   "ch-recv", "send-fn", "taoensso.sente/make-channel-socket!",
   "landing/chsk", "landing/ch-chsk", "landing/chsk-send!",
-  "landing/app-state", "cljs.core/atom", "landing/bkeeping-app", "app",
-  "owner", "om.dom/ul", "cljs.core/map", "ech", "js/React.DOM.li",
-  "om.core/root", "js/document"]}
+  "landing/app-state", "om.core/root", "ankha.core/inspector",
+  "js/document"]}

@@ -154,8 +154,8 @@
   (defroutes approutes
 
     ;; Sente stuff
-    (GET  "/chsk" req (#'ring-ajax-get-or-ws-handshake req)) ; Note the #'
-    (POST "/chsk" req (#'ring-ajax-post                req))
+    (GET  "/chsk" req (ring-ajax-get-or-ws-handshake req)) ; Note the #'
+    (POST "/chsk" req (ring-ajax-post                req))
 
     (GET "/callbackGitkit" [:as request & etal]
 

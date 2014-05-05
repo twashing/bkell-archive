@@ -6,7 +6,7 @@
                                                 
                                                
                                                      
-                                                 
+                                                      
   ;; #+clj  (:import [org.apache.commons.codec.binary Base64])
                                                    
                                                 
@@ -29,6 +29,22 @@
          (:require-macros [taoensso.encore :as encore-macros]))
 
 ;;;; Core
+
+     
+                      
+                                                                             
+                                                                            
+                                                                  
+                                                         
+                                                                            
+                 
+    
+          
+                                         
+                                              
+             
+
+                                                            
 
 (defn name-with-attrs
   "Stolen from `clojure.tools.macro`.
@@ -75,7 +91,8 @@
                                                          
                   
 
-                                                                               
+                                
+                                                            
                                                                                 
 
 (comment (cond false "false") (cond-throw false "false"))
@@ -90,7 +107,7 @@
                                           
             
 
-                   
+                               
                                                                           
                
                                              
@@ -101,7 +118,7 @@
                               
                                  
 
-                 
+                             
                                                                    
                                                   
                        
@@ -115,7 +132,7 @@
          (if-lets [a :a b :b]  [a b])
          (if-lets [a :a b nil] [a b]))
 
-                   
+                               
                                                                      
                    
                                  
@@ -125,15 +142,101 @@
 
 (comment (when-lets [a :a b nil] "foo"))
 
-(def nnil?   (complement nil?))
-(def nblank? (complement str/blank?))
+(def  nnil?   (complement nil?))
+(def  nblank? (complement str/blank?))
+(defn nblank-str? [x] (and (string? x) (nblank? x)))
 
-                                      
+(comment (map nblank-str? ["foo" "" 5]))
+
+(defn nvec? "Is `x` a vector of size `n`?" [n x]
+  (and (vector? x) (= (count x) n)))
+
+(comment (nvec? 2 [:a :b]))
+
+(defn first-nth
+  ([coll]           (nth coll 0))
+  ([coll not-found] (nth coll 0 not-found)))
+
+                                       ; For easier encore/format portability
       
 (defn format "Removed from cljs.core 0.0-1885, Ref. http://goo.gl/su7Xkj"
   [fmt & args] (apply gstr/format fmt args))
 
+;;;; Validation
+
+                                
+                                        
+                                                     
+                                                                                
+         
+                          
+                                         
+                                                  
+                         
+                            
+                                                            
+                                                           
+
+                                                             
+                                                               
+
+                               
+                                        
+                                                    
+                              
+                
+                                                                     
+                                                        
+                                            
+                                              
+
+                           
+                                                                 
+                                                                      
+                                                                              
+                
+                                        
+                       
+                                                                              
+                                   
+                                                                  
+                                           
+                                                            
+                                           
+                                     
+                                        
+                                             
+           
+
+(comment
+  (check-some
+   true (str/blank? 55) false [:bad-type (string? 55)] nil [:blank (str/blank? 55)])
+  (check-all
+   true (str/blank? 55) false [:bad-type (string? 55)] nil [:blank (str/blank? 55)])
+  (defn foo [x] {:pre  [(check x (or (nil? x) (integer? x)))]
+                 :post [(check x (integer? x))]}
+    x)
+  (foo 5)
+  (foo nil))
+
+                                                                
+          
+                       
+                     
+                            
+                                        
+                                 
+                     
+                             
+                                        
+                                   
+
+(comment (try-exdata (/ 5 0))
+         (try-exdata (check nil (true? false))))
+
 ;;;; Coercions
+;; `parse-x` => success, or nil
+;;    `as-x` => success, (sometimes nil arg), or throw
 
 (defn parse-bool
   "Returns x as a unambiguous Boolean, or nil on failure. Requires more
@@ -276,23 +379,25 @@
 
 ;;;; Math
 
+(defn pow [n exp] (Math/pow n exp))
+
 (defn round
-  [x & [type nplaces]]
+  [n & [type nplaces]]
   (let [modifier (when nplaces (Math/pow 10.0 nplaces))
-        x* (if-not modifier x (* x modifier))
+        n* (if-not modifier n (* n modifier))
         rounded
         (case (or type :round)
           ;;; Note same API for both #+clj and #+cljs:
-          :round (Math/round (double x*))        ; Round to nearest int or nplaces
-          :floor (long (Math/floor (double x*))) ; Round down to -inf
-          :ceil  (long (Math/ceil  (double x*))) ; Round up to +inf
-          :trunc (long x*)                       ; Round up/down toward zero
+          :round (Math/round (double n*))        ; Round to nearest int or nplaces
+          :floor (long (Math/floor (double n*))) ; Round down to -inf
+          :ceil  (long (Math/ceil  (double n*))) ; Round up to +inf
+          :trunc (long n*)                       ; Round up/down toward zero
           (throw (ex-info "Unknown round type" {:type type})))]
     (if-not modifier rounded
       (/ rounded modifier))))
 
 (def round* round) ; Alias for ns refers
-(defn round2 "Optimized common case." [x] (/ (Math/round (* x 1000.0)) 1000.0))
+(defn round2 "Optimized common case." [n] (/ (Math/round (* n 1000.0)) 1000.0))
 
 (comment
   (round -1.5 :floor)
@@ -407,10 +512,67 @@
                                                                               
                                                          
 
-(comment
-  (time (dotimes [_ 10000] (.format (simple-date-format "yyyy-MMM-dd") (Date.)))))
+(comment (time (dotimes [_ 10000] (.format (simple-date-format "yyyy-MMM-dd")
+                                           (Date.)))))
 
 ;;;; Collections
+
+(defrecord Swapped [new-val return-val])
+(defn      swapped [new-val return-val] (->Swapped new-val return-val))
+(defn- as-swapped [x] (if (instance? Swapped x) x {:new-val x :return-val x}))
+
+(defn swap-in!
+  "More powerful version of `swap!`:
+    * Supports optional `update-in` semantics.
+    * Swap fn can return `(swapped <new-val> <return-val>)` rather than just
+      <new-val>. This is useful when writing atomic pull fns, etc."
+  [atom_ ks f & args]
+  (let [ks (if (or (nil? ks) (empty? ks)) nil ks)]
+    (loop []
+      (let [old-val @atom_
+            {:keys [new-val return-val]}
+            (if-not ks
+              (as-swapped (apply f old-val args))
+              (let [old-val-in (get-in old-val ks)
+                    {new-val-in :new-val
+                     return-val :return-val}
+                    (as-swapped (apply f old-val-in args))]
+                {:new-val    (assoc-in old-val ks new-val-in)
+                 :return-val return-val}))]
+        ;; Ref. http://goo.gl/rFG8mW:
+        (if-not (compare-and-set! atom_ old-val new-val)
+          (recur)
+          return-val)))))
+
+;; Actually uses CAS semantics to support `update-in` capability:
+(defn reset-in! [atom_ korks newval] (swap-in! atom_ korks (constantly newval)))
+
+(comment
+  (let [a_ (atom {:a :A :b :B})] ; Returns new-val (default)
+    [(swap-in! a_ [] (fn [m] (assoc m :c :C))) @a_])
+  (let [a_ (atom {:a :A :b :B})] ; Returns old-val
+    [(swap-in! a_ [] (fn [m] (swapped (assoc m :c :C) m))) @a_])
+  (let [a_ (atom {:a {:b :B}})] ; Returns new-val-in (default)
+    [(swap-in! a_ [:a] (fn [m] (assoc m :c :C))) @a_])
+  (let [a_ (atom {:a {:b :B}})] ; Returns old-val-in
+    [(swap-in! a_ [:a] (fn [m] (swapped (assoc m :c :C) m))) @a_]))
+
+(defn dissoc-in [m ks & dissoc-ks] (apply update-in m ks dissoc dissoc-ks))
+(defn contains-in? [coll ks] (contains? (get-in coll (butlast ks)) (last ks)))
+
+(comment (dissoc-in    {:a {:b {:c :C :d :D :e :E}}} [:a :b] :c :e)
+         (contains-in? {:a {:b {:c :C :d :D :e :E}}} [:a :b :c])
+         (contains-in? {:a {:b {:c :C :d :D :e :E}}} [:a]))
+
+(defn assoc-some "Assocs each kv iff its value is not nil."
+  [m & kvs] {:pre [(even? (count kvs))]}
+  (into (or m {}) (for [[k v] (partition 2 kvs) :when (not (nil? v))] [k v])))
+
+(defn assoc-when "Assocs each kv iff its val is truthy."
+  [m & kvs] {:pre [(even? (count kvs))]}
+  (into (or m {}) (for [[k v] (partition 2 kvs) :when v] [k v])))
+
+(comment (assoc-some {:a :A} :b nil :c :C :d nil :e :E))
 
                                                                   
      
@@ -496,6 +658,8 @@
 (defn interleave-all
   "Greedy version of `interleave`.
   Ref. https://groups.google.com/d/msg/clojure/o4Hg0s_1Avs/rPn3P4Ig6MsJ"
+  ([]   '())
+  ([c1] (lazy-seq c1))
   ([c1 c2]
      (lazy-seq
       (let [s1 (seq c1) s2 (seq c2)]
@@ -605,27 +769,62 @@
 
 (comment (repeatedly-into [] 10 rand))
 
-                          
+                                      
                  
                     
-               
+                  
                                                            
                                           
                          
                            
                                    
                                
-                      
+                        
                      
-                         
-             
+                            
                                   
                                   
 
-                                                                          
+                                 
+                                                      
                                               
 
 ;;;; Strings
+
+(defn substr
+  "Gives a consistent, flexible, cross-platform substring API with support for:
+    * Clamping of indexes beyond string limits.
+    * Negative indexes: [   0   |   1   |  ...  |  n-1  |   n   ) or
+                        [  -n   | -n+1  |  ...  |  -1   |   0   ).
+                        (start index inclusive, end index exclusive).
+
+  Note that `max-len` was chosen over `end-idx` since it's less ambiguous and
+  easier to reason about - esp. when accepting negative indexes."
+  [s start-idx & [max-len]]
+  {:pre [(or (nil? max-len) (nneg-int? max-len))]}
+  (let [;; s       (str   s)
+        slen       (count s)
+        start-idx* (if (>= start-idx 0)
+                     (min start-idx slen)
+                     (max 0 (dec (+ slen start-idx))))
+        end-idx*   (if-not max-len slen
+                     (min (+ start-idx* max-len) slen))]
+    ;; (println [start-idx* end-idx*])
+                                                     
+    ;; Could also use .substr:
+           (.substring         s start-idx* end-idx*)))
+
+(comment
+  (substr "Hello"  0 5) ; "Hello"
+  (substr "Hello"  0 9) ; "Hello"
+  (substr "Hello" -4 5) ; "Hello"
+  (substr "Hello"  2 2) ; "ll"
+  (substr "Hello" -2 2) ; "ll"
+  (substr "Hello" -2)   ; "llo"
+  (substr "Hello"  2)   ; "llo"
+  (substr "Hello"  9 9) ; ""
+  (substr "Hello"  0 0) ; ""
+  )
 
 (defn str-contains? [s substr]
                                              
@@ -641,14 +840,6 @@
                substr-len (alength substr)]
            (when (>= s-len substr-len)
              (not= -1 (.indexOf s substr (- s-len substr-len))))))
-
-(defn str-trunc [s max-len]
-                                               
-                                            
-         (if (<= (alength s) max-len) s
-           (.substring s 0 max-len)))
-
-(comment (str-trunc "Hello this is a long string" 5))
 
 (defn join-once
   "Like `clojure.string/join` but ensures no double separators."
@@ -726,66 +917,51 @@
 
 ;;; TODO
 ;; * Consider implementing a self-gc'ing hashmap for use here & elsewhere?
-;;
-;; * Invalidating memoize* cache doesn't scale horizontally; we could make a
-;;   distributed version that maintains a local udt-last-invalidated and on
-;;   each op checks it against a master udt-last-invalidated in Redis. Would
-;;   need similar extra provisions if we want per-arg-seq invalidation, etc.
-;;   It'd be doable.
-;;
-;; * The Clojure STM is optimistic. Would a `dissoc-ks`-based GC not maybe be
-;;   better since it'd be less susceptible to contention? Probably wouldn't be a
-;;   measurable difference anyway.
+;; * Invalidating memoize* cache doesn't scale horizontally; could easily build
+;;   a Redis-backed distributed version with pttl, though it'd be slower.
 
-(def ^:private ^:const gc-rate (/ 1.0 8000))
-
-(defn- locked [lock-object f]
-                                   ; For thread racing
-         (f))
-
-;;;;
+(def ^:private ^:const gc-rate (/ 1.0 16000))
+(defn swap-val! ; Public since it can be useful for custom memoization utils
+  "Swaps associative value at key and returns the new value.
+  Specialized, fast `swap-in!` for use mostly by memoization utils."
+  [atom_ k f]
+  (loop []
+    (let [old-m @atom_
+          new-v (f (get old-m k))
+          new-m (assoc old-m k new-v)]
+      (if (compare-and-set! atom_ old-m new-m) new-v
+        (recur)))))
 
 (defn memoized
   "Like `(memoize* f)` but takes an explicit cache atom (possibly nil)
   and immediately applies memoized f to given arguments."
   [cache f & args]
-  (let [lockf
-        (fn []
-          (if-let [dv (@cache args)] @dv ; Retry after lock acquisition!
-            (let [dv (delay (apply f args))]
-              (swap! cache assoc args dv)
-              @dv)))]
-    (if-not cache (apply f args)
-      (if-let [dv (@cache args)] @dv
-        (locked cache lockf)))))
+  (if-not cache ; {<args> <delay-val>}
+    (apply f args)
+    @(swap-val! cache args #(if % % (delay (apply f args))))))
 
 (defn memoize*
   "Like `clojure.core/memoize` but:
-    * Uses delays & a fn lock to prevent unnecessary race value recomputation.
+    * Uses delays to prevent race conditions on writes.
     * Supports auto invalidation & gc with `ttl-ms` option.
     * Supports manual invalidation by prepending args with `:mem/del` or `:mem/fresh`.
     * Supports cache size limit & gc with `cache-size` option."
   ([f] ; De-raced, commands
-    (let [cache (atom {})] ; {<args> <dval>}
+    (let [cache (atom {})] ; {<args> <delay-val>}
       (fn ^{:arglists '([command & args] [& args])} [& [arg1 & argn :as args]]
         (if (identical? arg1 :mem/del)
           (do (if (identical? (first argn) :mem/all)
                 (reset! cache {})
                 (swap!  cache dissoc argn))
               nil)
-
           (let [fresh? (identical? arg1 :mem/fresh)
-                args   (if fresh? argn args)
-                try1   (fn [] (when-not fresh? (@cache args)))
-                lockf  (fn [] (if-let [dv (try1)] @dv ; Retry
-                               (let [dv (delay (apply f args))]
-                                 (swap! cache assoc args dv)
-                                 @dv)))]
-            (if-let [dv (try1)] @dv
-              (locked cache lockf)))))))
+                args   (if fresh? argn args)]
+            @(swap-val! cache args
+               (fn [?dv] (if (and ?dv (not fresh?)) ?dv
+                           (delay (apply f args))))))))))
 
   ([ttl-ms f] ; De-raced, commands, ttl, gc
-    (let [cache (atom {})] ; {<args> <[dval udt]>}
+    (let [cache (atom {})] ; {<args> <[delay-val udt :as cache-val]>}
       (fn ^{:arglists '([command & args] [& args])} [& [arg1 & argn :as args]]
         (if (identical? arg1 :mem/del)
           (do (if (identical? (first argn) :mem/all)
@@ -801,24 +977,20 @@
                                       (if (> (- instant udt) ttl-ms) m*
                                           (assoc m* k cv))) {} m)))))
 
-            (let [fresh? (identical? arg1 :mem/fresh)
-                  args   (if fresh? argn args)
-                  try1   (fn []
-                           (when-let [[dv udt] (when-not fresh? (@cache args))]
-                             (when (and dv (< (- (now-udt) udt)
-                                              ttl-ms))
-                               dv)))
-                  lockf  (fn []
-                           (if-let [dv (try1)] @dv ; Retry
-                             (let [dv (delay (apply f args))
-                                   cv [dv (now-udt)]]
-                               (swap! cache assoc args cv)
-                               @dv)))]
-              (if-let [dv (try1)] @dv
-                (locked cache lockf))))))))
+            (let [fresh?  (identical? arg1 :mem/fresh)
+                  args    (if fresh? argn args)
+                  instant (now-udt)]
+              @(first-nth
+                (swap-val! cache args
+                  (fn [?cv]
+                    (if (and ?cv (not fresh?)
+                             (let [[_dv udt] ?cv]
+                               (< (- instant udt) ttl-ms))) ?cv
+                      [(delay (apply f args)) instant]))))))))))
 
   ([cache-size ttl-ms f] ; De-raced, commands, ttl, gc, max-size
-    (let [state (atom {:tick 0})] ; {:tick _ <args> <[dval udt tick-lru tick-lfu]>}
+    (let [state (atom {:tick 0})] ; {:tick _
+                                  ;  <args> <[dval ?udt tick-lru tick-lfu :as cval]>}
       (fn ^{:arglists '([command & args] [& args])} [& [arg1 & argn :as args]]
         (if (identical? arg1 :mem/del)
           (do (if (identical? (first argn) :mem/all)
@@ -843,7 +1015,7 @@
                                (->>
                                 (keys m*)
                                 (mapv (fn [k] (let [[_ _ tick-lru tick-lfu] (m* k)]
-                                               [(+ tick-lru tick-lfu) k])))
+                                                [(+ tick-lru tick-lfu) k])))
                                 (sort-by #(nth % 0))
                                 ;; (#(do (println %) %)) ; Debug
                                 (take    n-to-prune)
@@ -851,32 +1023,28 @@
                                 (apply dissoc m*)))]
                       (assoc m* :tick (:tick m)))))))
 
-            (let [fresh? (identical? arg1 :mem/fresh)
-                  args   (if fresh? argn args)
-                  try1
-                  (fn []
-                    (let [state' @state
-                          tick'  (:tick state')]
-                      (when-let [[dv udt tick-lru tick-lfu]
-                                 (when-not fresh? (state' args))]
-                        (when (and dv (or (nil? ttl-ms)
-                                          (< (- (now-udt) udt)
-                                             ttl-ms)))
-                          ;; We don't particularly care about ticks being
-                          ;; completely synchronized:
-                          (let [sv [dv udt (inc tick') (inc tick-lfu)]]
-                            (swap! state assoc :tick (inc tick') args sv))
-                          dv))))
-                  lockf (fn []
-                          (if-let [dv (try1)] @dv ; Retry
-                            (let [dv   (delay (apply f args))
-                                  tick (:tick @state)
-                                  sv   [dv (when ttl-ms (now-udt))
-                                        (inc tick) 1]]
-                              (swap! state assoc :tick (inc tick) args sv)
-                              @dv)))]
-              (if-let [dv (try1)] @dv
-                (locked state lockf)))))))))
+            (let [fresh?   (identical? arg1 :mem/fresh)
+                  args     (if fresh? argn args)
+                  ?instant (when ttl-ms (now-udt))
+                  tick'    (:tick @state) ; Accuracy/sync irrelevant
+                  dv
+                  (first-nth
+                   (swap-val! state args
+                     (fn [?cv]
+                       (if (and ?cv (not fresh?)
+                                (or (nil? ?instant)
+                                    (let [[_dv udt] ?cv]
+                                      (< (- ?instant udt) ttl-ms)))) ?cv
+                         [(delay (apply f args)) ?instant tick' 1]))))]
+
+              ;; We always adjust counters, even on reads:
+              (swap! state
+                (fn [m]
+                  (when-let [[dv ?udt tick-lru tick-lfu :as cv] (get m args)]
+                    (assoc m :tick (inc tick')
+                              args [dv ?udt tick' (inc tick-lfu)]))))
+
+              @dv)))))))
 
 (comment
   (def f0 (memoize         (fn [& xs] (Thread/sleep 600) (rand))))
@@ -885,11 +1053,11 @@
   (def f3 (memoize* 2 nil  (fn [& xs] (Thread/sleep 600) (rand))))
   (def f4 (memoize* 2 5000 (fn [& xs] (Thread/sleep 600) (rand))))
 
-  (time (dotimes [_ 10000] (f0))) ;  ~2ms
-  (time (dotimes [_ 10000] (f1))) ;  ~3ms
-  (time (dotimes [_ 10000] (f2))) ;  ~4ms
-  (time (dotimes [_ 10000] (f3))) ; ~10ms
-  (time (dotimes [_ 10000] (f4))) ; ~13ms
+  (time (dotimes [_ 10000] (f0))) ;  ~3ms
+  (time (dotimes [_ 10000] (f1))) ;  ~4ms
+  (time (dotimes [_ 10000] (f2))) ;  ~9ms
+  (time (dotimes [_ 10000] (f3))) ;  ~9ms
+  (time (dotimes [_ 10000] (f4))) ; ~11ms
 
   (f1)
   (f1 :mem/del)
@@ -957,7 +1125,8 @@
 
 ;;;; Benchmarking
 
-                                                                            
+                             
+                                                            
                                                            
 
                                                                            
@@ -1095,12 +1264,12 @@
                      (when got-resp?
                        (let [resp-type
                              (if-not (= resp-type :auto) resp-type
-                               (condp #(str-ends-with? %2 %1)
+                               (condp #(str-contains? %2 %1)
                                    (str content-type) ; Prevent nil
-                                 "edn"  :edn
-                                 "json" :json
-                                 "xml"  :xml
-                                 "html" :xml
+                                 "/edn"  :edn
+                                 "/json" :json
+                                 "/xml"  :xml
+                                 "/html" :text ; :xml only for text/xml!
                                  :text))]
                          (case resp-type
                            :text (.getResponseText xhr)
@@ -1123,12 +1292,59 @@
           (.setTimeoutInterval (or timeout 0)) ; nil = 0 = no timeout
           (.send uri* method* post-content* headers*)))
 
-      (catch js/error e
+      (catch js/Error e
         (logf "Ajax error: %s" e)
         (.releaseObject @xhr-pool_ xhr)
         nil))
 
     ;; Pool failed to return an available xhr instance:
     (callback {:error :xhr-pool-depleted})))
+
+;;;; Ring
+
+     
+                  
+                                                                              
+                                     
+                     
+            
+                                                                     
+                                                          
+                                                             
+
+(comment
+  (session-swap {:session {:req? true}} {:session nil}           assoc :new-k :new-v)
+  (session-swap {:session {:req? true}} {:session {:resp? true}} assoc :new-k :new-v)
+  (session-swap {:session {:old? true}} {}                       assoc :new-k :new-v))
+
+     
+                                     
+                   
+                                                                                   
+
+(comment (normalize-headers {:headers {"Foo1" "bar1" "FOO2" "bar2" "foo3" "bar3"}}))
+
+     
+   
+                                                                  
+                                                                                   
+                                                                                   
+                                                                               
+                                                                
+
+(comment (merge-headers {:body "foo"} {"BAR" "baz"})
+         (merge-headers "foo"         {"bar" "baz"}))
+
+     
+                   
+                                       
+                       
+                                                        
+                                                         
+                               
+                  
+                       
+
+(comment (redirect-resp :temp "/foo" "boo!"))
 
 ;;;;;;;;;;;; This file autogenerated from src/taoensso/encore.cljx

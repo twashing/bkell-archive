@@ -1,15 +1,28 @@
 (ns taoensso.sente
   "Channel sockets. Otherwise known as The Shiz.
 
-      Protocol  | client>server | client>server + ack/reply | server>clientS[1] push
+      Protocol  | client>server | client>server + ack/reply | server>user[1] push
     * WebSockets:       ✓              [2]                          ✓  ; [3]
     * Ajax:            [4]              ✓                          [5] ; [3]
 
-    [1] All of a user's (uid's) connected clients (browser tabs, devices, etc.).
+    [1] ALL of a user's connected clients (browser tabs, devices, etc.).
+        Note that user > session > client > connection for consistency over time
+        + multiple devices.
     [2] Emulate with cb-uuid wrapping.
     [3] By uid only (=> logged-in users only).
     [4] Emulate with dummy-cb wrapping.
     [5] Emulate with long-polling against uid (=> logged-in users only).
+
+  Abbreviations:
+    * chsk  - channel socket.
+    * hk-ch - Http-kit Channel.
+    * uid   - User id. An application-specified identifier unique to each user
+              and sessionized under `:uid` key to enable server>user push.
+              May have semantic meaning (e.g. username, email address), or not
+              (e.g. random uuid) - app's discresion.
+    * cb    - callback.
+    * tout  - timeout.
+    * ws    - WebSocket/s.
 
   Special messages (implementation detail):
     * cb replies: :chsk/closed, :chsk/timeout, :chsk/error.
@@ -17,37 +30,33 @@
         [:chsk/handshake <#{:ws :ajax}>],
         [:chsk/ping      <#{:ws :ajax}>], ; Though no :ajax ping
         [:chsk/state [<#{:open :first-open :closed}> <#{:ws :ajax}]],
-        [:chsk/recv  <`server>client`-event>]. ; Async event
+        [:chsk/recv  <[buffered-evs]>]. ; server>user push
 
     * server-side events:
        [:chsk/bad-edn <edn>],
-       [:chsk/bad-event <chsk-event>],
-       [:chsk/uidport-open  <#{:ws :ajax}>],
-       [:chsk/uidport-close <#{:ws :ajax}>].
+       [:chsk/bad-event <chsk-event>].
 
     * event wrappers: {:chsk/clj <clj> :chsk/dummy-cb? true} (for [2]),
                       {:chsk/clj <clj> :chsk/cb-uuid <uuid>} (for [4]).
 
-  Implementation notes:
-    * A server>client w/cb mechanism would be possible BUT:
-      * No fundamental use cases. We can always simulate as server>client w/o cb,
-        client>server w or w/o cb.
-      * Would yield a significantly more complex code base.
-      * Cb semantic is fundamentally incongruous with server>client since
-        multiple clients may be connected simultaneously for a single uid.
+  Notable implementation details:
+    * Edn is used as a flexible+convenient transfer format, but can be seen as
+      an implementation detail. Users may apply additional string encoding (e.g.
+      JSON) at will. (This would incur a cost, but it'd be negligable compared
+      to even the fastest network transfer times).
+    * No server>client (with/without cb) mechanism is provided since:
+      - server>user is what people actually want 90% of the time, and is a
+        preferable design pattern in general IMO.
+      - server>client could be (somewhat inefficiently) simulated with server>user.
+    * core.async is used liberally where brute-force core.async allows for
+      significant implementation simplifications. We lean on core.async's strong
+      efficiency here.
 
   General-use notes:
     * Single HTTP req+session persists over entire chsk session but cannot
       modify sessions! Use standard a/sync HTTP Ring req/resp for logins, etc.
     * Easy to wrap standard HTTP Ring resps for transport over chsks. Prefer
-      this approach to modifying handlers (better portability).
-
-  Multiple clients (browser tabs, devices, etc.):
-    * client>server + ack/reply: sends always to _single_ client. Note that an
-      optional _multi_ client reply API wouldn't make sense (we're using a cb).
-    * server>clientS push: sends always to _all_ clients.
-    * Applications will need to be careful about which method is preferable, and
-      when."
+      this approach to modifying handlers (better portability)."
   {:author "Peter Taoussanis"}
 
        
@@ -60,20 +69,13 @@
                                                   
 
         
-  (:require [clojure.string :as str]
+  (:require [clojure.string  :as str]
             [cljs.core.async :as async :refer (<! >! put! chan)]
             [cljs.reader     :as edn]
             [taoensso.encore :as encore :refer (format)])
 
         
   (:require-macros [cljs.core.async.macros :as asyncm :refer (go go-loop)]))
-
-;;;; TODO
-;; * No need/desire for a send buffer, right? Would seem to violate user
-;;   expectations (either works now or doesn't, not maybe works later).
-;; * Consider later using clojure.browser.net (Ref. http://goo.gl/sdS5wX)
-;;   and/or Google Closure for some or all basic WebSockets support,
-;;   reconnects, etc.
 
 ;;;; Shared (client+server)
 
@@ -82,20 +84,21 @@
          (instance? cljs.core.async.impl.channels.ManyToManyChannel    x))
 
 (defn- validate-event-form [x]
-  (cond  (not (vector? x))        :wrong-type
-         (not (#{1 2} (count x))) :wrong-length
-   :else (let [[ev-id _] x]
-           (cond (not (keyword? ev-id))  :wrong-id-type
-                 (not (namespace ev-id)) :unnamespaced-id
-                 :else nil))))
+  (cond
+    (not (vector? x))        :wrong-type
+    (not (#{1 2} (count x))) :wrong-length
+    :else (let [[ev-id _] x]
+            (cond (not (keyword? ev-id))  :wrong-id-type
+                  (not (namespace ev-id)) :unnamespaced-id
+                  :else nil))))
 
 (defn event? "Valid [ev-id ?ev-data] form?" [x] (nil? (validate-event-form x)))
 
 (defn assert-event [x]
-  (when-let [?err-msg (validate-event-form x)]
+  (when-let [?err (validate-event-form x)]
     (let [err-fmt
           (str
-           (case ?err-msg
+           (case ?err
              :wrong-type   "Malformed event (wrong type)."
              :wrong-length "Malformed event (wrong length)."
              (:wrong-id-type :unnamespaced-id)
@@ -153,89 +156,181 @@
                                                              
 
      
-                           
-                                                                                
-                                                                               
-                                                                              
-
-                                                                 
-
-                                                                         
-                                                                              
-            
-                                               
-                  
-                                                 
-                       
-                                           
-
-                                                  
-                           
-                           
-                                      
-
-                                                          
-                    
-                              
-                            
-                                               
+                                    
                                                                        
+                               
+                                           
+                                             
+
+     
+                                      
+                                                                             
+                                            
+                                                                        
+                                                                        
                                                          
-                                                    
-                                                     
-                                                                           
-
+                                                          
+                                                              
+                                   
                                                             
-                                                            
+                                                                     
+                                               
+                                                                        
+                                               
+                                                                              
+                                                 
+                                                                         
+                                                                            
+                                           
+                                            
+                                     
+                                                                       
+                                                                         
+                                               
                                                        
-        
-
-(comment (time (dotimes [_ 50000] (ch-pull-ajax-hk-chs! (atom [nil {}]) 10))))
+                                                     
+                                
+                             
+                            
+                                                 
+                                          
+                                                                                  
+                                                                            
+                        
+                                                           
+                                                                             
+                                                       
+                                          
+                                                                                  
+                                                                
+                                                                 
+                                                  
 
      
                           
-                                                                                
-
-                                                                          
-                                                                   
-                                                         
-                                                                         
-                                                                                 
-                            
-                                                           
-                                         
-                                                                                           
+                                                                            
+                                      
+                                                                              
+                                                                       
                                                           
-         
+                                                                                  
+                                                                                  
+                                                                                  
+
+          
+                                                
+                                                                      
+                                          
+                            
+                            
+
+                                                                     
+                                                                             
+                                                                             
+                                                               
+                                                                       
+                                                       
+                                  
+                                 
+                                                                              
+                                           
+                                           
+
+                                    
+                                                     
+                                                                                         
+                         
+                                                           
+                                                                                           
+
+                    
+                      
+                                
+                                       
+                        
+                                                                                   
+                                                                                       
+
+                                                   
+                 
+                                
+                                       
+                                  
+                                                                    
+                                                                    
+                                                         
+                                                             
+                                                                             
+                                                                             
+                                                                                   
 
                      
-                                                         
-                 
+                                    
+                                         
+                                                            
                                                         
                         
-                
-                                                          
-                           
-                                                                                
-                                                                          
-                                                                     
-                                           
-                                                               
-                                                                     
-
+                               
+                                                                                        
+                                      
+                          
+                       
+                                                                      
+                                                                         
+                                                                            
+                                                      
+                                                  
                                               
-                                                                                     
-                                                            
-
-                                                                  
-                                                           
+                                                                                
+                                                                              
+                                                                                
                                                                              
-                                                                           
+                                                      
+                                                     
+                                                                  
+                                 
+                                                                      
+                                                      
+                                                                      
+                                                             
 
-                                  
+                                 
               
+                                                   
+
+                                     
+                                        
+                                       
 
                                                                                     
+                                                            
+                                      
+                                           
+                                                                        
+
+              
+                            
+                                      
+                                                        
+                            
+                                                  
+                                                         
+                                              
+                                                         
+
+                                                             
+                                                                    
+                                                          
+                                                                               
+                                                                   
+                                                                                  
+                                     
+                                                                                    
+                                          
+
+           
+
+                                                                              
                    
                                             
                                                                 
@@ -243,9 +338,8 @@
                                                                 
 
                                       
-                                                                            
-                                             
-                                            
+                                                                                   
+                                                                             
                                 
                         
                         
@@ -261,11 +355,12 @@
                                                                 
 
                                                              
-                                                            
+                   
                                             
+                                        
                                                             
                                                                               
-                                                 
+                                                                  
                                         
 
                                             
@@ -276,30 +371,13 @@
                                        
                                                
 
-                                         
-                                                                                    
-                                              
-                                                                                 
-
-                                                                               
-                                                                                
-                                       
-                             
-                                      
-                                
-                                                                  
-                                              
-                                              
-                                                       
-                                                                      
-                                                                
-
+                                     
                 
                                                             
                                                                            
                         
-                                                                                   
-                                                                
+                                                                                    
+                                        
 
                                          
                               
@@ -313,19 +391,53 @@
                                                           
                                                                    
 
-                                                                               
-                                                                                
+                                                                    
                                        
                              
                             
-                                      
-                              
-                                                            
-                                                          
-                                                                  
-                                                                       
+                                                  
+                                                   
+                                                                
+                                           
+                                                
+                                                   
+                                                
+                                                                     
 
-                                                                            
+                                                                                    
+                                                              
+                                                   
+                                       
+
+                                                                    
+                                       
+                             
+                                                                  
+                                                                                
+
+                                                           
+                        
+                                                                        
+                                               
+                                         
+                                                           
+                                                                           
+                                                             
+                                                                  
+                                                   
+                                                                             
+                                                               
+                                                                     
+                                                       
+                                                                          
+                                                                               
+                                                     
+                                                       
+                                                            
+                                                            
+                                                           
+                                           
+                                                                
 
 ;;;; Client
 
@@ -393,6 +505,14 @@
             (put! cb-ch [(keyword (str (encore/fq-name ev-id) ".cb"))
                          reply]))))))
 
+      
+(defn- receive-buffered-evs!
+  [ch-recv clj] {:pre [(vector? clj)]}
+  (let [buffered-evs clj]
+    (doseq [ev buffered-evs]
+      (assert-event ev)
+      (put! ch-recv ev))))
+
        ;; Handles reconnects, keep-alives, callbacks:
 (defrecord ChWebSocket [url chs open? socket-atom kalive-timer kalive-due?
                         cbs-waiting ; [dissoc'd-fn {<uuid> <fn> ...}]
@@ -423,8 +543,8 @@
               false))))))
 
   (chsk-make! [chsk {:keys [kalive-ms]}]
-    (when-let [WebSocket (or (.-WebSocket    js/window)
-                             (.-MozWebSocket js/window))]
+    (when-let [WebSocket (or (aget js/window "WebSocket")
+                             (aget js/window "MozWebSocket"))]
       ((fn connect! [nattempt]
          (let [retry!
                (fn []
@@ -443,9 +563,9 @@
               (doto socket
                 (aset "onerror"
                   (fn [ws-ev] (encore/errorf "WebSocket error: %s" ws-ev)))
-                (aset "onmessage"
+                (aset "onmessage" ; Nb receives both push & cb evs!
                   (fn [ws-ev]
-                    (let [edn (.-data ws-ev)
+                    (let [edn (aget ws-ev "data")
                           ;; Nb may or may NOT satisfy `event?` since we also
                           ;; receive cb replies here!:
                           [clj ?cb-uuid] (unwrap-edn-msg-with-?cb->clj edn)]
@@ -456,9 +576,8 @@
                           (if-let [cb-fn (pull-unused-cb-fn! cbs-waiting ?cb-uuid)]
                             (cb-fn clj)
                             (encore/warnf "Cb reply w/o local cb-fn: %s" clj))
-                          (let [_ (assert-event clj)
-                                chsk-ev clj]
-                            (put! (:recv chs) chsk-ev)))))))
+                          (let [buffered-evs clj]
+                            (receive-buffered-evs! (:recv chs) buffered-evs)))))))
                 (aset "onopen"
                   (fn [_ws-ev]
                     (reset! kalive-timer
@@ -498,6 +617,7 @@
         (do
           (encore/ajax-lite url
            {:method :post :timeout ?timeout-ms
+            :resp-type :text ; Prefer to do our own edn reading
             :params
             (let [dummy-cb? (not ?cb-fn)
                   msg       (if-not dummy-cb? ev {:chsk/clj       ev
@@ -545,6 +665,7 @@
                (fn []
                  (encore/ajax-lite url
                   {:method :get :timeout timeout
+                   :resp-type :text ; Prefer to do our own edn reading
                    :params {:_ (encore/now-udt) ; Force uncached resp
                             :ajax-client-uuid ajax-client-uuid}}
                   (fn ajax-cb [{:keys [content error]}]
@@ -554,15 +675,15 @@
                         (do (reset-chsk-state! chsk false)
                             (retry!)))
 
-                      (let [edn content
-                            ev  (edn/read-string edn)]
-                        ;; The Ajax long-poller is used only for events, never cbs:
-                        (assert-event ev)
-                        (put! (:recv chs) ev)
+                      ;; The Ajax long-poller is used only for events, never cbs:
+                      (let [edn          content
+                            buffered-evs (edn/read-string edn)]
+                        (receive-buffered-evs! (:recv chs) buffered-evs)
                         (reset-chsk-state! chsk true)
                         (async-poll-for-update! 0))))))]
 
-           (if-let [pace (.-Pace js/window)]
+           (if-let [pace (aget js/window "Pace")]
+             ;; Assumes relevant extern is defined for :advanced mode compilation:
              (.ignore pace ajax-req!) ; Pace.js shouldn't trigger for long-polling
              (ajax-req!)))
 
@@ -590,15 +711,21 @@
 
   Note that the *same* URL is used for: WebSockets, POSTs, GETs. Server-side
   routes should be configured accordingly."
-  [url {:keys [csrf-token has-uid?]}
-   & [{:keys [type recv-buf-or-n ws-kalive-ms lp-timeout]
+  [url &
+   & [{:keys [csrf-token has-uid?
+              type recv-buf-or-n ws-kalive-ms lp-timeout]
        :or   {type          :auto
-              recv-buf-or-n (async/sliding-buffer 10)
+              recv-buf-or-n (async/sliding-buffer 2048) ; Mostly for buffered-evs
               ws-kalive-ms  38000
-              lp-timeout    38000}}]]
+              lp-timeout    38000}}
+      _deprecated-more-opts]]
+
+  (when (not (nil? _deprecated-more-opts))
+    (encore/warnf
+     "`make-channel-socket!` fn signature CHANGED with Sente v0.10.0."))
 
   (when (str/blank? csrf-token)
-    (encore/log "WARNING: No csrf-token provided"))
+    (encore/warnf "No csrf-token provided"))
 
   (let [;; Want _separate_ buffers for state+recv even if we're later merging
         chs {:state    (chan (async/sliding-buffer 1))
@@ -629,35 +756,44 @@
 
     (when chsk
       {:chsk chsk
+       :send-fn (partial chsk-send! chsk)
        :ch-recv
        (async/merge
         [(->> (:internal chs) (async/map< (fn [ev] {:pre [(event? ev)]} ev)))
          (->> (:state chs) (async/map< (fn [clj] [:chsk/state [(state* clj) type*]])))
-         (->> (:recv  chs) (async/map< (fn [clj] [:chsk/recv  clj])))])
-       :send-fn (partial chsk-send! chsk)})))
+         (->> (:recv  chs) (async/map< (fn [ev]  [:chsk/recv  ev])))])})))
 
 ;;;; Routers
 
      
                                                     
-             
-        
-                              
+                       
+               
+                               
             
-                                                   
-                                          
+                                                 
+                                             
+                                
+                    
+                                                           
+                                                           
+                                    
+                                                                                          
                             
-                                                                                
-                        
-                                                             
-             
+                                                                 
+                 
+                                          
 
       
 (defn start-chsk-router-loop! [event-handler ch]
-  (go-loop []
-    (let [[id data :as event] (<! ch)]
-      ;; Provide ch to handler to allow event injection back into loop:
-      (event-handler event ch) ; Allow errors to throw
-      (recur))))
+  (let [ctrl-ch (chan)]
+    (go-loop []
+      (let [[v p] (async/alts! [ch ctrl-ch])]
+        (if (identical? p ctrl-ch) ::stop
+          (let [[id data :as event] v]
+            ;; Provide ch to handler to allow event injection back into loop:
+            (event-handler event ch)  ; Allow errors to throw
+            (recur)))))
+    (fn stop! [] (async/close! ctrl-ch))))
 
 ;;;;;;;;;;;; This file autogenerated from src/taoensso/sente.cljx

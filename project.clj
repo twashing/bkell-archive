@@ -1,5 +1,5 @@
 (defproject bkell "0.1.0-SNAPSHOT"
-  :description "FIXME: write description"
+  :description "Bkell provides a Shell and API for maintaining balanced records for business transactions. "
   :url "http://example.com/FIXME"
   :dependencies [[org.clojure/clojure "1.5.1"]
                  [org.clojure/clojurescript "0.0-2202"]
@@ -17,8 +17,8 @@
                  [com.datomic/datomic-pro "0.9.4572"]
 
                  [http-kit "2.1.18"]
-                 [com.taoensso/sente "0.11.0"]
-                 [com.taoensso/encore "1.4.0"]
+                 [com.taoensso/sente "0.12.0"]
+                 [com.taoensso/encore "1.5.0"]
                  [com.taoensso/timbre "3.1.6"]
 
                  [org.clojure/core.match "0.2.1"]
@@ -56,4 +56,5 @@
                                   [ring/ring-jetty-adapter "1.2.2"]
 
                                   [com.cemerick/austin "0.1.4"]
-                                  [alembic "0.2.1"]]}})
+                                  [alembic "0.2.1"]
+                                  [ankha "0.1.2"]]}})
