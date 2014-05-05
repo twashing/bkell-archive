@@ -28,20 +28,29 @@
     (component/stop cbkell))
 
 
-#_(deftest test-with-session
+(deftest test-with-session
 
   (testing "turn session on"
 
     (let [request-params (config/load-edn "test-request.edn")
 
-          request (mock/request :get "/accounts" (:params request-params))
-          response (handler/with-session request (rresp/redirect "/accounts"))]
+          request (assoc (mock/request :get "/accounts" (:params request-params))
+                    :session {:username "webkell-user"})
+          response (handler/with-session request (rresp/response (+ 1 2)))]
 
-      (timbre/debug "ASDF: " response)))
-
+      (is (= 200 (:status response)))
+      (is (empty? (:headers response)))
+      (is (= 3 (:body response)))))
 
   (testing "turn session off"
-    ))
+
+    (let [request-params (config/load-edn "test-request.edn")
+
+          request (mock/request :get "/accounts" (:params request-params))
+          response (handler/with-session request (rresp/response (+ 1 2)))]
+
+      (= 302 (:status response))
+      (= "/" ((:headers response) "Location")))))
 
 #_(deftest test-gitkit
 
