@@ -15,7 +15,6 @@
 
 (defn fixture-http-handler [f]
 
-  (timbre/debug "[FIXTURE] fixture-http-handler")
   (alter-var-root #'env (constantly (:test (config/get-config-raw))))
   (f))
 
@@ -33,7 +32,6 @@
   (testing "turn session on"
 
     (let [request-params (config/load-edn "test-request.edn")
-
           request (assoc (mock/request :get "/accounts" (:params request-params))
                     :session {:username "webkell-user"})
           response (handler/with-session request (rresp/response (+ 1 2)))]
