@@ -1,6 +1,7 @@
 (ns bkell.run
-  (:require [org.httpkit.server :as httpkit]
-            [bkell.http.handler :as handler]))
+  (:require [ring.adapter.jetty :refer :all]
+            [org.httpkit.server :as httpkit]
+            [bkell.handler :as handler]))
 
 
 (def server nil)

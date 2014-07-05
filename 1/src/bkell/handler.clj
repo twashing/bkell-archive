@@ -38,7 +38,7 @@
 (defn goindex []
   (let  [templ (enlive/html-resource "index.html")
          ;;mode (:mode @bkell/shell)
-         host-url "172.16.210.128" ;;(-> mode (@bkell/shell) :host-url)
+         host-url "10.0.2.15" ;;(-> mode (@bkell/shell) :host-url)
          host-port "8090" ;;(-> mode (@bkell/shell) :host-port)
          developer-key "AIzaSyDc7_lGZsmbtdOUpprPClKBOxXCQ6LztRE" ;;(-> mode (@bkell/shell) :developer-key)
 
@@ -47,8 +47,12 @@
                (hutils/generate-host-address host-url host-port)
                "/callbackGitkit") ;; conditionally assign the host-port
          ]
+    (apply str  (enlive/emit* (enlive/transform
+                               templ
+                               [[:script (enlive/nth-of-type 3)]]  ;; get the 3rd script tag
+                               (enlive/content [:script (cemerick.austin.repls/browser-connected-repl-js)]))))
 
-    (apply str (enlive/emit*  (enlive/transform
+    #_(apply str (enlive/emit*  (enlive/transform
                                templ
                                [[:script (enlive/nth-of-type 6)]]
                                (enlive/content
@@ -86,7 +90,7 @@
 
   ;; needs to call 'verifyAssertion' to parse response - should return a { :user :map }
   (let [;;mode (:mode @bkell/shell)
-        host-url "172.16.210.128" ;;(-> mode (@bkell/shell) :host-url)
+        host-url "10.0.2.15" ;;(-> mode (@bkell/shell) :host-url)
         host-port "8090" ;;(-> mode (@bkell/shell) :host-port)
         developer-key "AIzaSyDc7_lGZsmbtdOUpprPClKBOxXCQ6LztRE" ;;(-> mode (@bkell/shell) :developer-key)
         ;;ruri (str (hutils/generate-host-address host-url (if (= mode :dev) host-port nil)) "/callbackGitkit")

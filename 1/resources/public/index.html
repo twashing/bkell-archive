@@ -15,6 +15,16 @@
     <link href='css/normalize.min.css' rel='stylesheet'>
     <link href='css/baseline.css' rel='stylesheet'>
     <link href='css/index.css' rel='stylesheet'>
+
+    <script src="out/goog/base.js" type="text/javascript"></script>
+    <!-- <script src="cljstempl.js" type="text/javascript"></script>
+    <script type="text/javascript">goog.require("cljstempl.core");</script>
+    -->
+    <script>
+      //<![CDATA[
+      ;goog.require('clojure.browser.repl');clojure.browser.repl.connect.call(null, '172.28.128.5');
+      //]]>
+    </script>
     <script src='js/vendor/modernizr-2.6.2-respond-1.1.0.min.js'></script>
     <script src='js/vendor/dropzone.js'></script>
     <script src='https://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js'></script>
@@ -27,17 +37,17 @@
       }
       function callback() {
         window.google.identitytoolkit.setConfig({
-      
+
           developerKey: "AIzaSyDc7_lGZsmbtdOUpprPClKBOxXCQ6LztRE",
           companyName: "Interrupt Software Inc.",
           callbackUrl: "http://<to-be-generated>/callbackGitkit", // must be a full URL
-      
+
           userStatusUrl: "/userStatusUrl", // these can just be partial paths
           loginUrl: "/loginUrl",
           signupUrl: "/register",
           homeUrl: "/landing",
           logoutUrl: "/logout",
-      
+
           realm: '', // optional
           language: "en",
           idps: ["Gmail", "AOL", "Hotmail", "Yahoo"],
