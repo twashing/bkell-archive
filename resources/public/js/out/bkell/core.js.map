@@ -2,6 +2,8 @@
  "file":
  "/home/twashing/Projects/bkell/resources/public/js/out/bkell/core.js",
  "sources":["core.cljs"],
- "lineCount":8,
- "mappings":";;;;;AAMCA",
- "names":["connect"]}
+ "lineCount":10,
+ "mappings":";AAAA;;;;AAGA,AAACA;AACD,4BAAA,5BAACC;AAMD,uCAAA,vCAACC",
+ "names":
+ ["cljs.core/enable-console-print!", "cljs.core/println",
+  "clojure.browser.repl/connect"]}
