@@ -12,8 +12,7 @@ pom.xml.asc
 /.nrepl-port
 changes
 
-etc/scratch 
-etc/config/config.clj
+resources/config.edn
 target/
 resources/public/js/out/
 
