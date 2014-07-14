@@ -18,7 +18,7 @@
     (timbre/trace "Bkell.stop CALLED")
     (component/stop-system this system-components)))
 
-(defn component-mrservice [env]
+(defn component-bkell [env]
 
   (component/system-map
    :bkell (component/using
