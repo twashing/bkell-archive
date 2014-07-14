@@ -10,7 +10,8 @@
                  [http-kit "2.1.18"]
                  [com.taoensso/timbre "3.1.6"]
                  [com.taoensso/sente "0.14.1"]
-                 [com.stuartsierra/component "0.2.1"]]
+                 [com.stuartsierra/component "0.2.1"]
+                 [environ "0.5.0"]]
 
   :plugins [[lein-cljsbuild "1.0.2"]]
 
