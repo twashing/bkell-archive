@@ -13,8 +13,9 @@ pom.xml.asc
 changes
 
 resources/config.edn
-target/
 resources/public/js/out/
+target/
+logs/
 
 src/bkell/http/handler.clj.1
 public/.sass-cache/

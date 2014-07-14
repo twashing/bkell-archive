@@ -5,7 +5,7 @@
 
 (def system-components [])
 
-(defrecord Mrservice [env]
+(defrecord Bkell [env]
   component/Lifecycle
 
   (start [this]
@@ -22,5 +22,5 @@
 
   (component/system-map
    :bkell (component/using
-               (map->Mrservice {:env env})
+               (map->Bkell {:env env})
                {})))
