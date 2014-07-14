@@ -17,3 +17,6 @@
 
 (defn stop []
   (bkell/stop))
+
+(defn help []
+  (bkell/help))

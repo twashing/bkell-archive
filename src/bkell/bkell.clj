@@ -45,6 +45,11 @@
   (alter-var-root #'system
                   (fn [s] (when s (component/stop s)))))
 
+(defn ^{:doc "Reset the mrservice system"}
+  reset []
+  (stop)
+  (refresh :after 'bkell.shell/start))
+
 
 (defn ^{:doc "This help function"}
   help []

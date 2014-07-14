@@ -19,7 +19,8 @@
   :profiles {:dev {:resource-paths ["." "resources/public"]
                    :plugins [[com.cemerick/austin "0.1.3"]]
                    :dependencies [[javax.servlet/servlet-api "2.5"]
-                                  [alembic "0.2.1"]]}}
+                                  [alembic "0.2.1"]
+                                  [ring/ring-jetty-adapter "1.2.1"]]}}
 
   :cljsbuild {:builds [{:id "bkell"
 

@@ -4,7 +4,8 @@
             [compojure.handler :as handler]
             [net.cgrand.enlive-html :as enlive]
             [ring.util.response :as ring-resp]
-            [net.cgrand.enlive-html :as enlive]))
+            [net.cgrand.enlive-html :as enlive]
+            [taoensso.timbre :as timbre]))
 
 
 (defn with-browser-repl [filename]
@@ -25,15 +26,23 @@
 
 
 
-(defroutes app-routes
+(defn create-approutes [project-config]
 
-  (GET "/" []
-       (-> (ring-resp/response (with-browser-repl "index.html"))
-           (ring-resp/content-type "text/html")))
+  (defroutes app-routes
 
-  (route/resources "/" {:root "resources/public/"})
-  (route/not-found "Not Found"))
+    (GET "/" []
+         (-> (ring-resp/response (with-browser-repl "index.html"))
+             (ring-resp/content-type "text/html")))
+
+    (route/resources "/" {:root "resources/public/"})
+    (route/not-found "Not Found")))
 
 
-(def app
-  (handler/site app-routes))
+(def app nil)
+(defn create-app
+
+  [project-config]
+
+  (timbre/trace "create-app CALLED [" project-config "]")
+  (alter-var-root #'app (fn [x]
+                          (handler/site (create-approutes project-config)))))
