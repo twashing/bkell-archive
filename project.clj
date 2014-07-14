@@ -8,13 +8,16 @@
                  [compojure "1.1.8"]
                  [enlive "1.1.5"]
                  [http-kit "2.1.18"]
-                 [com.taoensso/sente "0.14.1"]]
+                 [com.taoensso/timbre "3.1.6"]
+                 [com.taoensso/sente "0.14.1"]
+                 [com.stuartsierra/component "0.2.1"]]
 
   :plugins [[lein-cljsbuild "1.0.2"]]
 
   :profiles {:dev {:resource-paths ["." "resources/public"]
                    :plugins [[com.cemerick/austin "0.1.3"]]
-                   :dependencies [[javax.servlet/servlet-api "2.5"]]}}
+                   :dependencies [[javax.servlet/servlet-api "2.5"]
+                                  [alembic "0.2.1"]]}}
 
   :cljsbuild {:builds [{:id "bkell"
 
