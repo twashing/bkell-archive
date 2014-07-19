@@ -1,7 +1,7 @@
 (ns bkell.component.webrunner
   (:require [com.stuartsierra.component :as component]
-            [ring.adapter.jetty :as jetty]
-            [taoensso.timbre :as timbre]))
+            [taoensso.timbre :as timbre]
+            [org.httpkit.server :as httpkit]))
 
 (defrecord Runner [env]
   component/Lifecycle
@@ -12,14 +12,14 @@
 
     (if-not (:server component)
       (let [theapp (-> component :httphandler :app)
-            theserver (jetty/run-jetty theapp {:port 8080 :join? false})]
+            theserver (httpkit/run-server theapp {})]
         (assoc component :server theserver))
       component))
 
   (stop [component]
 
     (timbre/trace "Runner.stop CALLED")
-    (.stop (:server component))
+    ((:server component))
     (dissoc component :server)))
 
 (defn component-webrunner [env]

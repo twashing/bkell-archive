@@ -5,6 +5,8 @@
             :url "http://www.eclipse.org/legal/epl-v10.html"}
   :dependencies [[org.clojure/clojure "1.6.0"]
                  [org.clojure/clojurescript "0.0-2268"]
+                 [org.clojure/core.async "0.1.303.0-886421-alpha"]
+                 [org.clojure/core.match "0.2.1"]
                  [compojure "1.1.8"]
                  [enlive "1.1.5"]
                  [http-kit "2.1.18"]
@@ -15,6 +17,8 @@
                  [missing-utils "0.1.1"]]
 
   :plugins [[lein-cljsbuild "1.0.2"]]
+
+  :repl-options {:init-ns bkell.bkell}
 
   :profiles {:dev {:resource-paths ["." "resources/public"]
                    :plugins [[com.cemerick/austin "0.1.3"]]
