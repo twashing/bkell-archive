@@ -22,7 +22,7 @@
   :repl-options {:init-ns bkell.bkell}
 
   :profiles {:dev {:resource-paths ["." "resources/public"]
-                   :plugins [[com.cemerick/austin "0.1.3"]]
+                   :plugins [[com.cemerick/austin "0.1.4"]]
                    :dependencies [[javax.servlet/servlet-api "2.5"]
                                   [alembic "0.2.1"]
                                   [ring/ring-jetty-adapter "1.2.1"]]}}

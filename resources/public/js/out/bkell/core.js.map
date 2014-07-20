@@ -2,11 +2,12 @@
  "file":
  "/home/twashing/Projects/bkell/resources/public/js/out/bkell/core.js",
  "sources":["core.cljs"],
- "lineCount":15,
+ "lineCount":19,
  "mappings":
- ";AAWA;;;;;;;;;AAUA,IAAAA,mRAAAA,uBAAA,EAAA,AAAAC,+BAAAD,mBAAA,AAAAE,0BAAAC,mBAAAH,kBAAAA,sCAAA,AAAAI,wBAAAJ,qBAAA,+EAAA,AAAAI,wBAAAJ,qBAAA,6EAAA,AAAAI,wBAAAJ,qBAAA,sDAAA,hHAAcK,7HAAKC,5HAAQC,haACrB,mDAAA,QAAA,mCAAA,2CAAA,qDAAA,9LAACC,ywBAEL,AAAKC,kBAAWJ;AAChB,AAAKK,qBAAWJ;AAChB,AAAKK,6BAAWJ",
+ ";AAAA;;;;;;;;;;;AAWA,IAAAA,mRAAAA,uBAAA,EAAA,AAAAC,+BAAAD,mBAAA,AAAAE,0BAAAC,mBAAAH,kBAAAA,sCAAA,AAAAI,wBAAAJ,qBAAA,+EAAA,AAAAI,wBAAAJ,qBAAA,6EAAA,AAAAI,wBAAAJ,qBAAA,sDAAA,hHAAcK,7HAAKC,5HAAQC,haACrB,mDAAA,QAAA,mCAAA,2CAAA,qDAAA,9LAACC,ywBAEL,AAAKC,kBAAWJ;AAChB,AAAKK,qBAAWJ;AAChB,AAAKK,6BAAWJ;AAGlB,mBAAA,kBAAA,rCAAMK,qCACJ,aAAA,NAACC",
  "names":
- ["map__10609", "cljs.core/seq?", "cljs.core/apply",
+ ["map__10886", "cljs.core/seq?", "cljs.core/apply",
   "cljs.core/hash-map", "cljs.core/get", "chsk", "ch-recv", "send-fn",
   "taoensso.sente/make-channel-socket!", "bkell.core/chsk",
-  "bkell.core/ch-chsk", "bkell.core/chsk-send!"]}
+  "bkell.core/ch-chsk", "bkell.core/chsk-send!", "bkell.core/hello",
+  "js/alert"]}

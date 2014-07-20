@@ -22,13 +22,16 @@
   (def chsk-send!                    send-fn) ; ChannelSocket's send API fn
   )
 
+(go-loop [from-client (<! ch-chsk)]
+  (timbre/info "from CLIENT[" from-client "]"))
+
 
 (defn with-browser-repl [filename]
 
   (let [templ (enlive/html-resource filename)
         host "http://172.28.128.5"
-        port "44610"
-        connect-channel "4731"]
+        port "50705"
+        connect-channel "1693"]
 
     (apply str (enlive/emit*
                 (enlive/transform templ
@@ -36,7 +39,7 @@
                                   (enlive/after
 
                                    ;; splitting up the tags to give time for 'clojure' JS object to load
-                                   [{:tag :script :content (str "goog.provide('bkell.core'); goog.require('cljs.core'); goog.require('clojure.browser.repl');")}
+                                   [{:tag :script :content (str "")}
                                     {:tag :script :content (str "clojure.browser.repl.connect.call(null,\"" host ":" port "/" connect-channel "/repl/start\");")}]))))))
 
 
