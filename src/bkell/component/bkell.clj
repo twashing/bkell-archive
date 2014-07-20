@@ -2,11 +2,12 @@
   (:require [com.stuartsierra.component :as component]
             [taoensso.timbre :as timbre]
 
+            [bkell.component.browserrepl :as cb]
             [bkell.component.httphandler :as ch]
             [bkell.component.webrunner :as cw]))
 
 
-(def system-components [:httphandler :webrunner])
+(def system-components [:browserrepl :httphandler :webrunner])
 
 (defrecord Bkell [env]
   component/Lifecycle
@@ -24,9 +25,12 @@
 (defn component-bkell [env]
 
   (component/system-map
+   :browserrepl (component/using
+                 (cb/component-browserrepl env)
+                 {})
    :httphandler (component/using
                  (ch/component-httphandler env)
-                 {})
+                 {:browserrepl :browserrepl})
    :webrunner (component/using
                (cw/component-webrunner env)
                {:httphandler :httphandler})

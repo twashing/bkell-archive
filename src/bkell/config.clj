@@ -29,7 +29,8 @@
                               (if-not (empty? v)
                                 v
                                 (env/env k))])
-                           (seq config)))]
+                           (seq config)))
+           configM (assoc configM :host (env/env :host))]
 
        (timbre/debug "config MERGED[" configM "]")
        configM)))

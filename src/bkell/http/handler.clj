@@ -2,6 +2,7 @@
   (:require [compojure.core :refer :all]
             [compojure.route :as route]
             [compojure.handler :as handler]
+            [clojure.string :as str]
             [net.cgrand.enlive-html :as enlive]
             [ring.util.response :as ring-resp]
             [net.cgrand.enlive-html :as enlive]
@@ -23,15 +24,19 @@
   )
 
 (go-loop [from-client (<! ch-chsk)]
-  (timbre/info "from CLIENT[" from-client "]"))
+  (timbre/info "from CLIENT[" from-client "]")
+  (def one from-client)
+  (def two 123))
 
 
-(defn with-browser-repl [filename]
+(defn with-browser-repl [filename repl-env]
 
-  (let [templ (enlive/html-resource filename)
-        host "http://172.28.128.5"
-        port "50705"
-        connect-channel "1693"]
+  (let [chopped-url (str/split (:repl-url repl-env) #"\/")
+        host (:host repl-env)
+        port (second (str/split (nth chopped-url 2) #":"))
+        sessionid (nth chopped-url 3)
+
+        templ (enlive/html-resource filename)]
 
     (apply str (enlive/emit*
                 (enlive/transform templ
@@ -40,7 +45,7 @@
 
                                    ;; splitting up the tags to give time for 'clojure' JS object to load
                                    [{:tag :script :content (str "")}
-                                    {:tag :script :content (str "clojure.browser.repl.connect.call(null,\"" host ":" port "/" connect-channel "/repl/start\");")}]))))))
+                                    {:tag :script :content (str "clojure.browser.repl.connect.call(null,\"" host ":" port "/" sessionid "/repl/start\");")}]))))))
 
 
 
@@ -54,7 +59,7 @@
 
 
     (GET "/" []
-         (-> (ring-resp/response (with-browser-repl "index.html"))
+         (-> (ring-resp/response (with-browser-repl "index.html" (:repl-env project-config)))
              (ring-resp/content-type "text/html")))
 
     (route/resources "/" {:root "resources/public/"})
