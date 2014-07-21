@@ -34,7 +34,7 @@
   (timbre/trace "with-browser-repl CALLED / browserrepl[" browserrepl "]")
   (let [repl-env (:repl-env browserrepl)
         chopped-url (str/split (:repl-url repl-env) #"\/")
-        host (:host repl-env)
+        host (str "http://" (:host repl-env))
         port (second (str/split (nth chopped-url 2) #":"))
         sessionid (nth chopped-url 3)
 
