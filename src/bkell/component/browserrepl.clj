@@ -13,7 +13,7 @@
 
   (start [component]
 
-    (timbre/trace "BrowserRepl.start CALLED / env[" (keys env) "] / component[" (keys component) "]")
+    (timbre/debug "BrowserRepl.start CALLED / env[" (keys env) "] / component[" (keys component) "]")
 
     (if-not (:repl-env component)
       (assoc component :repl-env (create-repl-env (:host env)))

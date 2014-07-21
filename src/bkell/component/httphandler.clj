@@ -13,7 +13,7 @@
     (timbre/trace "HttpHandler.start CALLED / env[" (keys env) "] / component[" (keys component) "]")
 
     (if-not (:app component)
-      (assoc component :app (handler/create-app env))
+      (assoc component :app (handler/create-app env (:browserrepl component)))
       component))
 
   (stop [component]

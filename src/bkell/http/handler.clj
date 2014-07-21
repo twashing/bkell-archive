@@ -29,9 +29,11 @@
   (def two 123))
 
 
-(defn with-browser-repl [filename repl-env]
+(defn with-browser-repl [filename browserrepl]
 
-  (let [chopped-url (str/split (:repl-url repl-env) #"\/")
+  (timbre/trace "with-browser-repl CALLED / browserrepl[" browserrepl "]")
+  (let [repl-env (:repl-env browserrepl)
+        chopped-url (str/split (:repl-url repl-env) #"\/")
         host (:host repl-env)
         port (second (str/split (nth chopped-url 2) #":"))
         sessionid (nth chopped-url 3)
@@ -49,7 +51,7 @@
 
 
 
-(defn create-approutes [project-config]
+(defn create-approutes [project-config browserrepl]
 
   (defroutes app-routes
 
@@ -59,7 +61,7 @@
 
 
     (GET "/" []
-         (-> (ring-resp/response (with-browser-repl "index.html" (:repl-env project-config)))
+         (-> (ring-resp/response (with-browser-repl "index.html" browserrepl))
              (ring-resp/content-type "text/html")))
 
     (route/resources "/" {:root "resources/public/"})
@@ -68,9 +70,8 @@
 
 (def app nil)
 (defn create-app
-
-  [project-config]
+  [project-config browserrepl]
 
   (timbre/trace "create-app CALLED [" project-config "]")
   (alter-var-root #'app (fn [x]
-                          (handler/site (create-approutes project-config)))))
+                          (handler/site (create-approutes project-config browserrepl)))))

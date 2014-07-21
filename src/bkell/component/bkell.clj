@@ -36,5 +36,6 @@
                {:httphandler :httphandler})
    :bkell (component/using
                (map->Bkell {:env env})
-               {:httphandler :httphandler
+               {:browserrepl :browserrepl
+                :httphandler :httphandler
                 :webrunner :webrunner})))
