@@ -7,6 +7,8 @@
             [ring.util.response :as ring-resp]
             [net.cgrand.enlive-html :as enlive]
             [taoensso.timbre :as timbre]
+            [ring.middleware.anti-forgery :as af]
+            [ring.util.anti-forgery :as afu]
 
             ;; Sente stuff
             [clojure.core.match :as match :refer (match)] ; Optional, useful
@@ -17,16 +19,35 @@
 ;; Sente stuff
 (let [{:keys [ch-recv send-fn ajax-post-fn ajax-get-or-ws-handshake-fn]}
       (sente/make-channel-socket! {})]
+
   (def ring-ajax-post                ajax-post-fn)
   (def ring-ajax-get-or-ws-handshake ajax-get-or-ws-handshake-fn)
-  (def ch-chsk                       ch-recv) ; ChannelSocket's receive channel
-  (def chsk-send!                    send-fn) ; ChannelSocket's send API fn
-  )
 
-(go-loop [from-client (<! ch-chsk)]
-  (timbre/info "from CLIENT[" from-client "]")
-  (def one from-client)
-  (def two 123))
+  ;; ChannelSocket's receive channel
+  (def ch-chsk                       ch-recv)
+
+  ;; ChannelSocket's send API fn
+  (def chsk-send!                    send-fn))
+
+
+(defn- event-msg-handler
+  [{:as ev-msg :keys [ring-req event ?reply-fn]} _]
+  (let [session (:session ring-req)
+        uid     (:uid session)
+        [id data :as ev] event]
+
+    (spit "ev.edn" ev)
+    #_(timbre/info "Sente Event [" ev "]")
+    #_(match [id data]
+           ;; TODO: Match your events here, reply when appropriate <...>
+           :else
+           (do (timbre/debug "Unmatched event [" ev "]")
+               (when-not (:dummy-reply-fn? (meta ?reply-fn))
+                 (?reply-fn {:umatched-event-as-echoed-from-from-server ev}))))))
+
+
+(defonce chsk-router
+  (sente/start-chsk-router-loop! event-msg-handler ch-chsk))
 
 
 (defn with-browser-repl [filename browserrepl]
@@ -47,7 +68,12 @@
 
                                    ;; splitting up the tags to give time for 'clojure' JS object to load
                                    [{:tag :script :content (str "")}
-                                    {:tag :script :content (str "clojure.browser.repl.connect.call(null,\"" host ":" port "/" sessionid "/repl/start\");")}]))))))
+                                    {:tag :script :content (str "clojure.browser.repl.connect.call(null,\""
+                                                                host ":" port "/" sessionid "/repl/start\");")}
+                                    #_{:tag :input
+                                     :attrs {:type :hidden
+                                             :name "__anti-forgery-token"
+                                             :value afu/*anti-forgery-token*}}]))))))
 
 
 
@@ -56,10 +82,10 @@
   (defroutes app-routes
 
     ;; Sente stuff
-    (GET  "/chsk" req (#'ring-ajax-get-or-ws-handshake req)) ; Note the #'
-    (POST "/chsk" req (#'ring-ajax-post                req))
+    (GET  "/chsk" [req] (ring-ajax-get-or-ws-handshake req)) ; Note the #'
+    (POST "/chsk" [req] (ring-ajax-post                req))
 
-
+    (GET "/fubar" [req] (str "fubar[" req "]"))
     (GET "/" []
          (-> (ring-resp/response (with-browser-repl "index.html" browserrepl))
              (ring-resp/content-type "text/html")))
@@ -74,4 +100,7 @@
 
   (timbre/trace "create-app CALLED [" project-config "]")
   (alter-var-root #'app (fn [x]
-                          (handler/site (create-approutes project-config browserrepl)))))
+
+                          (-> (create-approutes project-config browserrepl)
+                              (af/wrap-anti-forgery)
+                              (handler/site)))))

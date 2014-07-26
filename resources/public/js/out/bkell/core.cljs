@@ -9,13 +9,18 @@
    [taoensso.sente :as sente :refer (cb-success?)]))
 
 
-(let [{:keys [chsk ch-recv send-fn]}
-      (sente/make-channel-socket! "/chsk" {} {:type :auto})]
+(defn fubar []
 
-  (def chsk       chsk)
-  (def ch-chsk    ch-recv) ; ChannelSocket's receive channel
-  (def chsk-send! send-fn) ; ChannelSocket's send API fn
-  )
+  (let [{:keys [chsk ch-recv send-fn]}
+        (sente/make-channel-socket! "/chsk" {} {:type :ajax})]
+
+    (def chsk       chsk)
+    (def ch-chsk    ch-recv) ; ChannelSocket's receive channel
+    (def chsk-send! send-fn) ; ChannelSocket's send API fn
+    ))
 
 (defn hello []
   (js/alert "Hello World"))
+
+(defn one []
+  (chsk-send! [:some/request-id {:name "Rich Hickey" :type "Awesome"}]))

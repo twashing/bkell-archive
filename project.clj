@@ -4,15 +4,16 @@
   :license {:name "Eclipse Public License"
             :url "http://www.eclipse.org/legal/epl-v10.html"}
   :dependencies [[org.clojure/clojure "1.6.0"]
-                 [org.clojure/clojurescript "0.0-2268"]
+                 [org.clojure/clojurescript "0.0-2277"]
                  [org.clojure/core.async "0.1.303.0-886421-alpha"]
                  [org.clojure/core.match "0.2.1"]
                  [compojure "1.1.8"]
                  [enlive "1.1.5"]
                  [http-kit "2.1.18"]
-                 [com.taoensso/timbre "3.1.6"]
+                 [ring/ring-anti-forgery "1.0.0"]
+                 [com.taoensso/timbre "3.2.1"]
                  [com.taoensso/encore "1.7.0"]
-                 [com.taoensso/sente "0.15.0"]
+                 [com.taoensso/sente "0.15.1"]
                  [com.stuartsierra/component "0.2.1"]
                  [environ "0.5.0"]
                  [missing-utils "0.1.1"]]
@@ -25,7 +26,7 @@
                    :plugins [[com.cemerick/austin "0.1.4"]]
                    :dependencies [[javax.servlet/servlet-api "2.5"]
                                   [alembic "0.2.1"]
-                                  [ring/ring-jetty-adapter "1.2.1"]]}}
+                                  [ring/ring-jetty-adapter "1.3.0"]]}}
 
   :cljsbuild {:builds [{:id "bkell"
 
