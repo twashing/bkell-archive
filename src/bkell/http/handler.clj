@@ -8,7 +8,10 @@
             [net.cgrand.enlive-html :as enlive]
             [taoensso.timbre :as timbre]
             [ring.middleware.anti-forgery :as af]
-            [ring.util.anti-forgery :as afu]
+
+
+
+            #_[ring.util.anti-forgery :as afu]
 
             ;; Sente stuff
             [clojure.core.match :as match :refer (match)] ; Optional, useful
@@ -50,6 +53,16 @@
   (sente/start-chsk-router-loop! event-msg-handler ch-chsk))
 
 
+(defn ws-handler [{:keys [ws-channel] :as req}]
+  (println "Opened connection from" (:remote-addr req))
+  (go-loop []
+    (when-let [{:keys [message error] :as msg} (<! ws-channel)]
+      (prn "Message received:" msg)
+      (>! ws-channel (if error
+                       (format "Error: '%s'." (pr-str msg))
+                       {:received (format "You passed: '%s' at %s." (pr-str message) (java.util.Date.))}))
+      (recur))))
+
 (defn with-browser-repl [filename browserrepl]
 
   (timbre/trace "with-browser-repl CALLED / browserrepl[" browserrepl "]")
@@ -76,31 +89,33 @@
                                              :value afu/*anti-forgery-token*}}]))))))
 
 
-
 (defn create-approutes [project-config browserrepl]
 
   (defroutes app-routes
 
-    ;; Sente stuff
-    (GET  "/chsk" [req] (ring-ajax-get-or-ws-handshake req)) ; Note the #'
-    (POST "/chsk" [req] (ring-ajax-post                req))
+    (->
+     (routes
 
-    (GET "/fubar" [req] (str "fubar[" req "]"))
-    (GET "/" []
-         (-> (ring-resp/response (with-browser-repl "index.html" browserrepl))
-             (ring-resp/content-type "text/html")))
+      ;; Sente stuff
+      (GET  "/chsk" req (ring-ajax-get-or-ws-handshake req))
+      (POST "/chsk" req (ring-ajax-post                req))
 
-    (route/resources "/" {:root "resources/public/"})
-    (route/not-found "Not Found")))
+      (GET "/" []
+           (-> (ring-resp/response (with-browser-repl "index.html" browserrepl))
+               (ring-resp/content-type "text/html")))
+
+      (route/resources "/" {:root "resources/public/"})
+      (route/not-found "Not Found"))
+
+     ;; Sente adds a :csrf-token param to Ajax requests:
+     (af/wrap-anti-forgery
+      {:read-token (fn [req] (-> req :params :csrf-token))})
+
+     handler/site)))
 
 
-(def app nil)
 (defn create-app
   [project-config browserrepl]
 
   (timbre/trace "create-app CALLED [" project-config "]")
-  (alter-var-root #'app (fn [x]
-
-                          (-> (create-approutes project-config browserrepl)
-                              (af/wrap-anti-forgery)
-                              (handler/site)))))
+  (create-approutes project-config browserrepl))

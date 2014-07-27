@@ -9,18 +9,36 @@
    [taoensso.sente :as sente :refer (cb-success?)]))
 
 
-(defn fubar []
+(enable-console-print!)
 
-  (let [{:keys [chsk ch-recv send-fn]}
-        (sente/make-channel-socket! "/chsk" {} {:type :ajax})]
 
-    (def chsk       chsk)
-    (def ch-chsk    ch-recv) ; ChannelSocket's receive channel
-    (def chsk-send! send-fn) ; ChannelSocket's send API fn
-    ))
+(let [{:keys [chsk ch-recv send-fn state]}
+      (sente/make-channel-socket! "/chsk" {:type :auto})]
+
+  (def chsk       chsk)
+  (def ch-chsk    ch-recv) ; ChannelSocket's receive channel
+  (def chsk-send! send-fn) ; ChannelSocket's send API fn
+  (def chsk-state state))
+
+
+(defn one []
+  (chsk-send! [:some/request-id {:name "Rich Hickey" :type "Awesome"}]))
+
 
 (defn hello []
   (js/alert "Hello World"))
 
-(defn one []
-  (chsk-send! [:some/request-id {:name "Rich Hickey" :type "Awesome"}]))
+
+(defn- event-handler [[id data :as ev] _]
+  (logf "Event: %s" ev)
+  (match [id data]
+    ;; TODO Match your events here <...>
+    [:chsk/state {:first-open? true}]
+    (logf "Channel socket successfully established!")
+    [:chsk/state new-state] (logf "Chsk state change: %s" new-state)
+    [:chsk/recv  payload]   (logf "Push event from server: %s" payload)
+    :else (logf "Unmatched event: %s" ev)))
+
+
+(defonce chsk-router
+  (sente/start-chsk-router-loop! event-handler ch-chsk))

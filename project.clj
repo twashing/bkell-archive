@@ -14,6 +14,7 @@
                  [com.taoensso/timbre "3.2.1"]
                  [com.taoensso/encore "1.7.0"]
                  [com.taoensso/sente "0.15.1"]
+
                  [com.stuartsierra/component "0.2.1"]
                  [environ "0.5.0"]
                  [missing-utils "0.1.1"]]
