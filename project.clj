@@ -17,7 +17,8 @@
 
                  [com.stuartsierra/component "0.2.1"]
                  [environ "0.5.0"]
-                 [missing-utils "0.1.1"]]
+                 [missing-utils "0.1.1"]
+                 [adi "0.1.5"]]
 
   :plugins [[lein-cljsbuild "1.0.2"]]
 
