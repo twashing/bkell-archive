@@ -104,12 +104,22 @@
            (-> (ring-resp/response (with-browser-repl "index.html" browserrepl))
                (ring-resp/content-type "text/html")))
 
+      (POST "/verify-assertion" []
+            (println "verify-assertion CALLED ["  "]")
+            (ring-resp/response {:response :success}))
+
+      (GET "/signout" []
+            (println "signout CALLED ["  "]")
+            (ring-resp/response {:response :success}))
+
       (route/resources "/" {:root "resources/public/"})
       (route/not-found "Not Found"))
 
      ;; Sente adds a :csrf-token param to Ajax requests:
      (af/wrap-anti-forgery
-      {:read-token (fn [req] (-> req :params :csrf-token))})
+      {:read-token (fn [req]
+                     (println "read-token[" (-> req :params :csrf-token)  "]")
+                     (-> req :params :csrf-token))})
 
      handler/site)))
 
