@@ -93,35 +93,26 @@
 
   (defroutes app-routes
 
-    (->
-     (routes
+    (routes
 
-      ;; Sente stuff
-      (GET  "/chsk" req (ring-ajax-get-or-ws-handshake req))
-      (POST "/chsk" req (ring-ajax-post                req))
+     ;; Sente stuff
+     (GET  "/chsk" req (ring-ajax-get-or-ws-handshake req))
+     (POST "/chsk" req (ring-ajax-post                req))
 
-      (GET "/" []
-           (-> (ring-resp/response (with-browser-repl "index.html" browserrepl))
-               (ring-resp/content-type "text/html")))
+     (GET "/" []
+          (-> (ring-resp/response (with-browser-repl "index.html" browserrepl))
+              (ring-resp/content-type "text/html")))
 
-      (POST "/verify-assertion" []
-            (println "verify-assertion CALLED ["  "]")
-            (ring-resp/response {:response :success}))
+     (POST "/verify-assertion" []
+           (println "verify-assertion CALLED ["  "]")
+           (ring-resp/response {:response :success}))
 
-      (GET "/signout" []
-            (println "signout CALLED ["  "]")
-            (ring-resp/response {:response :success}))
+     (GET "/signout" []
+          (println "signout CALLED ["  "]")
+          (ring-resp/response {:response :success}))
 
-      (route/resources "/" {:root "resources/public/"})
-      (route/not-found "Not Found"))
-
-     ;; Sente adds a :csrf-token param to Ajax requests:
-     (af/wrap-anti-forgery
-      {:read-token (fn [req]
-                     (println "read-token[" (-> req :params :csrf-token)  "]")
-                     (-> req :params :csrf-token))})
-
-     handler/site)))
+     (route/resources "/" {:root "resources/public/"})
+     (route/not-found "Not Found"))))
 
 
 (defn create-app
