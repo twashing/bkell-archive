@@ -26,7 +26,6 @@
                :country/name [{:unique :value
                                :required true}]
 
-
                ;; users
                :user/id [{:type :uuid
                           :unique :value
@@ -50,7 +49,55 @@
                :user/email [{}]
 
                :user/country [{:type :ref
-                               :ref {:ns :bookkeeping/country}}]
+                               :ref {:ns :bookkeeping.country}}]
 
+               ;; groups
+               :group {
+                       :id [{:type :uuid
+                             :unique :value
+                             :required true
+                             :doc "System ID for a given group"}]
+
+                       :name [{:unique :value
+                               :required true
+                               :doc "A group's name"}]
+
+                       :owner [{:type :ref
+                                :ref {:ns :bookkeeping.user}
+                                :doc "The groups's owner"}]
+
+                       :users [{:type :ref
+                                :ref {:ns :bookkeeping.user}
+                                :cardinality :many
+                                :doc "The users belonging to this group"}]
+
+                       :defaultCurrency [{:type :ref
+                                          :ref {:ns :bookkeeping.currency}
+                                          :doc "The groups's default currency"}]
+
+                       :bookkeeping [{:type :ref
+                                      :ref {:ns :bookkeeping.group.books}
+                                      :cardinality :many
+                                      :isComponent true
+                                      :doc "The set of books belonging to this group"}]
+
+                       ;; bookkeeping
+                       :books {:id [{:type :uuid
+                                     :unique :value
+                                     :required true
+                                     :doc "System ID for a set of books"}]
+
+                               :accounts [{:type :ref
+                                           :ref {:ns :bookkeeping.group.books.account}
+                                           :cardinality :many
+                                           :doc
+                                           "Refencing the set of accounts belonging to this bookkeeping"}]
+
+                               :journals [{:type :ref
+                                           :ref {:ns :bookkeeping.group.books.journal}
+                                           :cardinality :many
+                                           :doc
+                                           "Referencing the set of journals belonging to this bookkeeping"}]}
+                       }
                }
  }
