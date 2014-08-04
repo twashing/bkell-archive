@@ -13,24 +13,44 @@
                                           :value #{:debit :credit}}}]
 
                ;; currencies
-               :currency/id [{:type :string
-                              :cardinality :one
-                              :unique :value
+               :currency/id [{:unique :value
                               :required true}]
 
-               :currency/name [{:type :string
-                                :cardinality :one
-                                :unique :value
+               :currency/name [{:unique :value
                                 :required true}]
 
                ;; countries
-               :country/id [{:type :string
-                             :cardinality :one
-                             :unique :value
+               :country/id [{:unique :value
                              :required true}]
 
-               :country/name [{:type :string
-                               :cardinality :one
-                               :unique :value
-                               :required true}]}
+               :country/name [{:unique :value
+                               :required true}]
+
+
+               ;; users
+               :user/id [{:type :uuid
+                          :unique :value
+                          :required true
+                          :doc "System ID for a given user"}]
+
+               :user/username [{:unique :value
+                                :required true
+                                :doc "A user's username"}]
+
+               :user/password [{:doc "A user's password"}]
+
+               ;;:user/accountLevel [{:type :ref :ref :doc "A user's account level"}]
+               ;;:user/defaultGroup
+               ;;[{:doc "A user can be a member of many groups. This points to the default one"}]
+
+               :user/firstName [{}]
+
+               :user/lastName [{}]
+
+               :user/email [{}]
+
+               :user/country [{:type :ref
+                               :ref {:ns :bookkeeping/country}}]
+
+               }
  }
