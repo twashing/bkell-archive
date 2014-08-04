@@ -82,7 +82,7 @@
                        :bookkeeping [{:type :ref
                                       :ref {:ns :bookkeeping.group.books}
                                       :cardinality :many
-                                      :isComponent true
+                                      ;;:isComponent true
                                       :doc "The set of books belonging to this group"}]
 
                        ;; bookkeeping
@@ -106,7 +106,7 @@
                                ;; accounts
                                :account {:id [{:type :uuid
                                                :unique :value
-                                               :required :true
+                                               :required true
                                                :doc "System ID for one book's, list of accounts"}]
 
                                          :name [{:doc "Display name for this Account"}]
@@ -120,7 +120,7 @@
                                ;; journals
                                :journal {:id [{:type :uuid
                                                :unique :value
-                                               :required :true
+                                               :required true
                                                :doc "System ID for a set of book's journal"}]
 
                                          :name [{:doc "Display name for this Journal"}]
@@ -128,13 +128,13 @@
                                          :entries [{:type :ref
                                                     :ref :bookkeeping.group.books.journal.entry
                                                     :cardinality :many
-                                                    :isComponent true
+                                                    ;;:isComponent true
                                                     :doc "Pointer to a list of journal entires"}]
 
                                          ;; entries
                                          :entry [{:id [{:type :uuid
                                                         :unique :value
-                                                        :required :true}]
+                                                        :required true}]
 
                                                   :currency [{:type :ref
                                                               :ref :bookkeeping.currency}]
@@ -149,12 +149,13 @@
                                                               :bookkeeping.group.books.journal.entry.content
 
                                                               :cardinality :many
-                                                              :isComponent true}]
+                                                              ;;:isComponent true
+                                                              }]
 
-                                                   ;; debits / credits
+                                                  ;; debits / credits
                                                   :content {:id [{:type :uuid
                                                                   :unique :value
-                                                                  :required :true}]
+                                                                  :required true}]
 
                                                             :type [{:type :ref
                                                                     :ref {:ns :bookkeeping.counterWeight}}]
@@ -170,25 +171,10 @@
                                                                         :ref
                                                                         {:ns :bookkeeping.currency}}]}}]}
 
-
-                               :account {:id [{:type :uuid
-                                               :unique :value
-                                               :required :true
-                                               :doc "System ID for one book's, list of accounts"}]
-
-                                         :name [{:doc "Display name for this Account"}]
-
-                                         :type [{:type :ref
-                                                 :ref {:ns :bookkeeping.accountType}}]
-
-                                         :counterWeight [{:type :ref
-                                                          :ref {:ns :bookkeeping.counterWeight}}]}
-
-
                                ;; assets
                                :asset {:id [{:type :uuid
                                              :unique :value
-                                             :required :true}]
+                                             :required true}]
 
                                        :externalid [{}]
                                        :filename [{}]
