@@ -145,7 +145,9 @@
                                                             :doc "Set of image or other assets, associated with this entry"}]
 
                                                   :contents [{:type :ref
-                                                              :ref :bookkeeping.group.books.journal.entry.content
+                                                              :ref
+                                                              :bookkeeping.group.books.journal.entry.content
+
                                                               :cardinality :many
                                                               :isComponent true}]
 
@@ -168,6 +170,34 @@
                                                                         :ref
                                                                         {:ns :bookkeeping.currency}}]}}]}
 
+
+                               :account {:id [{:type :uuid
+                                               :unique :value
+                                               :required :true
+                                               :doc "System ID for one book's, list of accounts"}]
+
+                                         :name [{:doc "Display name for this Account"}]
+
+                                         :type [{:type :ref
+                                                 :ref {:ns :bookkeeping.accountType}}]
+
+                                         :counterWeight [{:type :ref
+                                                          :ref {:ns :bookkeeping.counterWeight}}]}
+
+
+                               ;; assets
+                               :asset {:id [{:type :uuid
+                                             :unique :value
+                                             :required :true}]
+
+                                       :externalid [{}]
+                                       :filename [{}]
+                                       :size [{}]
+                                       :type [{}]
+
+                                       :entry [{:type :ref
+                                                :ref {:ns :bookkeeping.group.books.journal.entry}
+                                                :doc "The journal entry associated with this asset"}]}
                                }
                        }
                }
