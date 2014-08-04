@@ -7,10 +7,10 @@
                                      :values #{:asset :liability :revenue :expense}}}]
 
                ;; counter weight
-               :counterWeight/id [{:type :enum
-                                   :default :free
-                                   :enum {:ns :bookkeeping.counterWeight
-                                          :value #{:debit :credit}}}]
+               :counterWeight [{:type :enum
+                                :default :free
+                                :enum {:ns :bookkeeping.counterWeight
+                                       :value #{:debit :credit}}}]
 
                ;; currencies
                :currency/id [{:unique :value
@@ -39,8 +39,12 @@
                :user/password [{:doc "A user's password"}]
 
                ;;:user/accountLevel [{:type :ref :ref :doc "A user's account level"}]
-               ;;:user/defaultGroup
-               ;;[{:doc "A user can be a member of many groups. This points to the default one"}]
+
+               :user/defaultGroup
+               [{:type :ref
+                 :ref {:ns :bookkeeping.group}
+                 :required true
+                 :doc "A user can be a member of many groups. This points to the default one"}]
 
                :user/firstName [{}]
 
@@ -97,7 +101,37 @@
                                            :ref {:ns :bookkeeping.group.books.journal}
                                            :cardinality :many
                                            :doc
-                                           "Referencing the set of journals belonging to this bookkeeping"}]}
+                                           "Referencing the set of journals belonging to this bookkeeping"}]
+
+                               ;; accounts
+                               :account {:id [{:type :uuid
+                                               :unique :value
+                                               :required :true
+                                               :doc "System ID for one book's, list of accounts"}]
+
+                                         :name [{:doc "Display name for this Account"}]
+
+                                         :type [{:type :ref
+                                                 :ref {:ns :bookkeeping.accountType}}]
+
+                                         :counterWeight [{:type :ref
+                                                          :ref {:ns :bookkeeping.counterWeight}}]}
+
+                               ;; journals
+                               :journal {:id [{:type :uuid
+                                               :unique :value
+                                               :required :true
+                                               :doc "System ID for a set of book's journal"}]
+
+                                         :name [{:doc "Display name for this Journal"}]
+
+                                         :entries [{:type :ref
+                                                    :ref :bookkeeping.group.books.journal.entry
+                                                    :cardinality :many
+                                                    :isComponent true
+                                                    :doc "Pointer to a list of journal entires"}]}
+
+                               }
                        }
                }
  }
