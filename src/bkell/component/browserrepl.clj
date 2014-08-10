@@ -1,7 +1,7 @@
 (ns bkell.component.browserrepl
   (:require [com.stuartsierra.component :as component]
             [taoensso.timbre :as timbre]
-
+            [cemerick.austin.repls]
             [bkell.http.handler :as handler]))
 
 
