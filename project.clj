@@ -17,9 +17,11 @@
 
                  [com.stuartsierra/component "0.2.1"]
                  [environ "0.5.0"]
-                 [missing-utils "0.1.3"]
+                 [missing-utils "0.1.5"]
                  [adi "0.1.5"]
-                 [crypto-random "1.2.0"]]
+                 [crypto-random "1.2.0"]
+
+                 [racehub/util "0.1.6"]]
 
   :plugins [[lein-cljsbuild "1.0.2"]]
 

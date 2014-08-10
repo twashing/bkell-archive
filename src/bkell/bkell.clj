@@ -54,7 +54,7 @@
 (defn ^{:doc "This help function"}
   help []
 
-  (let [shell-members (mu/list-fns-in-ns 'bkell.bkell)
+  (let [shell-members (mu/fns-in-ns 'bkell.bkell)
         extract-doc-fn (fn [msym]
                          (str msym
                               ": "
