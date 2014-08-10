@@ -10,6 +10,8 @@ pom.xml.asc
 *.class
 /.lein-*
 /.nrepl-port
+/.repl
+/out
 changes
 
 resources/config.edn
@@ -19,4 +21,3 @@ logs/
 
 src/bkell/http/handler.clj.1
 public/.sass-cache/
-

@@ -29,7 +29,8 @@
                    :dependencies [[javax.servlet/servlet-api "2.5"]
                                   [alembic "0.2.1"]
                                   [ring/ring-jetty-adapter "1.3.0"]
-                                  [org.clojure/test.check "0.5.9"]]}}
+                                  [org.clojure/test.check "0.5.9"]
+                                  [tcheck]]}}
 
   :cljsbuild {:builds [{:id "bkell"
 
