@@ -7,15 +7,22 @@
 (defn create
   ([] (create {}))
   ([opts]
+
      (println opts)
-     (merge {:id (mu/generate-uuid)
-             :username ""
-             :password (crypto/base64 12)
-             :first-name ""
-             :last-name ""
-             :email ""
-             :country {}}
-            opts)))
+
+     (let [sans-nils (apply merge (for [[k v]
+                                        opts
+                                        :when (not (nil? v))]
+                                    {k v}))]
+
+       (merge {:id (mu/generate-uuid)
+               :username ""
+               :password (crypto/base64 12)
+               :first-name ""
+               :last-name ""
+               :email ""
+               :country {}}
+              sans-nils))))
 
 
 ;; Retrieve.. not implemented in the raw
@@ -27,11 +34,3 @@
 
 
 ;; Delete.. not implemented in the raw
-
-
-(def thing
-  (gen/fmap create
-            (gen/hash-map :username gen/string
-                          :first-name gen/string
-                          :last-name gen/string
-                          :email gen/string)))
