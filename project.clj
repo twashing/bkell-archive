@@ -23,6 +23,7 @@
 
                  [racehub/util "0.1.6"]]
 
+  :clean-targets ^{:protect false} [:target-path :compile-path "out"]
   :plugins [[lein-cljsbuild "1.0.2"]]
 
   :repl-options {:init-ns bkell.bkell}
