@@ -7,6 +7,7 @@
                  [org.clojure/clojurescript "0.0-2277"]
                  [org.clojure/core.async "0.1.303.0-886421-alpha"]
                  [org.clojure/core.match "0.2.1"]
+                 [org.clojure/tools.trace "0.7.5"]
                  [compojure "1.1.8"]
                  [enlive "1.1.5"]
                  [http-kit "2.1.18"]
@@ -18,13 +19,14 @@
                  [com.stuartsierra/component "0.2.1"]
                  [environ "0.5.0"]
                  [missing-utils "0.1.5"]
-                 [adi "0.1.6-SNAPSHOT"]
+                 [adi "0.1.6"]
                  [crypto-random "1.2.0"]
 
                  [racehub/util "0.1.6"]]
 
   :clean-targets ^{:protect false} [:target-path :compile-path "out"]
-  :plugins [[lein-cljsbuild "1.0.2"]]
+  :plugins [[lein-cljsbuild "1.0.2"]
+            [chesk "0.1.0-SNAPSHOT"]]
 
   :repl-options {:init-ns bkell.bkell}
 

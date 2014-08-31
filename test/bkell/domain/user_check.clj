@@ -13,9 +13,11 @@
                           :last-name gen/string-alpha-numeric
                           :email gen/string-alpha-numeric)))
 
-(def has-agroup
-  (prop/for-all [v gend-user]
-                (-> v nil? not)))
+(def ^{:tag :run} has-agroup
+  (prop/for-all [u gend-user]
+                (-> u nil? not)
+                (-> u :id nil? not)
+                (-> u :password nil? not)))
 
 ;; can belong to many groups
 ;; can own a group
