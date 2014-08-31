@@ -7,16 +7,15 @@
             [clojure.test.check.properties :as prop]))
 
 
-(def gend-user
+(defn gend-user [generator size]
   (gen/fmap du/create
             (gen/hash-map :username gen/string-alpha-numeric
                           :first-name gen/string-alpha-numeric
                           :last-name gen/string-alpha-numeric
                           :email gen/string-alpha-numeric)))
 
-;; belongs to at least 1 group
 (def has-agroup
-  (prop/for-all [v (gen/sample gend-user)]
+  (prop/for-all [v (gend-user nil nil)]
                 (-> v nil? not)))
 
 ;; can belong to many groups
