@@ -13,7 +13,6 @@
                                         :when (not (nil? v))]
                                     {k v}))]
 
-       (println "sans-nils > " sans-nils)
        (merge {:id (mu/generate-uuid)
                :username ""
                :password (crypto/base64 12)
