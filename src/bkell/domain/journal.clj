@@ -1,0 +1,1 @@
+(ns bkell.domain.journal)
