@@ -2,15 +2,15 @@
  :bookkeeping {
                ;; account types
                :accountType [{:type :enum
-                              :default :free
+                              :default :asset
                               :enum {:ns :bookkeeping.accountType
                                      :values #{:asset :liability :revenue :expense}}}]
 
                ;; counter weight
                :counterWeight [{:type :enum
-                                :default :free
+                                :default :debit
                                 :enum {:ns :bookkeeping.counterWeight
-                                       :value #{:debit :credit}}}]
+                                       :values #{:debit :credit}}}]
 
                ;; currencies
                :currency/id [{:unique :value
