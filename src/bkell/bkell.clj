@@ -34,16 +34,18 @@
        (alter-var-root #'system loaded-system))))
 
 
-(defn ^{:doc "Start the Bookkeeping Shell"}  start []
-
+(defn ^{:doc "Start the Bookkeeping Shell"}
+  start []
   (if-not system
     (init))
-
   (alter-var-root #'system component/start))
 
-(defn ^{:doc "Stop the Bookkeeping Shell"} stop []
+
+(defn ^{:doc "Stop the Bookkeeping Shell"}
+  stop []
   (alter-var-root #'system
                   (fn [s] (when s (component/stop s)))))
+
 
 (defn ^{:doc "Reset the mrservice system"}
   reset []
@@ -53,7 +55,6 @@
 
 (defn ^{:doc "This help function"}
   help []
-
   (let [shell-members (mu/fns-in-ns 'bkell.bkell)
         extract-doc-fn (fn [msym]
                          (str msym

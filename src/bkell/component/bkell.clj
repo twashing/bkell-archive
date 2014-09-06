@@ -7,7 +7,7 @@
             [bkell.component.webrunner :as cw]))
 
 
-(def system-components [:browserrepl :httphandler :webrunner])
+(def system-components [] #_ [:browserrepl :httphandler :webrunner])
 
 (defrecord Bkell [env]
   component/Lifecycle
@@ -15,7 +15,8 @@
   (start [this]
 
     (timbre/trace "Bkell.start CALLED > system[" this "] / env[" env "]")
-    (component/start-system this system-components))
+    (assoc (component/start-system this system-components)
+      :state {}))
 
   (stop [this]
 
@@ -25,17 +26,18 @@
 (defn component-bkell [env]
 
   (component/system-map
-   :browserrepl (component/using
+   #_:browserrepl #_(component/using
                  (cb/component-browserrepl env)
                  {})
-   :httphandler (component/using
+   #_:httphandler #_(component/using
                  (ch/component-httphandler env)
                  {:browserrepl :browserrepl})
-   :webrunner (component/using
+   #_:webrunner #_(component/using
                (cw/component-webrunner env)
                {:httphandler :httphandler})
    :bkell (component/using
                (map->Bkell {:env env})
-               {:browserrepl :browserrepl
+               {}
+               #_{:browserrepl :browserrepl
                 :httphandler :httphandler
                 :webrunner :webrunner})))
