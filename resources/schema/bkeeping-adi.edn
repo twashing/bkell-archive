@@ -36,11 +36,10 @@
 
                ;;:user/accountLevel [{:type :ref :ref :doc "A user's account level"}]
 
-               :user/default-group
-               [{:type :ref
-                 :ref {:ns :bookkeeping.group}
-                 :required true
-                 :doc "A user can be a member of many groups. This points to the default one"}]
+               :user/default-group [{:type :ref
+                                     :ref {:ns :bookkeeping.group}
+                                     :required true
+                                     :doc "A user can be a member of many groups. This points to the default one"}]
 
                :user/first-name [{}]
 

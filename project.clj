@@ -20,9 +20,7 @@
                  [environ "0.5.0"]
                  [missing-utils "0.1.5"]
                  [adi "0.1.6"]
-                 [crypto-random "1.2.0"]
-
-                 [racehub/util "0.1.6"]]
+                 [crypto-random "1.2.0"]]
 
   :clean-targets ^{:protect false} [:target-path :compile-path "out"]
   :plugins [[lein-cljsbuild "1.0.2"]
@@ -49,4 +47,7 @@
                                    :output-dir "resources/public/js/out/"
                                    :optimizations :none
                                    :source-map true
-                                   :pretty-print true}}]})
+                                   :pretty-print true}}]}
+
+  ;;:eval-in-leiningen true
+  )

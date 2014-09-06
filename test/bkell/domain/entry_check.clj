@@ -5,4 +5,4 @@
             [clojure.test.check.properties :as prop]))
 
 
-(def each-entrymust-bebalanced nil)
+(def ^{:tag :run} each-entrymust-bebalanced nil)

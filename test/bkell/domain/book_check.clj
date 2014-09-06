@@ -4,6 +4,6 @@
             [clojure.test.check.generators :as gen]
             [clojure.test.check.properties :as prop]))
 
-(def can-have-many-accounts nil)
+(def ^{:tag :run} can-have-many-accounts nil)
 
-(def can-haveonly-onejournal nil)
+(def ^{:tag :run} can-haveonly-onejournal nil)

@@ -5,4 +5,4 @@
             [clojure.test.check.properties :as prop]))
 
 
-(def can-have-manyentries nil)
+(def ^{:tag :run} can-have-manyentries nil)
