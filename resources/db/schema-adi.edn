@@ -1,0 +1,195 @@
+{
+ :accountType [{:type :enum
+                :default :asset
+                :enum {:ns :bookkeeping.accountType
+                       :values #{:asset :liability :revenue :expense}}}]
+
+ :counterWeight [{:type :enum
+                  :default :debit
+                  :enum {:ns :bookkeeping.counterWeight
+                         :values #{:debit :credit}}}]
+
+ ;; currency
+ :currency/id [{:unique :value
+                :required true}]
+
+ :currency/name [{:unique :value
+                  :required true}]
+
+ ;; country
+ :country/id [{:unique :value
+               :required true}]
+
+ :country/name [{:unique :value
+                 :required true}]
+
+ ;; users
+ :user/id [{:type :uuid
+            :unique :value
+            :required true
+            :doc "System ID for a given user"}]
+
+ :user/username [{:unique :value
+                  :required true
+                  :doc "A user's username"}]
+
+ :user/password [{:doc "A user's password"}]
+
+ ;;:user/accountLevel [{:type :ref :ref :doc "A user's account level"}]
+
+ :user/default-group [{:type :ref
+                       :ref {:ns :group}
+                       :required true
+                       :doc "A user can be a member of many groups. This points to the default one"}]
+
+ :user/first-name [{}]
+
+ :user/last-name [{}]
+
+ :user/email [{}]
+
+ :user/country [{:type :ref
+                 :ref {:ns :bookkeeping.country}}]
+ ;; groups
+ :group {
+         :id [{:type :uuid
+               :unique :value
+               :required true
+               :doc "System ID for a given group"}]
+
+         :name [{:unique :value
+                 :required true
+                 :doc "A group's name"}]
+
+         :owner [{:type :ref
+                  :ref {:ns :bookkeeping.user}
+                  :doc "The groups's owner"}]
+
+         :users [{:type :ref
+                  :ref {:ns :bookkeeping.user}
+                  :cardinality :many
+                  :doc "The users belonging to this group"}]
+
+         :defaultCurrency [{:type :ref
+                            :ref {:ns :bookkeeping.currency}
+                            :doc "The groups's default currency"}]
+
+         :bookkeeping [{:type :ref
+                        :ref {:ns :bookkeeping.group.books}
+                        :cardinality :many
+                        :isComponent true
+                        :doc "The set of books belonging to this group"}]
+
+         ;; bookkeeping
+         :books {:id [{:type :uuid
+                       :unique :value
+                       :required true
+                       :doc "System ID for a set of books"}]
+
+                 :accounts [{:type :ref
+                             :ref {:ns :bookkeeping.group.books.account}
+                             :cardinality :many
+                             :doc
+                             "Refencing the set of accounts belonging to this bookkeeping"}]
+
+                 :journals [{:type :ref
+                             :ref {:ns :bookkeeping.group.books.journal}
+                             :cardinality :many
+                             :doc
+                             "Referencing the set of journals belonging to this bookkeeping"}]
+
+                 ;; accounts
+                 :account {:id [{:type :uuid
+                                 :unique :value
+                                 :required true
+                                 :doc "System ID for one book's, list of accounts"}]
+
+                           :name [{:doc "Display name for this Account"}]
+
+                           :type [{:type :ref
+                                   :ref {:ns :bookkeeping.accountType}}]
+
+                           :counterWeight [{:type :ref
+                                            :ref {:ns :bookkeeping.counterWeight}}]}
+
+                 ;; journals
+                 :journal {:id [{:type :uuid
+                                 :unique :value
+                                 :required true
+                                 :doc "System ID for a set of book's journal"}]
+
+                           :name [{:doc "Display name for this Journal"}]
+
+                           :entries [{:type :ref
+                                      :ref :bookkeeping.group.books.journal.entry
+                                      :cardinality :many
+                                      :isComponent true
+                                      :doc "Pointer to a list of journal entires"}]
+
+                           ;; entries
+                           :entry [{:id [{:type :uuid
+                                          :unique :value
+                                          :required true}]
+
+                                    :currency [{:type :ref
+                                                :ref :bookkeeping.currency}]
+
+                                    :assets [{:type :ref
+                                              :ref :bookkeeping.group.books.asset
+                                              :cardinality :many
+                                              :doc "Set of image or other assets, associated with this entry"}]
+
+                                    :contents [{:type :ref
+                                                :ref
+                                                :bookkeeping.group.books.journal.entry.content
+
+                                                :cardinality :many
+                                                :isComponent true }]
+
+                                    ;; debits / credits
+                                    :content {:id [{:type :uuid
+                                                    :unique :value
+                                                    :required true}]
+
+                                              :type [{:type :ref
+                                                      :ref {:ns :bookkeeping.counterWeight}}]
+
+                                              :amount [{:type :float}]
+
+                                              :account [{:type :ref
+                                                         :ref
+                                                         {:ns
+                                                          :bookkeeping.group.books.account}}]
+
+                                              :currency [{:type :ref
+                                                          :ref
+                                                          {:ns :bookkeeping.currency}}]}}]}
+
+                 ;; assets
+                 :asset {:id [{:type :uuid
+                               :unique :value
+                               :required true}]
+
+                         :externalid [{}]
+                         :filename [{}]
+                         :size [{}]
+                         :type [{}]
+
+                         :entry [{:type :ref
+                                  :ref {:ns :bookkeeping.group.books.journal.entry}
+                                  :doc "The journal entry associated with this asset"}]}
+                 }
+         }
+
+ :bookkeeping {
+               :countries [{:type :ref
+                            :cardinality :many
+                            :ref {:ns :country}}]
+               :currencies [{:type :ref
+                             :cardinality :many
+                             :ref {:ns :currency}}]
+               :groups [{:type :ref
+                         :cardinality :many
+                         :ref {:ns :group}}]
+               }
+ }

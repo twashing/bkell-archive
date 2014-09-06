@@ -9,6 +9,7 @@
   (cfg/load-edn file-name))
 
 (defn db-getconnection [env]
+
   (let [install-schema? true
         create-db? true
         schema-file "schema/bkeeping-adi.edn"
@@ -23,8 +24,6 @@
   (start [component]
 
     (timbre/trace "Spittoon.start CALLED / env[" (keys env) "] / component[" (keys component) "]")
-
-
     (assoc component :db (db-getconnection env)))
 
   (stop [component]
@@ -34,4 +33,4 @@
 
 
 (defn component-spittoon [env]
-    (map->Spittoon {:env env}))
+  (map->Spittoon {:env env}))
