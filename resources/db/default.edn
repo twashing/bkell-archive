@@ -1,48 +1,25 @@
 [{:bookkeeping
-  {
-   :countries
-   #{{ :id "CA" :name "Canada" }
-     { :id "US" :name "United States" }
-     { :id "EU" :name "Europe" }
-     { :id "UK" :name "United Kingdom" }
-     { :id "JP" :name "Japan" }
-     { :id "AU" :name "Australia" }
-     { :id "ZA" :name "South Africa" }
-     { :id "CN" :name "China" }
-     { :id "RU" :name "Russia" }
-     { :id "BR" :name "Brazil" }
-     { :id "IN" :name "India" }}}}]
 
-(comment
- (def geni-3 {:account {:books     [{:type :ref
-                                      :cardinality :many
-                                      :ref  {:ns :book}}]}
-               :book   {:name       [{:required true
-                                      :fulltext true}]
-                        :author     [{:fulltext true}]}})
+  {:currencies #{{ :id "CDN" :name "Canadian Dollar" }
+                 { :id "USD" :name "United States Dollar" }
+                 { :id "EUR" :name "European Euro" }
+                 { :id "GBP" :name "Great British Pound" }
+                 { :id "YEN" :name "Japanese Yen" }
+                 { :id "AUD" :name "Australian Dollar" }
+                 { :id "ZAR" :name "South African Rand" }
+                 { :id "CNY" :name "Chinese Yuan Renminbi" }
+                 { :id "RUB" :name "Russian Ruble" }
+                 { :id "BRL" :name "Brazilian Ruble" }
+                 { :id "INR" :name "Indian Rupee" }}
 
- (def ds (adi/datastore "datomic:mem://example-3" geni-3 true true))
-
- (adi/insert! ds
-              [{:account {:books #{{:name "The Count of Monte Cristo"
-                                    :author "Alexander Dumas"}
-                                   {:name "Tom Sawyer"
-                                    :author "Mark Twain"}
-                                   {:name "Les Mis"}}}}])
-
-
-
- (def sz {:bookkeeping {:country     {:id        [{:unique :value
-                                                   :required true}]
-                                      :name      [{:unique :value
-                                                   :required true}]}
-                        :countries [{:type :ref
-                                     :cardinality :many
-                                     :ref {:ns :bookkeeping.country}}]}
-          })
-
- (def dz (adi/datastore "datomic:mem://example-3" sz true true))
-
- (adi/insert! dz
-              [{:bookkeeping {:countries #{{:id "JP" :name "Japan"}
-                                           {:id "ZA" :name "South Africa"}}}}]))
+   :countries #{{ :id "CA" :name "Canada" }
+                { :id "US" :name "United States" }
+                { :id "EU" :name "Europe" }
+                { :id "UK" :name "United Kingdom" }
+                { :id "JP" :name "Japan" }
+                { :id "AU" :name "Australia" }
+                { :id "ZA" :name "South Africa" }
+                { :id "CN" :name "China" }
+                { :id "RU" :name "Russia" }
+                { :id "BR" :name "Brazil" }
+                { :id "IN" :name "India" }}}}]
