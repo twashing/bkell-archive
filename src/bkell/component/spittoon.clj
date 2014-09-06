@@ -12,7 +12,7 @@
 
   (let [install-schema? true
         create-db? true
-        schema-file "schema/bkeeping-adi.edn"
+        schema-file "db/schema-adi.edn"
         db-url "datomic:mem://bkeeping"]
 
     (adi/datastore db-url (db-load-schema schema-file) install-schema? create-db?)))
