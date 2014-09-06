@@ -1,17 +1,17 @@
 [{:bookkeeping
-  {:country {:id "a" :name "b"}
+  {
    :countries
-   #{{ :country/id "CA" :country/name "Canada" }
-     { :country/id "US" :country/name "United States" }
-     { :country/id "EU" :country/name "Europe" }
-     { :country/id "UK" :country/name "United Kingdom" }
-     { :country/id "JP" :country/name "Japan" }
-     { :country/id "AU" :country/name "Australia" }
-     { :country/id "ZA" :country/name "South Africa" }
-     { :country/id "CN" :country/name "China" }
-     { :country/id "RU" :country/name "Russia" }
-     { :country/id "BR" :country/name "Brazil" }
-     { :country/id "IN" :country/name "India" }}}}]
+   #{{ :id "CA" :name "Canada" }
+     { :id "US" :name "United States" }
+     { :id "EU" :name "Europe" }
+     { :id "UK" :name "United Kingdom" }
+     { :id "JP" :name "Japan" }
+     { :id "AU" :name "Australia" }
+     { :id "ZA" :name "South Africa" }
+     { :id "CN" :name "China" }
+     { :id "RU" :name "Russia" }
+     { :id "BR" :name "Brazil" }
+     { :id "IN" :name "India" }}}}]
 
 (comment
  (def geni-3 {:account {:books     [{:type :ref
