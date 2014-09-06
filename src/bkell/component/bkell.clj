@@ -4,10 +4,11 @@
 
             [bkell.component.browserrepl :as cb]
             [bkell.component.httphandler :as ch]
-            [bkell.component.webrunner :as cw]))
+            [bkell.component.webrunner :as cw]
+            [bkell.component.spittoon :as cs]))
 
 
-(def system-components [] #_ [:browserrepl :httphandler :webrunner])
+(def system-components [:spittoon] #_[:browserrepl :httphandler :webrunner])
 
 (defrecord Bkell [env]
   component/Lifecycle
@@ -15,8 +16,7 @@
   (start [this]
 
     (timbre/trace "Bkell.start CALLED > system[" this "] / env[" env "]")
-    (assoc (component/start-system this system-components)
-      :state {}))
+    (component/start-system this system-components))
 
   (stop [this]
 
@@ -35,9 +35,12 @@
    #_:webrunner #_(component/using
                (cw/component-webrunner env)
                {:httphandler :httphandler})
+   :spittoon (component/using
+              (cs/component-spittoon env)
+              {})
    :bkell (component/using
-               (map->Bkell {:env env})
-               {}
-               #_{:browserrepl :browserrepl
-                :httphandler :httphandler
-                :webrunner :webrunner})))
+           (map->Bkell {:env env})
+           {:spittoon :spittoon}
+           #_{:browserrepl :browserrepl
+              :httphandler :httphandler
+              :webrunner :webrunner})))

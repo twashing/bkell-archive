@@ -77,7 +77,7 @@
                        :bookkeeping [{:type :ref
                                       :ref {:ns :bookkeeping.group.books}
                                       :cardinality :many
-                                      ;;:isComponent true
+                                      :isComponent true
                                       :doc "The set of books belonging to this group"}]
 
                        ;; bookkeeping
@@ -123,7 +123,7 @@
                                          :entries [{:type :ref
                                                     :ref :bookkeeping.group.books.journal.entry
                                                     :cardinality :many
-                                                    ;;:isComponent true
+                                                    :isComponent true
                                                     :doc "Pointer to a list of journal entires"}]
 
                                          ;; entries
@@ -144,8 +144,7 @@
                                                               :bookkeeping.group.books.journal.entry.content
 
                                                               :cardinality :many
-                                                              ;;:isComponent true
-                                                              }]
+                                                              :isComponent true }]
 
                                                   ;; debits / credits
                                                   :content {:id [{:type :uuid
