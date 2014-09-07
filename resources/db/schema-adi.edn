@@ -1,15 +1,4 @@
-{
- :accountType [{:type :enum
-                :default :asset
-                :enum {:ns :accountType
-                       :values #{:asset :liability :revenue :expense}}}]
-
- :counterWeight [{:type :enum
-                  :default :debit
-                  :enum {:ns :counterWeight
-                         :values #{:debit :credit}}}]
-
- :currency {:id [{:unique :value
+{:currency {:id [{:unique :value
                   :required true}]
 
             :name [{:unique :value
@@ -21,26 +10,23 @@
            :name [{:unique :value
                    :required true}]}
 
- :account {:id [{:type :uuid
-                 :unique :value
-                 :required true
-                 :doc "System ID for one book's, list of accounts"}]
+ :account {:name [{:doc "Display name for this Account"}]
 
-           :name [{:doc "Display name for this Account"}]
+           :type [{:type :enum
+                   :default :asset
+                   :enum {:ns :account.type
+                          :values #{:asset :liability :revenue :expense}}}]
 
-           :type [{:type :ref
-                   :ref {:ns :accountType}}]
-
-           :counterWeight [{:type :ref
-                            :ref {:ns :counterWeight}}]}
+           :counterWeight [{:type :enum
+                            :default :debit
+                            :enum {:ns :account.counterWeight
+                                   :values #{:debit :credit}}}]}
 
  ;; debits & credits
- :content {:id [{:type :uuid
-                 :unique :value
-                 :required true}]
-
-           :type [{:type :ref
-                   :ref {:ns :counterWeight}}]
+ :content {:type [{:type :enum
+                   :default :debit
+                   :enum {:ns :contente.type
+                          :values #{:debit :credit}}}]
 
            :amount [{:type :float}]
 
@@ -52,11 +38,7 @@
                        :ref
                        {:ns :system.currencies}}]}
 
- :entry [{:id [{:type :uuid
-                :unique :value
-                :required true}]
-
-          :currency [{:type :ref
+ :entry [{:currency [{:type :ref
                       :ref :system.currencies}]
 
           :assets [{:type :ref
@@ -70,12 +52,7 @@
                       :isComponent true}]}]
 
  ;; journals
- :journal {:id [{:type :uuid
-                 :unique :value
-                 :required true
-                 :doc "System ID for a set of book's journal"}]
-
-           :name [{:doc "Display name for this Journal"}]
+ :journal {:name [{:doc "Display name for this Journal"}]
 
            :entries [{:type :ref
                       :ref :entry
@@ -97,12 +74,7 @@
                   :ref {:ns :group.books.journal.entries}
                   :doc "The journal entry associated with this asset"}]}
 
- :bookkeeping {:id [{:type :uuid
-                     :unique :value
-                     :required true
-                     :doc "System ID for a set of books"}]
-
-               :accounts [{:type :ref
+ :bookkeeping {:accounts [{:type :ref
                            :ref {:ns :account}
                            :cardinality :many
                            :doc
