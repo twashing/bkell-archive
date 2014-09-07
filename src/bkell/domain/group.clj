@@ -1,13 +1,13 @@
 (ns bkell.domain.group
-  (:require [missing-utils.core :as mu]))
+  (:require [missing-utils.core :as mu]
+            [bkell.domain.models.nominal :as nm]))
 
 
-;; Create
-(defn create [opts]
-  (merge {:id (mu/generate-uuid)
-          :name ""
-          :users []}
-         opts))
+(defn create
+  ([] (create {}))
+  ([opts]
+     (merge (assoc (nm/make-group) :users #{(nm/make-user)})
+            opts)))
 
 
 ;; Retrieve.. not implemented in the raw
