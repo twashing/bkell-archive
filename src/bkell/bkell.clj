@@ -3,6 +3,7 @@
             [clojure.tools.namespace.repl :refer (refresh refresh-all)]
             [com.stuartsierra.component :as component]
             [missing-utils.core :as mu]
+            [adi.utils :refer [iid ?q]]
 
             [bkell.config :as config]
             [bkell.component.bkell :as cb]))

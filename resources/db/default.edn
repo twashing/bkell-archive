@@ -1,25 +1,66 @@
-[{:bookkeeping
+[{:system
 
-  {:currencies #{{ :id "CDN" :name "Canadian Dollar" }
-                 { :id "USD" :name "United States Dollar" }
-                 { :id "EUR" :name "European Euro" }
-                 { :id "GBP" :name "Great British Pound" }
-                 { :id "YEN" :name "Japanese Yen" }
-                 { :id "AUD" :name "Australian Dollar" }
-                 { :id "ZAR" :name "South African Rand" }
-                 { :id "CNY" :name "Chinese Yuan Renminbi" }
-                 { :id "RUB" :name "Russian Ruble" }
-                 { :id "BRL" :name "Brazilian Ruble" }
-                 { :id "INR" :name "Indian Rupee" }}
+  {:currencies #{{:db/id (iid :currency-cdn)
+                  :country { :id "CDN" :name "Canadian Dollar" }}
+                 {:db/id (iid :currency-usd)
+                  :country { :id "USD" :name "United States Dollar" }}
+                 {:db/id (iid :currency-eur)
+                  :country { :id "EUR" :name "European Euro" }}
+                 {:db/id (iid :currency-gbp)
+                  :country { :id "GBP" :name "Great British Pound" }}
+                 {:db/id (iid :currency-yen)
+                  :country { :id "YEN" :name "Japanese Yen" }}
+                 {:db/id (iid :currency-aud)
+                  :country { :id "AUD" :name "Australian Dollar" }}
+                 {:db/id (iid :currency-zar)
+                  :country { :id "ZAR" :name "South African Rand" }}
+                 {:db/id (iid :currency-cny)
+                  :country { :id "CNY" :name "Chinese Yuan Renminbi" }}
+                 {:db/id (iid :currency-rub)
+                  :country { :id "RUB" :name "Russian Ruble" }}
+                 {:db/id (iid :currency-brl)
+                  :country { :id "BRL" :name "Brazilian Ruble" }}
+                 {:db/id (iid :currency-inr)
+                  :country { :id "INR" :name "Indian Rupee" }} }
 
-   :countries #{{ :id "CA" :name "Canada" }
-                { :id "US" :name "United States" }
-                { :id "EU" :name "Europe" }
-                { :id "UK" :name "United Kingdom" }
-                { :id "JP" :name "Japan" }
-                { :id "AU" :name "Australia" }
-                { :id "ZA" :name "South Africa" }
-                { :id "CN" :name "China" }
-                { :id "RU" :name "Russia" }
-                { :id "BR" :name "Brazil" }
-                { :id "IN" :name "India" }}}}]
+
+   :countries #{{:db/id (iid :country-ca)
+                 :country {:id "CA" :name "Canada"} }
+                {:db/id (iid :country-us)
+                 :country {:id "US" :name "United States"} }
+                {:db/id (iid :country-eu)
+                 :country {:id "EU" :name "Europe"} }
+                {:db/id (iid :country-uk)
+                 :country {:id "UK" :name "United Kingdom"} }
+                {:db/id (iid :country-jp)
+                 :country {:id "JP" :name "Japan"} }
+                {:db/id (iid :country-au)
+                 :country {:id "AU" :name "Australia"} }
+                {:db/id (iid :country-za)
+                 :country {:id "ZA" :name "South Africa"} }
+                {:db/id (iid :country-cn)
+                 :country {:id "CN" :name "China"} }
+                {:db/id (iid :country-ru)
+                 :country {:id "RU" :name "Russia"} }
+                {:db/id (iid :country-br)
+                 :country {:id "BR" :name "Brazil"} }
+                {:db/id (iid :country-in)
+                 :country {:id "IN" :name "India"}} }
+
+   :groups #{{:db/id (iid :group-webkell)
+              :group {:name "webkell"
+
+                      :owner {:+/db/id (iid :user-webkell)}
+
+                      :users #{{:db/id (iid :user-webkell)
+                                :user {:username "webkell"
+                                       :password "default"
+                                       :first-name "n/a"
+                                       :last-name "n/a"
+                                       :email "n/a"
+                                       :default-group {:+/db/id (iid :group-webkell)}
+                                       :country {:+/db/id (iid :country-ca)}}}}
+
+                      :defaultCurrency {:+/db/id (iid :currency-ca)}
+
+                      :books #{{}}}}}}}]

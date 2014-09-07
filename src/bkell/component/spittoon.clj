@@ -2,6 +2,7 @@
   (:require [com.stuartsierra.component :as component]
             [taoensso.timbre :as timbre]
             [adi.core :as adi]
+            [adi.utils :refer [iid ?q]]
             [bkell.config :as cfg]))
 
 
@@ -9,7 +10,7 @@
   (cfg/load-edn file-name))
 
 (defn db-install-schema [data-store default-file]
-  (let [df (cfg/load-edn default-file)]
+  (let [df (eval (cfg/load-edn default-file))]
     (adi/insert! data-store df)))
 
 (defn db-getconnection [env]
