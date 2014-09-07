@@ -31,15 +31,13 @@
            :amount [{:type :float}]
 
            :account [{:type :ref
-                      :ref
-                      {:ns :system.groups.books.accounts}}]
+                      :ref {:ns :system.groups.books.accounts}}]
 
            :currency [{:type :ref
-                       :ref
-                       {:ns :system.currencies}}]}
+                       :ref {:ns :system.currencies}}]}
 
  :entry [{:currency [{:type :ref
-                      :ref :system.currencies}]
+                      :ref {:ns :system.currencies}}]
 
           :assets [{:type :ref
                     :ref :asset
@@ -95,17 +93,17 @@
 
         ;;:accountLevel [{:type :ref :ref :doc "A user's account level"}]
 
-        :default-group
+        :defaultgroup
         [{:type :ref
           :ref {:ns :system.groups}
           :required true
           :doc "A user can be a member of many groups. This points to the default one"}]
 
-        :first-name [{}]
+        :firstname [{:type :string}]
 
-        :last-name [{}]
+        :lastname [{:type :string}]
 
-        :email [{}]
+        :email [{:type :string}]
 
         :country  [{:type :ref
                     :ref {:ns :system.countries}}]}
@@ -117,7 +115,7 @@
                  :doc "A group's name"}]
 
          :owner [{:type :ref
-                  :ref {:ns :user}
+                  :ref {:ns :groups.users}
                   :doc "The groups's owner"}]
 
          :users [{:type :ref
@@ -132,7 +130,7 @@
          :books [{:type :ref
                   :ref {:ns :bookkeeping}
                   :cardinality :many
-                  ;;:isComponent true
+                  :isComponent true
                   :doc "The set of books belonging to this group"}] }
 
  :system {

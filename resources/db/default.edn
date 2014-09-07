@@ -47,20 +47,21 @@
                 {:db/id (iid :country-in)
                  :id "IN" :name "India"} }
 
+
    :groups #{{:db/id (iid :group-webkell)
 
               :name "webkell"
 
-              :owner {:+/db/id (iid :user-webkell)}
-
               :users #{{:db/id (iid :user-webkell)
                         :username "webkell"
                         :password "default"
-                        :first-name "n/a"
-                        :last-name "n/a"
-                        :email "n/a"
-                        :default-group {:+/db/id (iid :group-webkell)}
+                        :firstname "webkell"
+                        :lastname "webkell"
+                        :email "webkell"
+                        :defaultgroup {:+/db/id (iid :group-webkell)}
                         :country {:+/db/id (iid :country-ca)}}}
+
+              :owner {:+/db/id (iid :user-webkell)}
 
               :defaultCurrency {:+/db/id (iid :currency-ca)}
 
