@@ -18,6 +18,17 @@
 (def ^{:doc "Bkell's component system map"} system nil)
 
 
+;; ====
+#_(def system nil)
+
+#_(defn init
+  "Constructs the current development system."
+  []
+  (alter-var-root #'system
+                  (constantly (new-system))))
+;; ====
+
+
 (defn ^{:doc "Initialize the bkeeping system"}
   init
   ([] (init :test))
@@ -47,12 +58,16 @@
   (alter-var-root #'system
                   (fn [s] (when s (component/stop s)))))
 
+(defn go
+  "Initializes the current development system and starts it running."
+  []
+  (init)
+  (start))
 
 (defn ^{:doc "Reset the mrservice system"}
   reset []
   (stop)
-  (refresh :after 'bkell.shell/start))
-
+  (refresh :after 'bkell.shell/go))
 
 (defn ^{:doc "This help function"}
   help []

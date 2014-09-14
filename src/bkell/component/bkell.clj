@@ -25,7 +25,9 @@
 
 (defn component-bkell [env]
 
-  (component/system-map
+  (component/system-map :bkell :fubar)
+
+  #_(component/system-map
    #_:browserrepl #_(component/using
                  (cb/component-browserrepl env)
                  {})

@@ -16,7 +16,6 @@
                  [com.taoensso/encore "1.9.0"]
                  [com.taoensso/sente "1.0.0" :exclusions [org.clojure/clojure]]
 
-                 [com.stuartsierra/component "0.2.2"]
                  [environ "1.0.0"]
                  [missing-utils "0.1.5"]
                  [adi "0.1.6"]
@@ -30,10 +29,12 @@
 
   :profiles {:dev {:resource-paths ["." "resources/public"]
                    :plugins [[com.cemerick/austin "0.1.4"]]
-                   :dependencies [[javax.servlet/servlet-api "2.5"]
+                   :dependencies [[com.stuartsierra/component "0.2.2"]
+                                  [javax.servlet/servlet-api "2.5"]
                                   [alembic "0.2.1"]
                                   [ring/ring-jetty-adapter "1.3.1"]
-                                  [org.clojure/test.check "0.5.9"]]}}
+                                  [org.clojure/test.check "0.5.9"]]
+                   :source-paths ["dev"]}}
 
   :cljsbuild {:builds [{:id "bkell"
 
@@ -47,7 +48,4 @@
                                    :output-dir "resources/public/js/out/"
                                    :optimizations :none
                                    :source-map true
-                                   :pretty-print true}}]}
-
-  ;;:eval-in-leiningen true
-  )
+                                   :pretty-print true}}]})
