@@ -1,35 +1,31 @@
 (ns bkell.bkell
   (:require [taoensso.timbre :as timbre]
-            [clojure.tools.namespace.repl :refer (refresh refresh-all)]
-            [com.stuartsierra.component :as component]
+
+
             [missing-utils.core :as mu]
-            [adi.utils :refer [iid ?q]]
+
 
             [bkell.config :as config]
-            [bkell.component.bkell :as cb]))
+
+            [bkell.component.bkell :as cb]
+
+            ))
 
 ;; Bkell Log config
 (timbre/set-config! [:shared-appender-config :spit-filename] "logs/bkell.log")
 (timbre/set-config! [:appenders :spit :enabled?] true)
 
+(defn start []
+  (cb/start))
+
+
 ;; Bkell State
-(def ^{:doc "Run Mode of the current system (:test :development :production)"} mode)
-(def ^{:doc "Configured environment"} env nil)
-(def ^{:doc "Bkell's component system map"} system nil)
+#_(def ^{:doc "Run Mode of the current system (:test :development :production)"} mode)
+#_(def ^{:doc "Configured environment"} env nil)
+#_(def ^{:doc "Bkell's component system map"} system nil)
 
 
-;; ====
-#_(def system nil)
-
-#_(defn init
-  "Constructs the current development system."
-  []
-  (alter-var-root #'system
-                  (constantly (new-system))))
-;; ====
-
-
-(defn ^{:doc "Initialize the bkeeping system"}
+#_(defn ^{:doc "Initialize the bkeeping system"}
   init
   ([] (init :test))
   ([env-key]
@@ -46,30 +42,30 @@
        (alter-var-root #'system loaded-system))))
 
 
-(defn ^{:doc "Start the Bookkeeping Shell"}
+#_(defn ^{:doc "Start the Bookkeeping Shell"}
   start []
   (if-not system
     (init))
   (alter-var-root #'system component/start))
 
 
-(defn ^{:doc "Stop the Bookkeeping Shell"}
+#_(defn ^{:doc "Stop the Bookkeeping Shell"}
   stop []
   (alter-var-root #'system
                   (fn [s] (when s (component/stop s)))))
 
-(defn go
+#_(defn go
   "Initializes the current development system and starts it running."
   []
   (init)
   (start))
 
-(defn ^{:doc "Reset the mrservice system"}
+#_(defn ^{:doc "Reset the mrservice system"}
   reset []
   (stop)
   (refresh :after 'bkell.shell/go))
 
-(defn ^{:doc "This help function"}
+#_(defn ^{:doc "This help function"}
   help []
   (let [shell-members (mu/fns-in-ns 'bkell.bkell)
         extract-doc-fn (fn [msym]
@@ -84,4 +80,4 @@
                     (with-out-str (newline))]
                    (map extract-doc-fn shell-members)))))
 
-(defn ^{:doc "Reloads project configuration and libraries"} reload-project [] (reload-project))
+#_(defn ^{:doc "Reloads project configuration and libraries"} reload-project [] (reload-project))

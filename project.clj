@@ -15,7 +15,7 @@
                  [com.taoensso/timbre "3.3.1"]
                  [com.taoensso/encore "1.9.0"]
                  [com.taoensso/sente "1.0.0" :exclusions [org.clojure/clojure]]
-
+                 [im.chit/hara.component "2.1.3"]
                  [environ "1.0.0"]
                  [missing-utils "0.1.5"]
                  [adi "0.1.6"]
@@ -25,12 +25,11 @@
   :plugins [[lein-cljsbuild "1.0.2"]
             [chesk "0.1.0-SNAPSHOT"]]
 
-  #_:repl-options #_{:init-ns bkell.bkell}
+  :repl-options {:init-ns bkell.bkell}
 
   :profiles {:dev {:resource-paths ["." "resources/public"]
                    :plugins [[com.cemerick/austin "0.1.4"]]
-                   :dependencies [[com.stuartsierra/component "0.2.2"]
-                                  [javax.servlet/servlet-api "2.5"]
+                   :dependencies [[javax.servlet/servlet-api "2.5"]
                                   [alembic "0.2.1"]
                                   [ring/ring-jetty-adapter "1.3.1"]
                                   [org.clojure/test.check "0.5.9"]]
