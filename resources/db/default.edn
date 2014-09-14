@@ -65,9 +65,7 @@
 
               :defaultCurrency {:+/db/id (iid :currency-ca)}
 
-              :books #{{:db/id (iid :books-main)
-
-                        :accounts #{{:name "cash"
+              :books #{{:accounts #{{:name "cash"
                                      :type :asset
                                      :counterWeight :debit}
                                     {:name "debt"

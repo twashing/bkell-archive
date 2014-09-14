@@ -33,12 +33,13 @@
   (start [component]
 
     (timbre/trace "Spittoon.start CALLED / env[" (keys env) "] / component[" (keys component) "]")
-    (assoc component :db (db-getconnection env)))
+    (let [db (db-getconnection env)]
+      (assoc component :db db)))
 
   (stop [component]
 
     (timbre/trace "Spittoon.stop CALLED")
-    (dissoc component :db)))
+    component #_(dissoc component :db)))
 
 
 (defn component-spittoon [env]
