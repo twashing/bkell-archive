@@ -1,9 +1,10 @@
 (ns bkell.component.spittoon
-  (:require [com.stuartsierra.component :as component]
-            [taoensso.timbre :as timbre]
-            [adi.core :as adi]
-            [adi.utils :refer [iid ?q]]
-            [bkell.config :as cfg]))
+  (:require  [taoensso.timbre :as timbre]
+             [hara.component :as hco]
+
+             [adi.core :as adi]
+             [adi.utils :refer [iid ?q]]
+             [bkell.config :as cfg]))
 
 
 (defn db-load-schema [file-name]
@@ -27,20 +28,24 @@
     ds))
 
 
-(defrecord Spittoon [env]
-  component/Lifecycle
+(defrecord Spittoon []
+  Object
+  (toString [sp]
+    (str "#sp" (into {} sp)))
 
-  (start [component]
+  hco/IComponent
 
-    (timbre/trace "Spittoon.start CALLED / env[" (keys env) "] / component[" (keys component) "]")
-    (let [db (db-getconnection env)]
-      (assoc component :db db)))
+  (-start [sp]
 
-  (stop [component]
+    (timbre/trace "Spittoon.start CALLED > system[" sp "]")
+    (let [db (db-getconnection sp)]
+      (assoc sp :db db)))
 
-    (timbre/trace "Spittoon.stop CALLED")
-    component #_(dissoc component :db)))
+  (-stop [sp]
 
+    (timbre/trace "Spittoon.stop CALLED > system[" sp "]")
+    (dissoc sp :db)))
 
-(defn component-spittoon [env]
-  (map->Spittoon {:env env}))
+(defmethod print-method Spittoon
+  [v w]
+  (.write w (str v)))

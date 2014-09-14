@@ -1,5 +1,6 @@
 (ns bkell.component.bkell
-  (:require [hara.component :as hco]))
+  (:require [taoensso.timbre :as timbre]
+            [hara.component :as hco]))
 
 (defrecord Bkell []
   Object
@@ -8,18 +9,14 @@
 
   hco/IComponent
   (-start [bk]
+
+    (timbre/trace "Bkell.start CALLED > system[" bk "]")
     (assoc bk :status "started"))
   (-stop [bk]
+
+    (timbre/trace "Bkell.stop CALLED > system[" bk "]")
     (dissoc bk :status)))
 
 (defmethod print-method Bkell
   [v w]
   (.write w (str v)))
-
-
-(def topology {:bkell   [map->Bkell]})
-
-(def config   {:bkell {:foo :bar}})
-
-(defn start []
-  (hco/start (hco/system topology config)))

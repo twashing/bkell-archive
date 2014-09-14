@@ -1,28 +1,42 @@
 (ns bkell.bkell
   (:require [taoensso.timbre :as timbre]
-
-
+            [clojure.tools.namespace.repl :refer (refresh)]
+            [adi.utils :refer [iid ?q]]
+            [hara.component :as hco]
             [missing-utils.core :as mu]
 
-
             [bkell.config :as config]
-
             [bkell.component.bkell :as cb]
+            [bkell.component.spittoon :as cs]))
 
-            ))
 
 ;; Bkell Log config
 (timbre/set-config! [:shared-appender-config :spit-filename] "logs/bkell.log")
 (timbre/set-config! [:appenders :spit :enabled?] true)
 
-(defn start []
-  (cb/start))
-
 
 ;; Bkell State
-#_(def ^{:doc "Run Mode of the current system (:test :development :production)"} mode)
-#_(def ^{:doc "Configured environment"} env nil)
-#_(def ^{:doc "Bkell's component system map"} system nil)
+(def ^{:doc "Bkell's component system map"} system (atom nil))
+
+
+(def topology {:bkell    [cb/map->Bkell :spittoon]
+               :spittoon [cs/map->Spittoon]})
+
+(def config   {:bkell {:foo :bar}
+               :spittoon {:a :b}})
+
+(defn start []
+  (let [sys (hco/system topology config)]
+    (hco/start sys)
+    (reset! system sys)))
+
+(defn stop []
+  (hco/stop @system))
+
+(defn reset []
+  (stop)
+  (refresh :after 'bkell.bkell/start))
+
 
 
 #_(defn ^{:doc "Initialize the bkeeping system"}
