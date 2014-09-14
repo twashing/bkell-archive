@@ -22,13 +22,11 @@
 (def topology {:bkell    [cb/map->Bkell :spittoon]
                :spittoon [cs/map->Spittoon]})
 
-(def config   {:bkell {:foo :bar}
-               :spittoon {:a :b}})
+(def config   {:bkell {}
+               :spittoon {}})
 
 (defn start []
-  (let [sys (hco/system topology config)]
-    (hco/start sys)
-    (reset! system sys)))
+  (reset! system (hco/start (hco/system topology config))))
 
 (defn stop []
   (hco/stop @system))
