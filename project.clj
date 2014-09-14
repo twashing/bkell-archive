@@ -25,7 +25,7 @@
   :plugins [[lein-cljsbuild "1.0.2"]
             [chesk "0.1.0-SNAPSHOT"]]
 
-  :repl-options {:init-ns bkell.bkell}
+  #_:repl-options #_{:init-ns bkell.bkell}
 
   :profiles {:dev {:resource-paths ["." "resources/public"]
                    :plugins [[com.cemerick/austin "0.1.4"]]
