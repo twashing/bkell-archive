@@ -1,26 +1,23 @@
 (ns bkell.component.webrunner
-  (:require [com.stuartsierra.component :as component]
+  (:require [hara.component :as hco]
             [taoensso.timbre :as timbre]
             [org.httpkit.server :as httpkit]))
 
 (defrecord Runner [env]
-  component/Lifecycle
+  hco/IComponent
 
-  (start [component]
+  (-start [rc]
 
-    (timbre/trace "Runner.start CALLED / " component)
+    (timbre/trace "Runner.start CALLED > rc[" rc "]")
 
-    (if-not (:server component)
-      (let [theapp (-> component :httphandler :app)
+    (if-not (:server rc)
+      (let [theapp (-> rc :httphandler :app)
             theserver (httpkit/run-server theapp {})]
-        (assoc component :server theserver))
-      component))
+        (assoc rc :server theserver))
+      rc))
 
-  (stop [component]
+  (-stop [rc]
 
     (timbre/trace "Runner.stop CALLED")
-    ((:server component))
-    (dissoc component :server)))
-
-(defn component-webrunner [env]
-  (map->Runner {:env env}))
+    ((:server rc))
+    (dissoc rc :server)))

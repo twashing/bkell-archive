@@ -1,5 +1,5 @@
 (ns bkell.component.browserrepl
-  (:require [com.stuartsierra.component :as component]
+  (:require [hara.component :as hco]
             [taoensso.timbre :as timbre]
             [cemerick.austin.repls]
             [bkell.http.handler :as handler]))
@@ -9,21 +9,16 @@
   (reset! cemerick.austin.repls/browser-repl-env (cemerick.austin/repl-env :host host)) )
 
 (defrecord BrowserRepl [env]
-  component/Lifecycle
+  hco/IComponent
 
-  (start [component]
+  (-start [br]
 
-    (timbre/debug "BrowserRepl.start CALLED / env[" (keys env) "] / component[" (keys component) "]")
+    (timbre/debug "BrowserRepl.start CALLED > br[" br "]")
+    (if-not (:repl-env br)
+      (assoc br :repl-env (create-repl-env (:host env)))
+      br))
 
-    (if-not (:repl-env component)
-      (assoc component :repl-env (create-repl-env (:host env)))
-      component))
-
-  (stop [component]
+  (-stop [br]
 
     (timbre/trace "BrowserRepl.stop CALLED")
-    (dissoc component :repl-env)))
-
-
-(defn component-browserrepl [env]
-    (map->BrowserRepl {:env env}))
+    (dissoc br :repl-env)))

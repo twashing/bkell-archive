@@ -1,26 +1,20 @@
 (ns bkell.component.httphandler
-  (:require [com.stuartsierra.component :as component]
+  (:require [hara.component :as hco]
             [taoensso.timbre :as timbre]
-
             [bkell.http.handler :as handler]))
 
 
 (defrecord HttpHandler [env]
-  component/Lifecycle
+  hco/IComponent
 
-  (start [component]
+  (-start [hh]
 
-    (timbre/trace "HttpHandler.start CALLED / env[" (keys env) "] / component[" (keys component) "]")
+    (timbre/trace "HttpHandler.start CALLED > hh[" hh "]")
+    (if-not (:app hh)
+      (assoc hh :app (handler/create-app env (:browserrepl hh)))
+      hh))
 
-    (if-not (:app component)
-      (assoc component :app (handler/create-app env (:browserrepl component)))
-      component))
-
-  (stop [component]
+  (-stop [hh]
 
     (timbre/trace "HttpHandler.stop CALLED")
-    (dissoc component :app)))
-
-
-(defn component-httphandler [env]
-    (map->HttpHandler {:env env}))
+    (dissoc hh :app)))
