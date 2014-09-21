@@ -19,7 +19,8 @@
                  [environ "1.0.0"]
                  [missing-utils "0.1.5"]
                  [adi "0.1.6"]
-                 [crypto-random "1.2.0"]]
+                 [crypto-random "1.2.0"]
+                 [com.datomic/datomic-free "0.9.4899"]]
 
   :clean-targets ^{:protect false} [:target-path :compile-path "out"]
   :plugins [[lein-cljsbuild "1.0.2"]

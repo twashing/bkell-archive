@@ -1,6 +1,6 @@
 [{:system
 
-  {:currencies #{{:db/id (iid :currency-cdn)
+  {:currencies #{{:db/id (iid :currency-ca)
                   :id "CDN" :name "Canadian Dollar" }
                  {:db/id (iid :currency-usd)
                   :id "USD" :name "United States Dollar" }
