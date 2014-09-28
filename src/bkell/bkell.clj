@@ -1,6 +1,8 @@
 (ns bkell.bkell
   (:require [taoensso.timbre :as timbre]
             [clojure.tools.namespace.repl :refer (refresh)]
+            [adi.core :as adi]
+            [adi.schema :as as]
             [adi.utils :refer [iid ?q]]
             [hara.component :as hco]
             [missing-utils.core :as mu]
@@ -57,6 +59,7 @@
 
 (comment
 
+  ;; retrieve stuff
   (adi/select (-> @system :spittoon :db)
               {:system {:currencies {:id '_}}}
               :view #{:system/currencies} :hide-ids)
@@ -71,4 +74,14 @@
 
   (adi/select (-> @system :spittoon :db)
               {:system {:groups {:name '_}}}
-              :view #{:system/currencies :system/countries :system/groups} :hide-ids))
+              :view #{:system/currencies :system/countries :system/groups} :hide-ids)
+
+  ;; create in
+
+  ;; update
+
+  ;; retract
+
+  ;; delete
+
+  )

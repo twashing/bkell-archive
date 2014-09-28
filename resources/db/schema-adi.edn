@@ -108,7 +108,6 @@
         :country  [{:type :ref
                     :ref {:ns :system.countries}}]}
 
-
  :group {
          :name [{:unique :value
                  :required true

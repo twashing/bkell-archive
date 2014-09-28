@@ -24,7 +24,8 @@
                  [com.datomic/datomic-free "0.9.4899"] ]
 
   :clean-targets ^{:protect false} [:target-path :compile-path "out"]
-  :plugins [[lein-cljsbuild "1.0.2"]]
+  :plugins [[lein-cljsbuild "1.0.2"]
+            [chesk "0.1.0-SNAPSHOT"]]
 
   :repl-options {:init-ns bkell.bkell}
 
@@ -47,4 +48,6 @@
                                    :output-dir "resources/public/js/out/"
                                    :optimizations :none
                                    :source-map true
-                                   :pretty-print true}}]})
+                                   :pretty-print true}}]}
+
+  :eval-in-leiningen true)
