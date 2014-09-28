@@ -4,20 +4,36 @@
             [clojure.test.check.generators :as gen]
             [clojure.test.check.properties :as prop]))
 
-
-(def gend-user
-  (gen/fmap du/create
-            (gen/hash-map :username gen/string-alpha-numeric
-                          :first-name gen/string-alpha-numeric
-                          :last-name gen/string-alpha-numeric
-                          :email gen/string-alpha-numeric)))
-
 (def ^{:tag :run} belongsto-atleast-onegroup
-  (prop/for-all [u gend-user]
-                (-> u nil? not)
-                (-> u :id nil? not)
-                (-> u :password nil? not)))
+  (prop/for-all [ee (gen/hash-map :username gen/string-alpha-numeric
+                                  :first-name gen/string-alpha-numeric
+                                  :last-name gen/string-alpha-numeric
+                                  :email gen/string-alpha-numeric)]
+
+                (let [ei (du/create ee)]
+
+                  (-> ei nil? not)
+                  (-> ei :id nil? not)
+                  (-> ei :password nil? not))))
 
 (def ^{:tag :run} can-belongto-manygroups nil)
 
 (def ^{:tag :run} must-own-onegroup nil)
+
+
+
+
+(defn ascending?
+  "clojure.core/sorted? doesn't do what we might expect, so we write our
+  own function"
+  [coll]
+  (every? (fn [[a b]] (<= a b))
+          (partition 2 1 coll)))
+
+(def property
+  (prop/for-all [v (gen/vector gen/int)]
+                (let [s (sort v)]
+                  (and (= (count v) (count s))
+                       (ascending? s)))))
+
+(tc/quick-check 100 property)
