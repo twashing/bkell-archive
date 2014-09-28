@@ -52,3 +52,23 @@
                    (map extract-doc-fn shell-members)))))
 
 (defn ^{:doc "Reloads project configuration and libraries"} reload-project [] (reload-project))
+
+
+
+(comment
+
+  (adi/select (-> @system :spittoon :db)
+              {:system {:currencies {:id '_}}}
+              :view #{:system/currencies} :hide-ids)
+
+  (adi/select (-> @system :spittoon :db)
+              {:system {:countries {:id '_}}}
+              :view #{:system/countries} :hide-ids)
+
+  (adi/select (-> @system :spittoon :db)
+              {:system {:groups {:name '_}}}
+              :view #{:system/groups} :hide-ids)
+
+  (adi/select (-> @system :spittoon :db)
+              {:system {:groups {:name '_}}}
+              :view #{:system/currencies :system/countries :system/groups} :hide-ids))
