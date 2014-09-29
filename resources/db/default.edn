@@ -23,7 +23,6 @@
                  {:db/id (iid :currency-inr)
                   :id "INR" :name "Indian Rupee" } }
 
-
    :countries #{{:db/id (iid :country-ca)
                  :id "CA" :name "Canada" }
                 {:db/id (iid :country-us)
@@ -46,7 +45,6 @@
                  :id "BR" :name "Brazil" }
                 {:db/id (iid :country-in)
                  :id "IN" :name "India"} }
-
 
    :groups #{{:db/id (iid :group-webkell)
 

@@ -25,7 +25,7 @@
 
   :clean-targets ^{:protect false} [:target-path :compile-path "out"]
   :plugins [[lein-cljsbuild "1.0.2"]
-            [chesk "0.1.0-SNAPSHOT"]]
+            ]
 
   :repl-options {:init-ns bkell.bkell}
 
@@ -48,6 +48,4 @@
                                    :output-dir "resources/public/js/out/"
                                    :optimizations :none
                                    :source-map true
-                                   :pretty-print true}}]}
-
-  :eval-in-leiningen true)
+                                   :pretty-print true}}]})

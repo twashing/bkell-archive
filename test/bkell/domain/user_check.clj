@@ -10,7 +10,7 @@
                                   :last-name gen/string-alpha-numeric
                                   :email gen/string-alpha-numeric)]
 
-                (let [ei (du/create ee)]
+                (let [ei (du/create {} ee)]
 
                   (-> ei nil? not)
                   (-> ei :id nil? not)
@@ -20,20 +20,4 @@
 
 (def ^{:tag :run} must-own-onegroup nil)
 
-
-
-
-(defn ascending?
-  "clojure.core/sorted? doesn't do what we might expect, so we write our
-  own function"
-  [coll]
-  (every? (fn [[a b]] (<= a b))
-          (partition 2 1 coll)))
-
-(def property
-  (prop/for-all [v (gen/vector gen/int)]
-                (let [s (sort v)]
-                  (and (= (count v) (count s))
-                       (ascending? s)))))
-
-(tc/quick-check 100 property)
+(tc/quick-check 100 belongsto-atleast-onegroup)

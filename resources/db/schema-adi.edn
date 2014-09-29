@@ -72,17 +72,18 @@
                   :ref {:ns :group.books.journal.entries}
                   :doc "The journal entry associated with this asset"}]}
 
- :bookkeeping {:accounts [{:type :ref
-                           :ref {:ns :account}
-                           :cardinality :many
-                           :doc
-                           "Refencing the set of accounts belonging to this bookkeeping"}]
+ :books {:accounts [{:type :ref
+                     :ref {:ns :account}
+                     :cardinality :many
+                     :doc
+                     "Refencing the set of accounts belonging to this bookkeeping"}]
 
-               :journals [{:type :ref
-                           :ref {:ns :journal}
-                           :cardinality :many
-                           :doc
-                           "Referencing the set of journals belonging to this bookkeeping"}]}
+         :journals [{:type :ref
+                     :ref {:ns :journal
+                           :rval :journal}
+                     :cardinality :many
+                     :doc
+                     "Referencing the set of journals belonging to this bookkeeping"}]}
 
  :user {
         :username [{:unique :value
@@ -127,7 +128,8 @@
                             :doc "The groups's default currency"}]
 
          :books [{:type :ref
-                  :ref {:ns :bookkeeping}
+                  :ref {:ns :books
+                        :rval :book}
                   :cardinality :many
                   :isComponent true
                   :doc "The set of books belonging to this group"}] }
@@ -142,6 +144,7 @@
                        :ref {:ns :country}}]
 
           :groups [{:type :ref
-                    :ref {:ns :group}
+                    :ref {:ns :group
+                          :rval :group}
                     :cardinality :many
                     :doc "The groups that are part of the system"}]}}
