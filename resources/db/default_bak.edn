@@ -57,9 +57,7 @@
                         :lastname "webkell"
                         :email "webkell"
                         :defaultgroup {:+/db/id (iid :group-webkell)}
-                        :country {:+/db/id (iid :country-ca)}
-                        
-                        }}
+                        :country {:+/db/id (iid :country-ca)}}}
 
               :owner {:+/db/id (iid :user-webkell)}
 
@@ -79,5 +77,4 @@
                                      :counterWeight :debit}}
 
                         :journals #{{:name "generalledger"
-                                     :entries #{}}}}}
-                        }}}}]
+                                     :entries #{}}}}}}}}}]

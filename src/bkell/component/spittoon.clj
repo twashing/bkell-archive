@@ -49,3 +49,13 @@
 (defmethod print-method Spittoon
   [v w]
   (.write w (str v)))
+
+
+(comment
+
+
+  (def ds (adi/datastore "datomic:mem://bkeeping" (db-load-schema "db/schema-adi.edn") true true))
+
+  (adi/insert! ds (eval (read-string (slurp "resources/db/default.edn"))))
+
+  )

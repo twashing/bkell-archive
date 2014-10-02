@@ -1,14 +1,18 @@
 {:currency {:id [{:unique :value
-                  :required true}]
+                  ;;:required true
+                  }]
 
             :name [{:unique :value
-                    :required true}]}
+                    ;;:required true
+                    }]}
 
  :country {:id [{:unique :value
-                 :required true}]
+                 ;;:required true
+                 }]
 
            :name [{:unique :value
-                   :required true}]}
+                   ;;:required true
+                   }]}
 
  :account {:name [{:doc "Display name for this Account"}]
 
@@ -25,19 +29,19 @@
  ;; debits & credits
  :content {:type [{:type :enum
                    :default :debit
-                   :enum {:ns :contente.type
+                   :enum {:ns :content.type
                           :values #{:debit :credit}}}]
 
            :amount [{:type :float}]
 
            :account [{:type :ref
-                      :ref {:ns :system.groups.books.accounts}}]
+                      :ref {:ns :account}}]
 
            :currency [{:type :ref
-                       :ref {:ns :system.currencies}}]}
+                       :ref {:ns :currency}}]}
 
  :entry [{:currency [{:type :ref
-                      :ref {:ns :system.currencies}}]
+                      :ref {:ns :currency}}]
 
           :assets [{:type :ref
                     :ref :asset
@@ -69,7 +73,7 @@
          :type [{}]
 
          :entry [{:type :ref
-                  :ref {:ns :group.books.journal.entries}
+                  :ref {:ns :entry}
                   :doc "The journal entry associated with this asset"}]}
 
  :books {:accounts [{:type :ref
@@ -87,7 +91,7 @@
 
  :user {
         :username [{:unique :value
-                    :required true
+                    ;;:required true
                     :doc "A user's username"}]
 
         :password [{:doc "A user's password"}]
@@ -96,8 +100,7 @@
 
         :defaultgroup
         [{:type :ref
-          :ref {:ns :system.groups}
-          :required true
+          :ref {:ns :group}
           :doc "A user can be a member of many groups. This points to the default one"}]
 
         :firstname [{:type :string}]
@@ -107,15 +110,14 @@
         :email [{:type :string}]
 
         :country  [{:type :ref
-                    :ref {:ns :system.countries}}]}
+                    :ref {:ns :country}}]}
 
  :group {
          :name [{:unique :value
-                 :required true
                  :doc "A group's name"}]
 
          :owner [{:type :ref
-                  :ref {:ns :groups.users}
+                  :ref {:ns :user}
                   :doc "The groups's owner"}]
 
          :users [{:type :ref
@@ -124,12 +126,12 @@
                   :doc "The users belonging to this group"}]
 
          :defaultCurrency [{:type :ref
-                            :ref {:ns :system.currencies}
+                            :ref {:ns :currency}
                             :doc "The groups's default currency"}]
 
          :books [{:type :ref
                   :ref {:ns :books
-                        :rval :book}
+                        :rval :groups}
                   :cardinality :many
                   :isComponent true
                   :doc "The set of books belonging to this group"}] }

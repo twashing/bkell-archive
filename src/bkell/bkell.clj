@@ -59,10 +59,12 @@
 
 (comment
 
+  (start)
+  (reset)
   ;; retrieve stuff
   (adi/select (-> @system :spittoon :db)
               {:system {:currencies {:id '_}}}
-              :view #{:system/currencies} :hide-ids)
+              :view #{:system/currencies})
 
   (adi/select (-> @system :spittoon :db)
               {:system {:countries {:id '_}}}
@@ -76,6 +78,64 @@
               {:system {:groups {:name '_}}}
               :view #{:system/currencies :system/countries :system/groups} :hide-ids)
 
+  (adi/select (-> @system :spittoon :db)
+              {:system {:groups {:name '_}}}
+              :view #{:system/currencies :system/countries :system/groups} :hide-ids)
+
+  (adi/select (-> @system :spittoon :db) :group
+              :view #{:group/users})
+  (comment ({:db {:id 17592186045432}, :group {:name "webkell",
+                                               :users #{{:+ {:db {:id 17592186045431}},
+                                                         :email "webkell",
+                                                         :firstname "webkell",
+                                                         :password "default",
+                                                         :lastname "webkell",
+                                                         :username "webkell"}}}}))
+
+
+  (adi/select (-> @system :spittoon :db) :group
+              :view {:group/books :follow
+                     :books/accounts :follow})
+  ({:db {:id 17592186045432},
+    :group {:books #{{:+ {:db {:id 17592186045455}},
+                      :accounts #{{:+ {:db {:id 17592186045427}},
+                                   :name "expense", :counterWeight
+                                   :account.counterWeight/debit,
+                                   :type :account.type/expense}
+                                  {:+ {:db {:id 17592186045430}}, :name "debt",
+                                   :counterWeight :account.counterWeight/credit,
+                                   :type :account.type/liability}
+                                  {:+ {:db {:id 17592186045428}}, :name "revenue",
+                                   :counterWeight :account.counterWeight/credit,
+                                   :type :account.type/revenue}
+                                  {:+ {:db {:id 17592186045429}}, :name "cash",
+                                   :counterWeight :account.counterWeight/debit,
+                                   :type :account.type/asset}}}}, :name "webkell"}})
+
+  (adi/select (-> @system :spittoon :db) :group
+              :view {:group/books :follow
+                     :books/journals :follow
+                     :journal/entries :follow})
+  ({:db {:id 17592186045432},
+    :group {:books #{{:+ {:db {:id 17592186045455}},
+                      :journals #{{:+ {:db {:id 17592186045426}},
+                                   :name "generalledger"}}}},
+            :name "webkell"}})
+
+
+  (adi/insert! (-> @system :spittoon :db)
+               {:entry {:currency 17592186045456}})
+
+  (first)
+  (adi/select (-> @system :spittoon :db) :currency/id)
+  (adi/select (-> @system :spittoon :db) {:currency/id "EUR"})
+  (adi/select (-> @system :spittoon :db) {:currency/id '(.startsWith ? "C")})
+
+  ;;{:db {:id 17592186045449}, :currency {:id "EUR", :name "European Euro"}}
+
+
+  ;;=> ({:db {:id 17592186045432}, :group {:name "webkell"}})
+
   ;; create in
 
   ;; update
@@ -84,4 +144,5 @@
 
   ;; delete
 
-  )
+
+)
