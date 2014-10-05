@@ -24,8 +24,7 @@
                  [com.datomic/datomic-free "0.9.4899"] ]
 
   :clean-targets ^{:protect false} [:target-path :compile-path "out"]
-  :plugins [[lein-cljsbuild "1.0.2"]
-            ]
+  :plugins [[lein-cljsbuild "1.0.2"]]
 
   :repl-options {:init-ns bkell.bkell}
 
