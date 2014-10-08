@@ -44,7 +44,6 @@ $ lein repl
   => (db/setup)
 ````
 
-
 ## Run
 
 Run the shell
@@ -61,7 +60,6 @@ $ lein repl
 ````
 
 Then in your browser, go to _localhost:8080_
-
 
 ## Tests
 ````
